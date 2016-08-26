@@ -3,7 +3,7 @@ package entity.ahnen;
 import processing.core.PApplet;
 import processing.core.PImage;
 import shared.Nation;
-import shared.ref;
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Spell;
 import gameStructure.Attacker;
@@ -82,8 +82,8 @@ public class AhnenKaserne extends Building implements Trainer, Commander {
 		if (c[2].equals("level")) {
 			level = (byte) Integer.parseInt(c[3]);
 			stats = "level " + (level + 1);
-			ref.updater.selectionChanged = true;
-			ref.updater.keepGrid = true;
+			GameApplet.updater.selectionChanged = true;
+			GameApplet.updater.keepGrid = true;
 			setAnimation(build);
 		} else if (c[2].equals("train")) {
 			boolean b = false;
@@ -174,12 +174,12 @@ public class AhnenKaserne extends Building implements Trainer, Commander {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -225,7 +225,7 @@ public class AhnenKaserne extends Building implements Trainer, Commander {
 		@Override
 		public String getDescription() {
 			AhnenKaserne target = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (e instanceof AhnenKaserne) {
 					target = (AhnenKaserne) e;
 				}
@@ -241,7 +241,7 @@ public class AhnenKaserne extends Building implements Trainer, Commander {
 		@Override
 		public String getStatistics() {
 			AhnenKaserne target = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (e instanceof AhnenKaserne) {
 					target = (AhnenKaserne) e;
 				}
@@ -255,7 +255,7 @@ public class AhnenKaserne extends Building implements Trainer, Commander {
 		@Override
 		public void onActivation() {
 			AhnenKaserne target = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (e instanceof AhnenKaserne && e.getAnimation() == e.stand) {
 					target = (AhnenKaserne) e;
 				}
@@ -270,7 +270,7 @@ public class AhnenKaserne extends Building implements Trainer, Commander {
 		@Override
 		public boolean isActivateable() {
 			AhnenKaserne target = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (e instanceof AhnenKaserne) {
 					target = (AhnenKaserne) e;
 				}
@@ -294,7 +294,7 @@ public class AhnenKaserne extends Building implements Trainer, Commander {
 
 		public void onActivation() {
 			AhnenKaserne trainer = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (clazz.isAssignableFrom(e.getClass())
 						&& e.getAnimation() == e.stand) {
 					boolean b = false;
@@ -335,7 +335,7 @@ public class AhnenKaserne extends Building implements Trainer, Commander {
 		@Override
 		public boolean isActivateable() {
 			boolean isActivateable = false;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (clazz.isAssignableFrom(e.getClass())) {
 					boolean b = false;
 					AhnenKaserne t = (AhnenKaserne) e;

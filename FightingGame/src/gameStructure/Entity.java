@@ -3,6 +3,7 @@ package gameStructure;
 import java.util.ArrayList;
 
 import champs.TestProjectile;
+import game.GameApplet;
 import game.HUD;
 import game.ImageHandler;
 import gameStructure.animation.Death;
@@ -12,7 +13,6 @@ import processing.core.PImage;
 import shared.Coms;
 import shared.Helper;
 import shared.Player;
-import shared.ref;
 
 public class Entity extends GameObject {
 
@@ -53,7 +53,7 @@ public class Entity extends GameObject {
 	}
 
 	public void sendDamage(TestProjectile testProjectile, Damage damage, Player player, String origin) {
-		ref.updater.send(Coms.HIT + " " + number + " " + damage.get() + " " + player.getUser().ip + " " + origin);
+		GameApplet.updater.send(Coms.HIT + " " + number + " " + damage.get() + " " + player.getUser().ip + " " + origin);
 	}
 
 	@Override
@@ -125,12 +125,12 @@ public class Entity extends GameObject {
 	void drawHpBar() {
 		int h = 5;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, hpBarLength, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, hpBarLength, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					hpBarLength * getCurrentHp() / getTotalHp(), h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 

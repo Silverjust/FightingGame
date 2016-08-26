@@ -1,9 +1,9 @@
 package gameStructure.animation;
 
+import game.GameApplet;
 import gameStructure.GameObject;
 import processing.core.PImage;
 import shared.Updater;
-import shared.ref;
 
 public class Extract extends Ability {
 
@@ -33,11 +33,11 @@ public class Extract extends Ability {
 				if (Updater.resfreeze != null && Updater.resfreeze.isNotOnCooldown()) {
 					if (isRFNew) {
 						System.out.println("Extract.updateAbility() resfreeze");
-						ref.preGame.write("GAME", "resfreze");
+						GameApplet.preGame.write("GAME", "resfreze");
 						isRFNew=false;
 					}
 				} else
-					ref.updater.send("<give " + e.player.getUser().ip + " " + ressource + " " + amount);
+					GameApplet.updater.send("<give " + e.player.getUser().ip + " " + ressource + " " + amount);
 			}
 			isSetup = false;
 		}

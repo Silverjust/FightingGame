@@ -2,7 +2,7 @@ package gameStructure.animation;
 
 import processing.core.PImage;
 import shared.Updater;
-import shared.ref;
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.GameObject;
 
@@ -49,7 +49,7 @@ public class Explosion extends Animation {
 		}
 
 		if (img != null && currentFrame < img.length) {
-			ImageHandler.drawImage(ref.app, img[currentFrame],
+			ImageHandler.drawImage(GameApplet.app, img[currentFrame],
 					GameObject.xToGrid(x), GameObject.yToGrid(y), xSize, ySize);
 		}
 	}

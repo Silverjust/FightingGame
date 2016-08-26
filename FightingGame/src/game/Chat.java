@@ -12,7 +12,6 @@ import processing.core.PConstants;
 import main.ClientHandler;
 import shared.CommandHandler;
 import shared.Helper;
-import shared.ref;
 
 public class Chat {
 
@@ -21,17 +20,17 @@ public class Chat {
 
 	String out;
 	boolean justOpened;
+	private GameApplet app;
 
-	Chat() {
-		chatLine = new GTextField(ref.app, 10,
-				ref.app.height - HUD.height - 20, 500, 20);
+	Chat(GameApplet app) {
+		this.app = app;
+		chatLine = new GTextField(app, 10, app.height - HUD.height - 20, 500, 20);
 		chatLine.setPromptText("chat");
 		chatLine.setFont(new Font("PLAIN", Font.BOLD, 15));
 		chatLine.addEventHandler(this, "chatEvents");
 
-		chatHistory = new GTextArea(ref.app, 10, ref.app.height - HUD.height
-				- 220, 500, 200, G4P.SCROLLBARS_VERTICAL_ONLY
-				| G4P.SCROLLBARS_AUTOHIDE);
+		chatHistory = new GTextArea(app, 10, app.height - HUD.height - 220, 500, 200,
+				G4P.SCROLLBARS_VERTICAL_ONLY | G4P.SCROLLBARS_AUTOHIDE);
 		chatHistory.setTextEditEnabled(false);
 		chatHistory.setOpaque(false);
 		chatHistory.setFont(new Font("PLAIN", Font.BOLD, 17));
@@ -41,14 +40,13 @@ public class Chat {
 	}
 
 	public void update() {
-		if (ref.app.keyCode == PConstants.ENTER) {
+		if (app.keyCode == PConstants.ENTER) {
 			if (!chatLine.isVisible()) {
 				show();
 			}
-		} else if (ref.app.keyCode == PConstants.BACKSPACE) {
+		} else if (app.keyCode == PConstants.BACKSPACE) {
 			String s = Helper.secureInput(chatLine.getText());
-			System.out.println("Chat.update()\n" + chatLine.getText() + "\n"
-					+ s);
+			System.out.println("Chat.update()\n" + chatLine.getText() + "\n" + s);
 
 			if (s.equals("")) {
 				hide();
@@ -85,17 +83,15 @@ public class Chat {
 			String s = Helper.secureInput(textfield.getText());
 			if (s.equals("")) {
 				if (!justOpened) {
-					System.out
-							.println("Chat.chatEvents() hide cause empty and enter");
+					System.out.println("Chat.chatEvents() hide cause empty and enter");
 					hide();
 				}
 			} else {
 				if (s.length() > 0 && s.charAt(0) == '/') {
-					HUD.chat.println(ref.player.getUser().name, s);
+					HUD.chat.println(app.player.getUser().name, s);
 					CommandHandler.executeCommands(s);
 				} else {
-					ClientHandler.send("<say " + ref.player.getUser().ip + " "
-							+ s);
+					ClientHandler.send("<say " + app.player.getUser().ip + " " + s);
 				}
 			}
 			textfield.setText("");

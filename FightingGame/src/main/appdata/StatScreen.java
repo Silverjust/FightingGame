@@ -2,10 +2,10 @@ package main.appdata;
 
 import processing.core.PConstants;
 import processing.data.JSONObject;
-import shared.ref;
 import g4p_controls.G4P;
 import g4p_controls.GTextArea;
 import g4p_controls.GWindow;
+import game.GameApplet;
 
 public class StatScreen {
 
@@ -13,7 +13,7 @@ public class StatScreen {
 	private static GWindow window;
 
 	static public void setup() {
-		window = new GWindow(ref.app, "Stats", 0, 0, 200, 300, false,
+		window = new GWindow(GameApplet.app, "Stats", 0, 0, 200, 300, false,
 				PConstants.JAVA2D);
 		window.setActionOnClose(G4P.CLOSE_WINDOW);
 

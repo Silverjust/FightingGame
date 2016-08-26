@@ -2,8 +2,8 @@ package entity.scientists;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import shared.ref;
 import game.AimHandler;
+import game.GameApplet;
 import game.ImageHandler;
 import game.aim.BuildWallAim;
 import gameStructure.Attacker;
@@ -60,10 +60,10 @@ public class ChemLab extends Lab {
 	public void renderUnder() {
 		super.renderUnder();
 		if (isAlive() && AimHandler.getAim() instanceof ScientistWallAim) {
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, selectedImg, xToGrid(getX()),
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, selectedImg, xToGrid(getX()),
 					yToGrid(getY()), buildRange * 2, buildRange);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -97,12 +97,12 @@ public class ChemLab extends Lab {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -148,7 +148,7 @@ public class ChemLab extends Lab {
 		@Override
 		public void onActivation() {
 			GameObject builder = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (getClazz().isAssignableFrom(e.getClass())) {
 					builder = e;
 				}
@@ -177,7 +177,7 @@ public class ChemLab extends Lab {
 			boolean inLabRange = false;
 			boolean inCommanderRange = false;
 
-			for (GameObject e : ref.updater.gameObjects) {
+			for (GameObject e : GameApplet.updater.gameObjects) {
 				if (e.isInRange(x, y, buildable.getRadius() + e.getRadius())
 						&& e.groundPosition == GroundPosition.GROUND)
 					placeFree = false;

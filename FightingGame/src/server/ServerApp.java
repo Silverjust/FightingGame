@@ -1,13 +1,13 @@
 package server;
 
 import g4p_controls.G4P;
+import game.GameApplet;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import shared.Client;
 import shared.Server;
 import shared.Updater;
 import shared.Mode;
-import shared.ref;
 import shared.Helper.Timer;
 
 @SuppressWarnings("serial")
@@ -29,11 +29,11 @@ public class ServerApp extends PApplet {
 		mode = Mode.PREGAME;
 		G4P.messagesEnabled(false);
 
-		ref.setTextScale(1.4F);// so ungefär
+		GameApplet.setTextScale(1.4F);// so ungefär
 
-		ref.setApp(this);
+		GameApplet.setApp(this);
 
-		ref.setPreGame(new ServerPreGame());
+		GameApplet.setPreGame(new ServerPreGame());
 
 		gui = new GUI();
 		serverHandler = new ServerHandler();
@@ -47,10 +47,10 @@ public class ServerApp extends PApplet {
 		serverHandler.update();
 		switch (mode) {
 		case PREGAME:
-			ref.preGame.update();
+			GameApplet.preGame.update();
 			break;
 		case LADESCREEN:
-			ref.loader.update();
+			GameApplet.loader.update();
 			break;
 		case GAME:
 			// if (frameCount % 2 == 0)
@@ -63,7 +63,7 @@ public class ServerApp extends PApplet {
 	}
 
 	public void serverUpdate() {
-		ref.updater.update();
+		GameApplet.updater.update();
 	}
 
 	public void disconnectEvent(Client client) {
@@ -77,10 +77,10 @@ public class ServerApp extends PApplet {
 	private void startRF() {
 		float time = (float) (((int) (Math.random() * 500.0)) / 100.0);
 		int cooldown = (int) (time * 60 * 1000);
-		ref.preGame.write("GAME", "resfreeze in " + (cooldown / 60.0 / 1000.0));
+		GameApplet.preGame.write("GAME", "resfreeze in " + (cooldown / 60.0 / 1000.0));
 		Updater.resfreeze = new Timer(cooldown);
-		if (ref.app instanceof ServerApp)
-			((ServerApp) ref.app).serverHandler.doProtocol = true;
+		if (GameApplet.app instanceof ServerApp)
+			((ServerApp) GameApplet.app).serverHandler.doProtocol = true;
 	}
 
 	@Override

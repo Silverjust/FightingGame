@@ -3,6 +3,7 @@ package shared;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import game.GameApplet;
 import game.Map;
 import gameStructure.GameObject;
 import shared.Helper.Timer;
@@ -54,25 +55,25 @@ public abstract class Updater {
 		private static int pauseTime;
 
 		public static void startPause() {
-			if (ref.updater.gameState == GameState.PLAY) {
-				ref.updater.gameState = GameState.PAUSE;
-				pauseStart = ref.app.millis();
+			if (GameApplet.updater.gameState == GameState.PLAY) {
+				GameApplet.updater.gameState = GameState.PAUSE;
+				pauseStart = GameApplet.app.millis();
 			}
 		}
 
 		public static void endPause() {
-			if (ref.updater.gameState != GameState.PLAY) {
-				ref.updater.gameState = GameState.PLAY;
-				pauseTime += ref.app.millis() - pauseStart;
+			if (GameApplet.updater.gameState != GameState.PLAY) {
+				GameApplet.updater.gameState = GameState.PLAY;
+				pauseTime += GameApplet.app.millis() - pauseStart;
 				pauseStart = 0;
 			}
 		}
 
 		public static int getMillis() {
 			if (pauseStart == 0)
-				return ref.app.millis() - pauseTime;
+				return GameApplet.app.millis() - pauseTime;
 			else
-				return ref.app.millis() - (pauseTime + ref.app.millis() - pauseStart);
+				return GameApplet.app.millis() - (pauseTime + GameApplet.app.millis() - pauseStart);
 		}
 	}
 

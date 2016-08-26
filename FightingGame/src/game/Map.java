@@ -8,7 +8,6 @@ import processing.core.PImage;
 import processing.data.JSONObject;
 import shared.Player;
 import shared.VersionControle;
-import shared.ref;
 
 public class Map {
 	public Graph graph;
@@ -24,24 +23,27 @@ public class Map {
 
 	public MapCode mapCode;
 
-	public Map(String map) {
+	private GameApplet app;
 
+	public Map(GameApplet app, String map) {
+
+		this.app = app;
 		try {
-			mapData = ref.app.loadJSONObject("data/" + map + ".json");
+			mapData = app.loadJSONObject("data/" + map + ".json");
 			VersionControle.objToArray(mapData, map);
 			width = mapData.getInt("w");
 			height = mapData.getInt("h");
 			if (mapData.hasKey("MapCode")) {
 				System.out.println("Map.Map() creating mapcode");
-				mapCode = (MapCode) Class.forName(mapData.getString("MapCode")).getConstructor(Map.class)
-						.newInstance(new Object[] { this });
+				mapCode = (MapCode) Class.forName(mapData.getString("MapCode"))
+						.getConstructor(GameApplet.class, Map.class).newInstance(new Object[] { app, this });
 			}
 		} catch (Exception e) {
 			System.err.println(map + " could not be loaded");
 			e.printStackTrace();
 		}
 		if (mapCode == null) {
-			mapCode = new MapCode(this) {
+			mapCode = new MapCode(app, this) {
 			};
 		}
 		mapCode.setup();
@@ -49,13 +51,13 @@ public class Map {
 
 	public void loadImages() {
 		try {
-			textur = ImageHandler.load("", mapData.getString("texture"));
-			collision = ImageHandler.load("", mapData.getString("coll"));
+			textur = app.getDrawer().imageHandler.load("", mapData.getString("texture"));
+			collision = app.getDrawer().imageHandler.load("", mapData.getString("coll"));
 		} catch (Exception e) {
 			System.err.println(mapData.getString("texture") + " " + mapData.getString("coll"));
 			e.printStackTrace();
 		}
-		fogOfWar = ref.app.createGraphics(width / fogScale, height / 2 / fogScale, PConstants.P2D);
+		fogOfWar = app.createGraphics(width / fogScale, height / 2 / fogScale, PConstants.P2D);
 	}
 
 	public void setup() {
@@ -68,9 +70,9 @@ public class Map {
 		fogOfWar.background(80);
 		fogOfWar.noStroke();
 		fogOfWar.fill(200);
-		for (GameObject e : ref.updater.getGameObjects()) {
+		for (GameObject e : app.updater.getGameObjects()) {
 			if (e.player == player) {
-				e.drawSight(ref.updater);
+				e.drawSight(app.updater);
 			}
 		}
 		fogOfWar.endDraw();

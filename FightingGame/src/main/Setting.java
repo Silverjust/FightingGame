@@ -2,11 +2,11 @@ package main;
 
 import java.awt.im.InputContext;
 
+import game.GameApplet;
 import processing.core.PConstants;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
 import shared.VersionControle;
-import shared.ref;
 
 public class Setting {
 
@@ -25,7 +25,7 @@ public class Setting {
 	public void fromJSON(String s) {
 		JSONObject o = null;
 		try {
-			o = ref.app.loadJSONObject(s);
+			o = GameApplet.app.loadJSONObject(s);
 		} catch (Exception e) {
 			o = new JSONObject();
 		}
@@ -53,7 +53,7 @@ public class Setting {
 			}
 		}
 
-		ref.app.saveJSONObject(o, s);
+		GameApplet.app.saveJSONObject(o, s);
 	}
 
 	private void fillEmptySettings(JSONObject o) {

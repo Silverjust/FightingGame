@@ -1,5 +1,6 @@
 package entity.humans;
 
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -10,7 +11,6 @@ import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PApplet;
 import processing.core.PImage;
-import shared.ref;
 
 public class Exo extends Unit implements Attacker {
 
@@ -160,14 +160,14 @@ public class Exo extends Unit implements Attacker {
 		super.exec(c);
 		if (c[2].equals("hook")) {
 			int n = Integer.parseInt(c[3]);
-			GameObject e = ref.updater.getNamedObjects().get(n);
+			GameObject e = GameApplet.updater.getNamedObjects().get(n);
 			hook.setTargetFrom(this, e);
 			xTarget = e.getX();
 			yTarget = e.getY();
 			setAnimation(hook);
 		} else if (c[2].equals("instaAttack")) {
 			int n = Integer.parseInt(c[3]);
-			GameObject e = ref.updater.getNamedObjects().get(n);
+			GameObject e = GameApplet.updater.getNamedObjects().get(n);
 			instaAttack.setTargetFrom(this, e);
 			setAnimation(instaAttack);
 		}
@@ -185,7 +185,7 @@ public class Exo extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		ref.updater.send("<hit " + ((MeleeAttack) a).getTarget().number + " "
+		GameApplet.updater.send("<hit " + ((MeleeAttack) a).getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 	}
 
@@ -201,9 +201,9 @@ public class Exo extends Unit implements Attacker {
 	public void drawShot() {
 		if (hook.getTarget() != null) {
 			GameObject e = hook.getTarget();
-			ref.app.stroke(150);
-			ref.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(e.getX()), yToGrid(e.getY()));
-			ref.app.stroke(0);
+			GameApplet.app.stroke(150);
+			GameApplet.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(e.getX()), yToGrid(e.getY()));
+			GameApplet.app.stroke(0);
 		}
 	}
 
@@ -242,12 +242,12 @@ public class Exo extends Unit implements Attacker {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 

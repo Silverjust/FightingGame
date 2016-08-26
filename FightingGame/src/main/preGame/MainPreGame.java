@@ -2,8 +2,9 @@ package main.preGame;
 
 import main.ClientHandler;
 import main.MainApp;
-import main.MainLoader;
+import game.GameApplet;
 import game.HUD;
+import game.MainLoader;
 import shared.ComHandler;
 import shared.Coms;
 import shared.ContentListManager;
@@ -12,7 +13,6 @@ import shared.Mode;
 import shared.Nation;
 import shared.PreGame;
 import shared.User;
-import shared.ref;
 
 public class MainPreGame extends PreGame {
 
@@ -22,8 +22,8 @@ public class MainPreGame extends PreGame {
 
 	public MainPreGame(String name) {
 		this.name = name;
-		((MainApp) ref.app).contentListHandler = new ContentListManager();
-		((MainApp) ref.app).contentListHandler.load();
+		((MainApp) GameApplet.app).contentListHandler = new ContentListManager();
+		((MainApp) GameApplet.app).contentListHandler.load();
 		ComHandler.setup();
 		System.out.println("MainPreGame.MainPreGame()");
 	}
@@ -61,9 +61,9 @@ public class MainPreGame extends PreGame {
 	}
 
 	public static void addPlayer(String name, Nation nation) {
-		System.out.println("MainPreGame.addPlayer()" + ref.preGame.users.size());
-		ref.preGame.addPlayer("" + 2, name);
-		ref.preGame.users.get("2").nation = nation;
+		System.out.println("MainPreGame.addPlayer()" + GameApplet.preGame.users.size());
+		GameApplet.preGame.addPlayer("" + 2, name);
+		GameApplet.preGame.users.get("2").nation = nation;
 	}
 
 	public void addThisPlayer(String name) {
@@ -105,11 +105,11 @@ public class MainPreGame extends PreGame {
 	@Override
 	public void startLoading() {
 		Nation.setNationsToPlayableNations();
-		ref.loader = new MainLoader();
+		GameApplet.loader = new MainLoader();
 
 		display.dispose();
 
-		((MainApp) ref.app).mode = Mode.LADESCREEN;
+		((MainApp) GameApplet.app).mode = Mode.LADESCREEN;
 	}
 
 	@Override
@@ -154,9 +154,9 @@ public class MainPreGame extends PreGame {
 		for (int i = 2; i < text.length; i++) {// c[0] und c[1] auslassen
 			completeText = completeText.concat(" ").concat(text[i]);
 		}
-		if (((MainApp) ref.app).mode == Mode.PREGAME)
+		if (((MainApp) GameApplet.app).mode == Mode.PREGAME)
 			display.chat.println(name, completeText);
-		else if (((MainApp) ref.app).mode == Mode.GAME)
+		else if (((MainApp) GameApplet.app).mode == Mode.GAME)
 			HUD.chat.println(name, completeText);
 	}
 }

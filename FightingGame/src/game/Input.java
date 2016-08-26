@@ -3,7 +3,6 @@ package game;
 import java.awt.Toolkit;
 import java.awt.event.MouseWheelEvent;
 
-import main.MainApp;
 import main.appdata.SettingHandler;
 import processing.core.PConstants;
 import processing.event.KeyEvent;
@@ -12,11 +11,10 @@ import shared.Coms;
 import shared.Helper;
 import shared.Mode;
 import shared.Updater.GameState;
-import shared.ref;
 
 public class Input {
 
-	MainApp app;
+	GameApp app;
 
 	boolean isChatVisible;
 	boolean isOpeningChat;
@@ -27,8 +25,8 @@ public class Input {
 	int doubleClickIntervall;
 	int doubleClickStart;
 
-	public Input() {
-		app = (MainApp) ref.app;
+	public Input(GameApplet app) {
+		this.app = (GameApp) app;
 
 		app.registerMethod("mouseEvent", this);
 		app.registerMethod("keyEvent", this);
@@ -37,7 +35,8 @@ public class Input {
 	}
 
 	public boolean isMouseFocusInGame() {
-		return Helper.isMouseOver(0, 0, ref.app.width, ref.app.height - HUD.height) || !ref.app.mousePressed;
+		return Helper.isMouseOver(0, 0, app.width, app.height - HUD.height)
+				|| !app.mousePressed;
 	}
 
 	public boolean isKeyFocusInGame() {
@@ -47,16 +46,17 @@ public class Input {
 	public void update() {// ********************************************************
 		int screenSpeed = 30;
 		int rimSize = 10;
-		if (ref.app.focused && !isMPressedOutOfFocus) {
-			if (Helper.isMouseOver(0, 0, rimSize, ref.app.height) && GameDrawer.xMapOffset < 0)
+		if (app.focused && !isMPressedOutOfFocus) {
+			if (Helper.isMouseOver(0, 0, rimSize, app.height) && GameDrawer.xMapOffset < 0)
 				GameDrawer.xMapOffset += screenSpeed;
-			if (Helper.isMouseOver(ref.app.width - rimSize, 0, ref.app.width, ref.app.height)
-					&& -GameDrawer.xMapOffset + app.width <= ref.updater.map.width * GameDrawer.zoom)
+			if (Helper.isMouseOver(app.width - rimSize, 0, app.width, app.height)
+					&& -GameDrawer.xMapOffset + app.width <= app.updater.map.width * GameDrawer.zoom)
 				GameDrawer.xMapOffset -= screenSpeed;
-			if (Helper.isMouseOver(0, 0, ref.app.width, rimSize) && GameDrawer.yMapOffset < 0)
+			if (Helper.isMouseOver(0, 0, app.width, rimSize) && GameDrawer.yMapOffset < 0)
 				GameDrawer.yMapOffset += screenSpeed;
-			if (Helper.isMouseOver(0, ref.app.height - rimSize, ref.app.width, ref.app.height)
-					&& -GameDrawer.yMapOffset + app.height - HUD.height <= ref.updater.map.height / 2 * GameDrawer.zoom)
+			if (Helper.isMouseOver(0, app.height - rimSize, app.width, app.height)
+					&& -GameDrawer.yMapOffset + app.height - HUD.height <= app.updater.map.height / 2
+							* GameDrawer.zoom)
 				GameDrawer.yMapOffset -= screenSpeed;
 		}
 	}
@@ -65,10 +65,10 @@ public class Input {
 		HUD.chat.update();
 		if (isKeyFocusInGame()) {
 			if (app.key == SettingHandler.setting.togglePause) {
-				if (ref.updater.gameState == GameState.PAUSE) {
-					ref.updater.send(Coms.PAUSE + " false");
-				} else if (ref.updater.gameState == GameState.PLAY) {
-					ref.updater.send(Coms.PAUSE + " true");
+				if (app.updater.gameState == GameState.PAUSE) {
+					app.updater.send(Coms.PAUSE + " false");
+				} else if (app.updater.gameState == GameState.PLAY) {
+					app.updater.send(Coms.PAUSE + " true");
 				}
 			}
 			/*
@@ -126,7 +126,7 @@ public class Input {
 	public void mousePressed() {// ********************************************************
 		isMPressedOutOfFocus = !isMouseFocusInGame();
 		// HUD.chat.println("", "" + isMPressedOutOfFocus);
-		if (doubleClickStart + doubleClickIntervall > ref.app.millis()) {
+		if (doubleClickStart + doubleClickIntervall > app.millis()) {
 
 		} else {
 
@@ -201,9 +201,9 @@ public class Input {
 
 	void mouseCommands(float x, float y) {
 		if (app.mouseButton == SettingHandler.setting.mouseMove) {
-			AimHandler.move(x, y);
+			app.getDrawer().getAimHandler().move(x, y);
 		} else if (app.mouseButton == SettingHandler.setting.mouseCommand) {
-			AimHandler.execute(x, y);
+			app.getDrawer().getAimHandler().execute(x, y);
 		}
 	}
 }

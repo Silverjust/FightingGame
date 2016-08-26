@@ -1,12 +1,12 @@
 package server;
 
+import game.GameApplet;
 import shared.Client;
 import shared.Server;
 import shared.ComHandler;
 import shared.Coms;
 import shared.Mode;
 import shared.Player;
-import shared.ref;
 
 public class ServerHandler {
 	ServerApp app;
@@ -20,17 +20,17 @@ public class ServerHandler {
 	public boolean doProtocol = false;
 
 	ServerHandler() {
-		app = (ServerApp) ref.app;
+		app = (ServerApp) GameApplet.app;
 
 		try {
-			server = new Server(ref.app, 5204);
+			server = new Server(GameApplet.app, 5204);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	void update() {
-		if (doProtocol && ref.app.frameCount % 100 == 0) 
+		if (doProtocol && GameApplet.app.frameCount % 100 == 0) 
 			 Protocol.collectInfos();
 		
 		if (server != null) {
@@ -58,15 +58,15 @@ public class ServerHandler {
 
 	public void serverEvent(Server server, Client someClient) {
 		if (app.mode == Mode.GAME
-				&& ref.updater.players.containsKey(someClient.ip())) {
-			Player p = ref.updater.players.get(someClient.ip());
+				&& GameApplet.updater.players.containsKey(someClient.ip())) {
+			Player p = GameApplet.updater.players.get(someClient.ip());
 			app.gui.addChatText(p.getUser().name + " has reconnected");
 			send("<identify reconnect");
 			send("<setNation " + p.getUser().ip + " " + p.getNation().toString());
-			send("<setMap " + p.getUser().ip + " " + ref.preGame.map);
+			send("<setMap " + p.getUser().ip + " " + GameApplet.preGame.map);
 		} else {
 			app.gui.addChatText("We have a new client: " + someClient.ip());
-			ref.preGame.addPlayer(someClient.ip(), someClient.ip());
+			GameApplet.preGame.addPlayer(someClient.ip(), someClient.ip());
 			send("<identify server");
 		}
 	}
@@ -80,7 +80,7 @@ public class ServerHandler {
 	}
 
 	public void disconnectEvent(Client client) {
-		app.gui.addChatText(ref.updater.players.get(client.ip())
+		app.gui.addChatText(GameApplet.updater.players.get(client.ip())
 				+ " disconnected");
 		send(Coms.PAUSE+" true");
 	}

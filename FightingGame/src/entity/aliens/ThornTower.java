@@ -3,7 +3,7 @@ package entity.aliens;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
-import shared.ref;
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.Building;
@@ -117,14 +117,14 @@ public class ThornTower extends Building implements Shooter, Commander {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		ref.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameApplet.updater.send("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 
 	}
 
 	@Override
 	public void renderTerrain() {
-		ImageHandler.drawImage(ref.app, AlienMainBuilding.groundImg, xToGrid(getX()),
+		ImageHandler.drawImage(GameApplet.app, AlienMainBuilding.groundImg, xToGrid(getX()),
 				yToGrid(getY()), commandingRange * 2, commandingRange);
 	}
 
@@ -149,9 +149,9 @@ public class ThornTower extends Building implements Shooter, Commander {
 	public void drawShot(GameObject target, float progress) {
 		float x = PApplet.lerp(this.getX(), target.getX(), progress);
 		float y = PApplet.lerp(this.getY(), target.getY(), progress);
-		ref.app.stroke(100, 100, 0);
-		ref.app.line(xToGrid(this.getX()), yToGrid(this.getY()), x, y / 2);
-		ref.app.stroke(0);
+		GameApplet.app.stroke(100, 100, 0);
+		GameApplet.app.line(xToGrid(this.getX()), yToGrid(this.getY()), x, y / 2);
+		GameApplet.app.stroke(0);
 	}
 
 	public PImage preview() {
@@ -198,12 +198,12 @@ public class ThornTower extends Building implements Shooter, Commander {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 

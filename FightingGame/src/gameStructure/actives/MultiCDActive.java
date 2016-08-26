@@ -2,11 +2,11 @@ package gameStructure.actives;
 
 import java.lang.reflect.Method;
 
+import game.GameApplet;
 import gameStructure.GameObject;
 import gameStructure.Spell;
 import gameStructure.animation.Ability;
 import processing.core.PImage;
-import shared.ref;
 
 /**
  * Aktive Fähigkeit
@@ -41,11 +41,11 @@ public abstract class MultiCDActive extends Spell {
 
 	private void searchEntity() {
 		if (lowestCDEntity == null) {
-			for (GameObject e : ref.updater.selected)
+			for (GameObject e : GameApplet.updater.selected)
 				if (getClazz().isAssignableFrom(e.getClass()))
 					lowestCDEntity = e;
 		}
-		for (GameObject e : ref.updater.selected) {
+		for (GameObject e : GameApplet.updater.selected) {
 			if (getClazz().isAssignableFrom(e.getClass())) {
 				try {
 					float f1 = ((Ability) abilityGetter.invoke(lowestCDEntity))
@@ -97,7 +97,7 @@ public abstract class MultiCDActive extends Spell {
 	@Override
 	public void setVisible(boolean b) {
 		super.setVisible(b);
-		if (!ref.updater.selected.contains(lowestCDEntity))
+		if (!GameApplet.updater.selected.contains(lowestCDEntity))
 			lowestCDEntity = null;
 		searchEntity();
 	}

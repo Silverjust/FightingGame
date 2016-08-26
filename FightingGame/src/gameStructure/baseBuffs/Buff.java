@@ -4,9 +4,9 @@ import shared.Helper.Timer;
 
 import java.util.ArrayList;
 
+import game.GameApplet;
 import gameStructure.Entity;
 import gameStructure.GameObject;
-import shared.ref;
 
 public class Buff {
 
@@ -19,9 +19,9 @@ public class Buff {
 	public Buff(String[] c) {
 		if (c != null) {
 			int n_o = Integer.parseInt(c[2]);
-			owner = (Entity) ref.updater.getGameObject(n_o);
+			owner = (Entity) GameApplet.updater.getGameObject(n_o);
 			int n_s = Integer.parseInt(c[3]);
-			source = (Entity) ref.updater.getGameObject(n_s);
+			source = (Entity) GameApplet.updater.getGameObject(n_s);
 			if (c.length > 4 && !c[4].equals("-"))
 				timer = new Timer(Integer.parseInt(c[4]));
 		}

@@ -1,6 +1,6 @@
 package entity.neutral;
 
-import shared.ref;
+import game.GameApplet;
 import gameStructure.Building;
 import gameStructure.animation.Extract;
 
@@ -38,7 +38,7 @@ public abstract class ArcanumMine extends Building {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		ref.updater.send("<spawn Arcanum 0 " + getX() + " " + getY());
+		GameApplet.updater.send("<spawn Arcanum 0 " + getX() + " " + getY());
 	}
 
 	@Override

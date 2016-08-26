@@ -136,7 +136,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="game.ActivesGrid" project="EliteEngine" 
+  <class id="16" language="java" name="entity.ActivesGrid" project="EliteEngine" 
     file="/EliteEngine/src/game/ActivesGrid.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="459" width="439" x="1387" y="446"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

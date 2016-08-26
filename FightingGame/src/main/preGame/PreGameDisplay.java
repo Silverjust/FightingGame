@@ -6,10 +6,10 @@ import g4p_controls.GButton;
 import g4p_controls.GDropList;
 import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
+import game.GameApplet;
 import processing.data.JSONObject;
 import shared.ContentListManager;
 import shared.Mode;
-import shared.ref;
 
 public abstract class PreGameDisplay {
 	public MainPreGame preGame;
@@ -24,32 +24,32 @@ public abstract class PreGameDisplay {
 	PreGameChat chat;
 
 	public PreGameDisplay() {
-		preGame = (MainPreGame) ref.preGame;
+		preGame = (MainPreGame) GameApplet.preGame;
 
 		mapSelect = new MapSelect(this, startMap);
 		chat = new PreGameChat();
 
-		startButton = new GButton(ref.app, ref.app.width - 320, ref.app.height - 200, 300, 175);
+		startButton = new GButton(GameApplet.app, GameApplet.app.width - 320, GameApplet.app.height - 200, 300, 175);
 		startButton.setText("START");
 		startButton.addEventHandler(this, "handleStartEvents");
 	}
 
 	public void update() {
-		ref.app.background(50);
+		GameApplet.app.background(50);
 	}
 
 	public abstract void handleSelectNation(GGameButton button, GEvent event);
 
 	public void handleSelectMap(GDropList list, GEvent event) {
-		if (event == GEvent.SELECTED && ((MainApp) ref.app).mode == Mode.PREGAME) {
+		if (event == GEvent.SELECTED && ((MainApp) GameApplet.app).mode == Mode.PREGAME) {
 			String file = "";
 			try {
 				file = "data/" + ContentListManager.getModeMaps().getString(mapSelect.intNames[list.getSelectedIndex()])
 						+ ".json";
 				@SuppressWarnings("unused")
-				JSONObject mapData = ref.app.loadJSONObject(file);
+				JSONObject mapData = GameApplet.app.loadJSONObject(file);
 				ClientHandler.send(
-						"<setMap " + ref.preGame.getUser("").ip + " " + mapSelect.intNames[list.getSelectedIndex()]);
+						"<setMap " + GameApplet.preGame.getUser("").ip + " " + mapSelect.intNames[list.getSelectedIndex()]);
 				mapSelect.previousMap = list.getSelectedIndex();
 			} catch (Exception e) {
 				System.err.println(file + " does not exist or could not be read");
@@ -60,7 +60,7 @@ public abstract class PreGameDisplay {
 
 	public void handleStartEvents(GButton button, GEvent event) {
 		// System.out.println(event);
-		if (event == GEvent.CLICKED && ((MainApp) ref.app).mode == Mode.PREGAME) {
+		if (event == GEvent.CLICKED && ((MainApp) GameApplet.app).mode == Mode.PREGAME) {
 			preGame.tryStart();
 		}
 	}

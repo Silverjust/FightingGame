@@ -2,7 +2,7 @@ package entity.aliens;
 
 import processing.core.PGraphics;
 import processing.core.PImage;
-import shared.ref;
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Commander;
 import gameStructure.MainBuilding;
@@ -49,7 +49,7 @@ public class AlienMainBuilding extends MainBuilding implements Commander {
 
 	@Override
 	public void renderTerrain() {
-		ImageHandler.drawImage(ref.app, groundImg, xToGrid(getX()), yToGrid(getY()),
+		ImageHandler.drawImage(GameApplet.app, groundImg, xToGrid(getX()), yToGrid(getY()),
 				commandingRange * 2, commandingRange);
 	}
 

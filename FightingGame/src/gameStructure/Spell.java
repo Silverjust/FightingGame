@@ -2,6 +2,7 @@ package gameStructure;
 
 import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
+import game.GameApplet;
 import game.HUD;
 import game.PlayerInterface;
 import processing.core.PConstants;
@@ -9,7 +10,6 @@ import processing.core.PGraphics;
 import processing.core.PImage;
 import shared.Updater;
 import shared.Updater.GameState;
-import shared.ref;
 
 /**
  * Aktive Fähigkeit
@@ -30,7 +30,7 @@ public abstract class Spell {
 
 	public Spell(PlayerInterface inter, int pos, PImage symbol) {
 
-		button = new GGameButton(ref.app, getXbyPos(inter, pos), getYbyPos(inter, pos), buttonWidth, buttonWidth,
+		button = new GGameButton(GameApplet.app, getXbyPos(inter, pos), getYbyPos(inter, pos), buttonWidth, buttonWidth,
 				HUD.buttonImageFilename());
 		button.setText(PlayerInterface.getKeyFromPos(pos));
 		button.setSymbol(symbol);
@@ -71,9 +71,9 @@ public abstract class Spell {
 	}
 
 	public void handleActiveEvents(GGameButton gamebutton, GEvent event) {
-		if (ref.app.keyPressed || ref.app.mouseButton != PConstants.RIGHT) {
+		if (GameApplet.app.keyPressed || GameApplet.app.mouseButton != PConstants.RIGHT) {
 			if (event == GEvent.PRESSED && gamebutton.isVisible() && isNotOnCooldown()
-					&& ref.updater.gameState == GameState.PLAY) {
+					&& GameApplet.updater.gameState == GameState.PLAY) {
 				onActivation();
 				// startCooldown();
 			}

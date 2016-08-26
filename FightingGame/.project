@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>FightingGame</name>
+	<name>FigthingGame</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -10,15 +10,8 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
-		<buildCommand>
-			<name>com.boothen.jsonedit.validation.builder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.sirius.nature.modelingproject</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>com.boothen.jsonedit.validation.nature</nature>
 	</natures>
 </projectDescription>

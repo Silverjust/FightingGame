@@ -1,6 +1,7 @@
 package main;
 
 import g4p_controls.G4P;
+import game.GameApplet;
 import game.GameDrawer;
 import game.HUD;
 
@@ -19,7 +20,6 @@ import shared.ContentListManager;
 import shared.Menu;
 import shared.Mode;
 import shared.VersionControle;
-import shared.ref;
 
 @SuppressWarnings("serial")
 public class MainApp extends PApplet {
@@ -53,17 +53,17 @@ public class MainApp extends PApplet {
 		// frame.setVisible(true);
 		frameRate(60);
 		font = createFont("Aharoni Fett", 40);
-		ref.setTextScale(0.5F);// so ungef‰r
-		ref.setFont(font);
+		GameApplet.setTextScale(0.5F);// so ungef‰r
+		GameApplet.setFont(font);
 		// System.out.println(font.ascent());
 		textFont(font);
 		noSmooth();
 		mode = Mode.HAUPTMENUE;
 		G4P.messagesEnabled(false);
 
-		ref.setApp(this);
+		GameApplet.setApp(this);
 		FrameInfo.setup();
-		ref.setMinim(new Minim(this));
+		GameApplet.setMinim(new Minim(this));
 
 		SettingHandler.setup();
 		startPage = new StartPage();
@@ -78,16 +78,16 @@ public class MainApp extends PApplet {
 			startPage.update();
 			break;
 		case PREGAME:
-			ref.preGame.update();
+			GameApplet.preGame.update();
 			break;
 		case LADESCREEN:
-			ref.loader.update();
+			GameApplet.loader.update();
 			break;
 		case GAME:
 			// if (frameCount % 100 == 0)// DEBUG
 			// CommandHandler.executeCommands("/fps");
 			// HUD.chatPrintln("fps", ""+frameRate);
-			ref.updater.update();
+			GameApplet.updater.update();
 			GameDrawer.update();
 
 			break;
@@ -122,16 +122,16 @@ public class MainApp extends PApplet {
 	public void dispose() {// Player in schlieﬂen
 		try {
 			if (ClientHandler.client != null)
-				ref.updater.send(Coms.PAUSE + " true");
+				GameApplet.updater.send(Coms.PAUSE + " true");
 			if (startPage != null)
 				startPage.dispose();
-			if (ref.preGame != null)
-				ref.preGame.dispose();
+			if (GameApplet.preGame != null)
+				GameApplet.preGame.dispose();
 			ProfileHandler.dispose();
 			HUD.dispose();
 			// TODO close all ingame sounds
-			if (ref.minim != null)
-				ref.minim.stop();
+			if (GameApplet.minim != null)
+				GameApplet.minim.stop();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

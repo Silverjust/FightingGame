@@ -2,6 +2,7 @@ package shared;
 
 import java.util.ArrayList;
 
+import game.GameApplet;
 import game.GameDrawer;
 import gameStructure.GameObject;
 
@@ -42,7 +43,7 @@ public class Helper {
 	}
 
 	public static boolean isMouseOver(float x1, float y1, float x2, float y2) {
-		boolean b = x1 <= ref.app.mouseX && ref.app.mouseX <= x2 && y1 <= ref.app.mouseY && ref.app.mouseY <= y2;
+		boolean b = x1 <= GameApplet.app.mouseX && GameApplet.app.mouseX <= x2 && y1 <= GameApplet.app.mouseY && GameApplet.app.mouseY <= y2;
 		return b;
 	}
 
@@ -56,24 +57,24 @@ public class Helper {
 
 	public static String nameToIP(String name) {
 		Player p;
-		p = ref.updater.players.get(name);
+		p = GameApplet.updater.players.get(name);
 		if (p != null)
 			return p.getUser().ip;// ip from ip
-		for (String key : ref.updater.players.keySet()) {
-			if (ref.updater.players.get(key).getUser().name.equalsIgnoreCase(name))
-				return ref.updater.players.get(key).getUser().ip;// ip from name
+		for (String key : GameApplet.updater.players.keySet()) {
+			if (GameApplet.updater.players.get(key).getUser().name.equalsIgnoreCase(name))
+				return GameApplet.updater.players.get(key).getUser().ip;// ip from name
 		}
 		try {
-			String[] a = ref.updater.players.keySet().toArray(new String[ref.updater.players.keySet().size()]);
-			return ref.updater.players.get(a[Integer.parseInt(name)]).getUser().ip;
+			String[] a = GameApplet.updater.players.keySet().toArray(new String[GameApplet.updater.players.keySet().size()]);
+			return GameApplet.updater.players.get(a[Integer.parseInt(name)]).getUser().ip;
 			// ip from number
 		} catch (Exception e) { // not a number
 		}
-		return ref.player.getUser().ip; // ip from this player
+		return GameApplet.player.getUser().ip; // ip from this player
 	}
 
 	public static String ipToName(String ip) {
-		User u = ref.preGame.getUser(ip);
+		User u = GameApplet.preGame.getUser(ip);
 		String name = null;
 		if (u != null)
 			name = u.name;
@@ -118,7 +119,7 @@ public class Helper {
 	}
 
 	public float fontHeight() {
-		return ref.app.textAscent() * ref.textScale;
+		return GameApplet.app.textAscent() * GameApplet.textScale;
 	}
 
 	static public class Timer {

@@ -2,8 +2,8 @@ package entity.ahnen;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import shared.ref;
 import entity.ahnen.Leuchte.Upgrade;
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Spell;
 import gameStructure.Attacker;
@@ -157,7 +157,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 
 	private boolean isBuffed() {
 		boolean isBuffed = false;
-		for (GameObject e : ref.updater.gameObjects) {
+		for (GameObject e : GameApplet.updater.gameObjects) {
 			if (e instanceof Leuchte && ((Leuchte) e).upgrade == Upgrade.BUFF
 					&& isInRange(e.getX(), e.getY(), ((Leuchte) e).getBasicAttack().range))
 				isBuffed = true;
@@ -172,7 +172,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 			if (hasNoOrb()) {
 				setMoving(false);
 				int n = Integer.parseInt(c[3]);
-				GameObject e = ref.updater.getNamedObjects().get(n);
+				GameObject e = GameApplet.updater.getNamedObjects().get(n);
 				spawn.setTarget(e);
 				setAnimation(spawn);
 			}
@@ -183,7 +183,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 	}
 
 	private boolean hasNoOrb() {
-		GameObject e = ref.updater.getNamedObjects().get(orb);
+		GameObject e = GameApplet.updater.getNamedObjects().get(orb);
 		return e == null || !e.isAlive();
 	}
 
@@ -191,10 +191,10 @@ public class Destructor extends Unit implements Shooter, Buffing {
 	public void calculateDamage(Attack a) {
 		boolean isBuffed = isBuffed();
 		GameObject target = ((ShootAttack) a).getTarget();
-		for (GameObject e : ref.updater.gameObjects) {
+		for (GameObject e : GameApplet.updater.gameObjects) {
 			if (e != null & e.isEnemyTo(this) && e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)
 					&& e.groundPosition == GroundPosition.GROUND) {
-				ref.updater.send(HIT + S + e.number + " " + (isBuffed ? a.damage * 2 : a.damage) + " "
+				GameApplet.updater.send(HIT + S + e.number + " " + (isBuffed ? a.damage * 2 : a.damage) + " "
 						+ (isBuffed ? 5 : a.pirce));
 			}
 		}
@@ -212,10 +212,10 @@ public class Destructor extends Unit implements Shooter, Buffing {
 	public void drawShot(GameObject target, float progress) {
 		float x = PApplet.lerp(this.getX(), target.getX(), progress);
 		float y = PApplet.lerp(this.getY() - getHeight(), target.getY() - target.getHeight(), progress);
-		ref.app.fill(50, 255, 0);
-		ref.app.strokeWeight(0);
-		ref.app.ellipse(xToGrid(x), yToGrid(y), 1, 1);
-		ref.app.strokeWeight(1);
+		GameApplet.app.fill(50, 255, 0);
+		GameApplet.app.strokeWeight(0);
+		GameApplet.app.ellipse(xToGrid(x), yToGrid(y), 1, 1);
+		GameApplet.app.strokeWeight(1);
 	}
 
 	@Override
@@ -258,12 +258,12 @@ public class Destructor extends Unit implements Shooter, Buffing {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -316,7 +316,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (target != null && isEvent()) {
 				if (isServer) {
-					ref.updater.send(SPAWN + " Orb " + e.player.getUser().ip + " " + e.getX() + " " + (e.getY() + e.getRadius() + 8)
+					GameApplet.updater.send(SPAWN + " Orb " + e.player.getUser().ip + " " + e.getX() + " " + (e.getY() + e.getRadius() + 8)
 							+ " " + target.getX() + " " + target.getY() + " " + e.number);
 					/*
 					 * ref.updater.send("<spawn Rugling " + e.player.ip + " " +
@@ -348,9 +348,9 @@ public class Destructor extends Unit implements Shooter, Buffing {
 
 		@Override
 		public void onActivation() {
-			for (GameObject e : ref.updater.gameObjects) {
+			for (GameObject e : GameApplet.updater.gameObjects) {
 				if (e instanceof Leuchte && e.getAnimation() == ((Leuchte) e).heal) {
-					for (GameObject e2 : ref.updater.selected) {
+					for (GameObject e2 : GameApplet.updater.selected) {
 						if (e2 instanceof Buffing && e.isInRange(e2.getX(), e2.getY(), ((Buffing) e2).getUpgradeRange())) {
 							e.sendAnimation("buff");
 						}

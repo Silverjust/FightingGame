@@ -3,22 +3,22 @@ package main;
 import g4p_controls.G4P;
 import g4p_controls.GButton;
 import g4p_controls.GEvent;
+import game.GameApplet;
 import shared.Menu;
-import shared.ref;
 
 public class OptionsMenu extends Menu {
 	int x, y, wh, h;
 	GButton returnToGame;
 
 	public OptionsMenu() {
-		if (((MainApp) ref.app).startPage != null)
-			((MainApp) ref.app).startPage.setActive(false);
-		if (ref.preGame != null)
-			ref.preGame.setActive(false);
+		if (((MainApp) GameApplet.app).startPage != null)
+			((MainApp) GameApplet.app).startPage.setActive(false);
+		if (GameApplet.preGame != null)
+			GameApplet.preGame.setActive(false);
 		x = (int) FrameInfo.xCenter;
 		y = 200;
 		wh = 50;
-		returnToGame = new GButton(ref.app, x - wh, y + 100, wh * 2, 40,
+		returnToGame = new GButton(GameApplet.app, x - wh, y + 100, wh * 2, 40,
 				"return");
 		returnToGame.setLocalColorScheme(G4P.BLUE_SCHEME);
 		returnToGame.addEventHandler(this, "handleButtonEvents");
@@ -35,10 +35,10 @@ public class OptionsMenu extends Menu {
 
 	@Override
 	public void dispose() {
-		if (((MainApp) ref.app).startPage != null)
-			((MainApp) ref.app).startPage.setActive(true);
-		if (ref.preGame != null)
-			ref.preGame.setActive(true);
+		if (((MainApp) GameApplet.app).startPage != null)
+			((MainApp) GameApplet.app).startPage.setActive(true);
+		if (GameApplet.preGame != null)
+			GameApplet.preGame.setActive(true);
 		returnToGame.dispose();
 	}
 

@@ -1,8 +1,8 @@
 package gameStructure.animation;
 
+import game.GameApplet;
 import gameStructure.GameObject;
 import processing.core.PImage;
-import shared.ref;
 
 public class Death extends Animation {
 
@@ -23,7 +23,7 @@ public class Death extends Animation {
 	public void update(GameObject e) {
 		if (isFinished()) {
 			// setup(e);
-			ref.updater.toRemove.add(e);
+			GameApplet.updater.toRemove.add(e);
 		}
 
 	}

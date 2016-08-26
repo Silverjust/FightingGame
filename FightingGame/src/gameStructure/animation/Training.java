@@ -1,12 +1,12 @@
 package gameStructure.animation;
 
+import game.GameApplet;
 import gameStructure.GameObject;
 import gameStructure.Trainer;
 import gameStructure.Unit;
 import processing.core.PApplet;
 import processing.core.PImage;
 import shared.ContentListManager;
-import shared.ref;
 
 public class Training extends Ability {
 	GameObject toTrain;
@@ -29,7 +29,7 @@ public class Training extends Ability {
 			if (isServer) {
 				float xt = ((Trainer) e).getXTarget();
 				float yt = ((Trainer) e).getYTarget();
-				ref.updater.send("<spawn "
+				GameApplet.updater.send("<spawn "
 						+ toTrain.getClass().getSimpleName()
 						+ " "
 						+ e.player.getUser().ip

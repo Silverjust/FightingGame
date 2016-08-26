@@ -1,7 +1,7 @@
 package gameStructure.actives;
 
-import game.ActivesGrid;
-import game.ActivesGridHandler;
+import entity.ActivesGrid;
+import entity.ActivesGridHandler;
 import gameStructure.Building;
 import gameStructure.Spell;
 

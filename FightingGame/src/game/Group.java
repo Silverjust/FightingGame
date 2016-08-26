@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 
-import shared.ref;
 import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
 import gameStructure.Building;
@@ -18,7 +17,7 @@ public class Group {
 	public Group(int x, int y, char n) {
 		this.x = x;
 		this.y = y;
-		button = new GGameButton(ref.app, x, y, w, h, HUD.buttonImageFilename());
+		button = new GGameButton(GameApplet.app, x, y, w, h, HUD.buttonImageFilename());
 		button.setText(n + "");
 		button.addEventHandler(this, "handleClickEvent");
 	}
@@ -40,17 +39,17 @@ public class Group {
 
 	public void handleClickEvent(GGameButton gamebutton, GEvent event) {
 		if (event == GEvent.PRESSED) {
-			if (((GameUpdater) ref.updater).input.shiftMode) {
+			if (((GameUpdater) GameApplet.updater).input.shiftMode) {
 
-				for (GameObject entity : ref.updater.selected) {
+				for (GameObject entity : GameApplet.updater.selected) {
 					if (!groupEntities.contains(entity))
 						groupEntities.add(entity);
 				}
-			} else if (((GameUpdater) ref.updater).input.strgMode) {
+			} else if (((GameUpdater) GameApplet.updater).input.strgMode) {
 
 				boolean containsUnits = false;
 				groupEntities.clear();
-				for (GameObject entity : ref.updater.selected) {
+				for (GameObject entity : GameApplet.updater.selected) {
 					groupEntities.add(entity);
 					if (!(entity instanceof Building))
 						containsUnits = true;

@@ -3,13 +3,13 @@ package main;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import shared.ref;
+import game.GameApplet;
 
 public class Listener implements WindowListener {
 	@Override
 	public void windowClosing(WindowEvent e) {
 		System.out.println("dispose");
-		ref.app.dispose();
+		GameApplet.app.dispose();
 		System.exit(0);
 	}
 

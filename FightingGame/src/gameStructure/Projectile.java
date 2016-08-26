@@ -2,9 +2,9 @@ package gameStructure;
 
 import java.util.ArrayList;
 
+import game.GameApplet;
 import processing.core.PApplet;
 import shared.Coms;
-import shared.ref;
 
 public class Projectile extends GameObject {
 	private float xTarget;
@@ -19,7 +19,7 @@ public class Projectile extends GameObject {
 		super(c);
 		if (c != null && c.length > 7) {
 			if (c[5].equals(HOMING)) {
-				targetObject = ref.updater.getGameObject(Integer.parseInt(c[6]));
+				targetObject = GameApplet.updater.getGameObject(Integer.parseInt(c[6]));
 				System.out.println("Projectile.Projectile() homing to" + targetObject);
 			} else {
 				xTarget = Float.parseFloat(c[5]);
@@ -33,7 +33,7 @@ public class Projectile extends GameObject {
 	@Override
 	public void updateMovement() {
 		if (isMoving()) {// ****************************************************
-			for (GameObject o : ref.updater.getGameObjects()) {
+			for (GameObject o : GameApplet.updater.getGameObjects()) {
 				if (o != this && o instanceof Entity) {
 					if (isCollision(o)) {
 						if (o.isInRange(getX(), getY(), o.getRadius() + getRadius()))
@@ -61,7 +61,7 @@ public class Projectile extends GameObject {
 
 	protected void onEnd() {
 		// setSight(0);
-		ref.updater.send(Coms.REMOVE + " " + number);
+		GameApplet.updater.send(Coms.REMOVE + " " + number);
 	}
 
 	protected void onHit(GameObject o) {

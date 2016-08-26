@@ -2,6 +2,7 @@ package entity.ahnen;
 
 import game.AimHandler;
 import game.AimHandler.Cursor;
+import game.GameApplet;
 import game.ImageHandler;
 import game.aim.Aim;
 import gameStructure.Attacker;
@@ -16,7 +17,6 @@ import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PApplet;
 import processing.core.PImage;
-import shared.ref;
 
 public class Berserker extends Unit implements Attacker {
 
@@ -147,9 +147,9 @@ public class Berserker extends Unit implements Attacker {
 		float x, y, xDirection = a.getTarget().getX(), yDirection = a.getTarget().getY();
 		x = (this.getX() + (xDirection - this.getX()) / PApplet.dist(this.getX(), this.getY(), xDirection, yDirection) * (attackDistance));
 		y = (this.getY() + (yDirection - this.getY()) / PApplet.dist(this.getX(), this.getY(), xDirection, yDirection) * (attackDistance));
-		for (GameObject e : ref.updater.gameObjects) {
+		for (GameObject e : GameApplet.updater.gameObjects) {
 			if (e != null & e.isEnemyTo(this) && e.isInRange(x, y, e.getRadius() + a.range)) {
-				ref.updater.send(
+				GameApplet.updater.send(
 						HIT + S + e.number + " " + (e instanceof Building ? a.damage / 4 : a.damage) + " " + a.pirce);
 			}
 		}
@@ -159,9 +159,9 @@ public class Berserker extends Unit implements Attacker {
 	public void renderUnder() {
 		super.renderUnder();
 		if (isAlive() && AimHandler.getAim() instanceof LeuchteAim && buildLeuchte.isNotOnCooldown()) {
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, selectedImg, xToGrid(getX()), yToGrid(getY()), buildRange * 2, buildRange);
-			ref.app.tint(255);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, selectedImg, xToGrid(getX()), yToGrid(getY()), buildRange * 2, buildRange);
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -175,7 +175,7 @@ public class Berserker extends Unit implements Attacker {
 	@Override
 	public void renderRange() {
 		if (this instanceof Unit) {
-			ref.app.line(getX(), getY() / 2, ((Unit) this).xTarget, ((Unit) this).yTarget / 2);
+			GameApplet.app.line(getX(), getY() / 2, ((Unit) this).xTarget, ((Unit) this).yTarget / 2);
 		}
 		if (basicAttack.getTarget() != null) {
 
@@ -229,12 +229,12 @@ public class Berserker extends Unit implements Attacker {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -287,7 +287,7 @@ public class Berserker extends Unit implements Attacker {
 		@Override
 		public void onActivation() {
 			GameObject builder = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (getClazz().isAssignableFrom(e.getClass())) {
 					builder = e;
 				}
@@ -331,23 +331,23 @@ public class Berserker extends Unit implements Attacker {
 			x = Building.xToGrid(Building.gridToX());
 			y = Building.xToGrid(Building.gridToY());
 			if (canPlaceAt(x, y)) {
-				ref.app.tint(255, 150);
+				GameApplet.app.tint(255, 150);
 			} else {
-				ref.app.tint(255, 100, 100, 150);
+				GameApplet.app.tint(255, 100, 100, 150);
 			}
-			ImageHandler.drawImage(ref.app, buildable.preview(), x, y / 2, buildable.getxSize(), buildable.getySize());
-			ref.app.tint(255);
+			ImageHandler.drawImage(GameApplet.app, buildable.preview(), x, y / 2, buildable.getxSize(), buildable.getySize());
+			GameApplet.app.tint(255);
 		}
 
 		@Override
 		public void execute(float x, float y) {
 			if (canPlaceAt(x, y)) {
-				ref.updater.send(SPAWN + S + buildable.getClass().getSimpleName() + " " + builder.player.getUser().ip
+				GameApplet.updater.send(SPAWN + S + buildable.getClass().getSimpleName() + " " + builder.player.getUser().ip
 						+ " " + x + " " + y);
 				buildable.buyFrom(builder.player);
 			}
 			GameObject builder = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (e instanceof Berserker && e.player == this.builder.player
 						&& e.isInRange(x, y, ((Berserker) e).buildRange)
 						&& ((Berserker) e).buildLeuchte.isNotOnCooldown()) {
@@ -363,7 +363,7 @@ public class Berserker extends Unit implements Attacker {
 		protected boolean canPlaceAt(float x, float y) {
 			boolean placeFree = true;
 			boolean inBerserkerRange = false;
-			for (GameObject e : ref.updater.gameObjects) {
+			for (GameObject e : GameApplet.updater.gameObjects) {
 				if (e.isInRange(x, y, buildable.getRadius() + e.getRadius()) && e.groundPosition == GroundPosition.GROUND)
 					placeFree = false;
 				if (e instanceof Berserker && e.player == builder.player

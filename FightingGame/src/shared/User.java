@@ -1,5 +1,6 @@
 package shared;
 
+import game.GameApplet;
 import processing.core.PGraphics;
 
 public class User {
@@ -23,8 +24,8 @@ public class User {
 		gr.rect(x, y, 280, 20);
 		gr.fill(0);
 		if (nation != null)
-			gr.text(nation.officialName(), x, y + ref.app.textAscent()
-					* ref.textScale);
-		gr.text(name, x + 70, y + ref.app.textAscent() * ref.textScale);
+			gr.text(nation.officialName(), x, y + GameApplet.app.textAscent()
+					* GameApplet.textScale);
+		gr.text(name, x + 70, y + GameApplet.app.textAscent() * GameApplet.textScale);
 	}
 }

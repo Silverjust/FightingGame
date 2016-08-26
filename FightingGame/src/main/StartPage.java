@@ -6,13 +6,13 @@ import main.appdata.ProfileHandler;
 import main.appdata.StatScreen;
 import shared.Helper;
 import shared.Mode;
-import shared.ref;
 import g4p_controls.G4P;
 import g4p_controls.GButton;
 import g4p_controls.GEvent;
 import g4p_controls.GPassword;
 import g4p_controls.GTextArea;
 import g4p_controls.GTextField;
+import game.GameApplet;
 
 public class StartPage {
 
@@ -24,57 +24,57 @@ public class StartPage {
 
 	public StartPage() {
 		ProfileHandler.loadProfile();
-		playerName = new GTextField(ref.app, 300, 300, 300, 20);
+		playerName = new GTextField(GameApplet.app, 300, 300, 300, 20);
 		playerName.setText(ProfileHandler.getName());
 		playerName.setPromptText("your name");
 		playerName.addEventHandler(this, "handleNameEvents");
 
-		password = new GPassword(ref.app, 300, 330, 300, 20);
+		password = new GPassword(GameApplet.app, 300, 330, 300, 20);
 		// password.
 
-		serverIp = new GTextField(ref.app, 300, 360, 215, 20);
+		serverIp = new GTextField(GameApplet.app, 300, 360, 215, 20);
 		serverIp.setPromptText("server ip4 adress");
 
-		localhost = new GButton(ref.app, 525, 360, 75, 20);
+		localhost = new GButton(GameApplet.app, 525, 360, 75, 20);
 		localhost.setText("127.0.0.1");
 		localhost.addEventHandler(this, "handleLocalhostEvents");
 
-		multiplayerButton = new GButton(ref.app, 300, 390, 300, 40);
+		multiplayerButton = new GButton(GameApplet.app, 300, 390, 300, 40);
 		multiplayerButton.setText("multiplayer");
 		multiplayerButton.addEventHandler(this, "handleAcceptEvents");
 
-		singleplayerButton = new GButton(ref.app, 300, 440, 300, 40);
+		singleplayerButton = new GButton(GameApplet.app, 300, 440, 300, 40);
 		singleplayerButton.setText("singleplayer");
 		singleplayerButton.addEventHandler(this, "handleAcceptEvents");
 
-		sandboxButton = new GButton(ref.app, 300, 490, 300, 40);
+		sandboxButton = new GButton(GameApplet.app, 300, 490, 300, 40);
 		sandboxButton.setText("sandbox");
 		sandboxButton.addEventHandler(this, "handleAcceptEvents");
 
-		campainButton = new GButton(ref.app, 300, 540, 300, 40);
+		campainButton = new GButton(GameApplet.app, 300, 540, 300, 40);
 		campainButton.setText("campain");
 		campainButton.addEventHandler(this, "handleAcceptEvents");
 
-		statisticsButton = new GButton(ref.app, 300, 590, 300, 40);
+		statisticsButton = new GButton(GameApplet.app, 300, 590, 300, 40);
 		statisticsButton.setText("statistics");
 		statisticsButton.addEventHandler(this, "handleAcceptEvents");
 
-		changes = new GTextArea(ref.app, 800, 100, 600, 700,
+		changes = new GTextArea(GameApplet.app, 800, 100, 600, 700,
 				G4P.SCROLLBARS_VERTICAL_ONLY | G4P.SCROLLBARS_AUTOHIDE);
 		changes.setTextEditEnabled(false);
-		changes.setText(ref.app.loadStrings("data/changelog.txt"));
+		changes.setText(GameApplet.app.loadStrings("data/changelog.txt"));
 
-		startServer = new GButton(ref.app, 650, 300, 100, 60);
+		startServer = new GButton(GameApplet.app, 650, 300, 100, 60);
 		startServer.setText("make to Server");
 		startServer.addEventHandler(this, "handleStartServerEvents");
 
 		MainPreGame.GameSettings.setupGameSettings();
-		ref.app.clear();
-		ref.app.background(200);
+		GameApplet.app.clear();
+		GameApplet.app.background(200);
 	}
 
 	public void update() {
-		ref.app.background(200);
+		GameApplet.app.background(200);
 	}
 
 	public void handleAcceptEvents(GButton button, GEvent event) {
@@ -106,17 +106,17 @@ public class StartPage {
 			}
 			System.out.println(GameSettings.singlePlayer);
 
-			ref.preGame = new MainPreGame(name);
+			GameApplet.preGame = new MainPreGame(name);
 			ClientHandler.setup(ip);
 			if (!GameSettings.singlePlayer && ClientHandler.client == null) {
 				serverIp.setFocus(true);
-				((MainPreGame) ref.preGame).closeBecauseServer();
+				((MainPreGame) GameApplet.preGame).closeBecauseServer();
 				return;
 			}
-			((MainPreGame) ref.preGame).setup();
+			((MainPreGame) GameApplet.preGame).setup();
 
 			if (GameSettings.singlePlayer) {
-				((MainApp) ref.app).mode = Mode.PREGAME;
+				((MainApp) GameApplet.app).mode = Mode.PREGAME;
 			}
 			dispose();
 
@@ -144,7 +144,7 @@ public class StartPage {
 
 	public void handleStartServerEvents(GButton button, GEvent event) {
 		server.ServerApp.main(new String[] { "server.ServerApp" });
-		ref.app.dispose();
+		GameApplet.app.dispose();
 	}
 
 	public void handleLocalhostEvents(GButton button, GEvent event) {

@@ -1,5 +1,6 @@
 package gameStructure.animation;
 
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.Entity;
@@ -8,7 +9,6 @@ import gameStructure.Trainer;
 import gameStructure.Unit;
 import processing.core.PImage;
 import shared.Updater;
-import shared.ref;
 
 public class Animation {
 	public static Class<?> observe = Animation.class;
@@ -86,14 +86,14 @@ public class Animation {
 		}
 
 		if (imgWD != null && j < directions && i < frames) {
-			ImageHandler.drawImage(ref.app, imgWD[j][i], GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY()),
+			ImageHandler.drawImage(GameApplet.app, imgWD[j][i], GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY()),
 					e.getxSize(), e.getySize());
 		} else if (img != null && i < frames) {
-			ImageHandler.drawImage(ref.app, img[i], GameObject.xToGrid(e.getX()),
+			ImageHandler.drawImage(GameApplet.app, img[i], GameObject.xToGrid(e.getX()),
 					GameObject.yToGrid(e.getY() - e.getHeight()), e.getxSize(), e.getySize());
 		}
 		if (Animation.observe.isAssignableFrom(e.getClass())) {
-			ref.app.text(getName(e), GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY() - e.getHeight()), 50,
+			GameApplet.app.text(getName(e), GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY() - e.getHeight()), 50,
 					50);
 		}
 	}
@@ -110,14 +110,14 @@ public class Animation {
 		}
 
 		if (imgWD != null && d < directions && f < frames) {
-			ImageHandler.drawImage(ref.app, imgWD[d][f], GameObject.xToGrid(x), GameObject.yToGrid(y), e.getxSize(),
+			ImageHandler.drawImage(GameApplet.app, imgWD[d][f], GameObject.xToGrid(x), GameObject.yToGrid(y), e.getxSize(),
 					e.getySize());
 		} else if (img != null && f < frames) {
-			ImageHandler.drawImage(ref.app, img[f], GameObject.xToGrid(x), GameObject.yToGrid(y - e.getHeight()),
+			ImageHandler.drawImage(GameApplet.app, img[f], GameObject.xToGrid(x), GameObject.yToGrid(y - e.getHeight()),
 					e.getxSize(), e.getySize());
 		}
 		if (Animation.observe.isAssignableFrom(e.getClass())) {
-			ref.app.text(getName(e), GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY() - e.getHeight()), 50,
+			GameApplet.app.text(getName(e), GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY() - e.getHeight()), 50,
 					50);
 		}
 

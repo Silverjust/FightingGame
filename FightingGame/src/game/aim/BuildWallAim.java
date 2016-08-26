@@ -1,8 +1,8 @@
 package game.aim;
 
 import processing.core.PApplet;
-import shared.ref;
 import game.AimHandler;
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Building;
 import gameStructure.GameObject;
@@ -24,12 +24,12 @@ public class BuildWallAim extends BuildAim {
 			x = Building.xToGrid(Building.gridToX());
 			y = Building.xToGrid(Building.gridToY());
 			if (canPlaceAt(x, y)) {
-				ref.app.tint(255, 150);
+				GameApplet.app.tint(255, 150);
 			} else {
-				ref.app.tint(255, 100, 100, 150);
+				GameApplet.app.tint(255, 100, 100, 150);
 			}
-			ImageHandler.drawImage(ref.app, buildable.preview(), x, y / 2, buildable.getxSize(), buildable.getySize());
-			ref.app.tint(255);
+			ImageHandler.drawImage(GameApplet.app, buildable.preview(), x, y / 2, buildable.getxSize(), buildable.getySize());
+			GameApplet.app.tint(255);
 		} else {
 			float x1 = xStartWall, y1 = yStartWall;
 			float x2 = Building.xToGrid(Building.gridToX()), y2 = Building
@@ -39,21 +39,21 @@ public class BuildWallAim extends BuildAim {
 				x1 = (x1 + (x2 - x1) / PApplet.dist(x1, y1, x2, y2) * (speed));
 				y1 = (y1 + (y2 - y1) / PApplet.dist(x1, y1, x2, y2) * (speed));
 				if (canPlaceAt(x1, y1)) {
-					ref.app.tint(255, 150);
+					GameApplet.app.tint(255, 150);
 				} else {
-					ref.app.tint(255, 100, 100, 150);
+					GameApplet.app.tint(255, 100, 100, 150);
 				}
-				ImageHandler.drawImage(ref.app, buildable.preview(), x1,
+				ImageHandler.drawImage(GameApplet.app, buildable.preview(), x1,
 						y1 / 2, buildable.getxSize(), buildable.getySize());
-				ref.app.tint(255);
+				GameApplet.app.tint(255);
 			}
 			if (canPlaceAt(x2, y2)) {
-				ref.app.tint(255, 150);
+				GameApplet.app.tint(255, 150);
 			} else {
-				ref.app.tint(255, 100, 100, 150);
+				GameApplet.app.tint(255, 100, 100, 150);
 			}
-			ImageHandler.drawImage(ref.app, buildable.preview(), x2, y2 / 2, buildable.getxSize(), buildable.getySize());
-			ref.app.tint(255);
+			ImageHandler.drawImage(GameApplet.app, buildable.preview(), x2, y2 / 2, buildable.getxSize(), buildable.getySize());
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class BuildWallAim extends BuildAim {
 			 * Entity.xToGrid(Entity.gridToY());
 			 */
 			if (canPlaceAt(x, y)) {
-				ref.updater.send("<spawn "
+				GameApplet.updater.send("<spawn "
 						+ buildable.getClass().getSimpleName() + " "
 						+ builder.player.getUser().ip + " " + x + " " + y + " start");
 				// start nur beim startbuilding
@@ -89,7 +89,7 @@ public class BuildWallAim extends BuildAim {
 				x1 = (x1 + (x2 - x1) / PApplet.dist(x1, y1, x2, y2) * (speed));
 				y1 = (y1 + (y2 - y1) / PApplet.dist(x1, y1, x2, y2) * (speed));
 				if (canPlaceAt(x1, y1)) {
-					ref.updater
+					GameApplet.updater
 							.send("<spawn "
 									+ buildable.getClass().getSimpleName()
 									+ " " + builder.player.getUser().ip + " " + x1 + " "
@@ -99,7 +99,7 @@ public class BuildWallAim extends BuildAim {
 				}
 			}
 			if (canPlaceAt(x2, y2)) {
-				ref.updater.send("<spawn "
+				GameApplet.updater.send("<spawn "
 						+ buildable.getClass().getSimpleName() + " "
 						+ builder.player.getUser().ip + " " + x2 + " " + y2 + " start");
 				// start nur beim startbuilding

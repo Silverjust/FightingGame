@@ -1,11 +1,11 @@
 package shared;
 
+import entity.ActivesGrid;
+import entity.ActivesGridHandler;
 import entity.neutral.ArcanumMine;
 import entity.neutral.KeritMine;
 import entity.neutral.PaxDrillTower;
 import entity.neutral.PrunamHarvester;
-import game.ActivesGrid;
-import game.ActivesGridHandler;
 import gameStructure.MainBuilding;
 
 public abstract class NationInfo {

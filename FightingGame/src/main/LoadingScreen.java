@@ -1,6 +1,6 @@
 package main;
 
-import shared.ref;
+import game.GameApplet;
 
 public class LoadingScreen {
 
@@ -28,12 +28,12 @@ public class LoadingScreen {
 	static float f;
 
 	public static void update() {
-		ref.app.rect(100, 100, ref.app.width - 200, ref.app.height - 200);// provisorisch
+		GameApplet.app.rect(100, 100, GameApplet.app.width - 200, GameApplet.app.height - 200);// provisorisch
 
-		ref.app.rect(110, ref.app.height - 150, ref.app.width - 220, 40);
-		ref.app.fill(100);
-		ref.app.rect(110, ref.app.height - 150, (ref.app.width - 220) * f, 40);
-		ref.app.fill(255);
+		GameApplet.app.rect(110, GameApplet.app.height - 150, GameApplet.app.width - 220, 40);
+		GameApplet.app.fill(100);
+		GameApplet.app.rect(110, GameApplet.app.height - 150, (GameApplet.app.width - 220) * f, 40);
+		GameApplet.app.fill(255);
 	}
 
 	public static void setPercent(float F) {

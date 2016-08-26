@@ -1,5 +1,6 @@
 package server;
 
+import game.GameApplet;
 import game.ImageHandler;
 import game.MapHandler;
 import shared.Coms;
@@ -7,14 +8,13 @@ import shared.Loader;
 import shared.Mode;
 import shared.Nation;
 import shared.Updater;
-import shared.ref;
 
 public class MultiplayerLoader extends Loader {
 
 	ServerApp app;
 
 	public MultiplayerLoader() {
-		app = (ServerApp) ref.app;
+		app = (ServerApp) GameApplet.app;
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class MultiplayerLoader extends Loader {
 
 		case NEWGAME:
 			Nation.setNationsToPlayableNations();
-			ref.updater = new ServerUpdater();
+			GameApplet.updater = new ServerUpdater();
 			state = State.MAP;// map
 			break;
 		case STARTIMAGES:
@@ -44,13 +44,13 @@ public class MultiplayerLoader extends Loader {
 			}
 			break;
 		case MAP:
-			ref.updater.map.setup();
+			GameApplet.updater.map.setup();
 			state = State.WAIT;
 			break;
 		case WAIT:
 			break;
 		case ENTITIES:// spawn entity-setup
-			MapHandler.setupEntities(ref.updater.map.mapData);
+			MapHandler.setupEntities(GameApplet.updater.map.mapData);
 			state = State.END;
 			break;
 		case END:
@@ -63,7 +63,7 @@ public class MultiplayerLoader extends Loader {
 			break;
 		case ERROR:
 			System.out.println("error");
-			ref.app.stop();
+			GameApplet.app.stop();
 			break;
 		default:
 			break;
@@ -77,7 +77,7 @@ public class MultiplayerLoader extends Loader {
 
 	@Override
 	public void tryStartGame() {
-		if (state == State.WAIT && ref.updater.arePlayerReady()) {
+		if (state == State.WAIT && GameApplet.updater.arePlayerReady()) {
 			state = State.ENTITIES;
 		} else if (app.mode == Mode.GAME) {
 			app.serverHandler.send(Coms.START_GAME+"");
@@ -86,7 +86,7 @@ public class MultiplayerLoader extends Loader {
 
 	private void sendRFInfo() {
 		if (Updater.resfreeze != null) {
-			ref.preGame.write("GAME", "resfreeze in " + (Updater.resfreeze.cooldown / 60.0 / 1000.0));
+			GameApplet.preGame.write("GAME", "resfreeze in " + (Updater.resfreeze.cooldown / 60.0 / 1000.0));
 		}
 	}
 }

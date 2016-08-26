@@ -9,26 +9,27 @@ import main.preGame.MainPreGame.GameSettings;
 import shared.Player;
 import shared.Updater;
 import shared.User;
-import shared.ref;
 
 public class GameUpdater extends Updater {
 	// FIXME einheiten vibrieren
 
 	public Input input;
+	private GameApplet app;
 
-	public GameUpdater() {
-		neutral = Player.createNeutralPlayer();
-		input = new Input();
-		map = new Map(ref.preGame.map);
+	public GameUpdater(GameApplet app) {
+		this.app = app;
+		neutral = Player.createNeutralPlayer(app);
+		input = new Input(app);
+		map = new Map(app, app.preGameInfo.map);
 
-		for (String key : ref.preGame.users.keySet()) {
-			User user = ref.preGame.users.get(key);
-			Player p = Player.createPlayer(user);
+		for (String key : app.preGame.users.keySet()) {
+			User user = app.preGame.users.get(key);
+			Player p = Player.createPlayer(user, app);
 			if (p.getUser().ip == ClientHandler.identification) {
-				p.color = ref.app.color(0, 255, 100);
-				ref.player = p;
+				p.color = app.color(0, 255, 100);
+				app.player = p;
 			} else
-				p.color = ref.app.color(200, 0, 0);
+				p.color = app.color(200, 0, 0);
 			players.put(key, p);
 		}
 	}
@@ -70,7 +71,7 @@ public class GameUpdater extends Updater {
 				}
 			}
 			// sortierfunktion
-			Collections.sort(ref.player.visibleEntities, new EntityHeightComparator());
+			Collections.sort(app.player.visibleEntities, new EntityHeightComparator());
 			map.mapCodeUpdate();
 			for (GameObject e : gameObjects) {
 				e.updateAnimation();
@@ -86,11 +87,6 @@ public class GameUpdater extends Updater {
 	}
 
 	private void updateAIs() {
-		if (GameSettings.againstAI) {
-			for (String key : players.keySet()) {
-				Player p = players.get(key);
-			}
-		}
 	}
 
 	@Override
@@ -100,7 +96,7 @@ public class GameUpdater extends Updater {
 
 	@Override
 	public void startPause() {
-		HUD.menue = new IngameMenu();
+		HUD.menue = new IngameMenu(app);
 	}
 
 	@Override

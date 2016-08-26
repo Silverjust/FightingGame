@@ -1,9 +1,9 @@
 package gameStructure;
 
+import game.GameApplet;
 import main.appdata.ProfileHandler;
 import shared.Coms;
 import shared.Helper.Timer;
-import shared.ref;
 
 public abstract class MainBuilding extends Building implements Commander, Coms {
 	protected static final int RADIUS = 27;
@@ -21,7 +21,7 @@ public abstract class MainBuilding extends Building implements Commander, Coms {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		ref.updater.send(GAMEEND + " lost " + player.getUser().ip + " " + ProfileHandler.getRate());
+		GameApplet.updater.send(GAMEEND + " lost " + player.getUser().ip + " " + ProfileHandler.getRate());
 	}
 
 	@Override

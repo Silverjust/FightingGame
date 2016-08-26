@@ -1,11 +1,11 @@
 package gameStructure;
 
 import game.AimHandler;
+import game.GameApplet;
 import game.ImageHandler;
 import game.aim.BuildAim;
 import processing.core.PGraphics;
 import processing.core.PImage;
-import shared.ref;
 
 public abstract class Building extends GameObject {
 
@@ -30,16 +30,16 @@ public abstract class Building extends GameObject {
 	public void renderUnder() {
 		if (this instanceof Trainer && isAlive()) {
 			Trainer t = (Trainer) this;
-			ref.app.stroke(player.color);
-			ref.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(t.getXTarget()), yToGrid(t.getYTarget()));
-			ref.app.stroke(0);
+			GameApplet.app.stroke(player.color);
+			GameApplet.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(t.getXTarget()), yToGrid(t.getYTarget()));
+			GameApplet.app.stroke(0);
 		}
 		if (this instanceof Commander && isAlive() && AimHandler.getAim() instanceof BuildAim) {
 			Commander c = (Commander) this;
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, selectedImg, xToGrid(getX()), yToGrid(getY()), c.commandRange() * 2,
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, selectedImg, xToGrid(getX()), yToGrid(getY()), c.commandRange() * 2,
 					c.commandRange());
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 	/*

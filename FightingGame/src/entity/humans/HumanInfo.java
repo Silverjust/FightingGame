@@ -1,11 +1,11 @@
 package entity.humans;
 
+import entity.ActivesGrid;
+import entity.ActivesGridHandler;
 import entity.neutral.ArcanumMine;
 import entity.neutral.KeritMine;
 import entity.neutral.PaxDrillTower;
 import entity.neutral.PrunamHarvester;
-import game.ActivesGrid;
-import game.ActivesGridHandler;
 import game.aim.MineAim.BuildMineActive;
 import gameStructure.Building;
 import gameStructure.Commander;

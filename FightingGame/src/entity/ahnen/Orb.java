@@ -1,5 +1,6 @@
 package entity.ahnen;
 
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -10,7 +11,6 @@ import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PApplet;
 import processing.core.PImage;
-import shared.ref;
 
 public class Orb extends Unit implements Attacker {
 
@@ -90,7 +90,7 @@ public class Orb extends Unit implements Attacker {
 	public void onSpawn(boolean isServer) {
 		if (isServer) {
 			GameObject e;
-			e = ref.updater.getNamedObjects().get(parent);
+			e = GameApplet.updater.getNamedObjects().get(parent);
 			e.sendAnimation("spawned " + number);
 		}
 	}
@@ -136,7 +136,7 @@ public class Orb extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		ref.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameApplet.updater.send("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 	}
 
@@ -182,12 +182,12 @@ public class Orb extends Unit implements Attacker {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 

@@ -5,7 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.naming.NoInitialContextException;
 
+import game.GameApplet;
 import game.HUD;
+import game.MainLoader;
 import game.endGameMenu;
 import gameStructure.Entity;
 import gameStructure.GameObject;
@@ -13,7 +15,6 @@ import gameStructure.Unit;
 import gameStructure.baseBuffs.Buff;
 import main.ClientHandler;
 import main.MainApp;
-import main.MainLoader;
 import main.appdata.ProfileHandler;
 import main.preGame.MainPreGame;
 import processing.core.PApplet;
@@ -31,7 +32,7 @@ public class ComHandler implements Coms {
 	}
 
 	public static void setup() {
-		contentListHandler = ((MainApp) ref.app).contentListHandler;
+		contentListHandler = ((MainApp) GameApplet.app).contentListHandler;
 	}
 
 	@SuppressWarnings("unused")
@@ -128,73 +129,73 @@ public class ComHandler implements Coms {
 				}
 				break;
 			case SAY:
-				ref.preGame.write(c[1], c);
+				GameApplet.preGame.write(c[1], c);
 				break;
 
 			// before game
 			case IDENTIFY:
 				if (c[1].equals("reconnect")) {
-					if (((MainApp) ref.app).mode == Mode.HAUPTMENUE) {
-						while (((MainPreGame) ref.preGame).display == null) {
+					if (((MainApp) GameApplet.app).mode == Mode.HAUPTMENUE) {
+						while (((MainPreGame) GameApplet.preGame).display == null) {
 						}
-						ref.app.delay(10);
-						((MainPreGame) ref.preGame).display.dispose();
-						ref.loader = new MainLoader();
+						GameApplet.app.delay(10);
+						((MainPreGame) GameApplet.preGame).display.dispose();
+						GameApplet.loader = new MainLoader();
 						System.out.println("reconnect");
-						((MainLoader) ref.loader).isReconnectLoad = true;
-						((MainApp) ref.app).mode = Mode.LADESCREEN;
+						((MainLoader) GameApplet.loader).isReconnectLoad = true;
+						((MainApp) GameApplet.app).mode = Mode.LADESCREEN;
 					} else {// other player identify
 						ClientHandler.send(
-								IDENTIFYING + S + ClientHandler.identification + S + ref.preGame.getUser("").name);
+								IDENTIFYING + S + ClientHandler.identification + S + GameApplet.preGame.getUser("").name);
 					}
 				} else {
 					if (c[1].equals("server")) {
-						((MainApp) ref.app).mode = Mode.PREGAME;
+						((MainApp) GameApplet.app).mode = Mode.PREGAME;
 					}
-					System.out.println("identifying " + ref.preGame.getUser("").name);
+					System.out.println("identifying " + GameApplet.preGame.getUser("").name);
 					ClientHandler.send(IDENTIFYING + " " + ClientHandler.identification + S
-							+ ref.preGame.getUser("").name + S + VersionControle.version);
-					if (ref.preGame.getUser("").nation != null)
+							+ GameApplet.preGame.getUser("").name + S + VersionControle.version);
+					if (GameApplet.preGame.getUser("").nation != null)
 						ClientHandler.send(SET_NATION + S + ClientHandler.identification + S
-								+ ref.preGame.getUser("").nation.toString());
-					if (ref.preGame.map != null)
-						ClientHandler.send(SET_MAP + S + ClientHandler.identification + S + ref.preGame.map);
+								+ GameApplet.preGame.getUser("").nation.toString());
+					if (GameApplet.preGame.map != null)
+						ClientHandler.send(SET_MAP + S + ClientHandler.identification + S + GameApplet.preGame.map);
 					// TODO send color
 					// nur an clienthandler
 
 				}
 				break;
 			case IDENTIFYING:
-				ref.preGame.addPlayer(c[1], c[2]);
+				GameApplet.preGame.addPlayer(c[1], c[2]);
 				if (c.length > 3 && c[3] != null && !c[3].equals(VersionControle.version)) {
 					System.err.println("player " + c[2] + " has different version than Server " + c[3] + " "
 							+ VersionControle.version + " (VersionCombiner.java:11)");
-					ref.preGame.write("WARNING", "player " + c[2] + " has different version than Server " + c[3] + " "
+					GameApplet.preGame.write("WARNING", "player " + c[2] + " has different version than Server " + c[3] + " "
 							+ VersionControle.version + " (VersionCombiner.java:11)");
 				}
 				break;
 			case SET_NATION:
 				// System.out.println(c[2]);
-				ref.preGame.users.get(c[1]).nation = Nation.fromString(c[2]);
+				GameApplet.preGame.users.get(c[1]).nation = Nation.fromString(c[2]);
 				break;
 			case SET_MAP:
-				ref.preGame.setMap(c[2]);
+				GameApplet.preGame.setMap(c[2]);
 				break;
 			case LOAD:
-				ref.preGame.startLoading();
+				GameApplet.preGame.startLoading();
 				break;
 			case RECONNECT:
 				((ServerUpdater) updater).reconnect();
 				break;
 			case READY:
 				// System.out.println(ref.preGame.player);
-				ref.preGame.users.get(c[1]).isReady = true;
-				ref.loader.tryStartGame();
+				GameApplet.preGame.users.get(c[1]).isReady = true;
+				GameApplet.loader.tryStartGame();
 				break;
 			case START_GAME:
 				if (Updater.resfreeze != null)
 					Updater.resfreeze.startCooldown();
-				ref.loader.startGame();
+				GameApplet.loader.startGame();
 				break;
 			case PAUSE:
 				if (Boolean.valueOf(c[1])) {
@@ -208,9 +209,9 @@ public class ComHandler implements Coms {
 			case GAMEEND:
 				boolean finished = updater.map.mapCode.handleGameEnd(c);
 				if (finished) {
-					if (ref.app instanceof ServerApp) {
+					if (GameApplet.app instanceof ServerApp) {
 						Protocol.createFile();
-					} else if (ref.player.gameState != GameState.PLAY) {
+					} else if (GameApplet.player.gameState != GameState.PLAY) {
 						HUD.menue = new endGameMenu();
 						float f = Float.parseFloat(c[3]);
 						ProfileHandler.gameEndCalculations(f);

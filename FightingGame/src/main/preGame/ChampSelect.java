@@ -2,11 +2,11 @@ package main.preGame;
 
 import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
+import game.GameApplet;
 import main.ClientHandler;
 import main.MainApp;
 import shared.Mode;
 import shared.Nation;
-import shared.ref;
 
 public class ChampSelect {
 	public GGameButton[] nationButtons;
@@ -15,14 +15,14 @@ public class ChampSelect {
 	public ChampSelect(PreGameDisplay display) {
 		this.nationButtons = new GGameButton[5];
 		for (int i = 0; i < nationButtons.length; i++) {
-			nationButtons[i] = new GGameButton(ref.app, 200 + 210 * i, 100, 200, 500, getNationImages(i));// change
+			nationButtons[i] = new GGameButton(GameApplet.app, 200 + 210 * i, 100, 200, 500, getNationImages(i));// change
 			// buttons
 			nationButtons[i].addEventHandler(display, "handleSelectNation");
 		}
 	}
 
 	public void handleSelectNation(GGameButton button, GEvent event) {
-		if (event == GEvent.PRESSED && ((MainApp) ref.app).mode == Mode.PREGAME) {
+		if (event == GEvent.PRESSED && ((MainApp) GameApplet.app).mode == Mode.PREGAME) {
 			// System.out.println(((MainApp) ref.app).mode);
 			for (int i = 0; i < nationButtons.length; i++) {
 				// System.out.println(nationButtons[i] == button);
@@ -30,7 +30,7 @@ public class ChampSelect {
 					nationButtons[i].setSwitch(true);
 					nation = Nation.fromNumber(i);
 					ClientHandler
-							.send("<setNation " + ref.preGame.getUser("").ip + " " + Nation.fromNumber(i).toString());
+							.send("<setNation " + GameApplet.preGame.getUser("").ip + " " + Nation.fromNumber(i).toString());
 				} else {
 					nationButtons[i].setSwitch(false);
 				}

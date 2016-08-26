@@ -2,9 +2,9 @@ package entity.ahnen;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import shared.ref;
 import game.AimHandler;
 import game.AimHandler.Cursor;
+import game.GameApplet;
 import game.ImageHandler;
 import game.aim.CustomAim;
 import gameStructure.Spell;
@@ -167,14 +167,14 @@ public class Witcher extends Unit implements Attacker, Shooter {
 	@Override
 	public void calculateDamage(Attack a) {
 		if (a == basicAttack) {
-			ref.updater.send("<hit " + a.getTarget().number + " " + a.damage
+			GameApplet.updater.send("<hit " + a.getTarget().number + " " + a.damage
 					* 2 + " " + a.pirce);
 			// SoundHandler.startIngameSound(HUD.hm, x, y);
 		} else {
-			for (GameObject e : ref.updater.gameObjects) {
+			for (GameObject e : GameApplet.updater.gameObjects) {
 				if (e != null & e.isEnemyTo(this)
 						&& e.isInRange(burstX, burstY, e.getRadius() + burst.range)) {
-					ref.updater.send("<hit " + e.number + " " + a.damage + " "
+					GameApplet.updater.send("<hit " + e.number + " " + a.damage + " "
 							+ a.pirce);
 				}
 			}
@@ -187,10 +187,10 @@ public class Witcher extends Unit implements Attacker, Shooter {
 		if (!(AimHandler.getAim() instanceof CustomAim))
 			displayBurstArea = false;
 		if (isAlive() && displayBurstArea && burst.isNotOnCooldown()) {
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, selectedImg, xToGrid(getX()),
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, selectedImg, xToGrid(getX()),
 					yToGrid(getY()), basicAttack.range * 2, basicAttack.range);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -213,10 +213,10 @@ public class Witcher extends Unit implements Attacker, Shooter {
 		float x = PApplet.lerp(this.getX(), target.getX(), progress);
 		float y = PApplet.lerp(this.getY() - getHeight(), target.getY() - target.getHeight(),
 				progress);
-		ref.app.fill(50, 255, 0);
-		ref.app.strokeWeight(0);
-		ref.app.ellipse(xToGrid(x), yToGrid(y), 1, 1);
-		ref.app.strokeWeight(1);
+		GameApplet.app.fill(50, 255, 0);
+		GameApplet.app.strokeWeight(0);
+		GameApplet.app.ellipse(xToGrid(x), yToGrid(y), 1, 1);
+		GameApplet.app.strokeWeight(1);
 	}
 
 	@Override
@@ -258,12 +258,12 @@ public class Witcher extends Unit implements Attacker, Shooter {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -313,7 +313,7 @@ public class Witcher extends Unit implements Attacker, Shooter {
 		@Override
 		public void onActivation() {
 			Witcher caster = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (e instanceof Witcher
 						&& (e.getAnimation() == e.stand || e.getAnimation() == ((Unit) e).walk)
 						&& ((Witcher) e).getBurst().isNotOnCooldown()
@@ -334,7 +334,7 @@ public class Witcher extends Unit implements Attacker, Shooter {
 		@Override
 		public void execute(float x, float y) {
 			Witcher caster = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (e instanceof Witcher
 						&& (e.getAnimation() == e.stand || e.getAnimation() == ((Unit) e).walk)
 						&& ((Witcher) e).getBurst().isNotOnCooldown()
@@ -364,9 +364,9 @@ public class Witcher extends Unit implements Attacker, Shooter {
 
 		@Override
 		public void onActivation() {
-			for (GameObject e : ref.updater.gameObjects) {
+			for (GameObject e : GameApplet.updater.gameObjects) {
 				if (e instanceof Leuchte && e.getAnimation() == e.stand) {
-					for (GameObject e2 : ref.updater.selected) {
+					for (GameObject e2 : GameApplet.updater.selected) {
 						if (e2 instanceof Witcher
 								&& e.isInRange(e2.getX(), e2.getY(),
 										((Witcher) e2).upgradeRange)) {

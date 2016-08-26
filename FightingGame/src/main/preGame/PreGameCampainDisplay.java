@@ -2,7 +2,7 @@ package main.preGame;
 
 import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
-import shared.ref;
+import game.GameApplet;
 
 public class PreGameCampainDisplay extends PreGameDisplay {
 	public PreGameCampainDisplay() {
@@ -13,7 +13,7 @@ public class PreGameCampainDisplay extends PreGameDisplay {
 	@Override
 	public void handleSelectNation(GGameButton button, GEvent event) {
 		champSelect.handleSelectNation(button, event);
-		ref.preGame.getUser("").nation = champSelect.nation;
+		GameApplet.preGame.getUser("").nation = champSelect.nation;
 		mapSelect.setupMapSelection();
 	}
 

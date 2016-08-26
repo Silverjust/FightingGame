@@ -2,8 +2,8 @@ package entity.ahnen;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import shared.ref;
 import entity.ahnen.Leuchte.Upgrade;
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -128,7 +128,7 @@ public class Astrator extends Unit implements Shooter, Buffing {
 	@Override
 	public void hit(int damage, byte pirce) {
 		boolean isBuffed = false;
-		for (GameObject e : ref.updater.gameObjects) {
+		for (GameObject e : GameApplet.updater.gameObjects) {
 			if (e instanceof Leuchte && ((Leuchte) e).upgrade == Upgrade.BUFF
 					&& isInRange(e.getX(), e.getY(), ((Leuchte) e).getBasicAttack().range))
 				isBuffed = true;
@@ -151,7 +151,7 @@ public class Astrator extends Unit implements Shooter, Buffing {
 	@Override
 	public void calculateDamage(Attack a) {
 		GameObject target = a.getTarget();
-		ref.updater.send(HIT + " " + target.number + " " + a.damage + " " + a.pirce);
+		GameApplet.updater.send(HIT + " " + target.number + " " + a.damage + " " + a.pirce);
 	}
 
 	@Override
@@ -166,10 +166,10 @@ public class Astrator extends Unit implements Shooter, Buffing {
 	public void drawShot(GameObject target, float progress) {
 		float x = PApplet.lerp(this.getX(), target.getX(), progress);
 		float y = PApplet.lerp(this.getY() - getHeight(), target.getY() - target.getHeight(), progress);
-		ref.app.fill(50, 0, 255);
-		ref.app.strokeWeight(0);
-		ref.app.ellipse(xToGrid(x), yToGrid(y), 1, 1);
-		ref.app.strokeWeight(1);
+		GameApplet.app.fill(50, 0, 255);
+		GameApplet.app.strokeWeight(0);
+		GameApplet.app.ellipse(xToGrid(x), yToGrid(y), 1, 1);
+		GameApplet.app.strokeWeight(1);
 	}
 
 	@Override
@@ -212,12 +212,12 @@ public class Astrator extends Unit implements Shooter, Buffing {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 

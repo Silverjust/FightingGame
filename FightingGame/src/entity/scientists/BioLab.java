@@ -2,10 +2,10 @@ package entity.scientists;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import shared.ref;
 import game.AimHandler;
 import game.ImageHandler;
 import game.AimHandler.Cursor;
+import game.GameApplet;
 import game.aim.Aim;
 import gameStructure.Spell;
 import gameStructure.actives.MultiCDActive;
@@ -64,10 +64,10 @@ public class BioLab extends Lab {
 		super.renderUnder();
 		if (isAlive() && AimHandler.getAim() instanceof SwampAim
 				&& swampify.isNotOnCooldown()) {
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, selectedImg, xToGrid(getX()),
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, selectedImg, xToGrid(getX()),
 					yToGrid(getY()), equipRange * 2, equipRange);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -105,12 +105,12 @@ public class BioLab extends Lab {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -162,7 +162,7 @@ public class BioLab extends Lab {
 
 		@Override
 		public void onActivation() {
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (getClazz().isAssignableFrom(e.getClass())) {
 					builder = e;
 				}
@@ -203,7 +203,7 @@ public class BioLab extends Lab {
 		@Override
 		public void execute(float x, float y) {
 			if (canPlaceAt(x, y)) {
-				ref.updater.send("<spawn " + Swamp.class.getSimpleName() + " "
+				GameApplet.updater.send("<spawn " + Swamp.class.getSimpleName() + " "
 						+ builder.player.getUser().ip + " " + x + " " + y);
 				active.startCooldown();
 				((BioLab) builder).getSwampify().startCooldown();
@@ -212,7 +212,7 @@ public class BioLab extends Lab {
 
 		protected boolean canPlaceAt(float x, float y) {
 			boolean inLabRange = false;
-			for (GameObject e : ref.updater.gameObjects) {
+			for (GameObject e : GameApplet.updater.gameObjects) {
 				if (e instanceof BioLab && e.player == builder.player
 						&& e.isInRange(x, y, ((BioLab) e).equipRange)
 						&& ((BioLab) e).swampify.isNotOnCooldown()) {

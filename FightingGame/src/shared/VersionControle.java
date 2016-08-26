@@ -2,6 +2,7 @@ package shared;
 
 import java.util.Set;
 
+import game.GameApplet;
 import main.appdata.ProfileHandler;
 import processing.core.PApplet;
 import processing.data.JSONArray;
@@ -25,7 +26,7 @@ public abstract class VersionControle {
 	}
 
 	public static void versionControle() {
-		String chanegelogVersion = PApplet.splitTokens(ref.app.loadStrings("data/changelog.txt")[0], "-")[0];
+		String chanegelogVersion = PApplet.splitTokens(GameApplet.app.loadStrings("data/changelog.txt")[0], "-")[0];
 		if (!chanegelogVersion.equals(version))
 			System.err.println("changelog has different version than VC " + chanegelogVersion + " " + version
 					+ " (VersionControle.java:11)");
@@ -47,7 +48,7 @@ public abstract class VersionControle {
 			mapData.remove("entities");
 			mapData.setJSONArray("entities", entitys);
 			if (ProfileHandler.isDeveloper())
-				ref.app.saveJSONObject(mapData,
+				GameApplet.app.saveJSONObject(mapData,
 						System.getProperty("user.home").replace("\\", "/") + "/Desktop/" + mapName + ".json");
 		}
 	}

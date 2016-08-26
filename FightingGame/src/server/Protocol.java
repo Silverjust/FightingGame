@@ -4,6 +4,7 @@ import main.ClientHandler;
 
 import java.util.HashMap;
 
+import game.GameApplet;
 import gameStructure.GameObject;
 import processing.core.PApplet;
 import processing.data.JSONArray;
@@ -13,7 +14,6 @@ import shared.Mode;
 import shared.Player;
 import shared.Updater;
 import shared.VersionControle;
-import shared.ref;
 import shared.Updater.GameState;
 
 public class Protocol {
@@ -24,8 +24,8 @@ public class Protocol {
 
 	public static void collectInfos() {
 		try {
-			if (((ServerApp) ref.app).mode == Mode.GAME) {
-				for (GameObject e : ref.updater.gameObjects) {
+			if (((ServerApp) GameApplet.app).mode == Mode.GAME) {
+				for (GameObject e : GameApplet.updater.gameObjects) {
 					if (e.getClass().equals(clazz)) {
 						addInfo("0 " + e.number + " :" + e.getAnimation().toString());
 						addInfo("0 " + e.number + " :" + e.player.kerit);
@@ -41,7 +41,7 @@ public class Protocol {
 		try {
 			String[] c = PApplet.splitTokens(s, " " + ClientHandler.endSymbol);
 			if (c[0].equals(Coms.EXECUTE)
-					&& ref.updater.getNamedObjects().get(Integer.parseInt(c[1])).getClass().equals(clazz))
+					&& GameApplet.updater.getNamedObjects().get(Integer.parseInt(c[1])).getClass().equals(clazz))
 				addInfo(info + s);
 
 			if (c[0].equals("<give") && Integer.parseInt(c[3]) < 0)
@@ -64,7 +64,7 @@ public class Protocol {
 		String file = System.getProperty("user.home").replace("\\", "/") + "/Desktop/EE_stats/" + name + ".json";
 		JSONArray array;
 		try {
-			array = ref.app.loadJSONArray(file);
+			array = GameApplet.app.loadJSONArray(file);
 		} catch (Exception e) {
 			System.out.println("creating new statistics");
 			array = new JSONArray();
@@ -73,9 +73,9 @@ public class Protocol {
 		if (Updater.resfreeze != null)
 			game.setFloat("time", Updater.resfreeze.cooldown / 1000.0f / 60.0f);
 		int i = 0;
-		for (String key : ref.updater.players.keySet()) {
+		for (String key : GameApplet.updater.players.keySet()) {
 			i++;
-			Player p = ref.updater.players.get(key);
+			Player p = GameApplet.updater.players.get(key);
 			JSONObject player = new JSONObject();
 			player.setString("name", p.getUser().name);
 			player.setString("nation", p.getUser().nation.toString());
@@ -88,7 +88,7 @@ public class Protocol {
 				String[] c = PApplet.splitTokens(line, " ");
 				int n = 4;
 				// PApplet.printArray(line);
-				if (c[n].equals("<spawn") && ref.updater.players.get(c[2 + n]) == p) {
+				if (c[n].equals("<spawn") && GameApplet.updater.players.get(c[2 + n]) == p) {
 					if (countedUnits.get(c[1 + n]) == null)
 						countedUnits.put(c[1 + n], 1);
 					else
@@ -107,7 +107,7 @@ public class Protocol {
 			game.setJSONObject(i + "", player);
 		}
 		array.append(game);
-		ref.app.saveJSONArray(array, file);
+		GameApplet.app.saveJSONArray(array, file);
 		System.out.println("saved as " + file);
 	}
 

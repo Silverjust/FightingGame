@@ -7,6 +7,7 @@ import java.util.HashMap;
 import champs.ArmorShred;
 import champs.TestProjectile;
 import champs.Ticul;
+import game.GameApplet;
 import gameStructure.GameObject;
 import gameStructure.baseBuffs.Buff;
 import gameStructure.baseBuffs.Root;
@@ -63,7 +64,7 @@ public class ContentListManager {
 				buffMap.put(b.getInternName(), b.getClass());
 		}
 
-		contentList = ref.app.loadJSONObject(path);
+		contentList = GameApplet.app.loadJSONObject(path);
 		campainEntityList = contentList.getJSONObject("campainEntities");
 		for (Object o : campainEntityList.keys()) {
 			entityList.setString((String) o, campainEntityList.getString((String) o));
@@ -109,9 +110,9 @@ public class ContentListManager {
 
 	public static JSONObject getModeMaps() {
 		if (GameSettings.campain) {
-			if (ref.preGame.getUser("").nation != null && ref.preGame.getUser("").nation != Nation.NEUTRAL) {
+			if (GameApplet.preGame.getUser("").nation != null && GameApplet.preGame.getUser("").nation != Nation.NEUTRAL) {
 				return contentList.getJSONObject("maps").getJSONObject("campain")
-						.getJSONObject(ref.preGame.getUser("").nation.toString());
+						.getJSONObject(GameApplet.preGame.getUser("").nation.toString());
 			} else {
 				return new JSONObject();
 			}

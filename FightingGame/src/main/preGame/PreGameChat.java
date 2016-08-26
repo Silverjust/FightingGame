@@ -4,6 +4,7 @@ import g4p_controls.G4P;
 import g4p_controls.GEvent;
 import g4p_controls.GTextArea;
 import g4p_controls.GTextField;
+import game.GameApplet;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import processing.core.PConstants;
 import main.ClientHandler;
 import shared.CommandHandler;
 import shared.Helper;
-import shared.ref;
 
 public class PreGameChat {
 
@@ -23,12 +23,12 @@ public class PreGameChat {
 	//boolean justOpened;
 
 	PreGameChat() {
-		chatLine = new GTextField(ref.app, 10, ref.app.height - 30, 500, 20);
+		chatLine = new GTextField(GameApplet.app, 10, GameApplet.app.height - 30, 500, 20);
 		chatLine.setPromptText("chat");
 		chatLine.setFont(new Font("PLAIN", Font.BOLD, 15));
 		chatLine.addEventHandler(this, "chatEvents");
 
-		chatHistory = new GTextArea(ref.app, 10, ref.app.height - 250, 500, 200,
+		chatHistory = new GTextArea(GameApplet.app, 10, GameApplet.app.height - 250, 500, 200,
 				G4P.SCROLLBARS_VERTICAL_ONLY | G4P.SCROLLBARS_AUTOHIDE);
 		chatHistory.setTextEditEnabled(false);
 		chatHistory.setOpaque(false);
@@ -37,11 +37,11 @@ public class PreGameChat {
 	}
 
 	public void update() {
-		if (ref.app.keyCode == PConstants.ENTER) {
+		if (GameApplet.app.keyCode == PConstants.ENTER) {
 			if (!chatLine.isVisible()) {
 				show();
 			}
-		} else if (ref.app.keyCode == PConstants.BACKSPACE) {
+		} else if (GameApplet.app.keyCode == PConstants.BACKSPACE) {
 			String s = Helper.secureInput(chatLine.getText());
 			System.out.println("Chat.update()\n" + chatLine.getText() + "\n" + s);
 
@@ -85,10 +85,10 @@ public class PreGameChat {
 				}*/
 			} else {
 				if (s.length() > 0 && s.charAt(0) == '/') {
-					println(ref.preGame.getUser("").name, s);
+					println(GameApplet.preGame.getUser("").name, s);
 					CommandHandler.executeCommands(s);
 				} else {
-					ClientHandler.send("<say " + ref.preGame.getUser("").ip + " " + s);
+					ClientHandler.send("<say " + GameApplet.preGame.getUser("").ip + " " + s);
 				}
 			}
 			textfield.setText("");

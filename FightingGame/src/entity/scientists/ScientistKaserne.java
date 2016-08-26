@@ -2,7 +2,7 @@ package entity.scientists;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import shared.ref;
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Spell;
 import gameStructure.Attacker;
@@ -84,13 +84,13 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 	public void renderGround() {
 		drawSelected();
 		getAnimation().draw(this, (byte) 0, getCurrentFrame());
-		for (GameObject e : ref.player.visibleEntities) {
+		for (GameObject e : GameApplet.player.visibleEntities) {
 			if (e instanceof Lab && e.isAllyTo(e) && e.isAlive()
 					&& e.isInRange(getX(), getY(), commandingRange)) {
-				ref.app.stroke(100);
-				ref.app.line(xToGrid(getX()), yToGrid(getY() - getySize()), e.getX(),
+				GameApplet.app.stroke(100);
+				GameApplet.app.line(xToGrid(getX()), yToGrid(getY() - getySize()), e.getX(),
 						(e.getY() - e.flyHeight()) / 2);
-				ref.app.stroke(0);
+				GameApplet.app.stroke(0);
 			}
 		}
 	}
@@ -163,12 +163,12 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 
@@ -225,9 +225,9 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 		public void onActivation() {
 			ScientistKaserne trainer = null;
 			GameObject trained = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (e instanceof ScientistKaserne && e.isAlive()) {
-					for (GameObject e2 : ref.player.visibleEntities) {
+					for (GameObject e2 : GameApplet.player.visibleEntities) {
 						if (e2 instanceof Lab
 								&& e2.getClass().equals(lab)
 								&& e2.isAllyTo(e)
@@ -241,7 +241,7 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 				}
 			}
 			if (trainer != null) {
-				for (GameObject e : ref.player.visibleEntities) {
+				for (GameObject e : GameApplet.player.visibleEntities) {
 					if (e instanceof GuineaPig
 							&& e.isAlive()
 							&& e.isAllyTo(trainer)
@@ -290,10 +290,10 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 
 		public void onActivation() {
 			GameObject trainer = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (clazz.isAssignableFrom(e.getClass())
 						&& e.getAnimation() == e.stand) {
-					for (GameObject e2 : ref.player.visibleEntities) {
+					for (GameObject e2 : GameApplet.player.visibleEntities) {
 						if (e2.player == e.player
 								&& e2.getClass().equals(lab)
 								&& e.isInRange(e2.getX(), e2.getY(), e.getRadius()
@@ -323,9 +323,9 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 		@Override
 		public boolean isActivateable() {
 			boolean isActivateable = false;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (clazz.isAssignableFrom(e.getClass())) {
-					for (GameObject e2 : ref.player.visibleEntities) {
+					for (GameObject e2 : GameApplet.player.visibleEntities) {
 						if (e2.player == e.player
 								&& e2.getClass().equals(lab)
 								&& e.isInRange(e2.getX(), e2.getY(), e.getRadius()

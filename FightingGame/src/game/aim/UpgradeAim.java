@@ -1,8 +1,8 @@
 package game.aim;
 
+import game.GameApplet;
 import gameStructure.Building;
 import gameStructure.GameObject;
-import shared.ref;
 
 public class UpgradeAim extends BuildAim {
 	Class<? extends GameObject> oldBuildable;
@@ -24,8 +24,8 @@ public class UpgradeAim extends BuildAim {
 		x = Building.xToGrid(x);
 		y = Building.xToGrid(y);
 		if (canPlaceAt(x, y)) {
-			ref.updater.send("<remove " + replaced.number);
-			ref.updater.send("<spawn " + buildable.getClass().getSimpleName()
+			GameApplet.updater.send("<remove " + replaced.number);
+			GameApplet.updater.send("<spawn " + buildable.getClass().getSimpleName()
 					+ " " + builder.player.getUser().ip + " " + x + " " + y);
 			((GameObject) buildable).buyFrom(builder.player);
 		}
@@ -35,7 +35,7 @@ public class UpgradeAim extends BuildAim {
 	protected boolean canPlaceAt(float x, float y) {
 		boolean rightPlace = false;
 		boolean inCommanderRange = false;
-		for (GameObject e : ref.updater.gameObjects) {
+		for (GameObject e : GameApplet.updater.gameObjects) {
 			if (e.getClass().equals(oldBuildable) && e.getX() == x && e.getY() == y) {
 				replaced = (Building) e;
 				rightPlace = true;

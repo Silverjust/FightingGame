@@ -2,27 +2,30 @@ package game;
 
 import java.util.ArrayList;
 
-import main.FrameInfo;
-import processing.core.PApplet;
-import shared.Helper;
-import shared.ref;
 import ddf.minim.AudioPlayer;
 import ddf.minim.AudioSample;
 import ddf.minim.AudioSnippet;
+import processing.core.PApplet;
+import shared.Helper;
 
 @SuppressWarnings("deprecation")
 public class SoundHandler {
-	//TODO sound
+	// TODO sound
 	static AudioPlayer player;
 	static AudioSample sample;
 	static ArrayList<IngameSound> ingameSounds = new ArrayList<IngameSound>();
 	static ArrayList<IngameSound> toRemove = new ArrayList<IngameSound>();
+	private GameApplet app;
 
-	/*private void set() {
-		JSMinim
-	}*/
-	
-	public static void update() {
+	/*
+	 * private void set() { JSMinim }
+	 */
+
+	public SoundHandler(GameApplet app) {
+		this.app = app;
+	}
+
+	public void update() {
 		for (IngameSound sound : ingameSounds) {
 			if (sound.sample.isPlaying())
 				sound.calcVolume();
@@ -37,11 +40,11 @@ public class SoundHandler {
 		}
 	}
 
-	static public void startIngameSound(AudioSnippet sample, float x, float y) {
+	public void startIngameSound(AudioSnippet sample, float x, float y) {
 		ingameSounds.add(new IngameSound(sample, x, y));
 	}
 
-	static class IngameSound {
+	class IngameSound {
 		AudioSnippet sample;
 		float x;
 		float y;
@@ -55,16 +58,12 @@ public class SoundHandler {
 		}
 
 		private void calcVolume() {
-			float dist = PApplet.dist(x, y,
-					Helper.gridToX(FrameInfo.width / 2),
-					Helper.gridToY(FrameInfo.height / 2 - HUD.height / 2));
-			float f = PApplet.map(dist, 0, PApplet.dist(0, 0,
-					ref.updater.map.width, ref.updater.map.height), 0, -50);
-			System.out.println(dist + "= " + x + " " + y + " "
-					+ Helper.gridToX(FrameInfo.width / 2) + " "
-					+ Helper.gridToY(FrameInfo.height / 2 - HUD.height / 2));
+			float dist = PApplet.dist(x, y, Helper.gridToX(app.getxCenter()),
+					Helper.gridToY(app.getyCenter() - HUD.height / 2));
+			float f = PApplet.map(dist, 0, PApplet.dist(0, 0, app.updater.map.width, app.updater.map.height), 0, -50);
+			System.out.println(dist + "= " + x + " " + y + " " + Helper.gridToX(app.getxCenter()) + " "
+					+ Helper.gridToY(app.getyCenter() - HUD.height / 2));
 			sample.setGain(f);
 		}
 	}
 }
-

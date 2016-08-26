@@ -7,17 +7,18 @@ import g4p_controls.GGameButton;
 import gameStructure.Champion;
 import gameStructure.Spell;
 import main.appdata.SettingHandler;
-import shared.ref;
 
 public class PlayerInterface {
 	Champion champ;
 	private ArrayList<Spell> spells = new ArrayList<Spell>();
 	public int x = 400;
 	public int y;
+	private GameApplet app;
 
-	public PlayerInterface() {
-		y = ref.app.height - HUD.height + 5;
-		champ = ref.player.champion;
+	public PlayerInterface(GameApplet app) {
+		this.app = app;
+		y = app.height - HUD.height + 5;
+		champ = app.player.champion;
 		champ.setupSpells(this);
 	}
 
@@ -61,7 +62,7 @@ public class PlayerInterface {
 	}
 
 	public static String getKeyFromPos(int pos) {
-		System.out.println("PlayerInterface.getKeyFromPos()"+SettingHandler.setting);
+		System.out.println("PlayerInterface.getKeyFromPos()" + SettingHandler.setting);
 		char[] k = SettingHandler.setting.baseShortcuts;
 		if (pos == 0) {
 			return " ";

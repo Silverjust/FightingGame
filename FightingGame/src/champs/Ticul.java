@@ -1,5 +1,7 @@
 package champs;
 
+import game.GameApplet;
+import game.ImageHandler;
 import game.PlayerInterface;
 import gameStructure.Attacker;
 import gameStructure.Champion;
@@ -11,7 +13,6 @@ import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PImage;
 import shared.Helper;
-import shared.ref;
 
 public class Ticul extends Champion implements Attacker {
 	// TODO animations are displayed wrong
@@ -25,12 +26,12 @@ public class Ticul extends Champion implements Attacker {
 
 	MeleeAttack basicAttack;
 
-	public static void loadImages() {
+	public static void loadImages(GameApplet app, ImageHandler imageHandler) {
 		String path = path(new GameObject(null) {
 		});
-		standingImg = game.ImageHandler.load(path, "Ticul", 's', (byte) 8, (byte) 1);
-		walkingImg = game.ImageHandler.load(path, "Ticul", 'w', (byte) 8, (byte) 8);
-		attackImg = game.ImageHandler.load(path, "Ticul", 'b', (byte) 8, (byte) 8);
+		standingImg = imageHandler.load(path, "Ticul", 's', (byte) 8, (byte) 1);
+		walkingImg = imageHandler.load(path, "Ticul", 'w', (byte) 8, (byte) 8);
+		attackImg = imageHandler.load(path, "Ticul", 'b', (byte) 8, (byte) 8);
 	}
 
 	public Ticul(String[] c) {
@@ -76,7 +77,7 @@ public class Ticul extends Champion implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		ref.updater.send("<hit " + basicAttack.getTarget().number + " " + a.damage + " " + a.pirce);
+		player.app.updater.send("<hit " + basicAttack.getTarget().number + " " + a.damage + " " + a.pirce);
 	}
 
 	@Override
@@ -108,7 +109,7 @@ public class Ticul extends Champion implements Attacker {
 		public void onActivation() {
 
 			System.out.println("Ticul.Shot.onActivation()");
-			ref.updater.send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY() + " "
+			player.app.updater.send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY() + " "
 					+ Helper.gridToX(player.app.mouseX) + " " + Helper.gridToY(player.app.mouseY) + " "
 					+ getInternName());
 			startCooldown();
@@ -134,7 +135,7 @@ public class Ticul extends Champion implements Attacker {
 		public void onActivation() {
 
 			System.out.println("Ticul.Shot.onActivation()");
-			ref.updater.send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY() + " "
+			player.app.updater.send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY() + " "
 					+ HOMING + " " + 2 + " " + getInternName());
 			startCooldown();
 		}

@@ -1,9 +1,9 @@
 package main.appdata;
 
+import game.GameApplet;
 import main.preGame.MainPreGame.GameSettings;
 import processing.data.JSONObject;
 import shared.VersionControle;
-import shared.ref;
 import shared.Updater.GameState;
 
 public class ProfileHandler implements appdataInfos {
@@ -15,12 +15,12 @@ public class ProfileHandler implements appdataInfos {
 		newGame = true;
 		JSONObject oldProfile;
 		try {
-			oldProfile = ref.app
+			oldProfile = GameApplet.app
 					.loadJSONObject(appdataInfos.path + "info.json");
 		} catch (Exception e) {
-			ref.app.saveJSONObject(new JSONObject(), appdataInfos.path
+			GameApplet.app.saveJSONObject(new JSONObject(), appdataInfos.path
 					+ "info.json");
-			oldProfile = ref.app
+			oldProfile = GameApplet.app
 					.loadJSONObject(appdataInfos.path + "info.json");
 		}
 		try {
@@ -57,7 +57,7 @@ public class ProfileHandler implements appdataInfos {
 			}
 			VersionControle.versionSystemChange(oldProfile);
 			profile = oldProfile;
-			ref.app.saveJSONObject(profile, appdataInfos.path + "info.json");
+			GameApplet.app.saveJSONObject(profile, appdataInfos.path + "info.json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -69,10 +69,10 @@ public class ProfileHandler implements appdataInfos {
 
 			float rate = profile.getFloat("rate");
 			rate = rate
-					+ (ref.updater.gameState == GameState.WON ? enemyRate
+					+ (GameApplet.updater.gameState == GameState.WON ? enemyRate
 							/ rate : -rate / enemyRate);
 			System.out.println("InfoDocHandler.gameEndCalculations()"
-					+ (ref.updater.gameState == GameState.WON ? enemyRate
+					+ (GameApplet.updater.gameState == GameState.WON ? enemyRate
 							/ rate : -rate / enemyRate) + " " + rate);
 			profile.setFloat("rate", rate);
 
@@ -80,15 +80,15 @@ public class ProfileHandler implements appdataInfos {
 			plays++;
 			profile.setInt("plays", plays);
 
-			if (ref.updater.gameState == GameState.WON) {
+			if (GameApplet.updater.gameState == GameState.WON) {
 				int wins = profile.getInt("wins");
-				int nationWins = profile.getInt(ref.player.getNation().toString()
+				int nationWins = profile.getInt(GameApplet.player.getNation().toString()
 						+ "-wins");
 				wins++;
 				nationWins++;
 
 				profile.setInt("wins", wins);
-				profile.setInt(ref.player.getNation().toString() + "-wins",
+				profile.setInt(GameApplet.player.getNation().toString() + "-wins",
 						nationWins);
 			}
 		}
@@ -97,7 +97,7 @@ public class ProfileHandler implements appdataInfos {
 
 	public static void saveName(String name) {
 		profile.setString("name", name);
-		ref.app.saveJSONObject(profile, appdataInfos.path + "info.json");
+		GameApplet.app.saveJSONObject(profile, appdataInfos.path + "info.json");
 	}
 
 	static public String getName() {
@@ -113,7 +113,7 @@ public class ProfileHandler implements appdataInfos {
 	}
 
 	public static void dispose() {
-		ref.app.saveJSONObject(profile, appdataInfos.path + "info.json");
+		GameApplet.app.saveJSONObject(profile, appdataInfos.path + "info.json");
 		// info = null;
 	}
 

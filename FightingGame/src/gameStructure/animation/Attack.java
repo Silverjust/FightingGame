@@ -1,11 +1,11 @@
 package gameStructure.animation;
 
+import game.GameApplet;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
 import gameStructure.Unit;
 import processing.core.PApplet;
 import processing.core.PImage;
-import shared.ref;
 
 public abstract class Attack extends Ability {
 	public byte range;
@@ -37,7 +37,7 @@ public abstract class Attack extends Ability {
 			Attack a = ((Attacker) attacker).getBasicAttack();
 			if (a.isNotOnCooldown() && !a.isSetup()) {
 				int n = Integer.parseInt(c[3]);
-				GameObject e = ref.updater.getGameObject(n);
+				GameObject e = GameApplet.updater.getGameObject(n);
 				a.setTargetFrom(attacker, e);
 				attacker.setAnimation(a);
 				if (attacker instanceof Unit) {
@@ -47,7 +47,7 @@ public abstract class Attack extends Ability {
 		} else if (c[2].equals("setTarget") && attacker instanceof Attacker) {
 			// Attack a = ((Attacker) attacker).getBasicAttack();
 			int n = Integer.parseInt(c[3]);
-			GameObject e = ref.updater.getGameObject(n);
+			GameObject e = GameApplet.updater.getGameObject(n);
 			attacker.sendAnimation("walk " + e.getX() + " " + e.getY() + " true");
 			// a.setTargetFrom(attacker, e);
 

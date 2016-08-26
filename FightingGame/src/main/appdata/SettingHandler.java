@@ -1,7 +1,7 @@
 package main.appdata;
 
 import g4p_controls.GDropList;
-import shared.ref;
+import game.GameApplet;
 import main.Setting;
 
 public class SettingHandler {
@@ -25,7 +25,7 @@ public class SettingHandler {
 	}
 
 	public SettingHandler() {
-		settingList = new GDropList(ref.app, 200, 200, 100, 400, 5);
+		settingList = new GDropList(GameApplet.app, 200, 200, 100, 400, 5);
 	}
 
 }

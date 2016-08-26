@@ -1,12 +1,12 @@
 package game.aim;
 
 import shared.NationInfo;
-import shared.ref;
 import entity.neutral.Arcanum;
 import entity.neutral.Kerit;
 import entity.neutral.Pax;
 import entity.neutral.Prunam;
 import game.AimHandler;
+import game.GameApplet;
 import gameStructure.Building;
 import gameStructure.GameObject;
 import gameStructure.actives.UpgradeActive;
@@ -22,7 +22,7 @@ public class MineAim extends UpgradeAim {
 	protected boolean canPlaceAt(float x, float y) {
 		boolean rightPlace = false;
 		boolean inCommanderRange = false;
-		for (GameObject e : ref.updater.gameObjects) {
+		for (GameObject e : GameApplet.updater.gameObjects) {
 			if (e.getX() == x && e.getY() == y) {
 				if (e.getClass().equals(oldBuildable)) {
 					replaced = (Building) e;
@@ -77,7 +77,7 @@ public class MineAim extends UpgradeAim {
 		@Override
 		public void onActivation() {
 			GameObject builder = null;
-			for (GameObject e : ref.updater.selected) {
+			for (GameObject e : GameApplet.updater.selected) {
 				if (getClazz().isAssignableFrom(e.getClass())) {
 					builder = e;
 				}

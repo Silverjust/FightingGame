@@ -2,7 +2,7 @@ package entity.humans;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import shared.ref;
+import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -119,7 +119,7 @@ public class Medic extends Unit implements Attacker {
 	@Override
 	public void calculateDamage(Attack a) {
 		isTaged = true;
-		ref.updater.send("<heal " + basicAttack.getTarget().number + " "
+		GameApplet.updater.send("<heal " + basicAttack.getTarget().number + " "
 				+ a.damage);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
@@ -135,9 +135,9 @@ public class Medic extends Unit implements Attacker {
 	public void drawShot() {
 		if (basicAttack.getTarget() != null&&basicAttack.getTarget().isAlive()) {
 			GameObject e = basicAttack.getTarget();
-			ref.app.stroke(0, 255, 0);
-			ref.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(e.getX()), yToGrid(e.getY()));
-			ref.app.stroke(0);
+			GameApplet.app.stroke(0, 255, 0);
+			GameApplet.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(e.getX()), yToGrid(e.getY()));
+			GameApplet.app.stroke(0);
 		}
 	}
 
@@ -176,12 +176,12 @@ public class Medic extends Unit implements Attacker {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			ref.app.fill(0, 150);
-			ref.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			ref.app.tint(player.color);
-			ImageHandler.drawImage(ref.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameApplet.app.fill(0, 150);
+			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameApplet.app.tint(player.color);
+			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			ref.app.tint(255);
+			GameApplet.app.tint(255);
 		}
 	}
 

@@ -1,10 +1,10 @@
 package main;
 
+import game.GameApplet;
 import main.preGame.MainPreGame;
 import main.preGame.MainPreGame.GameSettings;
 import shared.Client;
 import shared.ComHandler;
-import shared.ref;
 
 public class ClientHandler {
 	public static String identification;
@@ -23,7 +23,7 @@ public class ClientHandler {
 			identification = "1";
 		} else {
 			try {
-				client = new Client(ref.app, ip, 5204);
+				client = new Client(GameApplet.app, ip, 5204);
 				identification = client.myIp();
 				// identification = socket.getLocalAddress().toString()
 				// .substring(1);
@@ -40,7 +40,7 @@ public class ClientHandler {
 				System.out.println(identification);
 			}
 		}
-		((MainPreGame) ref.preGame).setupPlayer();
+		((MainPreGame) GameApplet.preGame).setupPlayer();
 	}
 
 	public static void update() {

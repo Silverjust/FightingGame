@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import gameStructure.GameObject;
 import processing.core.PConstants;
 import shared.Updater.GameState;
-import shared.ref;
 
 public class GameDrawer {
 
@@ -18,89 +17,105 @@ public class GameDrawer {
 	public static boolean godhand;
 	public static boolean nocosts;
 	public static boolean showRanges;
+	private GameUpdater updater;
+	private GameApplet app;
+	private AimHandler aimHandler;
+	private HUD hud;
+	public ImageHandler imageHandler;
 
-	public static void loadImages() {
-		ref.updater.map.loadImages();
+	public void loadImages() {
+		app.updater.map.loadImages();
 	}
 
-	public static void setup() {
+	public GameDrawer(GameApplet app, ImageHandler imageHandler) {
+		this.app = app;
+		this.imageHandler = imageHandler;
+		this.updater = (GameUpdater) app.updater;
 
-		HUD.setup();
-		AimHandler.setup();
+		hud = new HUD(app, this);
+		setAimHandler(new AimHandler(app));
 
 		commandoutput = true;
 
 	}
 
-	public static void update() {
-		ref.app.clear();
-		ref.app.background(100);
-		ref.app.pushMatrix();
-		ref.app.translate(xMapOffset, yMapOffset);
-		ref.app.scale(zoom);
-		ref.app.stroke(0);
+	public void update() {
+		app.clear();
+		app.background(100);
+		app.pushMatrix();
+		app.translate(xMapOffset, yMapOffset);
+		app.scale(zoom);
+		app.stroke(0);
 
-		ImageHandler.drawImage(ref.app, ref.updater.map.textur, 0, 0,
-				ref.updater.map.width, ref.updater.map.height / 2);
-		ref.app.imageMode(PConstants.CENTER);
-		ref.app.rectMode(PConstants.CENTER);
-		ArrayList<GameObject> entities = ref.updater.getGameObjects();
+		imageHandler.drawImage(app, updater.map.textur, 0, 0, updater.map.width, updater.map.height / 2);
+		app.imageMode(PConstants.CENTER);
+		app.rectMode(PConstants.CENTER);
+		ArrayList<GameObject> entities = updater.getGameObjects();
 		for (int i = entities.size() - 1; i >= 0; i--) {
 			GameObject e = entities.get(i);
 			e.renderTerrain();
 		}
-		ref.app.imageMode(PConstants.CORNER);
-		ref.app.rectMode(PConstants.CORNER);
-		ref.updater.map.updateFogofWar(ref.player);
-		ref.app.blendMode(PConstants.MULTIPLY);
-		ImageHandler.drawImage(ref.app, ref.updater.map.fogOfWar, 0, 0,
-				ref.updater.map.width, ref.updater.map.height / 2);// hä?
-		ref.app.blendMode(PConstants.BLEND);
-		ref.app.imageMode(PConstants.CENTER);
-		ref.app.rectMode(PConstants.CENTER);
-		for (GameObject e : ref.player.visibleEntities) {
+		app.imageMode(PConstants.CORNER);
+		app.rectMode(PConstants.CORNER);
+		updater.map.updateFogofWar(app.player);
+		app.blendMode(PConstants.MULTIPLY);
+		imageHandler.drawImage(app, updater.map.fogOfWar, 0, 0, updater.map.width, updater.map.height / 2);// hä?
+		app.blendMode(PConstants.BLEND);
+		app.imageMode(PConstants.CENTER);
+		app.rectMode(PConstants.CENTER);
+		for (GameObject e : app.player.visibleEntities) {
 			e.renderUnder();
 		}
 		if (showRanges) {
-			for (GameObject e : ref.player.visibleEntities) {
+			for (GameObject e : app.player.visibleEntities) {
 				e.renderRange();
 			}
 		}
-		for (GameObject e : ref.player.visibleEntities) {
+		for (GameObject e : app.player.visibleEntities) {
 			e.renderGround();
 		}
-		for (GameObject e : ref.player.visibleEntities) {
+		for (GameObject e : app.player.visibleEntities) {
 			e.renderAir();
 		}
 
-		for (GameObject e : ref.player.visibleEntities) {
+		for (GameObject e : app.player.visibleEntities) {
 			e.display();
 		}
 
-		AimHandler.update();
-		ref.app.rectMode(PConstants.CORNER);
-		ref.app.popMatrix();
-		ref.app.imageMode(PConstants.CORNER);
+		getAimHandler().update();
+		app.rectMode(PConstants.CORNER);
+		app.popMatrix();
+		app.imageMode(PConstants.CORNER);
 
-		HUD.update();
+		hud.update();
 
-		if (ref.updater.gameState != GameState.PLAY) {
-			ref.app.fill(100, 100);
-			ref.app.rect(0, 0, ref.app.width, ref.app.height);
+		if (updater.gameState != GameState.PLAY) {
+			app.fill(100, 100);
+			app.rect(0, 0, app.width, app.height);
 			String s = "bla";
-			if (ref.updater.gameState == GameState.PAUSE) {
+			if (updater.gameState == GameState.PAUSE) {
 				s = "PAUSE";
-			} else if (ref.updater.gameState == GameState.WON) {
+			} else if (updater.gameState == GameState.WON) {
 				s = "WON";
-			} else if (ref.updater.gameState == GameState.LOST) {
+			} else if (updater.gameState == GameState.LOST) {
 				s = "LOST";
 			}
-			ref.app.fill(255);
-			ref.app.text(s, ref.app.width / 2 - ref.app.textWidth(s) / 2,
-					ref.app.height / 2);
+			app.fill(255);
+			app.text(s, app.width / 2 - app.textWidth(s) / 2, app.height / 2);
 		}
 		// AimHandler.update();
 		// app.image(render, 0, 0);
 	}
 
+	public void dispose() {
+		imageHandler.dispose();
+	}
+
+	public AimHandler getAimHandler() {
+		return aimHandler;
+	}
+
+	public void setAimHandler(AimHandler aimHandler) {
+		this.aimHandler = aimHandler;
+	}
 }

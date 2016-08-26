@@ -7,28 +7,28 @@ import java.util.ArrayList;
 import gameStructure.Building;
 import gameStructure.GameObject;
 import gameStructure.Unit;
-import main.MainApp;
 import processing.core.PApplet;
 import processing.core.PImage;
 import shared.ContentListManager;
-import shared.ref;
 
 public class ImageHandler {
 	// TODO dispose with load null
 	static String dataPath;
-	public static ArrayList<PImage> imagesToLoad = new ArrayList<PImage>();
+	public ArrayList<PImage> imagesToLoad = new ArrayList<PImage>();
 
-	public static int nImagesToLoad;
+	public int nImagesToLoad;
 
-	public static ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
-	private static boolean dispose = false;
-	private static ContentListManager contentListHandler;
+	public ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
+	private boolean dispose = false;
+	private ContentListManager contentListHandler;
+	private GameApplet app;
 
-	public static void setup() {
-		contentListHandler = ((MainApp) ref.app).contentListHandler;
+	public ImageHandler(GameApplet app) {
+		this.app = app;
+		contentListHandler = app.contentListHandler;
 	}
 
-	public static boolean requestAllImages() {
+	public boolean requestAllImages() {
 		try {
 			dataPath = "data/";
 
@@ -56,9 +56,10 @@ public class ImageHandler {
 			for (Class<?> c : classes) {
 				try {
 					Method m = c.getDeclaredMethod("loadImages");
-					m.invoke(null);
+					m.invoke(null, new Object[] { app, this });
 				} catch (NoSuchMethodException e) {
-					System.out.println("no loadImage method, add:\npublic static void loadImages(){ /*code*/ }");
+					System.out.println(
+							"no loadImage method, add:\npublic static void loadImages(GameApplet app, ImageHandler imageHandler){ /*code*/ }");
 					e.printStackTrace();
 				}
 			}
@@ -70,7 +71,7 @@ public class ImageHandler {
 		}
 	}
 
-	public static float stateOfLoading() {
+	public float stateOfLoading() {
 		int loadedImages = 0;
 		boolean error = false;
 		for (PImage i : imagesToLoad) {
@@ -89,7 +90,7 @@ public class ImageHandler {
 	}
 
 	/** loads images: path, name, animation-type, #directions, #frames */
-	public static PImage[][] load(String path, String name, char animation, byte directions, byte iterations) {
+	public PImage[][] load(String path, String name, char animation, byte directions, byte iterations) {
 		if (dispose)
 			return null;
 		PImage[][] imageArray = new PImage[directions][iterations];
@@ -100,7 +101,7 @@ public class ImageHandler {
 						+ (directions != 0 ? "_" + d : "") + (iterations != 0 ? "_" + PApplet.nf(i, 4) : "") + ".png";
 				System.out.println(s);
 				s = getPath(s);
-				imageArray[d][i] = ref.app.requestImage(s);
+				imageArray[d][i] = app.requestImage(s);
 				imagesToLoad.add(imageArray[d][i]);
 			}
 		}
@@ -108,7 +109,7 @@ public class ImageHandler {
 	}
 
 	/** loads images: path, name, animation-type, #frames */
-	public static PImage[] load(String path, String name, char animation, int j) {
+	public PImage[] load(String path, String name, char animation, int j) {
 		if (dispose)
 			return null;
 		PImage[] imageArray = new PImage[j];
@@ -118,7 +119,7 @@ public class ImageHandler {
 					+ (j != 0 ? "_" + PApplet.nf(i, 4) : "") + ".png";
 			System.out.println(s);
 			s = getPath(s);
-			imageArray[i] = ref.app.requestImage(s);
+			imageArray[i] = app.requestImage(s);
 			imagesToLoad.add(imageArray[i]);
 		}
 
@@ -126,7 +127,7 @@ public class ImageHandler {
 	}
 
 	/** loads images: path, name, animation-type */
-	public static PImage load(String path, String name, char animation) {
+	public PImage load(String path, String name, char animation) {
 		if (dispose)
 			return null;
 		PImage image;
@@ -134,13 +135,13 @@ public class ImageHandler {
 		String s = dataPath + path + name + (animation != 0 ? "_" + animation : "") + ".png";
 		System.out.println(s);
 		s = getPath(s);
-		image = ref.app.requestImage(s);
+		image = app.requestImage(s);
 		imagesToLoad.add(image);
 		return image;
 	}
 
 	/** loads images: path, name */
-	public static PImage load(String path, String name) {
+	public PImage load(String path, String name) {
 		if (dispose)
 			return null;
 		PImage image;
@@ -148,23 +149,23 @@ public class ImageHandler {
 		String s = dataPath + path + name + ".png";
 		System.out.println(s);
 		s = getPath(s);
-		image = ref.app.requestImage(s);
+		image = app.requestImage(s);
 		imagesToLoad.add(image);
 		return image;
 	}
 
-	private static String getPath(String path) {
+	private String getPath(String path) {
 		try {
-			path = ref.app.getClass().getClassLoader().getResource(path).getFile();
+			path = app.getClass().getClassLoader().getResource(path).getFile();
 			return path;
 		} catch (Exception e) {
-			System.err.println("File is missing: "+path);
+			System.err.println("File is missing: " + path);
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	static String getClassPath(GameObject o) {
+	public String getClassPath(GameObject o) {
 		String pkg = o.getClass().getEnclosingClass().getCanonicalName();
 
 		int pos = pkg.lastIndexOf("."); // Slash before the class name
@@ -176,13 +177,13 @@ public class ImageHandler {
 
 	}
 
-	public static String getBinaryPath() {
+	public String getBinaryPath() {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		File classpathRoot = new File(classLoader.getResource("").getPath());
 		return classpathRoot.getPath() + "\\";
 	}
 
-	public static void dispose() {
+	public void dispose() {
 		/*
 		 * for (PImage img : imagesToLoad) { Object cache =
 		 * ref.app.getCache(img); if (cache instanceof Texture) ((Texture)
@@ -195,7 +196,7 @@ public class ImageHandler {
 		 */
 	}
 
-	public static void drawImage(PApplet pApplet, PImage img, float a, float b, float c, float d) {
+	public void drawImage(PApplet pApplet, PImage img, float a, float b, float c, float d) {
 		try {
 			pApplet.image(img, a, b, c, d);
 		} catch (Exception e) {

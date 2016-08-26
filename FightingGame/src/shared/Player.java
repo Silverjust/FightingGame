@@ -2,6 +2,7 @@ package shared;
 
 import java.util.ArrayList;
 
+import game.GameApplet;
 import gameStructure.Champion;
 import gameStructure.GameObject;
 import gameStructure.MainBuilding;
@@ -16,28 +17,28 @@ public class Player {
 	public MainBuilding mainBuilding;
 	public GameState gameState;// win, loose
 	public Champion champion;
-	public PApplet app;
+	public GameApplet app;
 
-	public static Player createNeutralPlayer() {
-		Player p = new Player();
+	public static Player createNeutralPlayer(GameApplet app) {
+		Player p = new Player(app);
 		p.setUser(new User("", "neutral"));
 		p.getUser().player = p;
 		p.getUser().online = true;
-		p.color = ref.app.color(150);
+		p.color = app.color(150);
 		p.setNation(Nation.NEUTRAL);
 		return p;
 	}
 
-	public static Player createPlayer(User user) {
-		Player p = new Player();
+	public static Player createPlayer(User user, GameApplet app) {
+		Player p = new Player(app);
 		p.setUser(user);
 		p.getUser().player = p;
 		p.gameState = GameState.PLAY;
 		return p;
 	}
 
-	private Player() {
-		app = ref.app;
+	private Player(GameApplet app) {
+		this.app = app;
 	}
 
 	@Override
@@ -64,7 +65,8 @@ public class Player {
 	}
 
 	public void setUser(User user) {
-		System.out.println("Player.setUser()");		this.user = user;
+		System.out.println("Player.setUser()");
+		this.user = user;
 	}
 
 }

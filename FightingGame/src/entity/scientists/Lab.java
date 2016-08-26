@@ -1,8 +1,8 @@
 package entity.scientists;
 
+import game.GameApplet;
 import gameStructure.GameObject;
 import gameStructure.Unit;
-import shared.ref;
 
 public abstract class Lab extends Unit implements Equiping {
 	protected static final int TRAINTIME = 3000;
@@ -31,8 +31,8 @@ public abstract class Lab extends Unit implements Equiping {
 
 	@Override
 	public void onSpawn(boolean isServer) {
-		ref.updater.selectionChanged = true;
-		ref.updater.keepGrid = true;
+		GameApplet.updater.selectionChanged = true;
+		GameApplet.updater.keepGrid = true;
 	}
 
 	@Override
