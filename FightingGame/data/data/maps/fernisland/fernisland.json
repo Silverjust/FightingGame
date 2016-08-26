@@ -1,0 +1,118 @@
+{
+  "descr": " ",
+  "coll": "maps/newMap/mapColl",
+  "entities": {
+    "11": {
+      "x": 360,
+      "y": 480,
+      "type": "Prunam",
+      "player": -1
+    },
+    "12": {
+      "x": 420,
+      "y": 400,
+      "type": "Prunam",
+      "player": -1
+    },
+    "13": {
+      "x": 420,
+      "y": 80,
+      "type": "Kerit",
+      "player": -1
+    },
+    "14": {
+      "x": 400,
+      "y": 780,
+      "type": "Kerit",
+      "player": -1
+    },
+    "15": {
+      "x": 40,
+      "y": 460,
+      "type": "Pax",
+      "player": -1
+    },
+    "16": {
+      "x": 220,
+      "y": 300,
+      "type": "Arcanum",
+      "player": -1
+    },
+    "17": {
+      "x": 600,
+      "y": 560,
+      "type": "Arcanum",
+      "player": -1
+    },
+    "18": {
+      "x": 760,
+      "y": 440,
+      "type": "Pax",
+      "player": -1
+    },
+    "1": {
+      "x": 100,
+      "y": 800,
+      "type": "MainBuilding",
+      "player": 0
+    },
+    "2": {
+      "x": 40,
+      "y": 860,
+      "type": "KeritMine",
+      "player": 0
+    },
+    "3": {
+      "x": 580,
+      "y": 200,
+      "type": "KeritMine",
+      "player": 1
+    },
+    "4": {
+      "x": 700,
+      "y": 100,
+      "type": "MainBuilding",
+      "player": 1
+    },
+    "5": {
+      "x": 760,
+      "y": 40,
+      "type": "KeritMine",
+      "player": 1
+    },
+    "6": {
+      "x": 220,
+      "y": 660,
+      "type": "KeritMine",
+      "player": 0
+    },
+    "7": {
+      "x": 540,
+      "y": 660,
+      "type": "Kerit",
+      "player": -1
+    },
+    "8": {
+      "x": 280,
+      "y": 200,
+      "type": "Kerit",
+      "player": -1
+    },
+    "9": {
+      "x": 220,
+      "y": 80,
+      "type": "Pax",
+      "player": -1
+    },
+    "10": {
+      "x": 600,
+      "y": 760,
+      "type": "Pax",
+      "player": -1
+    }
+  },
+  "texture": "maps/newMap/mapTextur",
+  "name": "fern_island",
+  "w": 900,
+  "h": 900
+}

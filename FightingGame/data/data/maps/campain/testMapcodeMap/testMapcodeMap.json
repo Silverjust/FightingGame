@@ -1,0 +1,299 @@
+{
+  "descr": " ",
+  "coll": "maps/newMap/mapColl",
+  "MapCode": "entity.campain.testMap",
+  "entities": [
+    {
+      "x": 580,
+      "y": 900,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 480,
+      "y": 760,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 540,
+      "y": 860,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 540,
+      "y": 820,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 420,
+      "y": 640,
+      "type": "Pax",
+      "player": -1
+    },
+    {
+      "x": 580,
+      "y": 860,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 380,
+      "y": 240,
+      "type": "Pax",
+      "player": -1
+    },
+    {
+      "x": 340,
+      "y": 120,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 420,
+      "y": 540,
+      "type": "Arcanum",
+      "player": -1
+    },
+    {
+      "x": 440,
+      "y": 260,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 380,
+      "y": 340,
+      "type": "Arcanum",
+      "player": -1
+    },
+    {
+      "x": 100,
+      "y": 800,
+      "type": "MainBuilding",
+      "player": 0
+    },
+    {
+      "x": 200,
+      "y": 700,
+      "type": "KeritMine",
+      "player": 0
+    },
+    {
+      "x": 360,
+      "y": 740,
+      "type": "Pax",
+      "player": -1
+    },
+    {
+      "x": 300,
+      "y": 620,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 440,
+      "y": 220,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 440,
+      "y": 760,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 340,
+      "y": 80,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 420,
+      "y": 860,
+      "type": "Pax",
+      "player": -1
+    },
+    {
+      "x": 400,
+      "y": 160,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 380,
+      "y": 40,
+      "type": "Pax",
+      "player": -1
+    },
+    {
+      "x": 300,
+      "y": 0,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 520,
+      "y": 500,
+      "type": "Arcanum",
+      "player": -1
+    },
+    {
+      "x": 140,
+      "y": 400,
+      "type": "Prunam",
+      "player": -1
+    },
+    {
+      "x": 100,
+      "y": 540,
+      "type": "Kerit",
+      "player": -1
+    },
+    {
+      "x": 40,
+      "y": 860,
+      "type": "KeritMine",
+      "player": 0
+    },
+    {
+      "x": 480,
+      "y": 800,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 700,
+      "y": 100,
+      "type": "MainBuilding",
+      "player": 1
+    },
+    {
+      "x": 280,
+      "y": 380,
+      "type": "Arcanum",
+      "player": -1
+    },
+    {
+      "x": 760,
+      "y": 40,
+      "type": "KeritMine",
+      "player": 1
+    },
+    {
+      "x": 460,
+      "y": 420,
+      "type": "Kerit",
+      "player": -1
+    },
+    {
+      "x": 700,
+      "y": 360,
+      "type": "Kerit",
+      "player": -1
+    },
+    {
+      "x": 340,
+      "y": 460,
+      "type": "Kerit",
+      "player": -1
+    },
+    {
+      "x": 380,
+      "y": 700,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 500,
+      "y": 820,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 360,
+      "y": 680,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 420,
+      "y": 740,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 500,
+      "y": 280,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 480,
+      "y": 240,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 420,
+      "y": 180,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 380,
+      "y": 120,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 320,
+      "y": 40,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 440,
+      "y": 140,
+      "type": "Pax",
+      "player": -1
+    },
+    {
+      "x": 580,
+      "y": 200,
+      "type": "KeritMine",
+      "player": 1
+    },
+    {
+      "x": 660,
+      "y": 500,
+      "type": "Prunam",
+      "player": -1
+    },
+    {
+      "x": 360,
+      "y": 640,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 320,
+      "y": 640,
+      "type": "Rock",
+      "player": -1
+    },
+    {
+      "x": 420,
+      "y": 700,
+      "type": "Rock",
+      "player": -1
+    }
+  ],
+  "texture": "maps/newMap/mapTextur",
+  "w": 900,
+  "name": "testmap mapcode",
+  "h": 900
+}

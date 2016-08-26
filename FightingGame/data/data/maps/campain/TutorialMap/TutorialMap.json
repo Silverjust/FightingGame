@@ -1,0 +1,64 @@
+{
+  "descr": " ",
+  "coll": "maps/newMap/mapColl",
+  "entities": [
+    {
+      "x": 120,
+      "y": 580,
+      "type": "MainBuilding",
+      "player": 0
+    },
+    {
+      "x": 460,
+      "y": 140,
+      "type": "MainBuilding",
+      "player": 1
+    },
+    {
+      "x": 460,
+      "y": 280,
+      "type": "AlienKaserne",
+      "player": 1
+    },
+    {
+      "x": 220,
+      "y": 580,
+      "type": "Kerit",
+      "player": -1
+    },
+    {
+      "x": 470.11004638671875,
+      "y": 480.630126953125,
+      "type": "Brux",
+      "player": 1
+    },
+    {
+      "x": 458.7711486816406,
+      "y": 487.78765869140625,
+      "type": "Ticul",
+      "player": 1
+    },
+    {
+      "x": 456.7579345703125,
+      "y": 477.20526123046875,
+      "type": "Ticul",
+      "player": 1
+    },
+    {
+      "x": 469.43450927734375,
+      "y": 482.8933410644531,
+      "type": "Valcyrix",
+      "player": 1
+    },
+    {
+      "x": 20,
+      "y": 20,
+      "type": "Tutorial",
+      "player": -1
+    }
+  ],
+  "texture": "maps/newMap/mapTextur",
+  "w": 600,
+  "name": "tutorial_map",
+  "h": 650
+}

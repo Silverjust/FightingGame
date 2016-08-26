@@ -1,0 +1,53 @@
+{
+	"entities": 
+	{
+		"Ticul": "champs.Ticul",
+		"TestProjectile": "champs.TestProjectile"
+	},
+
+	"campainEntities": 
+	{
+	},
+
+	"maps": 
+	{
+		"standard": 
+		{
+			"1": "maps/alpha_YangDesert/alpha_YangDesert",
+			"2": "maps/fernisland/fernisland",
+			"3": "maps/firstTestMap/firstTestMap",
+			"4": "maps/newMap/newMap",
+			"5": "maps/4player/4player"
+		},
+
+		"campain": 
+		{
+			"aliens": 
+			{
+				
+			},
+
+			"ahnen": 
+			{
+				
+			},
+
+			"humans": 
+			{
+				"0": "maps/campain/testMapcodeMap/testMapcodeMap"
+			},
+
+			"scientists": 
+			{
+				
+			},
+
+			"robots": 
+			{
+				"0": "maps/campain/robots/lvl1/lvl1"
+			},
+
+			"1": "maps/campain/TutorialMap/TutorialMap"
+		}
+	}
+}

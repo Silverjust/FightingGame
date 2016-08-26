@@ -1,0 +1,118 @@
+{
+  "descr": " ",
+  "coll": "maps/newMap/mapColl",
+  "entities": {
+    "11": {
+      "x": 700,
+      "y": 380,
+      "type": "Pax",
+      "player": -1
+    },
+    "12": {
+      "x": 100,
+      "y": 540,
+      "type": "Pax",
+      "player": -1
+    },
+    "13": {
+      "x": 400,
+      "y": 420,
+      "type": "Kerit",
+      "player": -1
+    },
+    "14": {
+      "x": 380,
+      "y": 480,
+      "type": "Kerit",
+      "player": -1
+    },
+    "15": {
+      "x": 80,
+      "y": 100,
+      "type": "Kerit",
+      "player": -1
+    },
+    "16": {
+      "x": 740,
+      "y": 800,
+      "type": "Kerit",
+      "player": -1
+    },
+    "17": {
+      "x": 700,
+      "y": 800,
+      "type": "Kerit",
+      "player": -1
+    },
+    "18": {
+      "x": 120,
+      "y": 140,
+      "type": "Kerit",
+      "player": -1
+    },
+    "1": {
+      "x": 700,
+      "y": 100,
+      "type": "MainBuilding",
+      "player": 1
+    },
+    "2": {
+      "x": 100,
+      "y": 800,
+      "type": "MainBuilding",
+      "player": 0
+    },
+    "3": {
+      "x": 760,
+      "y": 40,
+      "type": "KeritMine",
+      "player": 1
+    },
+    "4": {
+      "x": 40,
+      "y": 860,
+      "type": "KeritMine",
+      "player": 0
+    },
+    "5": {
+      "x": 200,
+      "y": 700,
+      "type": "KeritMine",
+      "player": 0
+    },
+    "6": {
+      "x": 580,
+      "y": 200,
+      "type": "KeritMine",
+      "player": 1
+    },
+    "7": {
+      "x": 360,
+      "y": 640,
+      "type": "Arcanum",
+      "player": -1
+    },
+    "8": {
+      "x": 220,
+      "y": 520,
+      "type": "Prunam",
+      "player": -1
+    },
+    "9": {
+      "x": 560,
+      "y": 380,
+      "type": "Prunam",
+      "player": -1
+    },
+    "10": {
+      "x": 420,
+      "y": 240,
+      "type": "Arcanum",
+      "player": -1
+    }
+  },
+  "texture": "maps/newMap/mapTextur",
+  "name": "first_test",
+  "w": 900,
+  "h": 900
+}
