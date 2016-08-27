@@ -10,12 +10,14 @@ public class SettingHandler {
 	GDropList settingList;
 	Setting[] settings;
 
-	public static void setup() {
+	private GameApplet app;
+
+	public void setup() {
 		loadSettings();
 	}
 
-	private static void loadSettings() {
-		Setting oldSettings = new Setting();
+	private void loadSettings() {
+		Setting oldSettings = new Setting(app);
 		try {
 			oldSettings.fromJSON(appdataInfos.path + "settings.json");
 			setting = oldSettings;
@@ -24,8 +26,9 @@ public class SettingHandler {
 		}
 	}
 
-	public SettingHandler() {
-		settingList = new GDropList(GameApplet.app, 200, 200, 100, 400, 5);
+	public SettingHandler(GameApplet app) {
+		this.app = app;
+		//settingList = new GDropList(app, 200, 200, 100, 400, 5);
 	}
 
 }

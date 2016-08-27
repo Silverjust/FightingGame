@@ -2,10 +2,10 @@ package shared;
 
 import java.util.ArrayList;
 
+import entity.MainBuilding;
 import game.GameApplet;
 import gameStructure.Champion;
 import gameStructure.GameObject;
-import gameStructure.MainBuilding;
 import processing.core.PApplet;
 import shared.Updater.GameState;
 
@@ -21,7 +21,7 @@ public class Player {
 
 	public static Player createNeutralPlayer(GameApplet app) {
 		Player p = new Player(app);
-		p.setUser(new User("", "neutral"));
+		p.setUser(new User(app, "", "neutral"));
 		p.getUser().player = p;
 		p.getUser().online = true;
 		p.color = app.color(150);

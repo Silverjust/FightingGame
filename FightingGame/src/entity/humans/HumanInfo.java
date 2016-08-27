@@ -2,6 +2,7 @@ package entity.humans;
 
 import entity.ActivesGrid;
 import entity.ActivesGridHandler;
+import entity.MainBuilding;
 import entity.neutral.ArcanumMine;
 import entity.neutral.KeritMine;
 import entity.neutral.PaxDrillTower;
@@ -9,7 +10,6 @@ import entity.neutral.PrunamHarvester;
 import game.aim.MineAim.BuildMineActive;
 import gameStructure.Building;
 import gameStructure.Commander;
-import gameStructure.MainBuilding;
 import gameStructure.Trainer;
 import gameStructure.Unit;
 import gameStructure.actives.BuildWallActive;

@@ -1,6 +1,8 @@
-package gameStructure;
+package entity;
 
 import game.GameApplet;
+import gameStructure.Building;
+import gameStructure.Commander;
 import main.appdata.ProfileHandler;
 import shared.Coms;
 import shared.Helper.Timer;

@@ -27,15 +27,15 @@ public class Ticul extends Champion implements Attacker {
 	MeleeAttack basicAttack;
 
 	public static void loadImages(GameApplet app, ImageHandler imageHandler) {
-		String path = path(new GameObject(null) {
+		String path = path(new GameObject(app, null) {
 		});
 		standingImg = imageHandler.load(path, "Ticul", 's', (byte) 8, (byte) 1);
 		walkingImg = imageHandler.load(path, "Ticul", 'w', (byte) 8, (byte) 8);
 		attackImg = imageHandler.load(path, "Ticul", 'b', (byte) 8, (byte) 8);
 	}
 
-	public Ticul(String[] c) {
-		super(c);
+	public Ticul(GameApplet app, String[] c) {
+		super(app, c);
 		System.out.println("Ticul.Ticul()");
 		if (walkingImg != null)
 			iconImg = walkingImg[0][0];
@@ -77,7 +77,7 @@ public class Ticul extends Champion implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		player.app.updater.send("<hit " + basicAttack.getTarget().number + " " + a.damage + " " + a.pirce);
+		player.app.getUpdater().send("<hit " + basicAttack.getTarget().number + " " + a.damage + " " + a.pirce);
 	}
 
 	@Override
@@ -93,15 +93,15 @@ public class Ticul extends Champion implements Attacker {
 
 	@Override
 	public void setupSpells(PlayerInterface inter) {
-		inter.addSpell(new Shot(inter, 1));
-		inter.addSpell(new TargetedShot(inter, 2));
+		inter.addSpell(new Shot(player.app, inter, 1));
+		inter.addSpell(new TargetedShot(player.app, inter, 2));
 	}
 
 	public class Shot extends Spell {// ******************************************************
 		private int range = 100;
 
-		public Shot(PlayerInterface inter, int pos) {
-			super(inter, pos, smiteImg);
+		public Shot(GameApplet app, PlayerInterface inter, int pos) {
+			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
 
@@ -109,9 +109,10 @@ public class Ticul extends Champion implements Attacker {
 		public void onActivation() {
 
 			System.out.println("Ticul.Shot.onActivation()");
-			player.app.updater.send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY() + " "
-					+ Helper.gridToX(player.app.mouseX) + " " + Helper.gridToY(player.app.mouseY) + " "
-					+ getInternName());
+			player.app.getUpdater()
+					.send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY() + " "
+							+ Helper.gridToX(player.app.mouseX) + " " + Helper.gridToY(player.app.mouseY) + " "
+							+ getInternName());
 			startCooldown();
 		}
 
@@ -126,8 +127,8 @@ public class Ticul extends Champion implements Attacker {
 
 		private int range = 100;
 
-		public TargetedShot(PlayerInterface inter, int pos) {
-			super(inter, pos, smiteImg);
+		public TargetedShot(GameApplet app, PlayerInterface inter, int pos) {
+			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
 
@@ -135,8 +136,8 @@ public class Ticul extends Champion implements Attacker {
 		public void onActivation() {
 
 			System.out.println("Ticul.Shot.onActivation()");
-			player.app.updater.send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY() + " "
-					+ HOMING + " " + 2 + " " + getInternName());
+			player.app.getUpdater().send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY()
+					+ " " + HOMING + " " + 2 + " " + getInternName());
 			startCooldown();
 		}
 

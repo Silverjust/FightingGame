@@ -37,7 +37,7 @@ public class MapSelect {
 		}
 		if (names.length == 0) {
 			mapSelector.setItems(new String[] { " " }, 0);
-			System.out.println("MapSelect.setupMapSelection()" + GameApplet.preGame.getUser("").nation + names.length);
+			System.out.println("MapSelect.setupMapSelection()" + GameApplet.getPreGameInfo().getUser("").nation + names.length);
 		} else {
 			mapSelector.setItems(names, previousMap);
 			display.preGame.map = ContentListManager.getModeMaps().getString(intNames[previousMap]);

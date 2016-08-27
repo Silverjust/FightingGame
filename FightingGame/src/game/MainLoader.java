@@ -1,8 +1,6 @@
 package game;
 
-import main.ClientHandler;
 import main.LoadingScreen;
-import main.preGame.MainPreGame.GameSettings;
 import shared.Coms;
 import shared.Loader;
 import shared.Mode;
@@ -49,8 +47,8 @@ public class MainLoader extends Loader {
 			break;
 		case ENTITIES:// spawn entity-setup
 
-			if (GameSettings.singlePlayer) {
-				if (GameSettings.sandbox)
+			if (PreGameInfo.isSinglePlayer()) {
+				if (PreGameInfo.isSandbox())
 					app.updater.send("<spawn SandboxBuilding 0 20 20");
 				/*
 				 * if (GameSettings.tutorial)
@@ -81,7 +79,7 @@ public class MainLoader extends Loader {
 				app.updater.send("<spawn Ticul " + 2 + " " + app.random(200, 600) + " " + app.random(200, 600));
 			}
 			app.gameDrawer = new GameDrawer(app,imageHandler);
-			if (GameSettings.sandbox) {
+			if (PreGameInfo.isSandbox()) {
 				GameDrawer.godeye = true;
 				GameDrawer.godhand = true;
 				GameDrawer.nocosts = true;
@@ -92,7 +90,7 @@ public class MainLoader extends Loader {
 			state = State.WAIT;
 			break;
 		case WAIT:
-			app.updater.send(Coms.READY + " " + ClientHandler.identification);
+			app.updater.send(Coms.READY + " " + app.clientHandler.identification);
 			break;
 		case END:
 			state = State.NEWGAME;
@@ -123,7 +121,7 @@ public class MainLoader extends Loader {
 	@Override
 	public void tryStartGame() {
 		// do nothing when multiplayer
-		if (GameSettings.singlePlayer)
+		if (PreGameInfo.isSinglePlayer())
 			startGame();
 	}
 }

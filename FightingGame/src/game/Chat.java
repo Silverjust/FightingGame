@@ -9,7 +9,6 @@ import java.awt.Font;
 import java.util.ArrayList;
 
 import processing.core.PConstants;
-import main.ClientHandler;
 import shared.CommandHandler;
 import shared.Helper;
 

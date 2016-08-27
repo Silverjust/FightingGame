@@ -13,7 +13,7 @@ public class PreGameCampainDisplay extends PreGameDisplay {
 	@Override
 	public void handleSelectNation(GGameButton button, GEvent event) {
 		champSelect.handleSelectNation(button, event);
-		GameApplet.preGame.getUser("").nation = champSelect.nation;
+		GameApplet.getPreGameInfo().getUser("").nation = champSelect.nation;
 		mapSelect.setupMapSelection();
 	}
 

@@ -13,8 +13,8 @@ public class OptionsMenu extends Menu {
 	public OptionsMenu() {
 		if (((MainApp) GameApplet.app).startPage != null)
 			((MainApp) GameApplet.app).startPage.setActive(false);
-		if (GameApplet.preGame != null)
-			GameApplet.preGame.setActive(false);
+		if (GameApplet.getPreGameInfo() != null)
+			GameApplet.getPreGameInfo().setActive(false);
 		x = (int) FrameInfo.xCenter;
 		y = 200;
 		wh = 50;
@@ -37,8 +37,8 @@ public class OptionsMenu extends Menu {
 	public void dispose() {
 		if (((MainApp) GameApplet.app).startPage != null)
 			((MainApp) GameApplet.app).startPage.setActive(true);
-		if (GameApplet.preGame != null)
-			GameApplet.preGame.setActive(true);
+		if (GameApplet.getPreGameInfo() != null)
+			GameApplet.getPreGameInfo().setActive(true);
 		returnToGame.dispose();
 	}
 

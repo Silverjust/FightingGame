@@ -1,13 +1,14 @@
 package champs;
 
+import game.GameApplet;
 import gameStructure.baseBuffs.Buff;
 
 public class ArmorShred extends Buff {
 	private int amount = 30;
 	private int totalAmount = 0;
 
-	public ArmorShred(String[] c) {
-		super(c);
+	public ArmorShred(GameApplet app, String[] c) {
+		super(app, c);
 		maxStacks = 3;
 	}
 
@@ -33,7 +34,7 @@ public class ArmorShred extends Buff {
 	@Override
 	protected void onStackApply(int i) {
 		super.onStackApply(i);
-		owner.setArmor(owner.getArmor()-amount);
+		owner.setArmor(owner.getArmor() - amount);
 		totalAmount += amount;
 	}
 }

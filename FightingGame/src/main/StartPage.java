@@ -1,7 +1,6 @@
 package main;
 
 import main.preGame.MainPreGame;
-import main.preGame.MainPreGame.GameSettings;
 import main.appdata.ProfileHandler;
 import main.appdata.StatScreen;
 import shared.Helper;
@@ -12,7 +11,9 @@ import g4p_controls.GEvent;
 import g4p_controls.GPassword;
 import g4p_controls.GTextArea;
 import g4p_controls.GTextField;
+import game.ClientHandler;
 import game.GameApplet;
+import game.PreGameInfo;
 
 public class StartPage {
 
@@ -92,30 +93,30 @@ public class StartPage {
 					return;
 				}
 			} else if (button == singleplayerButton) {
-				GameSettings.singlePlayer = true;
-				GameSettings.againstAI = true;// ai
+				PreGameInfo.setSinglePlayer(true);
+				PreGameInfo.setAgainstAI(true);// ai
 			} else if (button == sandboxButton) {
-				GameSettings.singlePlayer = true;
-				GameSettings.sandbox = true;
+				PreGameInfo.setSinglePlayer(true);
+				PreGameInfo.setSandbox(true);
 			} else if (button == campainButton) {
-				GameSettings.singlePlayer = true;
-				GameSettings.campain = true;
+				PreGameInfo.setSinglePlayer(true);
+				PreGameInfo.setCampain(true);
 			} else if (button == statisticsButton) {
 				StatScreen.setup();
 				return;
 			}
-			System.out.println(GameSettings.singlePlayer);
+			System.out.println(PreGameInfo.isSinglePlayer());
 
-			GameApplet.preGame = new MainPreGame(name);
+			GameApplet.setPreGameInfo(new MainPreGame(name));
 			ClientHandler.setup(ip);
-			if (!GameSettings.singlePlayer && ClientHandler.client == null) {
+			if (!PreGameInfo.isSinglePlayer() && ClientHandler.client == null) {
 				serverIp.setFocus(true);
-				((MainPreGame) GameApplet.preGame).closeBecauseServer();
+				((MainPreGame) GameApplet.getPreGameInfo()).closeBecauseServer();
 				return;
 			}
-			((MainPreGame) GameApplet.preGame).setup();
+			((MainPreGame) GameApplet.getPreGameInfo()).setup();
 
-			if (GameSettings.singlePlayer) {
+			if (PreGameInfo.isSinglePlayer()) {
 				((MainApp) GameApplet.app).mode = Mode.PREGAME;
 			}
 			dispose();

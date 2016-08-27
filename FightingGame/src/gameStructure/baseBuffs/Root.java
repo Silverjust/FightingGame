@@ -1,8 +1,10 @@
 package gameStructure.baseBuffs;
 
+import game.GameApplet;
+
 public class Root extends Buff {
-	public Root(String[] c) {
-		super(c);
+	public Root(GameApplet app, String[] c) {
+		super(app, c);
 	}
 
 	@Override

@@ -10,6 +10,7 @@ import processing.data.JSONObject;
 
 public abstract class VersionControle {
 	public final static String version = "1.0.0.0";
+	private static GameApplet app;
 
 	public static boolean isNewerVersion(String s1, String s2) {
 		String[] sa1 = s1.split("\\.");
@@ -24,9 +25,12 @@ public abstract class VersionControle {
 		}
 		return false;
 	}
-
+	public static void setup(GameApplet app) {
+		VersionControle.app = app;
+		
+	}
 	public static void versionControle() {
-		String chanegelogVersion = PApplet.splitTokens(GameApplet.app.loadStrings("data/changelog.txt")[0], "-")[0];
+		String chanegelogVersion = PApplet.splitTokens(app.loadStrings("data/changelog.txt")[0], "-")[0];
 		if (!chanegelogVersion.equals(version))
 			System.err.println("changelog has different version than VC " + chanegelogVersion + " " + version
 					+ " (VersionControle.java:11)");
@@ -48,7 +52,7 @@ public abstract class VersionControle {
 			mapData.remove("entities");
 			mapData.setJSONArray("entities", entitys);
 			if (ProfileHandler.isDeveloper())
-				GameApplet.app.saveJSONObject(mapData,
+				app.saveJSONObject(mapData,
 						System.getProperty("user.home").replace("\\", "/") + "/Desktop/" + mapName + ".json");
 		}
 	}

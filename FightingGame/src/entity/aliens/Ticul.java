@@ -1,6 +1,6 @@
 package entity.aliens;
 
-import main.ClientHandler;
+import game.ClientHandler;
 import game.GameApplet;
 import game.ImageHandler;
 import gameStructure.Spell;

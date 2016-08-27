@@ -66,7 +66,7 @@ public class ServerHandler {
 			send("<setMap " + p.getUser().ip + " " + GameApplet.preGame.map);
 		} else {
 			app.gui.addChatText("We have a new client: " + someClient.ip());
-			GameApplet.preGame.addPlayer(someClient.ip(), someClient.ip());
+			GameApplet.getPreGameInfo().addPlayer(someClient.ip(), someClient.ip());
 			send("<identify server");
 		}
 	}

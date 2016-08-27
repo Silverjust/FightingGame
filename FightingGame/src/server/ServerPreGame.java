@@ -36,7 +36,7 @@ public class ServerPreGame extends PreGame {
 	@Override
 	public void addPlayer(String ip, String name) {
 		if (!users.containsKey(ip)) {
-			User u = new User(ip, name);
+			User u = new User(app, ip, name);
 			users.put(ip, u);
 		} else if (users.get(ip).name.equals(ip)) {
 			users.get(ip).name = name;

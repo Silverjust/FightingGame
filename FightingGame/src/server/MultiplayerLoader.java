@@ -86,7 +86,7 @@ public class MultiplayerLoader extends Loader {
 
 	private void sendRFInfo() {
 		if (Updater.resfreeze != null) {
-			GameApplet.preGame.write("GAME", "resfreeze in " + (Updater.resfreeze.cooldown / 60.0 / 1000.0));
+			GameApplet.getPreGameInfo().write("GAME", "resfreeze in " + (Updater.resfreeze.cooldown / 60.0 / 1000.0));
 		}
 	}
 }

@@ -1,10 +1,11 @@
 package main.preGame;
 
-import main.ClientHandler;
 import main.MainApp;
+import game.ClientHandler;
 import game.GameApplet;
 import game.HUD;
 import game.MainLoader;
+import game.PreGameInfo;
 import shared.ComHandler;
 import shared.Coms;
 import shared.ContentListManager;
@@ -20,11 +21,11 @@ public class MainPreGame extends PreGame {
 
 	private String name;
 
-	public MainPreGame(String name) {
+	public MainPreGame(GameApplet app, String name) {
 		this.name = name;
-		((MainApp) GameApplet.app).contentListHandler = new ContentListManager();
-		((MainApp) GameApplet.app).contentListHandler.load();
-		ComHandler.setup();
+		app.setContentListHandler(new ContentListManager());
+		app.getContentListHandler().load();
+		app.setComHandler(new ComHandler(app));
 		System.out.println("MainPreGame.MainPreGame()");
 	}
 
@@ -35,9 +36,9 @@ public class MainPreGame extends PreGame {
 
 	public void setup() {
 		System.out.println("MainPreGame.setup()");
-		if (GameSettings.singlePlayer && !GameSettings.campain)
+		if (PreGameInfo.isSinglePlayer() && !PreGameInfo.isCampain())
 			display = new PreGameSandboxDisplay();
-		else if (GameSettings.campain)
+		else if (PreGameInfo.isCampain())
 			display = new PreGameCampainDisplay();
 		else
 			display = new PreGameNormalDisplay();
@@ -55,19 +56,19 @@ public class MainPreGame extends PreGame {
 			// Player p = Player.createPlayer(ip, name);
 			// p.color = ref.app.color(200, 0, 0);// TODO get color setting
 			User u = null;
-			u = new User(ip, name);
+			u = new User(app, ip, name);
 			users.put(ip, u);
 		}
 	}
 
 	public static void addPlayer(String name, Nation nation) {
 		System.out.println("MainPreGame.addPlayer()" + GameApplet.preGame.users.size());
-		GameApplet.preGame.addPlayer("" + 2, name);
+		GameApplet.getPreGameInfo().addPlayer("" + 2, name);
 		GameApplet.preGame.users.get("2").nation = nation;
 	}
 
 	public void addThisPlayer(String name) {
-		User u = new User(ClientHandler.identification, name);
+		User u = new User(app, ClientHandler.identification, name);
 		// ref.player = Player.createPlayer(u);
 		// p.color = ref.app.color(0, 255, 100);// TODO get color setting
 		users.put(ClientHandler.identification, u);
@@ -84,10 +85,10 @@ public class MainPreGame extends PreGame {
 	}
 
 	public void setupPlayer() {
-		if (!GameSettings.singlePlayer) {
-			System.out.println(GameSettings.singlePlayer);
+		if (!PreGameInfo.isSinglePlayer()) {
+			System.out.println(PreGameInfo.isSinglePlayer());
 			addThisPlayer(name);
-		} else if (GameSettings.campain) {
+		} else if (PreGameInfo.isCampain()) {
 			addThisPlayer(name);
 		} else {
 			addThisPlayer(name);
@@ -140,10 +141,10 @@ public class MainPreGame extends PreGame {
 		public static boolean againstAI;
 
 		public static void setupGameSettings() {
-			singlePlayer = false;
-			sandbox = false;
-			campain = false;
-			againstAI = false;
+			PreGameInfo.setSinglePlayer(false);
+			PreGameInfo.setSandbox(false);
+			PreGameInfo.setCampain(false);
+			PreGameInfo.setAgainstAI(false);
 		}
 	}
 

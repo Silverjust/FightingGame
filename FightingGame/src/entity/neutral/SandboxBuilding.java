@@ -239,7 +239,7 @@ public class SandboxBuilding extends Building implements Commander {
 
 		@Override
 		public void onActivation() {
-			GameApplet.preGame.addPlayer((GameApplet.updater.players.size() + 1) + "",
+			GameApplet.getPreGameInfo().addPlayer((GameApplet.updater.players.size() + 1) + "",
 					"player" + (GameApplet.updater.players.size() + 1));
 		}
 

@@ -13,14 +13,14 @@ public class TestProjectile extends Projectile {
 	protected static PImage[] anim;
 
 	public static void loadImages(GameApplet app, ImageHandler imageHandler) {
-		String path = path(new GameObject(null) {
+		String path = path(new GameObject(app, null) {
 		});
 		anim = imageHandler.load(path, "test", 's', 1);
 		System.out.println("TestProjectile.loadImages()");
 	}
 
-	public TestProjectile(String[] c) {
-		super(c);
+	public TestProjectile(GameApplet app, String[] c) {
+		super(app, c);
 
 		stand = new Animation(anim, 100);
 		setAnimation(stand);
@@ -37,8 +37,8 @@ public class TestProjectile extends Projectile {
 	protected void onHit(GameObject o) {
 		if (o.isEnemyTo(player) && o instanceof Entity) {
 			((Entity) o).sendDamage(this, new Damage((Entity) o, player.champion, 50, true), player, origin);
-			player.app.updater.send(BUFF + " ArmorShred " + o.number + " " + player.champion.number + " 6000");
-			player.app.updater.send(BUFF + " Slow " + player.champion.number + " " + player.champion.number + " "
+			player.app.getUpdater().send(BUFF + " ArmorShred " + o.number + " " + player.champion.number + " 6000");
+			player.app.getUpdater().send(BUFF + " Slow " + player.champion.number + " " + player.champion.number + " "
 					+ (int) player.app.random(1000, 3000) + " " + (int) player.app.random(100));
 		}
 	}

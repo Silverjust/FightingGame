@@ -3,12 +3,12 @@ package game;
 import ddf.minim.Minim;
 import processing.core.PApplet;
 import processing.core.PFont;
+import shared.ComHandler;
 import shared.ContentListManager;
 import shared.Loader;
 import shared.Menu;
 import shared.Mode;
 import shared.Player;
-import shared.PreGame;
 import shared.Updater;
 
 @SuppressWarnings("serial")
@@ -16,20 +16,21 @@ public class GameApplet extends PApplet {
 
 	protected Menu menu;
 	protected ContentListManager contentListHandler;
-	public Minim minim;
-	public PFont font;
-	public float textScale;
-	public Loader loader;
-	@Deprecated
-	public PreGame preGame;
-	public Updater updater;
-	public Mode mode;
+	protected Minim minim;
+	protected PFont font;
+	protected float textScale;
+	protected Loader loader;
+
+	protected Updater updater;
+	protected Mode mode;
 	/** only for client */
-	public GameDrawer gameDrawer;
+	protected GameDrawer gameDrawer;
 
 	/** only for client */
-	public Player player;
-	public PreGameInfo preGameInfo;
+	protected Player player;
+	protected PreGameInfo preGameInfo;
+	private ComHandler comHandler;
+	public ClientHandler clientHandler;
 
 	@Override
 	public void dispose() {
@@ -58,14 +59,6 @@ public class GameApplet extends PApplet {
 	 */
 	public void setTextScale(float textScale) {
 		this.textScale = textScale;
-	}
-
-	/**
-	 * @param preGame
-	 *            the preGame to set
-	 */
-	public void setPreGame(PreGame preGame) {
-		this.preGame = preGame;
 	}
 
 	/**
@@ -144,10 +137,6 @@ public class GameApplet extends PApplet {
 		return textScale;
 	}
 
-	public PreGame getPreGame() {
-		return preGame;
-	}
-
 	public Updater getUpdater() {
 		return updater;
 	}
@@ -172,6 +161,27 @@ public class GameApplet extends PApplet {
 
 	public float getScale() {
 		return ((width / 1600.0F) < (height / 900.0F)) ? (width / 1600.0F) : (height / 900.0F);
+	}
+
+	public PreGameInfo getPreGameInfo() {
+		return preGameInfo;
+	}
+
+	public void setPreGameInfo(PreGameInfo preGame) {
+		this.preGameInfo = preGame;
+	}
+
+	public void write(String string, String string2) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public ComHandler getComHandler() {
+		return comHandler;
+	}
+
+	public void setComHandler(ComHandler comHandler) {
+		this.comHandler = comHandler;
 	}
 
 }

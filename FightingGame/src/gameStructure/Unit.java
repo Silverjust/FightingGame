@@ -1,5 +1,6 @@
 package gameStructure;
 
+import game.GameApplet;
 import game.HUD;
 import gameStructure.animation.Animation;
 import gameStructure.animation.Attack;
@@ -34,8 +35,8 @@ public abstract class Unit extends Entity {
 	public static void loadImages() {
 	}
 
-	public Unit(String[] c) {
-		super(c);
+	public Unit(GameApplet app, String[] c) {
+		super(app, c);
 		if (c != null) {
 			xTarget = c.length > 5 ? Float.parseFloat(c[5]) : getX();
 			yTarget = c.length > 6 ? Float.parseFloat(c[6]) : getY();

@@ -4,8 +4,6 @@ import java.util.Collections;
 
 import gameStructure.EntityHeightComparator;
 import gameStructure.GameObject;
-import main.ClientHandler;
-import main.preGame.MainPreGame.GameSettings;
 import shared.Player;
 import shared.Updater;
 import shared.User;
@@ -22,10 +20,10 @@ public class GameUpdater extends Updater {
 		input = new Input(app);
 		map = new Map(app, app.preGameInfo.map);
 
-		for (String key : app.preGame.users.keySet()) {
-			User user = app.preGame.users.get(key);
+		for (String key : app.getPreGameInfo().users.keySet()) {
+			User user = app.getPreGameInfo().users.get(key);
 			Player p = Player.createPlayer(user, app);
-			if (p.getUser().ip == ClientHandler.identification) {
+			if (p.getUser().ip == app.clientHandler.identification) {
 				p.color = app.color(0, 255, 100);
 				app.player = p;
 			} else
@@ -44,7 +42,7 @@ public class GameUpdater extends Updater {
 				gameObjects.add(toAdd.get(i));
 				namedObjects.put(GameObject.entityCounter, toAdd.get(i));
 				toAdd.get(i).number = GameObject.entityCounter;
-				toAdd.get(i).onSpawn(GameSettings.singlePlayer);
+				toAdd.get(i).onSpawn(PreGameInfo.isSinglePlayer());
 				map.mapCode.onEntitySpawn(toAdd.get(i));
 				toAdd.remove(i);
 			}
@@ -75,7 +73,7 @@ public class GameUpdater extends Updater {
 			map.mapCodeUpdate();
 			for (GameObject e : gameObjects) {
 				e.updateAnimation();
-				e.updateDecisions(GameSettings.singlePlayer);
+				e.updateDecisions(PreGameInfo.isSinglePlayer());
 				e.updateMovement();
 			}
 			if (selectionChanged) {
@@ -91,7 +89,7 @@ public class GameUpdater extends Updater {
 
 	@Override
 	public void send(String string) {
-		ClientHandler.send(string);
+		app.clientHandler.send(string);
 	}
 
 	@Override

@@ -2,10 +2,10 @@ package game;
 
 import java.util.ArrayList;
 
+import entity.MainBuilding;
 import entity.neutral.KeritMine;
 import entity.neutral.SandboxBuilding;
 import gameStructure.GameObject;
-import gameStructure.MainBuilding;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
 
@@ -63,7 +63,7 @@ public class MapHandler {
 	}
 
 	public void saveMap(String intName, String name) {
-		JSONObject oldMap = app.loadJSONObject("data/" + app.preGame.map + ".json");
+		JSONObject oldMap = app.loadJSONObject("data/" + app.getPreGameInfo().map + ".json");
 		JSONObject map = new JSONObject();
 		map.setString("name", name);
 		map.setString("descr", " ");

@@ -8,11 +8,11 @@ import champs.ArmorShred;
 import champs.TestProjectile;
 import champs.Ticul;
 import game.GameApplet;
+import game.PreGameInfo;
 import gameStructure.GameObject;
 import gameStructure.baseBuffs.Buff;
 import gameStructure.baseBuffs.Root;
 import gameStructure.baseBuffs.Slow;
-import main.preGame.MainPreGame.GameSettings;
 import processing.data.JSONObject;
 
 public class ContentListManager {
@@ -109,10 +109,10 @@ public class ContentListManager {
 	 */
 
 	public static JSONObject getModeMaps() {
-		if (GameSettings.campain) {
-			if (GameApplet.preGame.getUser("").nation != null && GameApplet.preGame.getUser("").nation != Nation.NEUTRAL) {
+		if (PreGameInfo.isCampain()) {
+			if (GameApplet.getPreGameInfo().getUser("").nation != null && GameApplet.getPreGameInfo().getUser("").nation != Nation.NEUTRAL) {
 				return contentList.getJSONObject("maps").getJSONObject("campain")
-						.getJSONObject(GameApplet.preGame.getUser("").nation.toString());
+						.getJSONObject(GameApplet.getPreGameInfo().getUser("").nation.toString());
 			} else {
 				return new JSONObject();
 			}

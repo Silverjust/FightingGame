@@ -40,9 +40,9 @@ public abstract class MapCode {
 			looserP.gameState = GameState.LOST;
 			if (looserP == app.player) {
 				app.updater.gameState = GameState.LOST;
-				app.preGame.write("GAME", "you lost the game");
+				app.write("GAME", "you lost the game");
 			} else {
-				app.preGame.write("GAME", looserP.getUser().name + " lost the game");
+				app.write("GAME", looserP.getUser().name + " lost the game");
 
 				int nPlayersInGame = 0;
 				for (String key : app.updater.players.keySet()) {
@@ -65,7 +65,7 @@ public abstract class MapCode {
 					app.updater.gameState = GameState.WON;
 					if (app.player != null)
 						app.player.gameState = GameState.WON;
-					app.preGame.write("GAME", "you win");
+					app.write("GAME", "you win");
 					finished = true;
 				}
 			}

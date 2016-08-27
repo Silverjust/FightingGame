@@ -1,6 +1,7 @@
 package main;
 
 import g4p_controls.G4P;
+import game.ClientHandler;
 import game.GameApplet;
 import game.GameDrawer;
 import game.HUD;
@@ -78,7 +79,7 @@ public class MainApp extends PApplet {
 			startPage.update();
 			break;
 		case PREGAME:
-			GameApplet.preGame.update();
+			GameApplet.getPreGameInfo().update();
 			break;
 		case LADESCREEN:
 			GameApplet.loader.update();
@@ -125,8 +126,8 @@ public class MainApp extends PApplet {
 				GameApplet.updater.send(Coms.PAUSE + " true");
 			if (startPage != null)
 				startPage.dispose();
-			if (GameApplet.preGame != null)
-				GameApplet.preGame.dispose();
+			if (GameApplet.getPreGameInfo() != null)
+				GameApplet.getPreGameInfo().dispose();
 			ProfileHandler.dispose();
 			HUD.dispose();
 			// TODO close all ingame sounds

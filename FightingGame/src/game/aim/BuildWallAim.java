@@ -21,8 +21,8 @@ public class BuildWallAim extends BuildAim {
 	public void update() {
 		if (isStartWall) {
 			float x, y;
-			x = Building.xToGrid(Building.gridToX());
-			y = Building.xToGrid(Building.gridToY());
+			x = Building.xToGrid(Building.gridToX(app.mouseX));
+			y = Building.xToGrid(Building.gridToY(player.app.mouseY));
 			if (canPlaceAt(x, y)) {
 				GameApplet.app.tint(255, 150);
 			} else {
@@ -32,8 +32,8 @@ public class BuildWallAim extends BuildAim {
 			GameApplet.app.tint(255);
 		} else {
 			float x1 = xStartWall, y1 = yStartWall;
-			float x2 = Building.xToGrid(Building.gridToX()), y2 = Building
-					.xToGrid(Building.gridToY());
+			float x2 = Building.xToGrid(Building.gridToX(app.mouseX)), y2 = Building
+					.xToGrid(Building.gridToY(player.app.mouseY));
 			float speed = buildable.getRadius() * 2;
 			while (PApplet.dist(x1, y1, x2, y2) > speed) {
 				x1 = (x1 + (x2 - x1) / PApplet.dist(x1, y1, x2, y2) * (speed));

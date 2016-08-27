@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import champs.TestProjectile;
 import game.GameApplet;
 import game.HUD;
-import game.ImageHandler;
 import gameStructure.animation.Death;
 import gameStructure.baseBuffs.Buff;
 import processing.core.PApplet;
@@ -43,8 +42,8 @@ public class Entity extends GameObject {
 	private ArrayList<Buff> buffs = new ArrayList<Buff>();
 	private ArrayList<Buff> buffsToRemove = new ArrayList<Buff>();
 
-	public Entity(String[] c) {
-		super(c);
+	public Entity(GameApplet app, String[] c) {
+		super(app, c);
 	}
 
 	@Override
@@ -53,7 +52,8 @@ public class Entity extends GameObject {
 	}
 
 	public void sendDamage(TestProjectile testProjectile, Damage damage, Player player, String origin) {
-		GameApplet.updater.send(Coms.HIT + " " + number + " " + damage.get() + " " + player.getUser().ip + " " + origin);
+		player.app.getUpdater()
+				.send(Coms.HIT + " " + number + " " + damage.get() + " " + player.getUser().ip + " " + origin);
 	}
 
 	@Override
@@ -125,12 +125,12 @@ public class Entity extends GameObject {
 	void drawHpBar() {
 		int h = 5;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, hpBarLength, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					hpBarLength * getCurrentHp() / getTotalHp(), h);
-			GameApplet.app.tint(255);
+			player.app.fill(0, 150);
+			player.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, hpBarLength, h);
+			player.app.tint(player.color);
+			player.app.getDrawer().imageHandler.drawImage(player.app, hpImg, xToGrid(getX()),
+					yToGrid(getY()) - getRadius() * 1.5f, hpBarLength * getCurrentHp() / getTotalHp(), h);
+			player.app.tint(255);
 		}
 	}
 

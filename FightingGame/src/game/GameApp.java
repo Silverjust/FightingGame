@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 
 import ddf.minim.Minim;
 import g4p_controls.G4P;
-import main.ClientHandler;
 import main.Listener;
 import main.appdata.ProfileHandler;
 import main.appdata.SettingHandler;
@@ -30,6 +29,7 @@ public class GameApp extends GameApplet {
 	}
 
 	PFont font;
+	private SettingHandler settingHandler;
 
 	public void setup() {
 		size(displayWidth, displayHeight, P2D);
@@ -39,7 +39,9 @@ public class GameApp extends GameApplet {
 		frame.addWindowListener(new Listener());
 		// frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		// frame.setVisible(true);
-		frameRate(60);
+		String[] a = loadStrings("data/data/changelog.txt");
+		System.out.println("GameApp.setup()" + a);
+
 		font = createFont("Aharoni Fett", 40);
 		setTextScale(0.5F);// so ungef‰r
 		setFont(font);
@@ -50,7 +52,8 @@ public class GameApp extends GameApplet {
 
 		setMinim(new Minim(this));
 
-		SettingHandler.setup();
+		settingHandler = new SettingHandler(this);
+		VersionControle.setup(this);
 		VersionControle.versionControle();
 	}
 
@@ -59,6 +62,7 @@ public class GameApp extends GameApplet {
 		case HAUPTLADESCREEN:
 			break;
 		case PREGAME:
+			setPreGameInfo(new PreGameInfo(this));
 			break;
 		case LADESCREEN:
 			loader.update();
@@ -95,13 +99,13 @@ public class GameApp extends GameApplet {
 	}
 
 	public void clientEvent(Client someClient) {
-		ClientHandler.clientEvent(someClient);
+		clientHandler.clientEvent(someClient);
 	}
 
 	@Override
 	public void dispose() {// Player in schlieﬂen
 		try {
-			if (ClientHandler.client != null)
+			if (clientHandler.client != null)
 				updater.send(Coms.PAUSE + " true");
 			ProfileHandler.dispose();
 			HUD.dispose();

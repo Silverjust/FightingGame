@@ -1,9 +1,8 @@
 package server;
 
-import main.ClientHandler;
-
 import java.util.HashMap;
 
+import game.ClientHandler;
 import game.GameApplet;
 import gameStructure.GameObject;
 import processing.core.PApplet;

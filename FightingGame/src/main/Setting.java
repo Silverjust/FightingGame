@@ -21,11 +21,16 @@ public class Setting {
 	public char[] baseShortcuts = new char[7];
 	public char[] hotKeys = new char[10];
 	private JSONObject shortcutsJson;
+	private GameApplet app;
+
+	public Setting(GameApplet app) {
+		this.app = app;
+	}
 
 	public void fromJSON(String s) {
 		JSONObject o = null;
 		try {
-			o = GameApplet.app.loadJSONObject(s);
+			o = app.loadJSONObject(s);
 		} catch (Exception e) {
 			o = new JSONObject();
 		}
@@ -53,7 +58,7 @@ public class Setting {
 			}
 		}
 
-		GameApplet.app.saveJSONObject(o, s);
+		app.saveJSONObject(o, s);
 	}
 
 	private void fillEmptySettings(JSONObject o) {

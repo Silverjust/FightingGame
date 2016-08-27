@@ -1,12 +1,12 @@
 package entity;
 
-import main.preGame.MainPreGame.GameSettings;
 import java.util.ArrayList;
 
 import champs.Rock;
 import entity.neutral.*;
 import game.GameApplet;
 import game.HUD;
+import game.PreGameInfo;
 import gameStructure.Spell;
 import gameStructure.actives.BuildWallActive;
 import gameStructure.GameObject;
@@ -44,7 +44,7 @@ public class ActivesGridHandler {
 			removeActives();
 			this.nation = nation;
 			nation.getNationInfo().setupActives(baseGrid, this);
-			if (GameSettings.sandbox) {
+			if (PreGameInfo.isSandbox()) {
 				baseGrid.addActive(7, 1, SandboxBuilding.BuildSetup.class);
 			}
 		}

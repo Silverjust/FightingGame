@@ -1,8 +1,6 @@
 package gameStructure;
 
-import game.AimHandler;
 import game.GameApplet;
-import game.ImageHandler;
 import game.aim.BuildAim;
 import processing.core.PGraphics;
 import processing.core.PImage;
@@ -15,8 +13,8 @@ public abstract class Building extends GameObject {
 		// setTarget = ImageHandler.load(path, "setTarget");
 	}
 
-	public Building(String[] c) {
-		super(c);
+	public Building(GameApplet app, String[] c) {
+		super(app, c);
 	}
 
 	@Override
@@ -30,16 +28,17 @@ public abstract class Building extends GameObject {
 	public void renderUnder() {
 		if (this instanceof Trainer && isAlive()) {
 			Trainer t = (Trainer) this;
-			GameApplet.app.stroke(player.color);
-			GameApplet.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(t.getXTarget()), yToGrid(t.getYTarget()));
-			GameApplet.app.stroke(0);
+			player.app.stroke(player.color);
+			player.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(t.getXTarget()), yToGrid(t.getYTarget()));
+			player.app.stroke(0);
 		}
-		if (this instanceof Commander && isAlive() && AimHandler.getAim() instanceof BuildAim) {
+		if (this instanceof Commander && isAlive()
+				&& player.app.getDrawer().getAimHandler().getAim() instanceof BuildAim) {
 			Commander c = (Commander) this;
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, selectedImg, xToGrid(getX()), yToGrid(getY()), c.commandRange() * 2,
-					c.commandRange());
-			GameApplet.app.tint(255);
+			player.app.tint(player.color);
+			player.app.getDrawer().imageHandler.drawImage(player.app, selectedImg, xToGrid(getX()), yToGrid(getY()),
+					c.commandRange() * 2, c.commandRange());
+			player.app.tint(255);
 		}
 	}
 	/*

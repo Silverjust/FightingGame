@@ -2,7 +2,7 @@ package entity.neutral;
 
 import entity.ActivesGrid;
 import entity.ActivesGridHandler;
-import gameStructure.MainBuilding;
+import entity.MainBuilding;
 import shared.NationInfo;
 
 public class NeutralInfo extends NationInfo {

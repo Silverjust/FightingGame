@@ -2,18 +2,18 @@ package shared;
 
 import javax.naming.NoInitialContextException;
 
-import main.ClientHandler;
-import main.preGame.MainPreGame.GameSettings;
 import processing.core.PApplet;
 import server.Protocol;
 import server.ServerApp;
 import shared.Helper.Timer;
 import shared.Updater.GameState;
 import g4p_controls.GCScheme;
+import game.ClientHandler;
 import game.GameApplet;
 import game.GameDrawer;
 import game.ImageHandler;
 import game.MapHandler;
+import game.PreGameInfo;
 import gameStructure.GameObject;
 
 public class CommandHandler {
@@ -58,7 +58,7 @@ public class CommandHandler {
 				ClientHandler.send(command.replaceFirst("/", "<"));
 				break;
 			case "/load":
-				GameApplet.preGame.startLoading();
+				GameApplet.getPreGameInfo().startLoading();
 				break;
 			case "/ready":
 				GameApplet.loader.tryStartGame();
@@ -85,7 +85,7 @@ public class CommandHandler {
 				MapHandler.saveMap(c[1], c[2]);
 				break;
 			case "/fps":
-				GameApplet.preGame.write("fps", GameApplet.app.frameRate + "");
+				GameApplet.getPreGameInfo().write("fps", GameApplet.app.frameRate + "");
 				break;
 			case "/scheme":
 				i = Integer.parseInt(c[1]);
@@ -97,9 +97,9 @@ public class CommandHandler {
 					Protocol.createFile();
 					break;
 			case "/rf":
-				if (GameSettings.singlePlayer || GameApplet.app instanceof ServerApp) {
+				if (PreGameInfo.isSinglePlayer() || GameApplet.app instanceof ServerApp) {
 					int cooldown = (int) (Float.parseFloat(c[1]) * 60 * 1000);
-					GameApplet.preGame.write("GAME", "resfreeze in " + (cooldown / 60.0 / 1000.0));
+					GameApplet.getPreGameInfo().write("GAME", "resfreeze in " + (cooldown / 60.0 / 1000.0));
 					Updater.resfreeze = new Timer(cooldown);
 					if (GameApplet.app instanceof ServerApp)
 						((ServerApp) GameApplet.app).serverHandler.doProtocol = true;
@@ -136,17 +136,17 @@ public class CommandHandler {
 		} catch (IllegalArgumentException e) {
 			System.err.println("error " + command);
 			e.printStackTrace();
-			GameApplet.preGame.write("Chat", "error");
+			GameApplet.getPreGameInfo().write("Chat", "error");
 		} catch (ClassCastException e) {
 			System.err.println("wrong entity " + command);
-			GameApplet.preGame.write("Chat", "wrong entity");
+			GameApplet.getPreGameInfo().write("Chat", "wrong entity");
 		} catch (NoInitialContextException e) {
 			System.err.println(command + " was not found");
-			GameApplet.preGame.write("Chat", "command was not found");
+			GameApplet.getPreGameInfo().write("Chat", "command was not found");
 		} catch (Exception e) {
 			System.err.println("command error in " + command);
 			e.printStackTrace();
-			GameApplet.preGame.write("Chat", "command error");
+			GameApplet.getPreGameInfo().write("Chat", "command error");
 		}
 
 	}

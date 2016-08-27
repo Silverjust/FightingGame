@@ -15,11 +15,11 @@ public class Projectile extends GameObject {
 	private ArrayList<Entity> collidedEntities = new ArrayList<Entity>();
 	protected String origin;
 
-	public Projectile(String[] c) {
-		super(c);
+	public Projectile(GameApplet app, String[] c) {
+		super(app, c);
 		if (c != null && c.length > 7) {
 			if (c[5].equals(HOMING)) {
-				targetObject = GameApplet.updater.getGameObject(Integer.parseInt(c[6]));
+				targetObject = app.getUpdater().getGameObject(Integer.parseInt(c[6]));
 				System.out.println("Projectile.Projectile() homing to" + targetObject);
 			} else {
 				xTarget = Float.parseFloat(c[5]);
@@ -33,7 +33,7 @@ public class Projectile extends GameObject {
 	@Override
 	public void updateMovement() {
 		if (isMoving()) {// ****************************************************
-			for (GameObject o : GameApplet.updater.getGameObjects()) {
+			for (GameObject o : player.app.getUpdater().getGameObjects()) {
 				if (o != this && o instanceof Entity) {
 					if (isCollision(o)) {
 						if (o.isInRange(getX(), getY(), o.getRadius() + getRadius()))
@@ -61,7 +61,7 @@ public class Projectile extends GameObject {
 
 	protected void onEnd() {
 		// setSight(0);
-		GameApplet.updater.send(Coms.REMOVE + " " + number);
+		player.app.getUpdater().send(Coms.REMOVE + " " + number);
 	}
 
 	protected void onHit(GameObject o) {

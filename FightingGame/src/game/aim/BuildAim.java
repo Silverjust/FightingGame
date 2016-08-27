@@ -33,8 +33,8 @@ public class BuildAim extends Aim {
 	@Override
 	public void update() {
 		float x, y;
-		x = Building.xToGrid(Building.gridToX());
-		y = Building.xToGrid(Building.gridToY());
+		x = Building.xToGrid(Building.gridToX(app.mouseX));
+		y = Building.xToGrid(Building.gridToY(player.app.mouseY));
 		if (canPlaceAt(x, y)) {
 			GameApplet.app.tint(255, 150);
 		} else {

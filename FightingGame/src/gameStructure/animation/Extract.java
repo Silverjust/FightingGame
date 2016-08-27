@@ -33,7 +33,7 @@ public class Extract extends Ability {
 				if (Updater.resfreeze != null && Updater.resfreeze.isNotOnCooldown()) {
 					if (isRFNew) {
 						System.out.println("Extract.updateAbility() resfreeze");
-						GameApplet.preGame.write("GAME", "resfreze");
+						GameApplet.getPreGameInfo().write("GAME", "resfreze");
 						isRFNew=false;
 					}
 				} else

@@ -16,12 +16,12 @@ public class Buff {
 	protected Timer timer;
 	private GameObject source;
 
-	public Buff(String[] c) {
+	public Buff(GameApplet app, String[] c) {
 		if (c != null) {
 			int n_o = Integer.parseInt(c[2]);
-			owner = (Entity) GameApplet.updater.getGameObject(n_o);
+			owner = (Entity) app.getUpdater().getGameObject(n_o);
 			int n_s = Integer.parseInt(c[3]);
-			source = (Entity) GameApplet.updater.getGameObject(n_s);
+			source = (Entity) app.getUpdater().getGameObject(n_s);
 			if (c.length > 4 && !c[4].equals("-"))
 				timer = new Timer(Integer.parseInt(c[4]));
 		}

@@ -2,9 +2,9 @@ package entity.robots;
 
 import processing.core.PGraphics;
 import processing.core.PImage;
+import entity.MainBuilding;
 import game.ImageHandler;
 import gameStructure.Commander;
-import gameStructure.MainBuilding;
 import gameStructure.animation.Animation;
 import gameStructure.animation.Death;
 

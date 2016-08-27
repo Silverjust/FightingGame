@@ -1,5 +1,6 @@
 package shared;
 
+import entity.MainBuilding;
 import entity.ahnen.AhnenInfo;
 import entity.aliens.AlienInfo;
 import entity.aliens.AlienMainBuilding;
@@ -9,7 +10,6 @@ import entity.neutral.NeutralInfo;
 import entity.robots.RobotsInfo;
 import entity.scientists.ScientistInfo;
 import game.GameApplet;
-import gameStructure.MainBuilding;
 
 public enum Nation {
 

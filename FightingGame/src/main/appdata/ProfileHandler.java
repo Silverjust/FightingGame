@@ -1,7 +1,7 @@
 package main.appdata;
 
 import game.GameApplet;
-import main.preGame.MainPreGame.GameSettings;
+import game.PreGameInfo;
 import processing.data.JSONObject;
 import shared.VersionControle;
 import shared.Updater.GameState;
@@ -64,7 +64,7 @@ public class ProfileHandler implements appdataInfos {
 	}
 
 	public static void gameEndCalculations(float enemyRate) {
-		if (newGame && (!GameSettings.singlePlayer)) {
+		if (newGame && (!PreGameInfo.isSinglePlayer())) {
 			newGame = false;
 
 			float rate = profile.getFloat("rate");

@@ -11,7 +11,7 @@ import shared.Mode;
 import shared.Helper.Timer;
 
 @SuppressWarnings("serial")
-public class ServerApp extends PApplet {
+public class ServerApp extends GameApplet {
 	public static void main(String args[]) {
 		System.out.println("starting Server...");
 		PApplet.main(new String[] { "server.ServerApp" });
@@ -29,11 +29,9 @@ public class ServerApp extends PApplet {
 		mode = Mode.PREGAME;
 		G4P.messagesEnabled(false);
 
-		GameApplet.setTextScale(1.4F);// so ungefär
+		setTextScale(1.4F);// so ungefär
 
-		GameApplet.setApp(this);
-
-		GameApplet.setPreGame(new ServerPreGame());
+		setPreGameInfo(new ServerPreGame());
 
 		gui = new GUI();
 		serverHandler = new ServerHandler();
@@ -47,7 +45,7 @@ public class ServerApp extends PApplet {
 		serverHandler.update();
 		switch (mode) {
 		case PREGAME:
-			GameApplet.preGame.update();
+			GameApplet.getPreGameInfo().update();
 			break;
 		case LADESCREEN:
 			GameApplet.loader.update();
@@ -77,7 +75,7 @@ public class ServerApp extends PApplet {
 	private void startRF() {
 		float time = (float) (((int) (Math.random() * 500.0)) / 100.0);
 		int cooldown = (int) (time * 60 * 1000);
-		GameApplet.preGame.write("GAME", "resfreeze in " + (cooldown / 60.0 / 1000.0));
+		GameApplet.getPreGameInfo().write("GAME", "resfreeze in " + (cooldown / 60.0 / 1000.0));
 		Updater.resfreeze = new Timer(cooldown);
 		if (GameApplet.app instanceof ServerApp)
 			((ServerApp) GameApplet.app).serverHandler.doProtocol = true;

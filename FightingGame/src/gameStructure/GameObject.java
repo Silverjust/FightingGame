@@ -38,19 +38,19 @@ public abstract class GameObject implements Coms {
 	protected String descr = " ";
 	protected String stats = " ";
 
-	public static void loadImages() {
-		String path = path(new GameObject(null) {
+	public static void loadImages(GameApplet app, ImageHandler imageHandler) {
+		String path = path(new GameObject(null, null) {
 		});
-		shadowImg = ImageHandler.load(path, "shadow");
-		selectedImg = ImageHandler.load(path, "selected");
-		hpImg = ImageHandler.load(path, "hp");
+		shadowImg = imageHandler.load(path, "shadow");
+		selectedImg = imageHandler.load(path, "selected");
+		hpImg = imageHandler.load(path, "hp");
 
 		// hit = ref.minim.loadSnippet("test.mp3");
 	}
 
-	public GameObject(String[] c) {
+	public GameObject(GameApplet app, String[] c) {
 		if (c != null) {
-			player = GameApplet.updater.getPlayer(c[2]);
+			player = app.getUpdater().getPlayer(c[2]);
 			setX(Float.parseFloat(c[3]));
 			setY(Float.parseFloat(c[4]));
 		}
@@ -92,7 +92,7 @@ public abstract class GameObject implements Coms {
 			drawCircle((int) (a.range * a.getCooldownPercent()));
 		}
 		if (this instanceof Unit) {
-			GameApplet.app.line(getX(), getY() / 2, ((Unit) this).xTarget, ((Unit) this).yTarget / 2);
+			player.app.line(getX(), getY() / 2, ((Unit) this).xTarget, ((Unit) this).yTarget / 2);
 		}
 	}
 
@@ -115,16 +115,17 @@ public abstract class GameObject implements Coms {
 	}
 
 	protected void drawShadow() {
-		ImageHandler.drawImage(GameApplet.app, shadowImg, xToGrid(getX()), yToGrid(getY()), getRadius() * 2, getRadius());
+		player.app.getDrawer().imageHandler.drawImage(player.app, shadowImg, xToGrid(getX()), yToGrid(getY()),
+				getRadius() * 2, getRadius());
 	}
 
 	protected void drawTaged() {
 		/** just for debug */
 		if (isTaged) {
-			GameApplet.app.fill(0, 0);
-			GameApplet.app.stroke(player.color);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 0.3f, getRadius() * 2, getRadius() * 1.5f);
-			GameApplet.app.stroke(0);
+			player.app.fill(0, 0);
+			player.app.stroke(player.color);
+			player.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 0.3f, getRadius() * 2, getRadius() * 1.5f);
+			player.app.stroke(0);
 		}
 		isTaged = false;
 	}
@@ -132,37 +133,39 @@ public abstract class GameObject implements Coms {
 	public void drawBar(float f) {
 		int h = 1;
 		if (true) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(200);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY() - h * 3) - getRadius() * 1.5f,
-					getRadius() * 2 * f, h);
-			GameApplet.app.tint(255);
+			player.app.fill(0, 150);
+			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getRadius() * 1.5f, getRadius() * 2, h);
+			player.app.tint(200);
+			player.app.getDrawer().imageHandler.drawImage(player.app, hpImg, xToGrid(getX()),
+					yToGrid(getY() - h * 3) - getRadius() * 1.5f, getRadius() * 2 * f, h);
+			player.app.tint(255);
 		}
 	}
 
 	public void drawBar(float f, int c) {
 		int h = 1;
 		if (true) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(c);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY() - h * 3) - getRadius() * 1.5f,
-					getRadius() * 2 * f, h);
-			GameApplet.app.tint(255);
+			player.app.fill(0, 150);
+			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getRadius() * 1.5f, getRadius() * 2, h);
+			player.app.tint(c);
+			player.app.getDrawer().imageHandler.drawImage(player.app, hpImg, xToGrid(getX()),
+					yToGrid(getY() - h * 3) - getRadius() * 1.5f, getRadius() * 2 * f, h);
+			player.app.tint(255);
 		}
 	}
 
 	protected void drawCircle(int r) {
-		ImageHandler.drawImage(GameApplet.app, selectedImg, xToGrid(getX()), yToGrid(getY()), r * 2, r);
+		player.app.getDrawer().imageHandler.drawImage(player.app, selectedImg, xToGrid(getX()), yToGrid(getY()), r * 2,
+				r);
 	}
 
 	protected void drawCircle(float x, float y, byte range) {
-		ImageHandler.drawImage(GameApplet.app, selectedImg, xToGrid(x), yToGrid(y), range * 2, range);
+		player.app.getDrawer().imageHandler.drawImage(player.app, selectedImg, xToGrid(x), yToGrid(y), range * 2,
+				range);
 	}
 
 	void drawLine(float tx, float ty) {
-		GameApplet.app.line(xToGrid(getX()), yToGrid(getY()), tx, ty / 2);
+		player.app.line(xToGrid(getX()), yToGrid(getY()), tx, ty / 2);
 	}
 
 	public void drawOnMinimap(PGraphics graphics) {
@@ -182,7 +185,7 @@ public abstract class GameObject implements Coms {
 
 	public void sendAnimation(String s) {
 		if (s != "") {
-			GameApplet.updater.send("<execute " + number + " " + s);
+			player.app.getUpdater().send("<execute " + number + " " + s);
 		}
 	}
 
@@ -214,12 +217,12 @@ public abstract class GameObject implements Coms {
 		return y / 2;
 	}
 
-	public static float gridToX() {
-		return ((GameApplet.app.mouseX - GameDrawer.xMapOffset) / GameDrawer.zoom);
+	public static float gridToX(int x) {
+		return ((x - GameDrawer.xMapOffset) / GameDrawer.zoom);
 	}
 
-	public static float gridToY() {
-		return ((GameApplet.app.mouseY - GameDrawer.yMapOffset) / GameDrawer.zoom * 2);
+	public static float gridToY(int y) {
+		return ((y - GameDrawer.yMapOffset) / GameDrawer.zoom * 2);
 	}
 
 	public boolean isCollision(GameObject e) {
@@ -244,7 +247,7 @@ public abstract class GameObject implements Coms {
 
 	public boolean isEnemyTo(Entity e) {
 		return (e != null) && (this.player != null) && (e.player != null) && (this.player != e.player)
-				&& (this.player != GameApplet.updater.neutral) && (e.player != GameApplet.updater.neutral) //
+				&& (this.player != player.app.getUpdater().neutral) && (e.player != player.app.getUpdater().neutral) //
 				&& isAlive() && e.isAlive();
 	}
 
@@ -266,11 +269,11 @@ public abstract class GameObject implements Coms {
 
 	public boolean isVisibleTo(Player p) {
 		boolean isVisible = false;
-		for (GameObject spotter : GameApplet.updater.getGameObjects()) { 
+		for (GameObject spotter : player.app.getUpdater().getGameObjects()) {
 			if (spotter.player == p && spotter.getSight() > 0
 					&& spotter.isInRange(getX(), getY(), spotter.getSight() + getRadius()))
 				isVisible = true;
-			if (player == GameApplet.updater.neutral)
+			if (player == player.app.getUpdater().neutral)
 				isVisible = true;
 		}
 		return isVisible;

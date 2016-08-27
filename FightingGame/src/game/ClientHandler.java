@@ -1,29 +1,27 @@
-package main;
+package game;
 
-import game.GameApplet;
-import main.preGame.MainPreGame;
-import main.preGame.MainPreGame.GameSettings;
 import shared.Client;
-import shared.ComHandler;
 
 public class ClientHandler {
-	public static String identification;
+	public String identification;
 
-	public static Client client;
+	public Client client;
 
-	public static char startSymbol = '<';
-	public static char endSymbol = '>';
+	public char startSymbol = '<';
+	public char endSymbol = '>';
 
-	private static boolean reportCommunication = false;
+	private boolean reportCommunication = false;
 
-	public static void setup(String ip) {
+	private GameApplet app;
 
-		if (GameSettings.singlePlayer) {
+	public ClientHandler(GameApplet app, String serverIp) {
+		this.app = app;
+		if (PreGameInfo.isSinglePlayer()) {
 			System.out.println("SinglePlayer");
 			identification = "1";
 		} else {
 			try {
-				client = new Client(GameApplet.app, ip, 5204);
+				client = new Client(app, serverIp, 5204);
 				identification = client.myIp();
 				// identification = socket.getLocalAddress().toString()
 				// .substring(1);
@@ -40,24 +38,23 @@ public class ClientHandler {
 				System.out.println(identification);
 			}
 		}
-		((MainPreGame) GameApplet.preGame).setupPlayer();
 	}
 
-	public static void update() {
+	public void update() {
 		// wenn inaktiv, gameupdater pausieren
 		/*
 		 * if (client.available() > 0) { read(); }
 		 */
 	}
 
-	public static void clientEvent(Client someClient) {
+	public void clientEvent(Client someClient) {
 		recieve();
 	}
 
-	public static void send(String s) {
+	public void send(String s) {
 		if (s != null) {
-			if (GameSettings.singlePlayer) {
-				ComHandler.executeCom(s);
+			if (PreGameInfo.isSinglePlayer()) {
+				app.getComHandler().executeCom(s);
 			} else {
 				if (client != null && client.active()) {
 					client.write(s + endSymbol);
@@ -70,14 +67,14 @@ public class ClientHandler {
 		}
 	}
 
-	public static void recieve() {
+	public void recieve() {
 		if (client != null) {
 			String in = "" + client.readStringUntil(endSymbol);
 			if (in != null && !in.equals("null")) {
 				if (reportCommunication)
 					System.out.println("in: " + in);
 				if (in.charAt(0) == startSymbol) {
-					ComHandler.executeCom(in);
+					app.getComHandler().executeCom(in);
 				}
 			}
 		}

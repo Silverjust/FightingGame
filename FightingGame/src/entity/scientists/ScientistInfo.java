@@ -2,6 +2,7 @@ package entity.scientists;
 
 import entity.ActivesGrid;
 import entity.ActivesGridHandler;
+import entity.MainBuilding;
 import entity.neutral.ArcanumMine;
 import entity.neutral.KeritMine;
 import entity.neutral.PaxDrillTower;
@@ -10,7 +11,6 @@ import entity.scientists.ScientistKaserne.EquipActive;
 import game.aim.MineAim.BuildMineActive;
 import gameStructure.Building;
 import gameStructure.Commander;
-import gameStructure.MainBuilding;
 import gameStructure.Trainer;
 import gameStructure.Unit;
 import shared.NationInfo;

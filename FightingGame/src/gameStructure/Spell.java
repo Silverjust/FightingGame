@@ -28,9 +28,12 @@ public abstract class Spell {
 
 	static int buttonWidth = 50;
 
-	public Spell(PlayerInterface inter, int pos, PImage symbol) {
+	private GameApplet app;
 
-		button = new GGameButton(GameApplet.app, getXbyPos(inter, pos), getYbyPos(inter, pos), buttonWidth, buttonWidth,
+	public Spell(GameApplet app, PlayerInterface inter, int pos, PImage symbol) {
+
+		this.app = app;
+		button = new GGameButton(app, getXbyPos(inter, pos), getYbyPos(inter, pos), buttonWidth, buttonWidth,
 				HUD.buttonImageFilename());
 		button.setText(PlayerInterface.getKeyFromPos(pos));
 		button.setSymbol(symbol);
@@ -71,9 +74,9 @@ public abstract class Spell {
 	}
 
 	public void handleActiveEvents(GGameButton gamebutton, GEvent event) {
-		if (GameApplet.app.keyPressed || GameApplet.app.mouseButton != PConstants.RIGHT) {
+		if (app.keyPressed || app.mouseButton != PConstants.RIGHT) {
 			if (event == GEvent.PRESSED && gamebutton.isVisible() && isNotOnCooldown()
-					&& GameApplet.updater.gameState == GameState.PLAY) {
+					&& app.getUpdater().gameState == GameState.PLAY) {
 				onActivation();
 				// startCooldown();
 			}

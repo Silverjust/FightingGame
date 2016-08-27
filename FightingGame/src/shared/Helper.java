@@ -74,7 +74,7 @@ public class Helper {
 	}
 
 	public static String ipToName(String ip) {
-		User u = GameApplet.preGame.getUser(ip);
+		User u = GameApplet.getPreGameInfo().getUser(ip);
 		String name = null;
 		if (u != null)
 			name = u.name;

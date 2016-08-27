@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.naming.NoInitialContextException;
 
+import game.ClientHandler;
 import game.GameApplet;
 import game.HUD;
 import game.MainLoader;
@@ -13,7 +14,6 @@ import gameStructure.Entity;
 import gameStructure.GameObject;
 import gameStructure.Unit;
 import gameStructure.baseBuffs.Buff;
-import main.ClientHandler;
 import main.MainApp;
 import main.appdata.ProfileHandler;
 import main.preGame.MainPreGame;
@@ -24,19 +24,22 @@ import server.ServerUpdater;
 import shared.Updater.GameState;;
 
 public class ComHandler implements Coms {
-	private static ContentListManager contentListHandler;
-	private static Updater updater;
+	private ContentListManager contentListHandler;
+	private Updater updater;
+	private GameApplet app;
 
-	public static void addUpdater(Updater updater2) {
+	public void addUpdater(Updater updater2) {
 		updater = updater2;
 	}
 
-	public static void setup() {
-		contentListHandler = ((MainApp) GameApplet.app).contentListHandler;
+	public ComHandler(GameApplet app) {
+
+		this.app = app;
+		contentListHandler = app.getContentListHandler();
 	}
 
 	@SuppressWarnings("unused")
-	public static void executeCom(String com) {
+	public void executeCom(String com) {
 		String[] c = PApplet.splitTokens(com, S + ClientHandler.endSymbol);
 
 		try {
@@ -129,73 +132,73 @@ public class ComHandler implements Coms {
 				}
 				break;
 			case SAY:
-				GameApplet.preGame.write(c[1], c);
+				app.getPreGameInfo().write(c[1], c);
 				break;
 
 			// before game
 			case IDENTIFY:
 				if (c[1].equals("reconnect")) {
-					if (((MainApp) GameApplet.app).mode == Mode.HAUPTMENUE) {
-						while (((MainPreGame) GameApplet.preGame).display == null) {
+					if (app.getMode() == Mode.HAUPTMENUE) {
+						while (((MainPreGame) app.getPreGameInfo()).display == null) {
 						}
-						GameApplet.app.delay(10);
-						((MainPreGame) GameApplet.preGame).display.dispose();
-						GameApplet.loader = new MainLoader();
+						app.delay(10);
+						((MainPreGame) app.getPreGameInfo()).display.dispose();
+						app.setLoader(new MainLoader(app));
 						System.out.println("reconnect");
-						((MainLoader) GameApplet.loader).isReconnectLoad = true;
-						((MainApp) GameApplet.app).mode = Mode.LADESCREEN;
+						((MainLoader) app.getLoader()).isReconnectLoad = true;
+						app.setMode(Mode.LADESCREEN);
 					} else {// other player identify
 						ClientHandler.send(
-								IDENTIFYING + S + ClientHandler.identification + S + GameApplet.preGame.getUser("").name);
+								IDENTIFYING + S + ClientHandler.identification + S + app.getPreGameInfo().getUser("").name);
 					}
 				} else {
 					if (c[1].equals("server")) {
-						((MainApp) GameApplet.app).mode = Mode.PREGAME;
+						app.setMode(Mode.PREGAME);
 					}
-					System.out.println("identifying " + GameApplet.preGame.getUser("").name);
+					System.out.println("identifying " + app.getPreGameInfo().getUser("").name);
 					ClientHandler.send(IDENTIFYING + " " + ClientHandler.identification + S
-							+ GameApplet.preGame.getUser("").name + S + VersionControle.version);
-					if (GameApplet.preGame.getUser("").nation != null)
+							+ app.getPreGameInfo().getUser("").name + S + VersionControle.version);
+					if (app.getPreGameInfo().getUser("").nation != null)
 						ClientHandler.send(SET_NATION + S + ClientHandler.identification + S
-								+ GameApplet.preGame.getUser("").nation.toString());
-					if (GameApplet.preGame.map != null)
-						ClientHandler.send(SET_MAP + S + ClientHandler.identification + S + GameApplet.preGame.map);
+								+ app.getPreGameInfo().getUser("").nation.toString());
+					if (app.getPreGameInfo().map != null)
+						ClientHandler.send(SET_MAP + S + ClientHandler.identification + S + app.getPreGameInfo().map);
 					// TODO send color
 					// nur an clienthandler
 
 				}
 				break;
 			case IDENTIFYING:
-				GameApplet.preGame.addPlayer(c[1], c[2]);
+				app.getPreGameInfo().addPlayer(c[1], c[2]);
 				if (c.length > 3 && c[3] != null && !c[3].equals(VersionControle.version)) {
 					System.err.println("player " + c[2] + " has different version than Server " + c[3] + " "
 							+ VersionControle.version + " (VersionCombiner.java:11)");
-					GameApplet.preGame.write("WARNING", "player " + c[2] + " has different version than Server " + c[3] + " "
+					app.getPreGameInfo().write("WARNING", "player " + c[2] + " has different version than Server " + c[3] + " "
 							+ VersionControle.version + " (VersionCombiner.java:11)");
 				}
 				break;
 			case SET_NATION:
 				// System.out.println(c[2]);
-				GameApplet.preGame.users.get(c[1]).nation = Nation.fromString(c[2]);
+				app.getPreGameInfo().users.get(c[1]).nation = Nation.fromString(c[2]);
 				break;
 			case SET_MAP:
-				GameApplet.preGame.setMap(c[2]);
+				app.getPreGameInfo().setMap(c[2]);
 				break;
 			case LOAD:
-				GameApplet.preGame.startLoading();
+				app.getPreGameInfo().startLoading();
 				break;
 			case RECONNECT:
 				((ServerUpdater) updater).reconnect();
 				break;
 			case READY:
 				// System.out.println(ref.preGame.player);
-				GameApplet.preGame.users.get(c[1]).isReady = true;
-				GameApplet.loader.tryStartGame();
+				app.getPreGameInfo().users.get(c[1]).isReady = true;
+				app.getLoader().tryStartGame();
 				break;
 			case START_GAME:
 				if (Updater.resfreeze != null)
 					Updater.resfreeze.startCooldown();
-				GameApplet.loader.startGame();
+				app.getLoader().startGame();
 				break;
 			case PAUSE:
 				if (Boolean.valueOf(c[1])) {
@@ -209,10 +212,10 @@ public class ComHandler implements Coms {
 			case GAMEEND:
 				boolean finished = updater.map.mapCode.handleGameEnd(c);
 				if (finished) {
-					if (GameApplet.app instanceof ServerApp) {
+					if (app instanceof ServerApp) {
 						Protocol.createFile();
-					} else if (GameApplet.player.gameState != GameState.PLAY) {
-						HUD.menue = new endGameMenu();
+					} else if (app.getPlayer().gameState != GameState.PLAY) {
+						HUD.menue = new endGameMenu(app);
 						float f = Float.parseFloat(c[3]);
 						ProfileHandler.gameEndCalculations(f);
 					}
@@ -223,10 +226,10 @@ public class ComHandler implements Coms {
 				throw new NoInitialContextException("no command found");
 			}
 		} catch (IllegalArgumentException e) {
-			 e.printStackTrace();
+			e.printStackTrace();
 			// can be ignored
 		} catch (ClassCastException e) {
-			 e.printStackTrace();
+			e.printStackTrace();
 			// can be ignored
 		} catch (InvocationTargetException e) {
 			System.err.println("com error in " + com);

@@ -2,8 +2,8 @@ package main.preGame;
 
 import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
+import game.ClientHandler;
 import game.GameApplet;
-import main.ClientHandler;
 import main.MainApp;
 import shared.Mode;
 import shared.Nation;
@@ -30,7 +30,7 @@ public class ChampSelect {
 					nationButtons[i].setSwitch(true);
 					nation = Nation.fromNumber(i);
 					ClientHandler
-							.send("<setNation " + GameApplet.preGame.getUser("").ip + " " + Nation.fromNumber(i).toString());
+							.send("<setNation " + GameApplet.getPreGameInfo().getUser("").ip + " " + Nation.fromNumber(i).toString());
 				} else {
 					nationButtons[i].setSwitch(false);
 				}
