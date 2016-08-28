@@ -1,6 +1,6 @@
 package entity.scientists;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.GameObject;
 import gameStructure.Unit;
 
@@ -31,8 +31,8 @@ public abstract class Lab extends Unit implements Equiping {
 
 	@Override
 	public void onSpawn(boolean isServer) {
-		GameApplet.updater.selectionChanged = true;
-		GameApplet.updater.keepGrid = true;
+		GameApplet.GameBaseApp.selectionChanged = true;
+		GameApplet.GameBaseApp.keepGrid = true;
 	}
 
 	@Override

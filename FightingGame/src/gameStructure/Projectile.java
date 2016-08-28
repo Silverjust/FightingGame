@@ -2,7 +2,7 @@ package gameStructure;
 
 import java.util.ArrayList;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import processing.core.PApplet;
 import shared.Coms;
 
@@ -15,7 +15,7 @@ public class Projectile extends GameObject {
 	private ArrayList<Entity> collidedEntities = new ArrayList<Entity>();
 	protected String origin;
 
-	public Projectile(GameApplet app, String[] c) {
+	public Projectile(GameBaseApp app, String[] c) {
 		super(app, c);
 		if (c != null && c.length > 7) {
 			if (c[5].equals(HOMING)) {

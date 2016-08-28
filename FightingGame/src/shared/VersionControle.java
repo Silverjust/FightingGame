@@ -2,7 +2,7 @@ package shared;
 
 import java.util.Set;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import main.appdata.ProfileHandler;
 import processing.core.PApplet;
 import processing.data.JSONArray;
@@ -10,7 +10,7 @@ import processing.data.JSONObject;
 
 public abstract class VersionControle {
 	public final static String version = "1.0.0.0";
-	private static GameApplet app;
+	private static GameBaseApp app;
 
 	public static boolean isNewerVersion(String s1, String s2) {
 		String[] sa1 = s1.split("\\.");
@@ -25,7 +25,7 @@ public abstract class VersionControle {
 		}
 		return false;
 	}
-	public static void setup(GameApplet app) {
+	public static void setup(GameBaseApp app) {
 		VersionControle.app = app;
 		
 	}

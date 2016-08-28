@@ -10,7 +10,7 @@ public class endGameMenu extends Menu {
 	int x, y, wh, h;
 	GButton returnToStart;
 
-	public endGameMenu(GameApplet app) {
+	public endGameMenu(GameBaseApp app) {
 		super(app);
 		x = (int) app.getxCenter();
 		y = (int) app.getyCenter() + 100;

@@ -3,13 +3,19 @@ package main;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import game.GameApplet;
+import game.GameBaseApp;
 
 public class Listener implements WindowListener {
+	private GameBaseApp app;
+
+	public Listener(GameBaseApp app) {
+		this.app = app;
+	}
+
 	@Override
 	public void windowClosing(WindowEvent e) {
 		System.out.println("dispose");
-		GameApplet.app.dispose();
+		app.dispose();
 		System.exit(0);
 	}
 

@@ -5,7 +5,7 @@ import processing.data.JSONObject;
 import g4p_controls.G4P;
 import g4p_controls.GTextArea;
 import g4p_controls.GWindow;
-import game.GameApplet;
+import game.GameBaseApp;
 
 public class StatScreen {
 
@@ -13,7 +13,7 @@ public class StatScreen {
 	private static GWindow window;
 
 	static public void setup() {
-		window = new GWindow(GameApplet.app, "Stats", 0, 0, 200, 300, false,
+		window = new GWindow(GameBaseApp.app, "Stats", 0, 0, 200, 300, false,
 				PConstants.JAVA2D);
 		window.setActionOnClose(G4P.CLOSE_WINDOW);
 

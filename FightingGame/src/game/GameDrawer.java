@@ -18,21 +18,22 @@ public class GameDrawer {
 	public static boolean nocosts;
 	public static boolean showRanges;
 	private GameUpdater updater;
-	private GameApplet app;
+	private GameBaseApp app;
 	private AimHandler aimHandler;
 	private HUD hud;
 	public ImageHandler imageHandler;
 
-	public void loadImages() {
-		app.updater.map.loadImages();
+	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
+		app.updater.map.loadImages(app, imageHandler);
 	}
 
-	public GameDrawer(GameApplet app, ImageHandler imageHandler) {
+	public GameDrawer(GameBaseApp app, ImageHandler imageHandler) {
 		this.app = app;
 		this.imageHandler = imageHandler;
 		this.updater = (GameUpdater) app.updater;
 
-		hud = new HUD(app, this);
+		app.setDrawer(this);// set oficial drawer so hud, etc can access it
+		setHud(new HUD(app, this));
 		setAimHandler(new AimHandler(app));
 
 		commandoutput = true;
@@ -87,7 +88,7 @@ public class GameDrawer {
 		app.popMatrix();
 		app.imageMode(PConstants.CORNER);
 
-		hud.update();
+		getHud().update();
 
 		if (updater.gameState != GameState.PLAY) {
 			app.fill(100, 100);
@@ -117,5 +118,15 @@ public class GameDrawer {
 
 	public void setAimHandler(AimHandler aimHandler) {
 		this.aimHandler = aimHandler;
+	}
+
+	public HUD getHud() {
+		if (hud==null) 
+			System.err.println("hud not created");
+		return hud;
+	}
+
+	public void setHud(HUD hud) {
+		this.hud = hud;
 	}
 }

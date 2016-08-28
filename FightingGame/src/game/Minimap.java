@@ -1,7 +1,6 @@
 package game;
 
 import gameStructure.GameObject;
-import main.appdata.SettingHandler;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
@@ -14,11 +13,12 @@ public class Minimap {
 	private int w, h;
 	private int dw, dh;
 
-	private GameApplet app;
+	private GameBaseApp app;
+	private HUD hud;
 
-	public Minimap(GameApplet app) {
-
+	public Minimap(GameBaseApp app) {
 		this.app = app;
+		hud = app.getDrawer().getHud();
 		w = app.updater.map.width;
 		h = app.updater.map.height;
 		s = ((w) < (h)) ? (180.0f / h) : (180.0f / w);
@@ -60,21 +60,21 @@ public class Minimap {
 		graphics.rectMode(PConstants.CORNER);
 		graphics.fill(255, 50);
 		graphics.rect(Helper.gridToX(0), Helper.gridToY(0), app.width / GameDrawer.zoom,
-				(app.height - HUD.height) / GameDrawer.zoom * 2);
+				(app.height - hud.height) / GameDrawer.zoom * 2);
 		graphics.popMatrix();
 		graphics.endDraw();
-		app.image(graphics, 10 + dw, app.height - HUD.height + 10 + dh);
+		app.image(graphics, 10 + dw, app.height - hud.height + 10 + dh);
 
 	}
 
 	public void click(int x, int y, boolean doMouseCommands) {
-		if (Helper.isOver(x, y, 10 + dw, app.height - HUD.height + 10 + dh, 10 + dw + (w * s),
-				app.height - HUD.height + 10 + dh + (h * s))) {
+		if (Helper.isOver(x, y, 10 + dw, app.height - hud.height + 10 + dh, 10 + dw + (w * s),
+				app.height - hud.height + 10 + dh + (h * s))) {
 			float xGrid = PApplet.map(x, 10 + dw, 10 + dw + (w * s), 0, w), yGrid = PApplet.map(y,
-					app.height - HUD.height + 10 + dh, app.height - HUD.height + 10 + dh + (h * s), 0, h);
+					app.height - hud.height + 10 + dh, app.height - hud.height + 10 + dh + (h * s), 0, h);
 			if (doMouseCommands)
 				((GameUpdater) app.updater).input.mouseCommands(xGrid, yGrid);
-			if (app.mouseButton == SettingHandler.setting.mouseMove) {
+			if (app.mouseButton == ((GameApp) app).settingHandler.getSetting().mouseMove) {
 				GameDrawer.xMapOffset = -xGrid * GameDrawer.zoom + app.getWidth() / 2;
 				GameDrawer.yMapOffset = -yGrid * GameDrawer.zoom / 2 + app.getHeight() / 2;
 			}

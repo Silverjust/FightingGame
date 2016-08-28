@@ -23,9 +23,9 @@ public class Map {
 
 	public MapCode mapCode;
 
-	private GameApplet app;
+	private GameBaseApp app;
 
-	public Map(GameApplet app, String map) {
+	public Map(GameBaseApp app, String map) {
 
 		this.app = app;
 		try {
@@ -36,7 +36,7 @@ public class Map {
 			if (mapData.hasKey("MapCode")) {
 				System.out.println("Map.Map() creating mapcode");
 				mapCode = (MapCode) Class.forName(mapData.getString("MapCode"))
-						.getConstructor(GameApplet.class, Map.class).newInstance(new Object[] { app, this });
+						.getConstructor(GameBaseApp.class, Map.class).newInstance(new Object[] { app, this });
 			}
 		} catch (Exception e) {
 			System.err.println(map + " could not be loaded");
@@ -49,10 +49,10 @@ public class Map {
 		mapCode.setup();
 	}
 
-	public void loadImages() {
+	public void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		try {
-			textur = app.getDrawer().imageHandler.load("", mapData.getString("texture"));
-			collision = app.getDrawer().imageHandler.load("", mapData.getString("coll"));
+			textur = imageHandler.load("", mapData.getString("texture"));
+			collision = imageHandler.load("", mapData.getString("coll"));
 		} catch (Exception e) {
 			System.err.println(mapData.getString("texture") + " " + mapData.getString("coll"));
 			e.printStackTrace();

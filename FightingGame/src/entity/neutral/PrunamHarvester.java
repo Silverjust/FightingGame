@@ -1,6 +1,6 @@
 package entity.neutral;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.animation.Extract;
 
@@ -37,7 +37,7 @@ public abstract class PrunamHarvester extends Building {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		GameApplet.updater.send("<spawn Prunam 0 " + getX() + " " + getY());
+		GameBaseApp.updater.send("<spawn Prunam 0 " + getX() + " " + getY());
 	}
 
 	@Override

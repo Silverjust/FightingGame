@@ -1,5 +1,6 @@
 package gameStructure.animation;
 
+import game.GameBaseApp;
 import gameStructure.GameObject;
 import processing.core.PImage;
 import shared.Updater;
@@ -12,16 +13,16 @@ public class Ability extends Animation {
 
 	public boolean doRepeat = false;
 
-	public Ability(PImage[][] IMG, int duration) {
-		super(IMG, duration);
+	public Ability(GameBaseApp app,PImage[][] IMG, int duration) {
+		super(app, IMG, duration);
 	}
 
-	public Ability(PImage[] IMG, int duration) {
-		super(IMG, duration);
+	public Ability(GameBaseApp app,PImage[] IMG, int duration) {
+		super(app, IMG, duration);
 	}
 
-	public Ability(PImage IMG, int duration) {
-		super(IMG, duration);
+	public Ability(GameBaseApp app,PImage IMG, int duration) {
+		super(app, IMG, duration);
 	}
 
 	@Override

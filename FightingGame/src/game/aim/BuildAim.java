@@ -1,7 +1,7 @@
 package game.aim;
 
 import game.AimHandler.Cursor;
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.Commander;
 import gameStructure.GameObject;
@@ -36,18 +36,18 @@ public class BuildAim extends Aim {
 		x = Building.xToGrid(Building.gridToX(app.mouseX));
 		y = Building.xToGrid(Building.gridToY(player.app.mouseY));
 		if (canPlaceAt(x, y)) {
-			GameApplet.app.tint(255, 150);
+			GameBaseApp.app.tint(255, 150);
 		} else {
-			GameApplet.app.tint(255, 100, 100, 150);
+			GameBaseApp.app.tint(255, 100, 100, 150);
 		}
-		ImageHandler.drawImage(GameApplet.app, buildable.preview(), x, y / 2, buildable.getxSize(), buildable.getySize());
-		GameApplet.app.tint(255);
+		ImageHandler.drawImage(GameBaseApp.app, buildable.preview(), x, y / 2, buildable.getxSize(), buildable.getySize());
+		GameBaseApp.app.tint(255);
 	}
 
 	protected boolean canPlaceAt(float x, float y) {
 		boolean placeFree = true;
 		boolean inCommanderRange = false;
-		for (GameObject e : GameApplet.updater.gameObjects) {
+		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e.isInRange(x, y, buildable.getRadius() + e.getRadius())
 					&& e.groundPosition == GroundPosition.GROUND)
 				placeFree = false;
@@ -74,7 +74,7 @@ public class BuildAim extends Aim {
 		 * Entity.xToGrid(Entity.gridToY());
 		 */
 		if (canPlaceAt(x, y)) {
-			GameApplet.updater.send("<spawn " + buildable.getClass().getSimpleName()
+			GameBaseApp.updater.send("<spawn " + buildable.getClass().getSimpleName()
 					+ " " + builder.player.getUser().ip + " " + x + " " + y);
 			buildable.buyFrom(builder.player);
 		}

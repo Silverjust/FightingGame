@@ -5,7 +5,7 @@ import processing.core.PImage;
 import shared.Nation;
 import game.AimHandler;
 import game.AimHandler.Cursor;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import game.aim.CustomAim;
 import gameStructure.AimingActive;
@@ -111,12 +111,12 @@ public class PhysicsLab extends Lab {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 
@@ -168,7 +168,7 @@ public class PhysicsLab extends Lab {
 		@Override
 		public void onActivation() {
 			origin = null;
-			for (GameObject e : GameApplet.updater.selected) {
+			for (GameObject e : GameApplet.GameBaseApp.selected) {
 				if (e instanceof PhysicsLab
 						&& (e.getAnimation() == e.stand || e.getAnimation() == ((Unit) e).walk))
 					origin = (PhysicsLab) e;
@@ -190,8 +190,8 @@ public class PhysicsLab extends Lab {
 			GameObject target = null;
 			// x = Entity.xToGrid(Entity.gridToX());
 			// y = Entity.xToGrid(Entity.gridToY());
-			for (GameObject e : GameApplet.updater.gameObjects) {
-				if (e.isAllyTo(GameApplet.player) && e instanceof PhysicsLab
+			for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
+				if (e.isAllyTo(GameBaseApp.player) && e instanceof PhysicsLab
 						&& PApplet.dist(x, y, e.getX(), e.getY() - e.flyHeight()) <= e.getRadius())
 					target = e;
 			}
@@ -199,13 +199,13 @@ public class PhysicsLab extends Lab {
 				PhysicsLab origin = this.origin;
 				origin.getTeleport().startCooldown();
 				target.sendAnimation("recieveTeleport");
-				for (GameObject e : GameApplet.updater.gameObjects) {
-					if (e.isAllyTo(GameApplet.player)
+				for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
+					if (e.isAllyTo(GameBaseApp.player)
 							&& e instanceof Unit
 							&& !(e instanceof Lab)
 							&& e.isInRange(origin.getX(), origin.getY(),
 									origin.equipRange))
-						GameApplet.updater.send("<tp " + e.number + " "
+						GameBaseApp.updater.send("<tp " + e.number + " "
 								+ (e.getX() + target.getX() - origin.getX()) + " "
 								+ (e.getY() + target.getY() - origin.getY()));
 				}

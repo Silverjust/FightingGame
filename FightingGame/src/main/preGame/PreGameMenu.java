@@ -7,7 +7,7 @@ import main.OptionsMenu;
 import g4p_controls.G4P;
 import g4p_controls.GButton;
 import g4p_controls.GEvent;
-import game.GameApplet;
+import game.GameBaseApp;
 import shared.Menu;
 
 public class PreGameMenu extends Menu {
@@ -15,22 +15,22 @@ public class PreGameMenu extends Menu {
 	GButton options, exit, returnToGame;
 
 	public PreGameMenu() {
-		if (((MainApp) GameApplet.app).startPage != null)
-			((MainApp) GameApplet.app).startPage.setActive(false);
-		if (GameApplet.getPreGameInfo() != null)
-			GameApplet.getPreGameInfo().setActive(false);
+		if (((MainApp) GameBaseApp.app).startPage != null)
+			((MainApp) GameBaseApp.app).startPage.setActive(false);
+		if (GameBaseApp.getPreGameInfo() != null)
+			GameBaseApp.getPreGameInfo().setActive(false);
 		x = (int) FrameInfo.xCenter;
 		y = 200;
 		wh = 50;
-		exit = new GButton(GameApplet.app, x - wh, y, wh * 2, 40, "exit");
+		exit = new GButton(GameBaseApp.app, x - wh, y, wh * 2, 40, "exit");
 		exit.setLocalColorScheme(G4P.BLUE_SCHEME);
 		exit.addEventHandler(this, "handleButtonEvents");
 
-		options = new GButton(GameApplet.app, x - wh, y + 50, wh * 2, 40, "options");
+		options = new GButton(GameBaseApp.app, x - wh, y + 50, wh * 2, 40, "options");
 		options.setLocalColorScheme(G4P.BLUE_SCHEME);
 		options.addEventHandler(this, "handleButtonEvents");
 
-		returnToGame = new GButton(GameApplet.app, x - wh, y + 100, wh * 2, 40,
+		returnToGame = new GButton(GameBaseApp.app, x - wh, y + 100, wh * 2, 40,
 				"return");
 		returnToGame.setLocalColorScheme(G4P.BLUE_SCHEME);
 		returnToGame.addEventHandler(this, "handleButtonEvents");
@@ -43,7 +43,7 @@ public class PreGameMenu extends Menu {
 				new Listener().windowClosing(null);
 			} else if (button == options) {
 				dispose();
-				((MainApp) GameApplet.app).menu = new OptionsMenu();
+				((MainApp) GameBaseApp.app).menu = new OptionsMenu();
 			} else if (button == returnToGame) {
 				dispose();
 			}
@@ -52,10 +52,10 @@ public class PreGameMenu extends Menu {
 
 	@Override
 	public void dispose() {
-		if (((MainApp) GameApplet.app).startPage != null)
-			((MainApp) GameApplet.app).startPage.setActive(true);
-		if (GameApplet.getPreGameInfo() != null)
-			GameApplet.getPreGameInfo().setActive(true);
+		if (((MainApp) GameBaseApp.app).startPage != null)
+			((MainApp) GameBaseApp.app).startPage.setActive(true);
+		if (GameBaseApp.getPreGameInfo() != null)
+			GameBaseApp.getPreGameInfo().setActive(true);
 		options.dispose();
 		exit.dispose();
 		returnToGame.dispose();

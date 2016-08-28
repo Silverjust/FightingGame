@@ -11,9 +11,9 @@ import processing.data.JSONObject;
 
 public class MapHandler {
 
-	private GameApplet app;
+	private GameBaseApp app;
 
-	public MapHandler(GameApplet app) {
+	public MapHandler(GameBaseApp app) {
 		this.app = app;
 	}
 

@@ -12,7 +12,7 @@ import g4p_controls.GEvent;
 import g4p_controls.GSlider;
 import g4p_controls.GTextArea;
 import g4p_controls.GTextField;
-import game.GameApplet;
+import game.GameBaseApp;
 
 public class GUI {
 	String chatText = "";
@@ -30,51 +30,51 @@ public class GUI {
 
 	public GUI() {
 
-		ipAdress = new GTextField(GameApplet.app, 0, 0, 300, 20);
+		ipAdress = new GTextField(GameBaseApp.app, 0, 0, 300, 20);
 		ipAdress.setText(Server.ip()+ "");
 
-		modeDisplay = new GTextField(GameApplet.app, 300, 0, 200, 20);
+		modeDisplay = new GTextField(GameBaseApp.app, 300, 0, 200, 20);
 		modeDisplay.setTextEditEnabled(false);
 
-		displayCommands = new GCheckbox(GameApplet.app, 0, GameApplet.app.height - 300, 30, 20);
+		displayCommands = new GCheckbox(GameBaseApp.app, 0, GameApplet.GameBaseApp.height - 300, 30, 20);
 
-		chat = GameApplet.app.createGraphics(500, 280);
-		player = GameApplet.app.createGraphics(300, 178);
+		chat = GameBaseApp.app.createGraphics(500, 280);
+		player = GameBaseApp.app.createGraphics(300, 178);
 
-		chatSlider = new GSlider(GameApplet.app, 500, 220, 280, 20, 20);
+		chatSlider = new GSlider(GameBaseApp.app, 500, 220, 280, 20, 20);
 		chatSlider.setRotation(PConstants.PI / 2, GControlMode.CORNER);
 		chatSlider.setLimits(0, 0, 1);
 
-		playerSlider = new GSlider(GameApplet.app, 300, 20, 180, 20, 20);
+		playerSlider = new GSlider(GameBaseApp.app, 300, 20, 180, 20, 20);
 		playerSlider.setRotation(PConstants.PI / 2, GControlMode.CORNER);
 		playerSlider.setLimits(0, 0, 1);
 
-		chatLine = new GTextField(GameApplet.app, 17, 200, 500, 20);
+		chatLine = new GTextField(GameBaseApp.app, 17, 200, 500, 20);
 		chatLine.addEventHandler(this, "chatEvents");
 	}
 
 	public void update() {
-		modeDisplay.setText(((ServerApp) GameApplet.app).mode.toString());
+		modeDisplay.setText(((ServerApp) GameBaseApp.app).mode.toString());
 
 		player.beginDraw();
 		player.background(255);
-		if (!GameApplet.preGame.users.isEmpty()) {
-			playerSlider.setLimits(0, GameApplet.preGame.users.size() * 20 - 19);
+		if (!GameApplet.GameBaseApp.users.isEmpty()) {
+			playerSlider.setLimits(0, GameApplet.GameBaseApp.users.size() * 20 - 19);
 			int i = 0;
-			for (String key : GameApplet.preGame.users.keySet()) {
-				GameApplet.preGame.users.get(key).display(player, 0, 20 * i - playerSlider.getValueI());
+			for (String key : GameApplet.GameBaseApp.users.keySet()) {
+				GameApplet.GameBaseApp.users.get(key).display(player, 0, 20 * i - playerSlider.getValueI());
 				i++;
 			}
 		}
 		player.endDraw();
-		GameApplet.app.image(player, 0, 21);
+		GameBaseApp.app.image(player, 0, 21);
 
 		chat.beginDraw();
 		chat.background(255);
 		chat.fill(0);
-		chat.text(chatText.toString(), 10, GameApplet.app.textAscent() - chatSlider.getValueI());
+		chat.text(chatText.toString(), 10, GameBaseApp.app.textAscent() - chatSlider.getValueI());
 		chat.endDraw();
-		GameApplet.app.image(chat, 0, GameApplet.app.height - 280);
+		GameBaseApp.app.image(chat, 0, GameApplet.GameBaseApp.height - 280);
 	}
 
 	public void addChatText(String s) {
@@ -82,7 +82,7 @@ public class GUI {
 			chatText = s.concat("\n").concat(chatText);
 			int i = chatText.split("\n").length;
 			if (i < 500) {
-				chatSlider.setLimits(0, i * GameApplet.app.textAscent());
+				chatSlider.setLimits(0, i * GameBaseApp.app.textAscent());
 			} else {
 				chatText = "";
 			}
@@ -100,8 +100,8 @@ public class GUI {
 					addChatText(">>" + s);
 					CommandHandler.executeCommands(s);
 				} else {
-					if (((ServerApp) GameApplet.app).mode == Mode.GAME || ((ServerApp) GameApplet.app).mode == Mode.PREGAME)
-						GameApplet.updater.send("<say " + "SERVER" + " " + s);
+					if (((ServerApp) GameBaseApp.app).mode == Mode.GAME || ((ServerApp) GameBaseApp.app).mode == Mode.PREGAME)
+						GameBaseApp.updater.send("<say " + "SERVER" + " " + s);
 				}
 			}
 			textfield.setText("");

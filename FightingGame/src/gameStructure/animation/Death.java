@@ -1,29 +1,29 @@
 package gameStructure.animation;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.GameObject;
 import processing.core.PImage;
 
 public class Death extends Animation {
 
-	public Death(PImage[][] IMG, int duration) {
-		super(IMG, duration);
+	public Death(GameBaseApp app, PImage[][] IMG, int duration) {
+		super(app, IMG, duration);
 
 	}
 
-	public Death(PImage[] IMG, int duration) {
-		super(IMG, duration);
+	public Death(GameBaseApp app, PImage[] IMG, int duration) {
+		super(app, IMG, duration);
 	}
 
-	public Death(PImage IMG, int duration) {
-		super(IMG, duration);
+	public Death(GameBaseApp app, PImage IMG, int duration) {
+		super(app, IMG, duration);
 	}
 
 	@Override
 	public void update(GameObject e) {
 		if (isFinished()) {
 			// setup(e);
-			GameApplet.updater.toRemove.add(e);
+			app.getUpdater().toRemove.add(e);
 		}
 
 	}

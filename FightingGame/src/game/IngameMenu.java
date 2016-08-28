@@ -12,7 +12,7 @@ public class IngameMenu extends Menu {
 	int x, y, wh, h;
 	GButton options, surrender, returnToGame;
 
-	public IngameMenu(GameApplet app) {
+	public IngameMenu(GameBaseApp app) {
 		super(app);
 		x = (int) app.getxCenter();
 		y = 200;
@@ -34,12 +34,11 @@ public class IngameMenu extends Menu {
 	public void handleButtonEvents(GButton button, GEvent event) {
 		if (event == GEvent.CLICKED) {
 			if (button == surrender) {
-				app.updater
-						.send("<gameend lost " + app.player.getUser().ip + " " + ProfileHandler.getRate());
+				app.updater.send("<gameend lost " + app.player.getUser().ip + " " + ProfileHandler.getRate());
 				dispose();
 			} else if (button == options) {
 				dispose();
-				HUD.menue = new OptionsMenu();
+				app.getDrawer().getHud().menue = new OptionsMenu();
 			} else if (button == returnToGame) {
 				app.updater.send(Coms.PAUSE + " false");
 			}

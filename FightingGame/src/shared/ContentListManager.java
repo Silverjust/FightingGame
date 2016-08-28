@@ -7,7 +7,7 @@ import java.util.HashMap;
 import champs.ArmorShred;
 import champs.TestProjectile;
 import champs.Ticul;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.PreGameInfo;
 import gameStructure.GameObject;
 import gameStructure.baseBuffs.Buff;
@@ -35,8 +35,10 @@ public class ContentListManager {
 
 	private HashMap<String, Class<? extends GameObject>> gameObjectMap = new HashMap<String, Class<? extends GameObject>>();
 	private HashMap<String, Class<? extends Buff>> buffMap = new HashMap<String, Class<? extends Buff>>();
+	private GameBaseApp app;
 
-	public ContentListManager() {
+	public ContentListManager(GameBaseApp app) {
+		this.app = app;
 	}
 
 	public void load() {
@@ -46,7 +48,7 @@ public class ContentListManager {
 		objectList.add(TestProjectile.class);
 		// ************************************
 		for (Class<? extends GameObject> c : objectList) {
-			GameObject o = createEntity(c);
+			GameObject o = createGObj(c);
 			if (o != null)
 				gameObjectMap.put(o.getInternName(), o.getClass());
 		}
@@ -64,7 +66,7 @@ public class ContentListManager {
 				buffMap.put(b.getInternName(), b.getClass());
 		}
 
-		contentList = GameApplet.app.loadJSONObject(path);
+		contentList = app.loadJSONObject(path);
 		campainEntityList = contentList.getJSONObject("campainEntities");
 		for (Object o : campainEntityList.keys()) {
 			entityList.setString((String) o, campainEntityList.getString((String) o));
@@ -74,8 +76,8 @@ public class ContentListManager {
 	private Buff createBuff(Class<? extends Buff> c) {
 		Constructor<?> ctor;
 		try {
-			ctor = c.getConstructor(String[].class);
-			Buff b = (Buff) ctor.newInstance(new Object[] { null });
+			ctor = c.getConstructor(GameBaseApp.class, String[].class);
+			Buff b = (Buff) ctor.newInstance(new Object[] { app, null });
 			return b;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,11 +85,11 @@ public class ContentListManager {
 		return null;
 	}
 
-	private GameObject createEntity(Class<? extends GameObject> c) {
+	private GameObject createGObj(Class<? extends GameObject> c) {
 		Constructor<?> ctor;
 		try {
-			ctor = c.getConstructor(String[].class);
-			GameObject o = (GameObject) ctor.newInstance(new Object[] { null });
+			ctor = c.getConstructor(GameBaseApp.class, String[].class);
+			GameObject o = (GameObject) ctor.newInstance(new Object[] { app, null });
 			return o;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -107,12 +109,13 @@ public class ContentListManager {
 	/*
 	 * public static JSONObject getEntityContent() { return entityList; }
 	 */
-
-	public static JSONObject getModeMaps() {
+	@Deprecated
+	public JSONObject getModeMaps() {
 		if (PreGameInfo.isCampain()) {
-			if (GameApplet.getPreGameInfo().getUser("").nation != null && GameApplet.getPreGameInfo().getUser("").nation != Nation.NEUTRAL) {
+			if (app.getPreGameInfo().getUser("").nation != null
+					&& app.getPreGameInfo().getUser("").nation != Nation.NEUTRAL) {
 				return contentList.getJSONObject("maps").getJSONObject("campain")
-						.getJSONObject(GameApplet.getPreGameInfo().getUser("").nation.toString());
+						.getJSONObject(app.getPreGameInfo().getUser("").nation.toString());
 			} else {
 				return new JSONObject();
 			}

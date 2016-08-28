@@ -1,19 +1,21 @@
 package gameStructure;
 
-import game.GameApplet;
+import game.GameBaseApp;
+import game.ImageHandler;
 import game.aim.BuildAim;
 import processing.core.PGraphics;
 import processing.core.PImage;
 
 public abstract class Building extends GameObject {
 
-	public static void loadImages() {
+	public static void loadImages(GameBaseApp app, ImageHandler imageHandler){ 
+
 		// String path = path(new Object() {
 		// });
 		// setTarget = ImageHandler.load(path, "setTarget");
 	}
 
-	public Building(GameApplet app, String[] c) {
+	public Building(GameBaseApp app, String[] c) {
 		super(app, c);
 	}
 

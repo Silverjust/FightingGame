@@ -80,7 +80,7 @@ public class RobotsDepot extends Building implements Commander {
 	@Override
 	public void exec(String[] c) {
 		super.exec(c);
-		Attack.updateExecAttack(c, this);
+		Attack.updateExecAttack(app, c, this);
 	}
 
 	/*

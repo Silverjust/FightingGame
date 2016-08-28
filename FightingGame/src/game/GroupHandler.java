@@ -9,15 +9,15 @@ public class GroupHandler {
 	static void setup() {
 		groups = new Group[10];
 		for (int i = 0; i < groups.length; i++) {
-			groups[i] = new Group(300 + (Group.w + 30) * i, GameApplet.app.height
-					- HUD.height + 5, SettingHandler.setting.hotKeys[i]);
+			groups[i] = new Group(300 + (Group.w + 30) * i, GameApplet.GameBaseApp.height
+					- HUD.height + 5, SettingHandler.getSetting().hotKeys[i]);
 		}
 		recentGroup = groups[0];
 	}
 
 	static void update() {
-		GameApplet.app.stroke(0);
-		GameApplet.app.fill(255);
+		GameBaseApp.app.stroke(0);
+		GameBaseApp.app.fill(255);
 		for (int i = 0; i < groups.length; i++) {
 			groups[i].update();
 		}

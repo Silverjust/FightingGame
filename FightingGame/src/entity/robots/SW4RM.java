@@ -2,7 +2,7 @@ package entity.robots;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
 import gameStructure.Unit;
@@ -131,10 +131,10 @@ public class SW4RM extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		for (GameObject e : GameApplet.updater.gameObjects) {
+		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isInRange(getX(), getY(), e.getRadius() + a.range)
 					&& a.canTargetable(e) && e.isEnemyTo(this)) {
-				GameApplet.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 				if (e.isMortal())
 					setHp(getCurrentHp() + a.damage

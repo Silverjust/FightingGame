@@ -1,6 +1,6 @@
 package gameStructure;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import game.GameDrawer;
 import game.ImageHandler;
 import gameStructure.animation.Animation;
@@ -38,7 +38,7 @@ public abstract class GameObject implements Coms {
 	protected String descr = " ";
 	protected String stats = " ";
 
-	public static void loadImages(GameApplet app, ImageHandler imageHandler) {
+	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		String path = path(new GameObject(null, null) {
 		});
 		shadowImg = imageHandler.load(path, "shadow");
@@ -48,7 +48,7 @@ public abstract class GameObject implements Coms {
 		// hit = ref.minim.loadSnippet("test.mp3");
 	}
 
-	public GameObject(GameApplet app, String[] c) {
+	public GameObject(GameBaseApp app, String[] c) {
 		if (c != null) {
 			player = app.getUpdater().getPlayer(c[2]);
 			setX(Float.parseFloat(c[3]));
@@ -251,7 +251,7 @@ public abstract class GameObject implements Coms {
 				&& isAlive() && e.isAlive();
 	}
 
-	protected boolean isAlive() {
+	public boolean isAlive() {
 		return true;
 	}
 

@@ -17,7 +17,7 @@ public class Group {
 	public Group(int x, int y, char n) {
 		this.x = x;
 		this.y = y;
-		button = new GGameButton(GameApplet.app, x, y, w, h, HUD.buttonImageFilename());
+		button = new GGameButton(GameBaseApp.app, x, y, w, h, HUD.buttonImageFilename());
 		button.setText(n + "");
 		button.addEventHandler(this, "handleClickEvent");
 	}
@@ -39,17 +39,17 @@ public class Group {
 
 	public void handleClickEvent(GGameButton gamebutton, GEvent event) {
 		if (event == GEvent.PRESSED) {
-			if (((GameUpdater) GameApplet.updater).input.shiftMode) {
+			if (((GameUpdater) GameBaseApp.updater).input.shiftMode) {
 
-				for (GameObject entity : GameApplet.updater.selected) {
+				for (GameObject entity : GameApplet.GameBaseApp.selected) {
 					if (!groupEntities.contains(entity))
 						groupEntities.add(entity);
 				}
-			} else if (((GameUpdater) GameApplet.updater).input.strgMode) {
+			} else if (((GameUpdater) GameBaseApp.updater).input.strgMode) {
 
 				boolean containsUnits = false;
 				groupEntities.clear();
-				for (GameObject entity : GameApplet.updater.selected) {
+				for (GameObject entity : GameApplet.GameBaseApp.selected) {
 					groupEntities.add(entity);
 					if (!(entity instanceof Building))
 						containsUnits = true;

@@ -15,13 +15,13 @@ public class SoundHandler {
 	static AudioSample sample;
 	static ArrayList<IngameSound> ingameSounds = new ArrayList<IngameSound>();
 	static ArrayList<IngameSound> toRemove = new ArrayList<IngameSound>();
-	private GameApplet app;
+	private GameBaseApp app;
 
 	/*
 	 * private void set() { JSMinim }
 	 */
 
-	public SoundHandler(GameApplet app) {
+	public SoundHandler(GameBaseApp app) {
 		this.app = app;
 	}
 
@@ -59,10 +59,10 @@ public class SoundHandler {
 
 		private void calcVolume() {
 			float dist = PApplet.dist(x, y, Helper.gridToX(app.getxCenter()),
-					Helper.gridToY(app.getyCenter() - HUD.height / 2));
+					Helper.gridToY(app.getyCenter() - app.getDrawer().getHud().height / 2));
 			float f = PApplet.map(dist, 0, PApplet.dist(0, 0, app.updater.map.width, app.updater.map.height), 0, -50);
 			System.out.println(dist + "= " + x + " " + y + " " + Helper.gridToX(app.getxCenter()) + " "
-					+ Helper.gridToY(app.getyCenter() - HUD.height / 2));
+					+ Helper.gridToY(app.getyCenter() - app.getDrawer().getHud().height / 2));
 			sample.setGain(f);
 		}
 	}

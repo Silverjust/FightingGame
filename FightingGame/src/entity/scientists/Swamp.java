@@ -1,6 +1,6 @@
 package entity.scientists;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -74,7 +74,7 @@ public class Swamp extends Unit implements Attacker {
 	@Override
 	public void updateDecisions(boolean isServer) {
 		if (decay.isNotOnCooldown())
-			GameApplet.updater.send("<remove " + number);
+			GameBaseApp.updater.send("<remove " + number);
 		if (isServer && basicAttack.isNotOnCooldown()) {
 			basicAttack.startCooldown();
 			basicAttack.setTargetFrom(this, this);
@@ -99,10 +99,10 @@ public class Swamp extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		for (GameObject e : GameApplet.updater.gameObjects) {
+		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isEnemyTo(this)
 					&& e.isInRange(getX(), getY(), e.getRadius() + a.range)) {
-				GameApplet.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}
@@ -158,12 +158,12 @@ public class Swamp extends Unit implements Attacker {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 

@@ -2,7 +2,7 @@ package entity.aliens;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -150,7 +150,7 @@ public class Rug extends Unit implements Shooter {
 		if (c[2].equals("spawn")) {
 			setMoving(false);
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameApplet.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
 			spawn.setTarget(e);
 			setAnimation(spawn);
 		}
@@ -159,10 +159,10 @@ public class Rug extends Unit implements Shooter {
 	@Override
 	public void calculateDamage(Attack a) {
 		GameObject target = ((ShootAttack) a).getTarget();
-		for (GameObject e : GameApplet.updater.gameObjects) {
+		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this)
 					&& e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)) {
-				GameApplet.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}
@@ -181,10 +181,10 @@ public class Rug extends Unit implements Shooter {
 		float x = PApplet.lerp(this.getX(), target.getX(), progress);
 		float y = PApplet.lerp(this.getY() - getHeight(), target.getY() - target.getHeight(),
 				progress);
-		GameApplet.app.fill(100, 100, 0);
-		GameApplet.app.strokeWeight(0);
-		GameApplet.app.ellipse(xToGrid(x), yToGrid(y), 3, 3);
-		GameApplet.app.strokeWeight(1);
+		GameBaseApp.app.fill(100, 100, 0);
+		GameBaseApp.app.strokeWeight(0);
+		GameBaseApp.app.ellipse(xToGrid(x), yToGrid(y), 3, 3);
+		GameBaseApp.app.strokeWeight(1);
 	}
 
 	@Override
@@ -229,12 +229,12 @@ public class Rug extends Unit implements Shooter {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 
@@ -287,7 +287,7 @@ public class Rug extends Unit implements Shooter {
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (target != null && isEvent()) {
 				if (isServer) {
-					GameApplet.updater.send("<spawn Rugling " + e.player.getUser().ip + " "
+					GameBaseApp.updater.send("<spawn Rugling " + e.player.getUser().ip + " "
 							+ e.getX() + " " + (e.getY() + e.getRadius() + 8) + " " + target.getX()
 							+ " " + target.getY());
 					/*

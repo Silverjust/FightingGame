@@ -1,9 +1,9 @@
 package gameStructure.baseBuffs;
 
-import game.GameApplet;
+import game.GameBaseApp;
 
 public class Root extends Buff {
-	public Root(GameApplet app, String[] c) {
+	public Root(GameBaseApp app, String[] c) {
 		super(app, c);
 	}
 

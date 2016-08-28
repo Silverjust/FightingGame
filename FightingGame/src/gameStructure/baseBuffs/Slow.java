@@ -2,7 +2,7 @@ package gameStructure.baseBuffs;
 
 import java.util.ArrayList;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Unit;
 
 public class Slow extends Buff {
@@ -10,7 +10,7 @@ public class Slow extends Buff {
 	private Num totalSlow;
 	private ArrayList<Buff> buffs;
 
-	public Slow(GameApplet app, String[] c) {
+	public Slow(GameBaseApp app, String[] c) {
 		super(app, c);
 		if (c != null && c.length > 5)
 			slow = Integer.parseInt(c[5]);

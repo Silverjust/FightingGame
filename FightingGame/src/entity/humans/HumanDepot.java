@@ -2,7 +2,7 @@ package entity.humans;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.Building;
@@ -104,16 +104,16 @@ public class HumanDepot extends Building implements Commander, Shooter {
 	@Override
 	public void exec(String[] c) {
 		super.exec(c);
-		Attack.updateExecAttack(c, this);
+		Attack.updateExecAttack(app, c, this);
 	}
 
 	@Override
 	public void calculateDamage(Attack a) {
 		GameObject target = ((ShootAttack) a).getTarget();
-		for (GameObject e : GameApplet.updater.gameObjects) {
+		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this)
 					&& e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)) {
-				GameApplet.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}
@@ -131,10 +131,10 @@ public class HumanDepot extends Building implements Commander, Shooter {
 		float x = PApplet.lerp(this.getX(), target.getX(), progress);
 		float y = PApplet.lerp(this.getY() - getHeight(), target.getY() - target.getHeight(),
 				progress);
-		GameApplet.app.fill(255, 100, 0);
-		GameApplet.app.strokeWeight(0);
-		GameApplet.app.ellipse(xToGrid(x), yToGrid(y), 1, 1);
-		GameApplet.app.strokeWeight(1);
+		GameBaseApp.app.fill(255, 100, 0);
+		GameBaseApp.app.strokeWeight(0);
+		GameBaseApp.app.ellipse(xToGrid(x), yToGrid(y), 1, 1);
+		GameBaseApp.app.strokeWeight(1);
 	}
 
 	public PImage preview() {
@@ -181,12 +181,12 @@ public class HumanDepot extends Building implements Commander, Shooter {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 

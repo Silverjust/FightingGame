@@ -1,11 +1,11 @@
 package gameStructure;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import game.PlayerInterface;
 
 public abstract class Champion extends Unit {
 
-	public Champion(GameApplet app, String[] c) {
+	public Champion(GameBaseApp app, String[] c) {
 		super(app, c);
 		try {
 			player.champion = this;

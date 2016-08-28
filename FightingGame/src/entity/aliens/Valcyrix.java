@@ -2,7 +2,7 @@ package entity.aliens;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -118,7 +118,7 @@ public class Valcyrix extends Unit implements Attacker, Shooter {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameApplet.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
@@ -136,10 +136,10 @@ public class Valcyrix extends Unit implements Attacker, Shooter {
 		float x = PApplet.lerp(this.getX(), target.getX(), progress);
 		float y = PApplet.lerp(this.getY() - getHeight(), target.getY() - target.getHeight(),
 				progress);
-		GameApplet.app.fill(100, 100, 0);
-		GameApplet.app.strokeWeight(0);
-		GameApplet.app.ellipse(xToGrid(x), yToGrid(y), 3, 3);
-		GameApplet.app.strokeWeight(1);
+		GameBaseApp.app.fill(100, 100, 0);
+		GameBaseApp.app.strokeWeight(0);
+		GameBaseApp.app.ellipse(xToGrid(x), yToGrid(y), 3, 3);
+		GameBaseApp.app.strokeWeight(1);
 	}
 
 	@Override
@@ -177,12 +177,12 @@ public class Valcyrix extends Unit implements Attacker, Shooter {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 

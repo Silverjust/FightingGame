@@ -6,7 +6,7 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import game.AimHandler;
 import game.AimHandler.Cursor;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.HUD;
 import game.ImageHandler;
 import game.aim.CustomAim;
@@ -40,7 +40,7 @@ public class SandboxBuilding extends Building implements Commander {
 
 	public SandboxBuilding(String[] c) {
 		super(c);
-		player = GameApplet.player;// neutral
+		player = GameBaseApp.player;// neutral
 
 		iconImg = standImg;
 		stand = new Animation(standImg, 1000);
@@ -68,7 +68,7 @@ public class SandboxBuilding extends Building implements Commander {
 	@Override
 	public PImage preview() {
 		System.out.println("woat?");
-		GameApplet.updater.send("<say SERVER " + player.getUser().name + "cheats");
+		GameBaseApp.updater.send("<say SERVER " + player.getUser().name + "cheats");
 		return standImg;
 	}
 
@@ -107,12 +107,12 @@ public class SandboxBuilding extends Building implements Commander {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 
@@ -187,9 +187,9 @@ public class SandboxBuilding extends Building implements Commander {
 
 		@Override
 		public void execute(float x, float y) {
-			for (GameObject e2 : GameApplet.updater.gameObjects) {
+			for (GameObject e2 : GameApplet.GameBaseApp.gameObjects) {
 				if (e2 != null && e2.isInRange(x, y, e2.getRadius() + 10)) {
-					GameApplet.updater.send("<remove " + e2.number);
+					GameBaseApp.updater.send("<remove " + e2.number);
 				}
 			}
 		}
@@ -206,18 +206,18 @@ public class SandboxBuilding extends Building implements Commander {
 		@Override
 		public void onActivation() {
 			int i = 0;
-			for (GameObject e : GameApplet.updater.gameObjects) {
+			for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 				if (e instanceof SandboxBuilding) {
-					i = new ArrayList<String>(GameApplet.updater.players.keySet())
+					i = new ArrayList<String>(GameApplet.GameBaseApp.players.keySet())
 							.indexOf(e.player.getUser().ip) + 1;
 				}
 			}
-			if (i >= GameApplet.updater.players.keySet().size())
+			if (i >= GameApplet.GameBaseApp.players.keySet().size())
 				i = 0;
-			for (GameObject e : GameApplet.updater.gameObjects) {
+			for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 				if (e instanceof SandboxBuilding) {
-					e.player = GameApplet.updater.players.get(new ArrayList<String>(
-							GameApplet.updater.players.keySet()).get(i));
+					e.player = GameApplet.GameBaseApp.players.get(new ArrayList<String>(
+							GameApplet.GameBaseApp.players.keySet()).get(i));
 				}
 			}
 
@@ -239,8 +239,8 @@ public class SandboxBuilding extends Building implements Commander {
 
 		@Override
 		public void onActivation() {
-			GameApplet.getPreGameInfo().addPlayer((GameApplet.updater.players.size() + 1) + "",
-					"player" + (GameApplet.updater.players.size() + 1));
+			GameBaseApp.getPreGameInfo().addPlayer((GameApplet.GameBaseApp.players.size() + 1) + "",
+					"player" + (GameApplet.GameBaseApp.players.size() + 1));
 		}
 
 		@Override

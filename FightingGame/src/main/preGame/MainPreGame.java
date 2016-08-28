@@ -2,7 +2,7 @@ package main.preGame;
 
 import main.MainApp;
 import game.ClientHandler;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.HUD;
 import game.MainLoader;
 import game.PreGameInfo;
@@ -21,7 +21,7 @@ public class MainPreGame extends PreGame {
 
 	private String name;
 
-	public MainPreGame(GameApplet app, String name) {
+	public MainPreGame(GameBaseApp app, String name) {
 		this.name = name;
 		app.setContentListHandler(new ContentListManager());
 		app.getContentListHandler().load();
@@ -62,9 +62,9 @@ public class MainPreGame extends PreGame {
 	}
 
 	public static void addPlayer(String name, Nation nation) {
-		System.out.println("MainPreGame.addPlayer()" + GameApplet.preGame.users.size());
-		GameApplet.getPreGameInfo().addPlayer("" + 2, name);
-		GameApplet.preGame.users.get("2").nation = nation;
+		System.out.println("MainPreGame.addPlayer()" + GameApplet.GameBaseApp.users.size());
+		GameBaseApp.getPreGameInfo().addPlayer("" + 2, name);
+		GameApplet.GameBaseApp.users.get("2").nation = nation;
 	}
 
 	public void addThisPlayer(String name) {
@@ -106,11 +106,11 @@ public class MainPreGame extends PreGame {
 	@Override
 	public void startLoading() {
 		Nation.setNationsToPlayableNations();
-		GameApplet.loader = new MainLoader();
+		GameBaseApp.loader = new MainLoader();
 
 		display.dispose();
 
-		((MainApp) GameApplet.app).mode = Mode.LADESCREEN;
+		((MainApp) GameBaseApp.app).mode = Mode.LADESCREEN;
 	}
 
 	@Override
@@ -150,14 +150,14 @@ public class MainPreGame extends PreGame {
 
 	@Override
 	public void write(String ip, String[] text) {
-		String name = Helper.ipToName(ip);
+		String name = Helper.ipToName(ip, app);
 		String completeText = "";
 		for (int i = 2; i < text.length; i++) {// c[0] und c[1] auslassen
 			completeText = completeText.concat(" ").concat(text[i]);
 		}
-		if (((MainApp) GameApplet.app).mode == Mode.PREGAME)
+		if (((MainApp) GameBaseApp.app).mode == Mode.PREGAME)
 			display.chat.println(name, completeText);
-		else if (((MainApp) GameApplet.app).mode == Mode.GAME)
+		else if (((MainApp) GameBaseApp.app).mode == Mode.GAME)
 			HUD.chat.println(name, completeText);
 	}
 }

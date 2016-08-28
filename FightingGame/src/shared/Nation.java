@@ -9,7 +9,7 @@ import entity.humans.HumanMainBuilding;
 import entity.neutral.NeutralInfo;
 import entity.robots.RobotsInfo;
 import entity.scientists.ScientistInfo;
-import game.GameApplet;
+import game.GameBaseApp;
 
 public enum Nation {
 
@@ -144,11 +144,11 @@ public enum Nation {
 
 	// TODO remove, when all nations are stable
 	public static void setNationsToPlayableNations() {
-		for (String key : GameApplet.preGame.users.keySet()) {
-			Nation n = GameApplet.preGame.users.get(key).nation;
+		for (String key : GameApplet.GameBaseApp.users.keySet()) {
+			Nation n = GameApplet.GameBaseApp.users.get(key).nation;
 			if (n != Nation.AHNEN && n != Nation.ALIENS && n != Nation.ROBOTS
 					&& n != Nation.HUMANS && n != Nation.SCIENTISTS)
-				GameApplet.preGame.users.get(key).nation = Nation.ALIENS;
+				GameApplet.GameBaseApp.users.get(key).nation = Nation.ALIENS;
 		}
 	}
 

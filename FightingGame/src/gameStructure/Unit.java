@@ -1,7 +1,7 @@
 package gameStructure;
 
-import game.GameApplet;
-import game.HUD;
+import game.GameBaseApp;
+import game.ImageHandler;
 import gameStructure.animation.Animation;
 import gameStructure.animation.Attack;
 import processing.core.PApplet;
@@ -18,24 +18,16 @@ public abstract class Unit extends Entity {
 	private float speed;
 	private float speedMult = 100;
 
-	public float getSpeedMult() {
-		return speedMult;
-	}
-
-	public void setSpeedMult(float speedMult) {
-		this.speedMult = speedMult;
-	}
-
 	private boolean isMoving;
 	private boolean isAggro;
 
 	public Animation walk;
 	private boolean isRooted;
 
-	public static void loadImages() {
-	}
+	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
+		/* code */ }
 
-	public Unit(GameApplet app, String[] c) {
+	public Unit(GameBaseApp app, String[] c) {
 		super(app, c);
 		if (c != null) {
 			xTarget = c.length > 5 ? Float.parseFloat(c[5]) : getX();
@@ -128,7 +120,7 @@ public abstract class Unit extends Entity {
 				setAnimation(stand);
 			}
 		}
-		Attack.updateExecAttack(c, this);
+		Attack.updateExecAttack(player.app, c, this);
 	}
 
 	@Deprecated
@@ -149,7 +141,7 @@ public abstract class Unit extends Entity {
 	}
 
 	public void info() {
-		HUD.chat.println(this.getClass().getSimpleName() + "_" + number,
+		player.app.getDrawer().getHud()	.chat.println(this.getClass().getSimpleName() + "_" + number,
 				"(" + getX() + "|" + getY() + ")->(" + xTarget + "|" + yTarget + ")\nhp:" + getCurrentHp());
 	}
 
@@ -184,6 +176,14 @@ public abstract class Unit extends Entity {
 	/** sets ability to move */
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
+	}
+
+	public float getSpeedMult() {
+		return speedMult;
+	}
+
+	public void setSpeedMult(float speedMult) {
+		this.speedMult = speedMult;
 	}
 
 	@Override

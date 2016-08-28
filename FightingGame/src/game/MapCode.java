@@ -6,9 +6,9 @@ import shared.Updater.GameState;
 
 public abstract class MapCode {
 	protected Map map;
-	private GameApplet app;
+	private GameBaseApp app;
 
-	public MapCode(GameApplet app, Map map) {
+	public MapCode(GameBaseApp app, Map map) {
 		this.app = app;
 		this.map = map;
 	}

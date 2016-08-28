@@ -1,6 +1,6 @@
 package server;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import game.MapHandler;
 import shared.Coms;
@@ -14,7 +14,7 @@ public class MultiplayerLoader extends Loader {
 	ServerApp app;
 
 	public MultiplayerLoader() {
-		app = (ServerApp) GameApplet.app;
+		app = (ServerApp) GameBaseApp.app;
 	}
 
 	@Override
@@ -23,7 +23,7 @@ public class MultiplayerLoader extends Loader {
 
 		case NEWGAME:
 			Nation.setNationsToPlayableNations();
-			GameApplet.updater = new ServerUpdater();
+			GameBaseApp.updater = new ServerUpdater();
 			state = State.MAP;// map
 			break;
 		case STARTIMAGES:
@@ -44,13 +44,13 @@ public class MultiplayerLoader extends Loader {
 			}
 			break;
 		case MAP:
-			GameApplet.updater.map.setup();
+			GameApplet.GameBaseApp.map.setup();
 			state = State.WAIT;
 			break;
 		case WAIT:
 			break;
 		case ENTITIES:// spawn entity-setup
-			MapHandler.setupEntities(GameApplet.updater.map.mapData);
+			MapHandler.setupEntities(GameApplet.updater.GameBaseApp.mapData);
 			state = State.END;
 			break;
 		case END:
@@ -63,7 +63,7 @@ public class MultiplayerLoader extends Loader {
 			break;
 		case ERROR:
 			System.out.println("error");
-			GameApplet.app.stop();
+			GameBaseApp.app.stop();
 			break;
 		default:
 			break;
@@ -77,7 +77,7 @@ public class MultiplayerLoader extends Loader {
 
 	@Override
 	public void tryStartGame() {
-		if (state == State.WAIT && GameApplet.updater.arePlayerReady()) {
+		if (state == State.WAIT && GameBaseApp.updater.arePlayerReady()) {
 			state = State.ENTITIES;
 		} else if (app.mode == Mode.GAME) {
 			app.serverHandler.send(Coms.START_GAME+"");
@@ -86,7 +86,7 @@ public class MultiplayerLoader extends Loader {
 
 	private void sendRFInfo() {
 		if (Updater.resfreeze != null) {
-			GameApplet.getPreGameInfo().write("GAME", "resfreeze in " + (Updater.resfreeze.cooldown / 60.0 / 1000.0));
+			GameBaseApp.getPreGameInfo().write("GAME", "resfreeze in " + (Updater.resfreeze.cooldown / 60.0 / 1000.0));
 		}
 	}
 }

@@ -1,6 +1,6 @@
 package shared;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import processing.core.PGraphics;
 
 public class User {
@@ -12,9 +12,9 @@ public class User {
 	public Nation nation;
 
 	protected Player player;
-	private GameApplet app;
+	private GameBaseApp app;
 
-	public User(GameApplet app, String ip, String name) {
+	public User(GameBaseApp app, String ip, String name) {
 		this.app = app;
 		this.ip = ip;
 		this.name = name;

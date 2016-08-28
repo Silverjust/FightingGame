@@ -7,10 +7,11 @@ import shared.Mode;
 
 public class MainLoader extends Loader {
 	public boolean isReconnectLoad;
-	private GameApplet app;
+	private GameBaseApp app;
 	private ImageHandler imageHandler;
+	private LoadingScreen loadingScreen;
 
-	public MainLoader(GameApplet app) {
+	public MainLoader(GameBaseApp app) {
 		this.app = app;
 	}
 
@@ -18,7 +19,7 @@ public class MainLoader extends Loader {
 		switch (state) {
 
 		case NEWGAME:// create players
-			LoadingScreen.setup();
+			loadingScreen = new LoadingScreen(app);
 			app.updater = new GameUpdater(app);
 			state = State.STARTIMAGES;
 			break;
@@ -36,7 +37,7 @@ public class MainLoader extends Loader {
 			if (f < 0) {
 				state = State.ERROR;
 			} else if (f < 1) {
-				LoadingScreen.setPercent(f);
+				loadingScreen.setPercent(f);
 			} else {
 				state = State.MAP;
 			}
@@ -78,7 +79,7 @@ public class MainLoader extends Loader {
 				app.updater.send("<spawn Ticul " + 1 + " " + app.random(200, 600) + " " + app.random(200, 600));
 				app.updater.send("<spawn Ticul " + 2 + " " + app.random(200, 600) + " " + app.random(200, 600));
 			}
-			app.gameDrawer = new GameDrawer(app,imageHandler);
+			app.setDrawer(new GameDrawer(app, imageHandler));
 			if (PreGameInfo.isSandbox()) {
 				GameDrawer.godeye = true;
 				GameDrawer.godhand = true;
@@ -106,7 +107,7 @@ public class MainLoader extends Loader {
 		default:
 			break;
 		}
-		LoadingScreen.update();
+		loadingScreen.update();
 	}
 
 	@Override

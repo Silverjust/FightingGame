@@ -1,6 +1,6 @@
 package server;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import main.preGame.PreGameNormalDisplay;
 import shared.ContentListManager;
 import shared.Helper;
@@ -29,8 +29,8 @@ public class ServerPreGame extends PreGame {
 
 	@Override
 	public void startLoading() {
-		GameApplet.loader = new MultiplayerLoader();
-		((ServerApp) GameApplet.app).mode = Mode.LADESCREEN;
+		GameBaseApp.loader = new MultiplayerLoader();
+		((ServerApp) GameBaseApp.app).mode = Mode.LADESCREEN;
 	}
 
 	@Override
@@ -47,18 +47,18 @@ public class ServerPreGame extends PreGame {
 	public void setMap(String string) {
 		if (ContentListManager.getModeMaps().keys().contains(string))
 			map = ContentListManager.getModeMaps().getString(string);
-		((ServerApp) GameApplet.app).gui.addChatText("map set to " + string);
+		((ServerApp) GameBaseApp.app).gui.addChatText("map set to " + string);
 
 	}
 
 	@Override
 	public void write(String ip, String[] text) {
-		String name = Helper.ipToName(ip);
+		String name = Helper.ipToName(ip, app);
 		String completeText = "";
 		for (int i = 2; i < text.length; i++) {// c[0] und c[1] auslassen
 			completeText = completeText.concat(" ").concat(text[i]);
 		}
-		((ServerApp) GameApplet.app).gui.addChatText(name + ">>" + completeText);
+		((ServerApp) GameBaseApp.app).gui.addChatText(name + ">>" + completeText);
 		System.out.println(" " + name + ">>" + completeText);
 	}
 }

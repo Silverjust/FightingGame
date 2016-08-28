@@ -1,7 +1,7 @@
 package entity.aliens;
 
 import game.ClientHandler;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Spell;
 import gameStructure.Attacker;
@@ -124,7 +124,7 @@ public class Ticul extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameApplet.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 	}
 
@@ -170,12 +170,12 @@ public class Ticul extends Unit implements Attacker {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 
@@ -223,9 +223,9 @@ public class Ticul extends Unit implements Attacker {
 
 		@Override
 		public void onActivation() {
-			for (GameObject e : GameApplet.updater.selected) {
-				float tx = Helper.gridToX(GameApplet.app.mouseX);
-				float ty = Helper.gridToY(GameApplet.app.mouseY);
+			for (GameObject e : GameApplet.GameBaseApp.selected) {
+				float tx = Helper.gridToX(GameApplet.GameBaseApp.mouseX);
+				float ty = Helper.gridToY(GameApplet.GameBaseApp.mouseY);
 				float x = e.getX() + (tx - e.getX()) / PApplet.dist(e.getX(), e.getY(), tx, ty)
 						* range;
 				float y = e.getY() + (ty - e.getY()) / PApplet.dist(e.getX(), e.getY(), tx, ty)

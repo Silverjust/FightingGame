@@ -3,7 +3,6 @@ package game;
 import java.awt.Toolkit;
 import java.awt.event.MouseWheelEvent;
 
-import main.appdata.SettingHandler;
 import processing.core.PConstants;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
@@ -25,9 +24,8 @@ public class Input {
 	int doubleClickIntervall;
 	int doubleClickStart;
 
-	public Input(GameApplet app) {
+	public Input(GameBaseApp app) {
 		this.app = (GameApp) app;
-
 		app.registerMethod("mouseEvent", this);
 		app.registerMethod("keyEvent", this);
 
@@ -35,36 +33,35 @@ public class Input {
 	}
 
 	public boolean isMouseFocusInGame() {
-		return Helper.isMouseOver(0, 0, app.width, app.height - HUD.height)
+		return Helper.isMouseOver(app, 0, 0, app.width, app.height - app.getDrawer().getHud().height)
 				|| !app.mousePressed;
 	}
 
 	public boolean isKeyFocusInGame() {
-		return !HUD.chat.hasFocus();
+		return !app.getDrawer().getHud().chat.hasFocus();
 	}
 
 	public void update() {// ********************************************************
 		int screenSpeed = 30;
 		int rimSize = 10;
 		if (app.focused && !isMPressedOutOfFocus) {
-			if (Helper.isMouseOver(0, 0, rimSize, app.height) && GameDrawer.xMapOffset < 0)
+			if (Helper.isMouseOver(app, 0, 0, rimSize, app.height) && GameDrawer.xMapOffset < 0)
 				GameDrawer.xMapOffset += screenSpeed;
-			if (Helper.isMouseOver(app.width - rimSize, 0, app.width, app.height)
+			if (Helper.isMouseOver(app, app.width - rimSize, 0, app.width, app.height)
 					&& -GameDrawer.xMapOffset + app.width <= app.updater.map.width * GameDrawer.zoom)
 				GameDrawer.xMapOffset -= screenSpeed;
-			if (Helper.isMouseOver(0, 0, app.width, rimSize) && GameDrawer.yMapOffset < 0)
+			if (Helper.isMouseOver(app, 0, 0, app.width, rimSize) && GameDrawer.yMapOffset < 0)
 				GameDrawer.yMapOffset += screenSpeed;
-			if (Helper.isMouseOver(0, app.height - rimSize, app.width, app.height)
-					&& -GameDrawer.yMapOffset + app.height - HUD.height <= app.updater.map.height / 2
-							* GameDrawer.zoom)
+			if (Helper.isMouseOver(app, 0, app.height - rimSize, app.width, app.height) && -GameDrawer.yMapOffset
+					+ app.height - app.getDrawer().getHud().height <= app.updater.map.height / 2 * GameDrawer.zoom)
 				GameDrawer.yMapOffset -= screenSpeed;
 		}
 	}
 
 	public void keyPressed() {// ********************************************************
-		HUD.chat.update();
+		app.getDrawer().getHud().chat.update();
 		if (isKeyFocusInGame()) {
-			if (app.key == SettingHandler.setting.togglePause) {
+			if (app.key == app.settingHandler.getSetting().togglePause) {
 				if (app.updater.gameState == GameState.PAUSE) {
 					app.updater.send(Coms.PAUSE + " false");
 				} else if (app.updater.gameState == GameState.PLAY) {
@@ -75,31 +72,32 @@ public class Input {
 			 * if (app.keyCode == SettingHandler.setting.changeAbilityMode) { if
 			 * (GroupHandler.recentGroup != null) {
 			 * GroupHandler.recentGroup.unitActives =
-			 * !GroupHandler.recentGroup.unitActives; HUD.activesGrid
+			 * !GroupHandler.recentGroup.unitActives;
+			 * app.getDrawer().getHud().activesGrid
 			 * .selectionChange(GroupHandler.recentGroup.unitActives); } else {
-			 * HUD.activesGrid
+			 * app.getDrawer().getHud().activesGrid
 			 * .selectionChange(!ActivesGridHandler.showUnitActives); } }
 			 */
-			if (app.keyCode == SettingHandler.setting.strg) {
+			if (app.keyCode == app.settingHandler.getSetting().strg) {
 				strgMode = true;
 			}
-			if (app.keyCode == SettingHandler.setting.shift) {
+			if (app.keyCode == app.settingHandler.getSetting().shift) {
 				shiftMode = true;
 			}
-			if (app.key == SettingHandler.setting.centerView) {
+			if (app.key == app.settingHandler.getSetting().centerView) {
 				System.out.println("Input.keyPressed()");
 			}
-			for (int i = 0; i < SettingHandler.setting.baseShortcuts.length; i++) {
-				char c = SettingHandler.setting.baseShortcuts[i];
+			for (int i = 0; i < app.settingHandler.getSetting().baseShortcuts.length; i++) {
+				char c = app.settingHandler.getSetting().baseShortcuts[i];
 				if (app.key == c) {
-					HUD.playerInterface.handleKeyPressed(c);
+					app.getDrawer().getHud().playerInterface.handleKeyPressed(c);
 				}
 			}
-			if (app.key == SettingHandler.setting.centerView) {
+			if (app.key == app.settingHandler.getSetting().centerView) {
 				System.out.println("Input.keyPressed()");
 			}
 			// System.out.println(app.key);
-			for (int i = 0; i < SettingHandler.setting.hotKeys.length; i++) {
+			for (int i = 0; i < app.settingHandler.getSetting().hotKeys.length; i++) {
 
 			}
 			for (int x = 0; x < 7; x++) {
@@ -111,11 +109,11 @@ public class Input {
 	}
 
 	public void keyReleased() {// ********************************************************
-		HUD.chat.justOpened = false;
-		if (app.keyCode == SettingHandler.setting.strg) {
+		app.getDrawer().getHud().chat.justOpened = false;
+		if (app.keyCode == app.settingHandler.getSetting().strg) {
 			strgMode = false;
 		}
-		if (app.keyCode == SettingHandler.setting.shift) {
+		if (app.keyCode == app.settingHandler.getSetting().shift) {
 			shiftMode = false;
 		}
 	}
@@ -125,7 +123,7 @@ public class Input {
 
 	public void mousePressed() {// ********************************************************
 		isMPressedOutOfFocus = !isMouseFocusInGame();
-		// HUD.chat.println("", "" + isMPressedOutOfFocus);
+		// app.getDrawer().getHud().chat.println("", "" + isMPressedOutOfFocus);
 		if (doubleClickStart + doubleClickIntervall > app.millis()) {
 
 		} else {
@@ -134,7 +132,7 @@ public class Input {
 		if (isMouseFocusInGame()) {
 			mouseCommands(Helper.gridToX(app.mouseX), Helper.gridToY(app.mouseY));
 		} else {
-			HUD.minimap.click(app.mouseX, app.mouseY, true);
+			app.getDrawer().getHud().minimap.click(app.mouseX, app.mouseY, true);
 		}
 		// unabhängig von mouse fokus
 	}
@@ -145,7 +143,7 @@ public class Input {
 
 	public void mouseDragged() {// ********************************************************
 		if (!isMouseFocusInGame()) {
-			HUD.minimap.click(app.mouseX, app.mouseY, true);
+			app.getDrawer().getHud().minimap.click(app.mouseX, app.mouseY, true);
 		}
 	}
 
@@ -154,7 +152,7 @@ public class Input {
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) {// ********************************************************
-		if (HUD.chat.hasFocus()) {
+		if (app.getDrawer().getHud().chat.hasFocus()) {
 		} else {// chat out of focus
 		} // unabhängig von chat fokus
 
@@ -200,9 +198,9 @@ public class Input {
 	}
 
 	void mouseCommands(float x, float y) {
-		if (app.mouseButton == SettingHandler.setting.mouseMove) {
+		if (app.mouseButton == app.settingHandler.getSetting().mouseMove) {
 			app.getDrawer().getAimHandler().move(x, y);
-		} else if (app.mouseButton == SettingHandler.setting.mouseCommand) {
+		} else if (app.mouseButton == app.settingHandler.getSetting().mouseCommand) {
 			app.getDrawer().getAimHandler().execute(x, y);
 		}
 	}

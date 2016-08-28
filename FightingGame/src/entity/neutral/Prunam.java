@@ -1,7 +1,7 @@
 package entity.neutral;
 
 import processing.core.PImage;
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.animation.Animation;
 
@@ -17,7 +17,7 @@ public class Prunam extends Building {
 
 	public Prunam(String[] c) {
 		super(c);
-		player = GameApplet.updater.neutral;// neutral
+		player = GameApplet.GameBaseApp.neutral;// neutral
 
 		iconImg = standImg;
 		stand = new Animation(standImg, 1000);

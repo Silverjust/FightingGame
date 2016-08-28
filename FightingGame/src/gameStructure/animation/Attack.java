@@ -1,6 +1,6 @@
 package gameStructure.animation;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
 import gameStructure.Unit;
@@ -13,16 +13,16 @@ public abstract class Attack extends Ability {
 	public byte pirce;
 	protected GameObject target;
 
-	public Attack(PImage[][] IMG, int duration) {
-		super(IMG, duration);
+	public Attack(GameBaseApp app, PImage[][] IMG, int duration) {
+		super(app, IMG, duration);
 	}
 
-	public Attack(PImage[] IMG, int duration) {
-		super(IMG, duration);
+	public Attack(GameBaseApp app, PImage[] IMG, int duration) {
+		super(app, IMG, duration);
 	}
 
-	public Attack(PImage IMG, int duration) {
-		super(IMG, duration);
+	public Attack(GameBaseApp app, PImage IMG, int duration) {
+		super(app, IMG, duration);
 	}
 
 	public void setTargetFrom(GameObject attacker, GameObject e) {
@@ -32,12 +32,12 @@ public abstract class Attack extends Ability {
 		return target;
 	}
 
-	public static void updateExecAttack(String[] c, GameObject attacker) {
+	public static void updateExecAttack(GameBaseApp app, String[] c, GameObject attacker) {
 		if (c[2].equals("basicAttack") && attacker instanceof Attacker) {
 			Attack a = ((Attacker) attacker).getBasicAttack();
 			if (a.isNotOnCooldown() && !a.isSetup()) {
 				int n = Integer.parseInt(c[3]);
-				GameObject e = GameApplet.updater.getGameObject(n);
+				GameObject e = app.getUpdater().getGameObject(n);
 				a.setTargetFrom(attacker, e);
 				attacker.setAnimation(a);
 				if (attacker instanceof Unit) {
@@ -47,7 +47,7 @@ public abstract class Attack extends Ability {
 		} else if (c[2].equals("setTarget") && attacker instanceof Attacker) {
 			// Attack a = ((Attacker) attacker).getBasicAttack();
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameApplet.updater.getGameObject(n);
+			GameObject e = app.getUpdater().getGameObject(n);
 			attacker.sendAnimation("walk " + e.getX() + " " + e.getY() + " true");
 			// a.setTargetFrom(attacker, e);
 
@@ -65,7 +65,8 @@ public abstract class Attack extends Ability {
 						+ " "
 						+ (target.getY() + (e.getY() - target.getY())
 								/ PApplet.dist(target.getX(), target.getY(), e.getX(), e.getY())
-								* (range + target.getRadius() - 1)) + " true");
+								* (range + target.getRadius() - 1))
+						+ " true");
 			} else {
 				e.sendAnimation("stand");
 			}

@@ -2,6 +2,7 @@ package game;
 
 import ddf.minim.AudioPlayer;
 import g4p_controls.G4P;
+import g4p_controls.GButton;
 import g4p_controls.GCScheme;
 import processing.core.PImage;
 import shared.Menu;
@@ -10,19 +11,19 @@ public class HUD {
 
 	static PImage keritImg, paxImg, arcImg, prunImg;
 	static PImage overlay;
-	public static int height = 200;
+	public int height = 200;
 
-	public static AudioPlayer sound;
+	public AudioPlayer sound;
 
-	public static Menu menue;
-	public static Chat chat;
-	public static PlayerInterface playerInterface;
-	static Minimap minimap;
-	private GameApplet app;
+	public Menu menue;
+	public Chat chat;
+	public PlayerInterface playerInterface;
+	Minimap minimap;
+	private GameBaseApp app;
 	private GameDrawer gameDrawer;
 	private SoundHandler soundHandler;
 
-	public void loadImages(ImageHandler imageHandler) {
+	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		if (app.player != null) {
 			overlay = imageHandler.load("hud/", "overlay");
 			// sound = ref.minim
@@ -32,11 +33,12 @@ public class HUD {
 		}
 	}
 
-	public HUD(GameApplet app, GameDrawer gameDrawer) {
+	public HUD(GameBaseApp app, GameDrawer gameDrawer) {
 		this.app = app;
 		this.gameDrawer = gameDrawer;
+		gameDrawer.setHud(this);
 		setupG4P();
-		playerInterface = new PlayerInterface(app);
+		playerInterface = new PlayerInterface(app, this);
 		chat = new Chat(app);
 		minimap = new Minimap(app);
 		soundHandler = new SoundHandler(app);
@@ -49,6 +51,7 @@ public class HUD {
 	}
 
 	private void setupG4P() {
+		new GButton(app, 0, 0, 1, 1).dispose();//init g4p
 		G4P.setGlobalColorScheme(8);
 		G4P.changeCursor(false);
 		GCScheme.setScheme(8, 0, app.color(0));
@@ -67,11 +70,11 @@ public class HUD {
 		// GroupHandler.update();
 	}
 
-	public static String[] buttonImageFilename() {
+	public String[] buttonImageFilename() {
 		return new String[] { "hud/button_normal.png", "hud/button_mouseover.png", "hud/button_clicked.png" };
 	}
 
-	public static void dispose() {
+	public void dispose() {
 		try {
 
 			GroupHandler.dispose();

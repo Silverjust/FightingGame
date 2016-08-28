@@ -2,16 +2,22 @@ package game;
 
 import java.util.HashMap;
 
-import main.preGame.MainPreGame.GameSettings;
 import shared.Coms;
 import shared.User;
 
 public class PreGameInfo {
 
 	public String map;
-	public HashMap<String, User> users;
+	public HashMap<String, User> users = new HashMap<String, User>();
+
+	public static boolean singlePlayer = true;
+	public static boolean sandbox;
+	public static boolean campain;
+	public static boolean againstAI;
+	private GameApp app;
 
 	public PreGameInfo(GameApp app) {
+		this.app = app;
 		app.clientHandler = new ClientHandler(app, "");
 		User u = new User(app, app.clientHandler.identification, "you");
 		users.put(app.clientHandler.identification, u);
@@ -25,35 +31,41 @@ public class PreGameInfo {
 	}
 
 	public static boolean isSinglePlayer() {
-		return GameSettings.singlePlayer;
+		return singlePlayer;
 	}
 
 	public static void setSinglePlayer(boolean singlePlayer) {
-		GameSettings.singlePlayer = singlePlayer;
+		PreGameInfo.singlePlayer = singlePlayer;
 	}
 
 	public static boolean isSandbox() {
-		return GameSettings.sandbox;
+		return sandbox;
 	}
 
 	public static void setSandbox(boolean sandbox) {
-		GameSettings.sandbox = sandbox;
+		PreGameInfo.sandbox = sandbox;
 	}
 
 	public static boolean isCampain() {
-		return GameSettings.campain;
+		return campain;
 	}
 
 	public static void setCampain(boolean campain) {
-		GameSettings.campain = campain;
+		PreGameInfo.campain = campain;
 	}
 
 	public static boolean isAgainstAI() {
-		return GameSettings.againstAI;
+		return againstAI;
 	}
 
 	public static void setAgainstAI(boolean againstAI) {
-		GameSettings.againstAI = againstAI;
+		PreGameInfo.againstAI = againstAI;
+	}
+
+	public User getUser(String string) {
+		if (string.equals(""))// returns this user
+			return users.get(app.clientHandler.identification);
+		return users.get(string);
 	}
 
 }

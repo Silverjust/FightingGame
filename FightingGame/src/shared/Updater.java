@@ -3,7 +3,7 @@ package shared;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import game.Map;
 import gameStructure.GameObject;
 import shared.Helper.Timer;
@@ -14,13 +14,6 @@ public abstract class Updater {
 	protected ArrayList<GameObject> toAdd = new ArrayList<GameObject>();
 	public ArrayList<GameObject> toRemove = new ArrayList<GameObject>();
 
-	public Updater() {
-		if (resfreeze != null)
-			resfreeze.startCooldown();
-
-		ComHandler.addUpdater(this);
-	}
-
 	public Map map;
 
 	public HashMap<String, Player> players = new HashMap<String, Player>();
@@ -29,8 +22,17 @@ public abstract class Updater {
 	public GameState gameState = GameState.PLAY;
 	public boolean selectionChanged;
 	public boolean keepGrid;
+	protected GameBaseApp app;
 
 	static public Timer resfreeze;
+
+	public Updater(GameBaseApp app) {
+		this.app = app;
+		if (resfreeze != null)
+			resfreeze.startCooldown();
+
+		app.getComHandler().addUpdater(this);
+	}
 
 	public abstract void update();
 
@@ -53,27 +55,33 @@ public abstract class Updater {
 		// TODO pause not working
 		private static int pauseStart;
 		private static int pauseTime;
+		private static GameBaseApp app;
+
+		public static void setup(GameBaseApp app) {
+			Time.app = app;
+			System.out.println("Updater.Time.setup()" + Time.app);
+		}
 
 		public static void startPause() {
-			if (GameApplet.updater.gameState == GameState.PLAY) {
-				GameApplet.updater.gameState = GameState.PAUSE;
-				pauseStart = GameApplet.app.millis();
+			if (app.getUpdater().gameState == GameState.PLAY) {
+				app.getUpdater().gameState = GameState.PAUSE;
+				pauseStart = app.millis();
 			}
 		}
 
 		public static void endPause() {
-			if (GameApplet.updater.gameState != GameState.PLAY) {
-				GameApplet.updater.gameState = GameState.PLAY;
-				pauseTime += GameApplet.app.millis() - pauseStart;
+			if (app.getUpdater().gameState != GameState.PLAY) {
+				app.getUpdater().gameState = GameState.PLAY;
+				pauseTime += app.millis() - pauseStart;
 				pauseStart = 0;
 			}
 		}
 
 		public static int getMillis() {
 			if (pauseStart == 0)
-				return GameApplet.app.millis() - pauseTime;
+				return app.millis() - pauseTime;
 			else
-				return GameApplet.app.millis() - (pauseTime + GameApplet.app.millis() - pauseStart);
+				return app.millis() - (pauseTime + app.millis() - pauseStart);
 		}
 	}
 

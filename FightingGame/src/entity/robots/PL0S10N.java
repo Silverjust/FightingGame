@@ -2,7 +2,7 @@ package entity.robots;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -118,10 +118,10 @@ public class PL0S10N extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		for (GameObject e : GameApplet.updater.gameObjects) {
+		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isInRange(getX(), getY(), e.getRadius() + a.range)
 					&& a.canTargetable(e) && e.isEnemyTo(this)) {
-				GameApplet.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}
@@ -170,12 +170,12 @@ public class PL0S10N extends Unit implements Attacker {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 

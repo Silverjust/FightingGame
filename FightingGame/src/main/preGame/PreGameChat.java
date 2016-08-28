@@ -5,7 +5,7 @@ import g4p_controls.GEvent;
 import g4p_controls.GTextArea;
 import g4p_controls.GTextField;
 import game.ClientHandler;
-import game.GameApplet;
+import game.GameBaseApp;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -23,12 +23,12 @@ public class PreGameChat {
 	//boolean justOpened;
 
 	PreGameChat() {
-		chatLine = new GTextField(GameApplet.app, 10, GameApplet.app.height - 30, 500, 20);
+		chatLine = new GTextField(GameBaseApp.app, 10, GameApplet.GameBaseApp.height - 30, 500, 20);
 		chatLine.setPromptText("chat");
 		chatLine.setFont(new Font("PLAIN", Font.BOLD, 15));
 		chatLine.addEventHandler(this, "chatEvents");
 
-		chatHistory = new GTextArea(GameApplet.app, 10, GameApplet.app.height - 250, 500, 200,
+		chatHistory = new GTextArea(GameBaseApp.app, 10, GameApplet.GameBaseApp.height - 250, 500, 200,
 				G4P.SCROLLBARS_VERTICAL_ONLY | G4P.SCROLLBARS_AUTOHIDE);
 		chatHistory.setTextEditEnabled(false);
 		chatHistory.setOpaque(false);
@@ -37,11 +37,11 @@ public class PreGameChat {
 	}
 
 	public void update() {
-		if (GameApplet.app.keyCode == PConstants.ENTER) {
+		if (GameApplet.GameBaseApp.keyCode == PConstants.ENTER) {
 			if (!chatLine.isVisible()) {
 				show();
 			}
-		} else if (GameApplet.app.keyCode == PConstants.BACKSPACE) {
+		} else if (GameApplet.GameBaseApp.keyCode == PConstants.BACKSPACE) {
 			String s = Helper.secureInput(chatLine.getText());
 			System.out.println("Chat.update()\n" + chatLine.getText() + "\n" + s);
 
@@ -85,10 +85,10 @@ public class PreGameChat {
 				}*/
 			} else {
 				if (s.length() > 0 && s.charAt(0) == '/') {
-					println(GameApplet.getPreGameInfo().getUser("").name, s);
+					println(GameBaseApp.getPreGameInfo().getUser("").name, s);
 					CommandHandler.executeCommands(s);
 				} else {
-					ClientHandler.send("<say " + GameApplet.getPreGameInfo().getUser("").ip + " " + s);
+					ClientHandler.send("<say " + GameBaseApp.getPreGameInfo().getUser("").ip + " " + s);
 				}
 			}
 			textfield.setText("");

@@ -6,7 +6,7 @@ import entity.neutral.Kerit;
 import entity.neutral.Pax;
 import entity.neutral.Prunam;
 import game.AimHandler;
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.GameObject;
 import gameStructure.actives.UpgradeActive;
@@ -22,7 +22,7 @@ public class MineAim extends UpgradeAim {
 	protected boolean canPlaceAt(float x, float y) {
 		boolean rightPlace = false;
 		boolean inCommanderRange = false;
-		for (GameObject e : GameApplet.updater.gameObjects) {
+		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e.getX() == x && e.getY() == y) {
 				if (e.getClass().equals(oldBuildable)) {
 					replaced = (Building) e;
@@ -77,7 +77,7 @@ public class MineAim extends UpgradeAim {
 		@Override
 		public void onActivation() {
 			GameObject builder = null;
-			for (GameObject e : GameApplet.updater.selected) {
+			for (GameObject e : GameApplet.GameBaseApp.selected) {
 				if (getClazz().isAssignableFrom(e.getClass())) {
 					builder = e;
 				}

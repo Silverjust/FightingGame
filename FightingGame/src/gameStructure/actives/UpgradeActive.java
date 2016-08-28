@@ -1,7 +1,7 @@
 package gameStructure.actives;
 
 import game.AimHandler;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.aim.UpgradeAim;
 import gameStructure.Building;
 import gameStructure.GameObject;
@@ -25,7 +25,7 @@ public class UpgradeActive extends Spell {
 	@Override
 	public void onActivation() {
 		GameObject builder = null;
-		for (GameObject e : GameApplet.updater.selected) {
+		for (GameObject e : GameApplet.GameBaseApp.selected) {
 			if (getClazz().isAssignableFrom(e.getClass())) {
 				builder = e;
 			}

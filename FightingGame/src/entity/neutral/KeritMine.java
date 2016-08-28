@@ -1,6 +1,6 @@
 package entity.neutral;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.animation.Extract;
 
@@ -39,7 +39,7 @@ public abstract class KeritMine extends Building {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		GameApplet.updater.send("<spawn Kerit 0 " + getX() + " " + getY());
+		GameBaseApp.updater.send("<spawn Kerit 0 " + getX() + " " + getY());
 	}
 
 }

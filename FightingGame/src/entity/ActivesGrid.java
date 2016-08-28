@@ -2,7 +2,7 @@ package entity;
 
 import java.lang.reflect.Constructor;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Spell;
 import gameStructure.actives.BuildActive;
 import gameStructure.actives.GridActive;
@@ -28,9 +28,9 @@ public class ActivesGrid {
 		baseActivesGrid = new Spell[gridWidth][gridHeight];
 		handler.gridList.add(this);
 		this.descr = description;
-		this.shortcuts = SettingHandler.setting.getShortcut(handler.nation.toString(), descr);
+		this.shortcuts = SettingHandler.getSetting().getShortcut(handler.nation.toString(), descr);
 		if (shortcuts == null){System.out.println("ActivesGrid.ActivesGrid() use base shortcuts");
-			this.shortcuts = SettingHandler.setting.baseShortcuts;}
+			this.shortcuts = SettingHandler.getSetting().baseShortcuts;}
 	}
 
 	public ActivesGrid(ActivesGridHandler handler) {
@@ -65,7 +65,7 @@ public class ActivesGrid {
 			for (int x = 0; x < gridWidth; x++) {
 				for (int y = 0; y < gridHeight; y++) {
 					if (grid.get(x, y) != null
-							&& Helper.listContainsInstanceOf(grid.get(x, y).getClazz(), GameApplet.updater.selected)) {
+							&& Helper.listContainsInstanceOf(grid.get(x, y).getClazz(), GameApplet.GameBaseApp.selected)) {
 						n++;
 						ability = grid.get(x, y);
 						if (n > 1 || !(ability instanceof GridActive))

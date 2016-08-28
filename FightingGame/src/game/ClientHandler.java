@@ -12,9 +12,9 @@ public class ClientHandler {
 
 	private boolean reportCommunication = false;
 
-	private GameApplet app;
+	private GameBaseApp app;
 
-	public ClientHandler(GameApplet app, String serverIp) {
+	public ClientHandler(GameBaseApp app, String serverIp) {
 		this.app = app;
 		if (PreGameInfo.isSinglePlayer()) {
 			System.out.println("SinglePlayer");

@@ -2,7 +2,7 @@ package main;
 
 import g4p_controls.G4P;
 import game.ClientHandler;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.GameDrawer;
 import game.HUD;
 
@@ -54,17 +54,17 @@ public class MainApp extends PApplet {
 		// frame.setVisible(true);
 		frameRate(60);
 		font = createFont("Aharoni Fett", 40);
-		GameApplet.setTextScale(0.5F);// so ungef‰r
-		GameApplet.setFont(font);
+		GameBaseApp.setTextScale(0.5F);// so ungef‰r
+		GameBaseApp.setFont(font);
 		// System.out.println(font.ascent());
 		textFont(font);
 		noSmooth();
 		mode = Mode.HAUPTMENUE;
 		G4P.messagesEnabled(false);
 
-		GameApplet.setApp(this);
+		GameBaseApp.setApp(this);
 		FrameInfo.setup();
-		GameApplet.setMinim(new Minim(this));
+		GameBaseApp.setMinim(new Minim(this));
 
 		SettingHandler.setup();
 		startPage = new StartPage();
@@ -79,16 +79,16 @@ public class MainApp extends PApplet {
 			startPage.update();
 			break;
 		case PREGAME:
-			GameApplet.getPreGameInfo().update();
+			GameBaseApp.getPreGameInfo().update();
 			break;
 		case LADESCREEN:
-			GameApplet.loader.update();
+			GameBaseApp.loader.update();
 			break;
 		case GAME:
 			// if (frameCount % 100 == 0)// DEBUG
 			// CommandHandler.executeCommands("/fps");
 			// HUD.chatPrintln("fps", ""+frameRate);
-			GameApplet.updater.update();
+			GameBaseApp.updater.update();
 			GameDrawer.update();
 
 			break;
@@ -102,7 +102,7 @@ public class MainApp extends PApplet {
 
 	@Override
 	public void keyPressed() {
-		if (mode != Mode.GAME && key == SettingHandler.setting.togglePause) {
+		if (mode != Mode.GAME && key == SettingHandler.getSetting().togglePause) {
 			if (menu == null) {
 				menu = new PreGameMenu();
 			} else {
@@ -123,16 +123,16 @@ public class MainApp extends PApplet {
 	public void dispose() {// Player in schlieﬂen
 		try {
 			if (ClientHandler.client != null)
-				GameApplet.updater.send(Coms.PAUSE + " true");
+				GameBaseApp.updater.send(Coms.PAUSE + " true");
 			if (startPage != null)
 				startPage.dispose();
-			if (GameApplet.getPreGameInfo() != null)
-				GameApplet.getPreGameInfo().dispose();
+			if (GameBaseApp.getPreGameInfo() != null)
+				GameBaseApp.getPreGameInfo().dispose();
 			ProfileHandler.dispose();
 			HUD.dispose();
 			// TODO close all ingame sounds
-			if (GameApplet.minim != null)
-				GameApplet.minim.stop();
+			if (GameBaseApp.minim != null)
+				GameBaseApp.minim.stop();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

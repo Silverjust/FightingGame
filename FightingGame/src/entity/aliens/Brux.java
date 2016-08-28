@@ -1,6 +1,6 @@
 package entity.aliens;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -149,7 +149,7 @@ public class Brux extends Unit implements Attacker {
 		super.exec(c);
 		if (c[2].equals("jump")) {
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameApplet.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
 			jump.setTargetFrom(this, e);
 			xTarget = e.getX();
 			yTarget = e.getY();
@@ -159,7 +159,7 @@ public class Brux extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameApplet.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 
 	}
@@ -206,12 +206,12 @@ public class Brux extends Unit implements Attacker {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 
@@ -261,7 +261,7 @@ public class Brux extends Unit implements Attacker {
 			if (target != null && isNotOnCooldown()
 					&& target.isInRange(e.getX(), e.getY(), e.getRadius() + target.getRadius())) {
 				if (isServer) {
-					GameApplet.updater.send("<hit " + target.number + " " + damage
+					GameBaseApp.updater.send("<hit " + target.number + " " + damage
 							+ " " + pirce);
 					e.sendDefaultAnimation(this);
 				}

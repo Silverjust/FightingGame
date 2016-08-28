@@ -17,26 +17,26 @@ import processing.core.PGraphics;
 public class SelectionDisplay {
 	static PGraphics graphic;
 	static int x, y, h, w;
-	static int c = 15, r = PApplet.ceil(GameApplet.updater.selected.size());
+	static int c = 15, r = PApplet.ceil(GameApplet.GameBaseApp.selected.size());
 	static int iconSize = 40;
 	static float yOffset;
 	public static GCustomSlider selectedEntitiesSlider;
 	static PFont font;
-	private static int col = GameApplet.app.color(100, 255, 100);
+	private static int col = GameBaseApp.app.color(100, 255, 100);
 	static GLabel infoStats;
 
 	public static void setup() {
 		x = 300;
-		y = 30 + GameApplet.app.height - HUD.height;
+		y = 30 + GameApplet.GameBaseApp.height - HUD.height;
 		w = (iconSize + 10) * c;
 		h = HUD.height - 35;
-		graphic = GameApplet.app.createGraphics(w, h, PApplet.JAVA2D);
-		font = GameApplet.app.createFont("Aharoni Fett", 40);
+		graphic = GameBaseApp.app.createGraphics(w, h, PApplet.JAVA2D);
+		font = GameBaseApp.app.createFont("Aharoni Fett", 40);
 		graphic.textFont(font);
 		graphic.textSize(20);
 		// graphic.textLeading(100);
-		selectedEntitiesSlider = new GCustomSlider(GameApplet.app, x + w + 20, y + 10,
-				h - 20, 20, GameApplet.player.getNation().toString());
+		selectedEntitiesSlider = new GCustomSlider(GameBaseApp.app, x + w + 20, y + 10,
+				h - 20, 20, GameBaseApp.player.getNation().toString());
 		selectedEntitiesSlider.setRotation(PConstants.TAU / 4,
 				GControlMode.CORNER);
 		selectedEntitiesSlider.setLimits(0, 0, 1);
@@ -55,24 +55,24 @@ public class SelectionDisplay {
 	public static void update() {
 		graphic.beginDraw();
 		graphic.clear();
-		if (informing == null && GameApplet.updater.selected.size() == 1)
-			informing = GameApplet.updater.selected.get(0);
+		if (informing == null && GameApplet.GameBaseApp.selected.size() == 1)
+			informing = GameApplet.GameBaseApp.selected.get(0);
 		if (informing != null) {
 			graphic.fill(200);
 			graphic.rect(0, 0, iconSize * 4, iconSize * 4);
 			informing.drawIcon(graphic, 0, 0, iconSize * 4);
 			graphic.fill(col);
 			String descr = informing.getDescription().replaceAll("§", " \n");
-			graphic.text(descr, iconSize * 5, GameApplet.app.textAscent()
-					* GameApplet.textScale + 10);
+			graphic.text(descr, iconSize * 5, GameBaseApp.app.textAscent()
+					* GameBaseApp.textScale + 10);
 			String stats = informing.getStatistics().replaceAll("§", " \n");
-			graphic.text(stats, iconSize * 10, GameApplet.app.textAscent()
-					* GameApplet.textScale + 10);
+			graphic.text(stats, iconSize * 10, GameBaseApp.app.textAscent()
+					* GameBaseApp.textScale + 10);
 
 			// StyledString styledStats = style(stats);
 			// infoStats.setStyledText(styledStats);
 		} else {
-			r = PApplet.ceil(GameApplet.updater.selected.size() / c) + 1;
+			r = PApplet.ceil(GameApplet.GameBaseApp.selected.size() / c) + 1;
 			if (r - 3 <= 0) {
 				selectedEntitiesSlider.setLimits(0, 0);
 				selectedEntitiesSlider.setVisible(false);
@@ -85,9 +85,9 @@ public class SelectionDisplay {
 			// System.out.println(r + " " + i + " "
 			// + (r > 0 ? 10 * (f/ (r - 4)) : 0);
 
-			for (GameObject e : GameApplet.updater.selected) {
-				int xe = GameApplet.updater.selected.indexOf(e) % c;
-				int ye = (GameApplet.updater.selected.indexOf(e) - xe) / c;
+			for (GameObject e : GameApplet.GameBaseApp.selected) {
+				int xe = GameApplet.GameBaseApp.selected.indexOf(e) % c;
+				int ye = (GameApplet.GameBaseApp.selected.indexOf(e) - xe) / c;
 				graphic.fill(200);
 				graphic.rect((iconSize + 10) * xe, -yOffset + (iconSize + 10)
 						* ye, iconSize, iconSize);
@@ -100,7 +100,7 @@ public class SelectionDisplay {
 
 		}
 		graphic.endDraw();
-		GameApplet.app.image(graphic, x, y);
+		GameBaseApp.app.image(graphic, x, y);
 	}
 
 	@SuppressWarnings("unused")
@@ -109,19 +109,19 @@ public class SelectionDisplay {
 		int i = stats.indexOf("kerit");
 		if (i != -1)
 			styledStats.addAttribute(TextAttribute.FOREGROUND,
-					GameApplet.app.color(50), i, i + 1);
+					GameBaseApp.app.color(50), i, i + 1);
 		i = stats.indexOf("pax");
 		if (i != -1)
 			styledStats.addAttribute(TextAttribute.FOREGROUND,
-					GameApplet.app.color(255, 200, 0), i, i + 1);
+					GameBaseApp.app.color(255, 200, 0), i, i + 1);
 		i = stats.indexOf("arcanum");
 		if (i != -1)
 			styledStats.addAttribute(TextAttribute.FOREGROUND,
-					GameApplet.app.color(0, 100, 255), i, i + 1);
+					GameBaseApp.app.color(0, 100, 255), i, i + 1);
 		i = stats.indexOf("prunam");
 		if (i != -1)
 			styledStats.addAttribute(TextAttribute.FOREGROUND,
-					GameApplet.app.color(255, 100, 0), i, i + 1);
+					GameBaseApp.app.color(255, 100, 0), i, i + 1);
 		return styledStats;
 	}
 

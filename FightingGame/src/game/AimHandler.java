@@ -9,16 +9,16 @@ public class AimHandler {
 
 	private static PImage buildImg, selectImg, shootImg, moveImg;
 	static Aim aim;
-	private GameApplet app;
+	private GameBaseApp app;
 
-	public void loadImages(ImageHandler imageHandler) {
+	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		buildImg = imageHandler.load("", "build");
 		selectImg = imageHandler.load("", "select");
 		shootImg = imageHandler.load("", "shoot");
 		moveImg = imageHandler.load("", "move");
 	}
 
-	public AimHandler(GameApplet app) {
+	public AimHandler(GameBaseApp app) {
 		this.app = app;
 		aim = new EmptyAim();
 	}

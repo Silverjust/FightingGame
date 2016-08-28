@@ -1,7 +1,6 @@
 package gameStructure.animation;
 
-import game.GameApplet;
-import game.ImageHandler;
+import game.GameBaseApp;
 import gameStructure.Attacker;
 import gameStructure.Entity;
 import gameStructure.GameObject;
@@ -19,8 +18,10 @@ public class Animation {
 	PImage[] img;
 	public int duration;
 	int start;
+	protected GameBaseApp app;
 
-	public Animation(PImage[][] IMG, int duration) {
+	public Animation(GameBaseApp app, PImage[][] IMG, int duration) {
+		this.app = app;
 		imgWD = IMG;
 		if (IMG != null) {
 			directions = (byte) imgWD.length;
@@ -29,7 +30,8 @@ public class Animation {
 		this.duration = duration;
 	}
 
-	public Animation(PImage[] IMG, int duration) {
+	public Animation(GameBaseApp app, PImage[] IMG, int duration) {
+		this.app = app;
 		img = IMG;
 		directions = 1;
 		if (IMG != null)
@@ -38,7 +40,8 @@ public class Animation {
 
 	}
 
-	public Animation(PImage IMG, int duration) {
+	public Animation(GameBaseApp app, PImage IMG, int duration) {
+		this.app = app;
 		img = new PImage[1];
 		img[0] = IMG;
 		directions = 1;
@@ -86,15 +89,14 @@ public class Animation {
 		}
 
 		if (imgWD != null && j < directions && i < frames) {
-			ImageHandler.drawImage(GameApplet.app, imgWD[j][i], GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY()),
-					e.getxSize(), e.getySize());
+			app.getDrawer().imageHandler.drawImage(app, imgWD[j][i], GameObject.xToGrid(e.getX()),
+					GameObject.yToGrid(e.getY()), e.getxSize(), e.getySize());
 		} else if (img != null && i < frames) {
-			ImageHandler.drawImage(GameApplet.app, img[i], GameObject.xToGrid(e.getX()),
+			app.getDrawer().imageHandler.drawImage(app, img[i], GameObject.xToGrid(e.getX()),
 					GameObject.yToGrid(e.getY() - e.getHeight()), e.getxSize(), e.getySize());
 		}
 		if (Animation.observe.isAssignableFrom(e.getClass())) {
-			GameApplet.app.text(getName(e), GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY() - e.getHeight()), 50,
-					50);
+			app.text(getName(e), GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY() - e.getHeight()), 50, 50);
 		}
 	}
 
@@ -110,15 +112,14 @@ public class Animation {
 		}
 
 		if (imgWD != null && d < directions && f < frames) {
-			ImageHandler.drawImage(GameApplet.app, imgWD[d][f], GameObject.xToGrid(x), GameObject.yToGrid(y), e.getxSize(),
-					e.getySize());
-		} else if (img != null && f < frames) {
-			ImageHandler.drawImage(GameApplet.app, img[f], GameObject.xToGrid(x), GameObject.yToGrid(y - e.getHeight()),
+			app.getDrawer().imageHandler.drawImage(app, imgWD[d][f], GameObject.xToGrid(x), GameObject.yToGrid(y),
 					e.getxSize(), e.getySize());
+		} else if (img != null && f < frames) {
+			app.getDrawer().imageHandler.drawImage(app, img[f], GameObject.xToGrid(x),
+					GameObject.yToGrid(y - e.getHeight()), e.getxSize(), e.getySize());
 		}
 		if (Animation.observe.isAssignableFrom(e.getClass())) {
-			GameApplet.app.text(getName(e), GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY() - e.getHeight()), 50,
-					50);
+			app.text(getName(e), GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY() - e.getHeight()), 50, 50);
 		}
 
 	}

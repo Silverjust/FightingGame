@@ -5,6 +5,7 @@ import processing.core.PApplet;
 import processing.core.PFont;
 import shared.ComHandler;
 import shared.ContentListManager;
+import shared.Helper;
 import shared.Loader;
 import shared.Menu;
 import shared.Mode;
@@ -12,7 +13,7 @@ import shared.Player;
 import shared.Updater;
 
 @SuppressWarnings("serial")
-public class GameApplet extends PApplet {
+public class GameBaseApp extends PApplet {
 
 	protected Menu menu;
 	protected ContentListManager contentListHandler;
@@ -126,6 +127,8 @@ public class GameApplet extends PApplet {
 	}
 
 	public GameDrawer getDrawer() {
+		if (gameDrawer == null)
+			System.err.println("GameDrawer not created");
 		return gameDrawer;
 	}
 
@@ -171,12 +174,27 @@ public class GameApplet extends PApplet {
 		this.preGameInfo = preGame;
 	}
 
-	public void write(String string, String string2) {
-		// TODO Auto-generated method stub
+	public void write(String ip, String string) {
+		write(ip, new String[] { string });
+	}
 
+	public void write(String ip, String[] text) {
+		String name = Helper.ipToName(ip, this);
+		String completeText = "";
+		for (int i = 2; i < text.length; i++) {// c[0] und c[1] auslassen
+			completeText = completeText.concat(" ").concat(text[i]);
+		}
+		/*
+		 * if (((MainApp) ref.app).mode == Mode.PREGAME)
+		 * display.chat.println(name, completeText); else
+		 */
+		if (mode == Mode.GAME)
+			getDrawer().getHud().chat.println(name, completeText);
 	}
 
 	public ComHandler getComHandler() {
+		if (comHandler == null)
+			System.err.println("comHandler not created");
 		return comHandler;
 	}
 

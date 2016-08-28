@@ -1,13 +1,13 @@
 package champs;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.baseBuffs.Buff;
 
 public class ArmorShred extends Buff {
 	private int amount = 30;
 	private int totalAmount = 0;
 
-	public ArmorShred(GameApplet app, String[] c) {
+	public ArmorShred(GameBaseApp app, String[] c) {
 		super(app, c);
 		maxStacks = 3;
 	}

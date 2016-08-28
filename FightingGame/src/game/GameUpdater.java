@@ -12,9 +12,9 @@ public class GameUpdater extends Updater {
 	// FIXME einheiten vibrieren
 
 	public Input input;
-	private GameApplet app;
 
-	public GameUpdater(GameApplet app) {
+	public GameUpdater(GameBaseApp app) {
+		super(app);
 		this.app = app;
 		neutral = Player.createNeutralPlayer(app);
 		input = new Input(app);
@@ -94,13 +94,13 @@ public class GameUpdater extends Updater {
 
 	@Override
 	public void startPause() {
-		HUD.menue = new IngameMenu(app);
+		app.getDrawer().getHud().menue = new IngameMenu(app);
 	}
 
 	@Override
 	public void endPause() {
-		HUD.menue.dispose();
-		HUD.menue = null;
+		app.getDrawer().getHud().menue.dispose();
+		app.getDrawer().getHud().menue = null;
 	}
 
 }

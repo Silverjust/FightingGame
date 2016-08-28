@@ -1,6 +1,6 @@
 package server;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import game.Map;
 import gameStructure.GameObject;
 import gameStructure.Unit;
@@ -14,12 +14,12 @@ import shared.Updater;
 
 public class ServerUpdater extends Updater {
 	public ServerUpdater() {
-		for (String key : GameApplet.preGame.users.keySet()) {
-			players.put(key, Player.createPlayer(GameApplet.preGame.users.get(key)));
+		for (String key : GameApplet.GameBaseApp.users.keySet()) {
+			players.put(key, Player.createPlayer(GameApplet.GameBaseApp.users.get(key)));
 		}
 		neutral = Player.createNeutralPlayer();
 
-		map = new Map(GameApplet.preGame.map);
+		map = new Map(GameApplet.GameBaseApp.map);
 	}
 
 	@Override
@@ -43,11 +43,11 @@ public class ServerUpdater extends Updater {
 					// System.out.println("removed " + n);
 				}
 			}
-			if (GameApplet.app.frameCount % 1000 == 0) {
-				GameApplet.updater.send("<say SERVER " + "sync");
+			if (GameApplet.GameBaseApp.frameCount % 1000 == 0) {
+				GameBaseApp.updater.send("<say SERVER " + "sync");
 				for (GameObject e : gameObjects) {
 					if (e instanceof Unit) {
-						GameApplet.updater.send("<tp " + e.number + " " + e.getX() + " " + e.getY() + " false");
+						GameBaseApp.updater.send("<tp " + e.number + " " + e.getX() + " " + e.getY() + " false");
 					}
 				}
 			}
@@ -72,26 +72,26 @@ public class ServerUpdater extends Updater {
 	@Override
 	public void send(String string) {
 		ComHandler.executeCom(string);
-		((ServerApp) GameApplet.app).serverHandler.send(string);
+		((ServerApp) GameBaseApp.app).serverHandler.send(string);
 	}
 
 	/** pauses the game, clears all entities, respawns every entity and unpauses*/
 	public void reconnect() {
 		gameState = GameState.PAUSE;
-		GameApplet.updater.send(Coms.PAUSE + " true");
+		GameBaseApp.updater.send(Coms.PAUSE + " true");
 		ArrayList<String> spawns = new ArrayList<String>();
 		for (GameObject entity : gameObjects) {
 			spawns.add("<spawn " + entity.getClass().getSimpleName() + " " + entity.player.getUser().ip + " " + entity.getX()
 					+ " " + entity.getY());
 		}
 		for (GameObject entity : gameObjects) {
-			GameApplet.updater.send("<remove " + entity.number);
+			GameBaseApp.updater.send("<remove " + entity.number);
 		}
 		for (String com : spawns) {
-			GameApplet.updater.send(com);
+			GameBaseApp.updater.send(com);
 		}
 		System.out.println("finished reconnect, restart game");
-		GameApplet.updater.send(Coms.PAUSE + " false");
+		GameBaseApp.updater.send(Coms.PAUSE + " false");
 		gameState = GameState.PLAY;
 	}
 }

@@ -3,8 +3,7 @@ package gameStructure;
 import java.util.ArrayList;
 
 import champs.TestProjectile;
-import game.GameApplet;
-import game.HUD;
+import game.GameBaseApp;
 import gameStructure.animation.Death;
 import gameStructure.baseBuffs.Buff;
 import processing.core.PApplet;
@@ -42,7 +41,7 @@ public class Entity extends GameObject {
 	private ArrayList<Buff> buffs = new ArrayList<Buff>();
 	private ArrayList<Buff> buffsToRemove = new ArrayList<Buff>();
 
-	public Entity(GameApplet app, String[] c) {
+	public Entity(GameBaseApp app, String[] c) {
 		super(app, c);
 	}
 
@@ -89,7 +88,7 @@ public class Entity extends GameObject {
 	}
 
 	public void info() {
-		HUD.chat.println(this.getClass().getSimpleName() + "_" + number,
+		player.app.getDrawer().getHud().chat.println(this.getClass().getSimpleName() + "_" + number,
 				"(" + getX() + "|" + getY() + ")" + "\nhp:" + getCurrentHp());
 	}
 

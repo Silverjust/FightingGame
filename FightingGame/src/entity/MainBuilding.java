@@ -1,6 +1,6 @@
 package entity;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.Commander;
 import main.appdata.ProfileHandler;
@@ -23,7 +23,7 @@ public abstract class MainBuilding extends Building implements Commander, Coms {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		GameApplet.updater.send(GAMEEND + " lost " + player.getUser().ip + " " + ProfileHandler.getRate());
+		GameBaseApp.updater.send(GAMEEND + " lost " + player.getUser().ip + " " + ProfileHandler.getRate());
 	}
 
 	@Override

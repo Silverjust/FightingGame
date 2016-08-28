@@ -5,19 +5,21 @@ import javax.swing.JFrame;
 import ddf.minim.Minim;
 import g4p_controls.G4P;
 import main.Listener;
-import main.appdata.ProfileHandler;
 import main.appdata.SettingHandler;
 import main.preGame.PreGameMenu;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PFont;
 import shared.Client;
+import shared.ComHandler;
 import shared.Coms;
+import shared.ContentListManager;
 import shared.Mode;
+import shared.Updater.Time;
 import shared.VersionControle;
 
 @SuppressWarnings("serial")
-public class GameApp extends GameApplet {
+public class GameApp extends GameBaseApp {
 	public static void main(String args[]) {
 		boolean fullscreen = false;
 		fullscreen = true;
@@ -29,18 +31,16 @@ public class GameApp extends GameApplet {
 	}
 
 	PFont font;
-	private SettingHandler settingHandler;
+	SettingHandler settingHandler;
 
 	public void setup() {
 		size(displayWidth, displayHeight, P2D);
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		frame.setResizable(true);
 		frame.setTitle("FigthingGame");
-		frame.addWindowListener(new Listener());
+		frame.addWindowListener(new Listener(this));
 		// frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		// frame.setVisible(true);
-		String[] a = loadStrings("data/data/changelog.txt");
-		System.out.println("GameApp.setup()" + a);
 
 		font = createFont("Aharoni Fett", 40);
 		setTextScale(0.5F);// so ungefär
@@ -55,6 +55,13 @@ public class GameApp extends GameApplet {
 		settingHandler = new SettingHandler(this);
 		VersionControle.setup(this);
 		VersionControle.versionControle();
+
+		Time.setup(this);
+		setContentListHandler(new ContentListManager(this));
+		getContentListHandler().load();
+		setComHandler(new ComHandler(this));
+
+		setPreGameInfo(new PreGameInfo(this));
 	}
 
 	public void draw() {
@@ -62,7 +69,7 @@ public class GameApp extends GameApplet {
 		case HAUPTLADESCREEN:
 			break;
 		case PREGAME:
-			setPreGameInfo(new PreGameInfo(this));
+
 			break;
 		case LADESCREEN:
 			loader.update();
@@ -85,7 +92,7 @@ public class GameApp extends GameApplet {
 
 	@Override
 	public void keyPressed() {
-		if (mode != Mode.GAME && key == SettingHandler.setting.togglePause) {
+		if (mode != Mode.GAME && key == settingHandler.getSetting().togglePause) {
 			if (menu == null) {
 				menu = new PreGameMenu();
 			} else {
@@ -107,8 +114,8 @@ public class GameApp extends GameApplet {
 		try {
 			if (clientHandler.client != null)
 				updater.send(Coms.PAUSE + " true");
-			ProfileHandler.dispose();
-			HUD.dispose();
+			//ProfileHandler.dispose();
+			getDrawer().getHud().dispose();
 			// TODO close all ingame sounds
 			if (minim != null)
 				minim.stop();

@@ -3,7 +3,7 @@ package entity.aliens;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.Building;
@@ -125,7 +125,7 @@ public class SpawnTower extends Building implements Commander {
 		super.exec(c);
 		if (c[2].equals("spawn")) {
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameApplet.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
 			spawn.setTarget(e);
 			setAnimation(spawn);
 		}
@@ -133,7 +133,7 @@ public class SpawnTower extends Building implements Commander {
 
 	@Override
 	public void renderTerrain() {
-		ImageHandler.drawImage(GameApplet.app, AlienMainBuilding.groundImg, xToGrid(getX()),
+		ImageHandler.drawImage(GameBaseApp.app, AlienMainBuilding.groundImg, xToGrid(getX()),
 				yToGrid(getY()), commandingRange * 2, commandingRange);
 	}
 
@@ -195,12 +195,12 @@ public class SpawnTower extends Building implements Commander {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 
@@ -256,7 +256,7 @@ public class SpawnTower extends Building implements Commander {
 					float yt = target.getY();
 					float xt = target.getX();
 					byte shootlingRadius = 5;
-					GameApplet.updater.send("<spawn Shootling "
+					GameBaseApp.updater.send("<spawn Shootling "
 							+ e.player.getUser().ip
 							+ " "
 							+ (e.getX() + (xt - e.getX())

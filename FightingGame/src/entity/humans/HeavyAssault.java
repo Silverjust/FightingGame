@@ -2,7 +2,7 @@ package entity.humans;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -121,7 +121,7 @@ public class HeavyAssault extends Unit implements Attacker {
 	@Override
 	public void calculateDamage(Attack a) {
 		isTaged = true;
-		GameApplet.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
@@ -139,9 +139,9 @@ public class HeavyAssault extends Unit implements Attacker {
 				&& basicAttack.getTarget().isAlive()
 				&& getAnimation() == basicAttack) {
 			GameObject e = basicAttack.getTarget();
-			GameApplet.app.stroke(255, 100, 0);
-			GameApplet.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(e.getX()), yToGrid(e.getY()));
-			GameApplet.app.stroke(0);
+			GameBaseApp.app.stroke(255, 100, 0);
+			GameBaseApp.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(e.getX()), yToGrid(e.getY()));
+			GameBaseApp.app.stroke(0);
 		}
 	}
 
@@ -180,12 +180,12 @@ public class HeavyAssault extends Unit implements Attacker {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 

@@ -3,7 +3,7 @@ package entity.scientists;
 import processing.core.PApplet;
 import processing.core.PImage;
 import shared.ContentListManager;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -128,7 +128,7 @@ public class GuineaPig extends Unit implements Attacker, Shooter, Equiping {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameApplet.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
@@ -169,10 +169,10 @@ public class GuineaPig extends Unit implements Attacker, Shooter, Equiping {
 		float x = PApplet.lerp(this.getX(), target.getX(), progress);
 		float y = PApplet.lerp(this.getY() - getHeight(), target.getY() - target.getHeight(),
 				progress);
-		GameApplet.app.fill(255, 100, 0);
-		GameApplet.app.strokeWeight(0);
-		GameApplet.app.ellipse(xToGrid(x), yToGrid(y), 1, 1);
-		GameApplet.app.strokeWeight(1);
+		GameBaseApp.app.fill(255, 100, 0);
+		GameBaseApp.app.strokeWeight(0);
+		GameBaseApp.app.ellipse(xToGrid(x), yToGrid(y), 1, 1);
+		GameBaseApp.app.strokeWeight(1);
 	}
 
 	@Override
@@ -217,12 +217,12 @@ public class GuineaPig extends Unit implements Attacker, Shooter, Equiping {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 
@@ -283,8 +283,8 @@ public class GuineaPig extends Unit implements Attacker, Shooter, Equiping {
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (isSetup() && isEvent()) {
 				if (isServer) {
-					GameApplet.updater.send("<remove " + e.number);
-					GameApplet.updater.send(//
+					GameBaseApp.updater.send("<remove " + e.number);
+					GameBaseApp.updater.send(//
 							"<spawn " + unit + " " + e.player.getUser().ip + " " + e.getX()
 									+ " " + e.getY() + " " + ((Unit) e).xTarget
 									+ " " + ((Unit) e).yTarget

@@ -4,7 +4,7 @@ import shared.Helper.Timer;
 
 import java.util.ArrayList;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Entity;
 import gameStructure.GameObject;
 
@@ -16,7 +16,7 @@ public class Buff {
 	protected Timer timer;
 	private GameObject source;
 
-	public Buff(GameApplet app, String[] c) {
+	public Buff(GameBaseApp app, String[] c) {
 		if (c != null) {
 			int n_o = Integer.parseInt(c[2]);
 			owner = (Entity) app.getUpdater().getGameObject(n_o);

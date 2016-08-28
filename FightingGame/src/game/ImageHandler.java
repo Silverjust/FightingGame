@@ -21,9 +21,9 @@ public class ImageHandler {
 	public ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
 	private boolean dispose = false;
 	private ContentListManager contentListHandler;
-	private GameApplet app;
+	private GameBaseApp app;
 
-	public ImageHandler(GameApplet app) {
+	public ImageHandler(GameBaseApp app) {
 		this.app = app;
 		contentListHandler = app.contentListHandler;
 	}
@@ -54,12 +54,21 @@ public class ImageHandler {
 			// PApplet.printArray(classes);
 
 			for (Class<?> c : classes) {
+				Method m = null;
 				try {
-					Method m = c.getDeclaredMethod("loadImages");
+
+					m = c.getDeclaredMethod("loadImages", GameBaseApp.class, this.getClass());
 					m.invoke(null, new Object[] { app, this });
-				} catch (NoSuchMethodException e) {
-					System.out.println(
-							"no loadImage method, add:\npublic static void loadImages(GameApplet app, ImageHandler imageHandler){ /*code*/ }");
+				} catch (Exception e) {
+					if (m != null && e instanceof NullPointerException) {
+						System.out.println("loadImage is not static, (" + c.getSimpleName()
+								+ ".java:1) change to:\npublic static void loadImages(GameApplet app, ImageHandler imageHandler){ /*code*/ }");
+
+					} else if (e instanceof NoSuchMethodException) {
+						System.out.println("no loadImage method, (" + c.getSimpleName()
+								+ ".java:1) add:\npublic static void loadImages(GameApplet app, ImageHandler imageHandler){ /*code*/ }");
+
+					}
 					e.printStackTrace();
 				}
 			}

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import champs.Rock;
 import entity.neutral.*;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.HUD;
 import game.PreGameInfo;
 import gameStructure.Spell;
@@ -16,8 +16,8 @@ import shared.Nation;
 public class ActivesGridHandler {
 	@Deprecated
 	public static boolean showUnitActives;
-	public int x = GameApplet.app.width - 420;
-	public int y = GameApplet.app.height - HUD.height + 10;
+	public int x = GameApplet.GameBaseApp.width - 420;
+	public int y = GameApplet.GameBaseApp.height - HUD.height + 10;
 	int w = 60;
 	static final int gridHeight = 3;
 	static final int gridWidth = 7;
@@ -28,14 +28,14 @@ public class ActivesGridHandler {
 	public ActivesGrid displayGrid;
 
 	public ActivesGridHandler() {
-		if (GameApplet.player.getNation() != null) {
-			this.nation = GameApplet.player.getNation();
+		if (GameBaseApp.player.getNation() != null) {
+			this.nation = GameBaseApp.player.getNation();
 		}
 		Spell.x = x;
 		Spell.y = y;
 		displayGrid = baseGrid = new ActivesGrid(this, ActivesGrid.BASEGRID);
 		gridList.add(displayGrid);
-		setup(GameApplet.player.getNation());
+		setup(GameBaseApp.player.getNation());
 		selectionChange();
 	}
 
@@ -71,7 +71,7 @@ public class ActivesGridHandler {
 		ActivesGrid unitActives = baseGrid.createTab(7, 1, GameObject.class, this, "sandbox");
 		unitActives.addActive(1, 1, SandboxBuilding.DeleteActive.class);
 		unitActives.addBuildActive(2, 1, SandboxBuilding.class,
-				GameApplet.player.getNation().getNationInfo().getMainBuilding());
+				GameBaseApp.player.getNation().getNationInfo().getMainBuilding());
 		unitActives.addBuildActive(1, 2, SandboxBuilding.class, Kerit.class);
 		unitActives.addBuildActive(2, 2, SandboxBuilding.class, Pax.class);
 		unitActives.addBuildActive(1, 3, SandboxBuilding.class, Arcanum.class);
@@ -100,7 +100,7 @@ public class ActivesGridHandler {
 		for (int x = 0; x < gridWidth; x++) {
 			for (int y = 0; y < gridHeight; y++) {
 				if (displayGrid.get(x, y) != null)
-					if (Helper.listContainsInstanceOf(displayGrid.get(x, y).getClazz(), GameApplet.updater.selected)) {
+					if (Helper.listContainsInstanceOf(displayGrid.get(x, y).getClazz(), GameApplet.GameBaseApp.selected)) {
 						displayGrid.get(x, y).setVisible(true);
 						displayGrid.get(x, y).selectionUpdate();
 

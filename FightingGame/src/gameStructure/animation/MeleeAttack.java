@@ -1,5 +1,6 @@
 package gameStructure.animation;
 
+import game.GameBaseApp;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
 import processing.core.PImage;
@@ -9,16 +10,16 @@ public class MeleeAttack extends Attack {
 	protected boolean isSetup;
 	protected boolean isExploding;
 
-	public MeleeAttack(PImage[][] IMG, int duration) {
-		super(IMG, duration);
+	public MeleeAttack(GameBaseApp app,PImage[][] IMG, int duration) {
+		super(app, IMG, duration);
 	}
 
-	public MeleeAttack(PImage[] IMG, int duration) {
-		super(IMG, duration);
+	public MeleeAttack(GameBaseApp app,PImage[] IMG, int duration) {
+		super(app, IMG, duration);
 	}
 
-	public MeleeAttack(PImage IMG, int duration) {
-		super(IMG, duration);
+	public MeleeAttack(GameBaseApp app,PImage IMG, int duration) {
+		super(app, IMG, duration);
 	}
 
 	@Override

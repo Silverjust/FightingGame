@@ -2,7 +2,7 @@ package entity.aliens;
 
 import processing.core.PGraphics;
 import processing.core.PImage;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Building;
 import gameStructure.Commander;
@@ -69,17 +69,17 @@ public class AlienKaserne extends Building implements Commander, Trainer {
 
 	@Override
 	public void renderTerrain() {
-		ImageHandler.drawImage(GameApplet.app, AlienMainBuilding.groundImg, xToGrid(getX()),
+		ImageHandler.drawImage(GameBaseApp.app, AlienMainBuilding.groundImg, xToGrid(getX()),
 				yToGrid(getY()), commandingRange * 2, commandingRange);
 	}
 
 	@Override
 	public void renderUnder() {
 		if (isSelected && isAlive()) {
-			GameApplet.app.stroke(player.color);
-			GameApplet.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(xTarget),
+			GameBaseApp.app.stroke(player.color);
+			GameBaseApp.app.line(xToGrid(getX()), yToGrid(getY()), xToGrid(xTarget),
 					yToGrid(yTarget));
-			GameApplet.app.stroke(0);
+			GameBaseApp.app.stroke(0);
 		}
 	}
 

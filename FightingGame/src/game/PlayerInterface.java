@@ -13,11 +13,12 @@ public class PlayerInterface {
 	private ArrayList<Spell> spells = new ArrayList<Spell>();
 	public int x = 400;
 	public int y;
-	private GameApplet app;
+	private SettingHandler settingHandler;
 
-	public PlayerInterface(GameApplet app) {
-		this.app = app;
-		y = app.height - HUD.height + 5;
+	public PlayerInterface(GameBaseApp app, HUD hud) {
+		hud.playerInterface = this;
+		settingHandler = ((GameApp) app).settingHandler;
+		y = app.height - hud.height + 5;
 		champ = app.player.champion;
 		champ.setupSpells(this);
 	}
@@ -45,7 +46,7 @@ public class PlayerInterface {
 	}
 
 	private int getPosOfKey(char c) {
-		char[] k = SettingHandler.setting.baseShortcuts;
+		char[] k = settingHandler.getSetting().baseShortcuts;
 		if (c == k[0]) {
 			return 1;
 		} else if (c == k[1]) {
@@ -61,9 +62,9 @@ public class PlayerInterface {
 		}
 	}
 
-	public static String getKeyFromPos(int pos) {
-		System.out.println("PlayerInterface.getKeyFromPos()" + SettingHandler.setting);
-		char[] k = SettingHandler.setting.baseShortcuts;
+	public String getKeyFromPos(int pos) {
+		System.out.println("PlayerInterface.getKeyFromPos()" + settingHandler.getSetting());
+		char[] k = settingHandler.getSetting().baseShortcuts;
 		if (pos == 0) {
 			return " ";
 		} else if (pos == 1) {

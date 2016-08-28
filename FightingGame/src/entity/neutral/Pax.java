@@ -2,7 +2,7 @@ package entity.neutral;
 
 import processing.core.PGraphics;
 import processing.core.PImage;
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.animation.Animation;
 
@@ -18,7 +18,7 @@ public class Pax extends Building {
 
 	public Pax(String[] c) {
 		super(c);
-		player = GameApplet.updater.neutral;// neutral
+		player = GameApplet.GameBaseApp.neutral;// neutral
 
 		iconImg = standImg;
 		stand = new Animation(standImg, 1000);

@@ -5,7 +5,7 @@ import processing.core.PImage;
 import game.AimHandler;
 import game.ImageHandler;
 import game.AimHandler.Cursor;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.aim.CustomAim;
 import gameStructure.Spell;
 import gameStructure.AimingActive;
@@ -112,7 +112,7 @@ public class AhnenTower extends Building implements Commander {
 	@Override
 	public void updateDecisions(boolean isServer) {
 		if (unit != null) {
-			if (!GameApplet.updater.gameObjects.contains(unit))
+			if (!GameApplet.GameBaseApp.gameObjects.contains(unit))
 				unit.number = number;
 			unit.updateDecisions(isServer);
 		}
@@ -123,7 +123,7 @@ public class AhnenTower extends Building implements Commander {
 		super.exec(c);
 		if (c[2].equals("in")) {
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameApplet.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
 			if (e.isAlive() && isAllyTo(player) && e instanceof Unit) {
 				if (unit != null) {
 					GameObject normalUnit = null;
@@ -139,7 +139,7 @@ public class AhnenTower extends Building implements Commander {
 					normalUnit.setY(getY() + getRadius() + 10);
 					normalUnit.setHp(unit.getCurrentHp());
 					armor = 0;
-					GameApplet.updater.toAdd.add(normalUnit);
+					GameApplet.GameBaseApp.toAdd.add(normalUnit);
 				}
 				unit = (Unit) e;
 				unit.setX(x);
@@ -147,7 +147,7 @@ public class AhnenTower extends Building implements Commander {
 				unit.setMoving(false);
 				unit.isSelected = false;
 				unit.setHeight(unitHeight);
-				GameApplet.updater.toRemove.add(unit);
+				GameApplet.GameBaseApp.toRemove.add(unit);
 				if (unit instanceof Berserker)
 					((Berserker) unit).getBasicAttack().range = 20;
 				if (unit instanceof Warrior) {
@@ -221,12 +221,12 @@ public class AhnenTower extends Building implements Commander {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 
@@ -275,7 +275,7 @@ public class AhnenTower extends Building implements Commander {
 		public void onActivation() {
 			GameObject tower = null;
 			if (tower == null) {
-				for (GameObject e : GameApplet.updater.selected) {
+				for (GameObject e : GameApplet.GameBaseApp.selected) {
 					if (e instanceof AhnenTower && e.getAnimation() == e.stand)
 						tower = (AhnenTower) e;
 				}
@@ -296,15 +296,15 @@ public class AhnenTower extends Building implements Commander {
 			GameObject target = null;
 			// x = Entity.xToGrid(Entity.gridToX());
 			// y = Entity.xToGrid(Entity.gridToY());
-			for (GameObject e : GameApplet.updater.gameObjects) {
-				if (e.isAllyTo(GameApplet.player)
+			for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
+				if (e.isAllyTo(GameBaseApp.player)
 						&& e instanceof Unit
 						&& PApplet.dist(x, y, e.getX(), e.getY() - e.flyHeight()) <= e.getRadius())
 					target = e;
 			}
 			if (target != null) {
 				GameObject tower = null;
-				for (GameObject e : GameApplet.updater.selected) {
+				for (GameObject e : GameApplet.GameBaseApp.selected) {
 					if (e instanceof AhnenTower
 							&& e.getAnimation() == e.stand
 							&& target.isInRange(e.getX(), e.getY(),
@@ -313,7 +313,7 @@ public class AhnenTower extends Building implements Commander {
 						tower = (AhnenTower) e;
 				}
 				if (tower == null) {
-					for (GameObject e : GameApplet.updater.selected) {
+					for (GameObject e : GameApplet.GameBaseApp.selected) {
 						if (e instanceof AhnenTower
 								&& e.getAnimation() == e.stand
 								&& target.isInRange(e.getX(), e.getY(),

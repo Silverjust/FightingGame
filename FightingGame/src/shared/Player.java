@@ -3,7 +3,7 @@ package shared;
 import java.util.ArrayList;
 
 import entity.MainBuilding;
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.Champion;
 import gameStructure.GameObject;
 import processing.core.PApplet;
@@ -17,9 +17,9 @@ public class Player {
 	public MainBuilding mainBuilding;
 	public GameState gameState;// win, loose
 	public Champion champion;
-	public GameApplet app;
+	public GameBaseApp app;
 
-	public static Player createNeutralPlayer(GameApplet app) {
+	public static Player createNeutralPlayer(GameBaseApp app) {
 		Player p = new Player(app);
 		p.setUser(new User(app, "", "neutral"));
 		p.getUser().player = p;
@@ -29,7 +29,7 @@ public class Player {
 		return p;
 	}
 
-	public static Player createPlayer(User user, GameApplet app) {
+	public static Player createPlayer(User user, GameBaseApp app) {
 		Player p = new Player(app);
 		p.setUser(user);
 		p.getUser().player = p;
@@ -37,7 +37,7 @@ public class Player {
 		return p;
 	}
 
-	private Player(GameApplet app) {
+	private Player(GameBaseApp app) {
 		this.app = app;
 	}
 

@@ -2,7 +2,7 @@ package entity.scientists;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -110,7 +110,7 @@ public class SpawnerGuineaPig extends Unit {
 		if (c[2].equals("spawn")) {
 			setMoving(false);
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameApplet.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
 			spawn.setTarget(e);
 			setAnimation(spawn);
 		}
@@ -168,12 +168,12 @@ public class SpawnerGuineaPig extends Unit {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 
@@ -226,7 +226,7 @@ public class SpawnerGuineaPig extends Unit {
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (target != null && isEvent()) {
 				if (isServer) {
-					GameApplet.updater.send("<spawn GuineaPig " + e.player.getUser().ip + " "
+					GameBaseApp.updater.send("<spawn GuineaPig " + e.player.getUser().ip + " "
 							+ e.getX() + " " + (e.getY() + e.getRadius() + 8) + " " + target.getX()
 							+ " " + target.getY());
 				}

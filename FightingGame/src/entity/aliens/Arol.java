@@ -1,6 +1,6 @@
 package entity.aliens;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.Building;
@@ -142,11 +142,11 @@ public class Arol extends Unit implements Attacker {
 		y = (this.getY() + (yDirection - this.getY())
 				/ PApplet.dist(this.getX(), this.getY(), xDirection, yDirection)
 				* (attackDistance));
-		for (GameObject e : GameApplet.updater.gameObjects) {
+		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this)
 					&& e.isInRange(x, y, e.getRadius() + a.range)
 					&& basicAttack.canTargetable(e)) {
-				GameApplet.updater.send("<hit " + e.number + " "
+				GameBaseApp.updater.send("<hit " + e.number + " "
 						+ (e instanceof Building ? a.damage * 2 : a.damage)
 						+ " " + a.pirce);
 			}
@@ -163,7 +163,7 @@ public class Arol extends Unit implements Attacker {
 	@Override
 	public void renderRange() {
 		if (this instanceof Unit) {
-			GameApplet.app.line(getX(), getY() / 2, ((Unit) this).xTarget,
+			GameBaseApp.app.line(getX(), getY() / 2, ((Unit) this).xTarget,
 					((Unit) this).yTarget / 2);
 		}
 		float x, y;
@@ -213,12 +213,12 @@ public class Arol extends Unit implements Attacker {
 	void drawHpBar() {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
-			GameApplet.app.fill(0, 150);
-			GameApplet.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
-			GameApplet.app.tint(player.color);
-			ImageHandler.drawImage(GameApplet.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
+			GameBaseApp.app.fill(0, 150);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.tint(player.color);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
 					getRadius() * 2 * getCurrentHp() / hp_max, h);
-			GameApplet.app.tint(255);
+			GameBaseApp.app.tint(255);
 		}
 	}
 

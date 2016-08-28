@@ -1,6 +1,6 @@
 package gameStructure.animation;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import gameStructure.GameObject;
 import gameStructure.Trainer;
 import gameStructure.Unit;
@@ -29,7 +29,7 @@ public class Training extends Ability {
 			if (isServer) {
 				float xt = ((Trainer) e).getXTarget();
 				float yt = ((Trainer) e).getYTarget();
-				GameApplet.updater.send("<spawn "
+				GameBaseApp.updater.send("<spawn "
 						+ toTrain.getClass().getSimpleName()
 						+ " "
 						+ e.player.getUser().ip

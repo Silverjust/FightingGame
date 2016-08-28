@@ -1,7 +1,7 @@
 package server;
 
 import g4p_controls.G4P;
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.GameObject;
 
@@ -39,28 +39,28 @@ public class ServerDisplay extends PApplet {
 		scale(zoom);
 		stroke(0);
 
-		ImageHandler.drawImage(this, GameApplet.updater.map.textur, 0, 0, GameApplet.updater.map.width,
-				GameApplet.updater.map.height);
-		GameApplet.updater.map.updateFogofWar(GameApplet.player);
+		ImageHandler.drawImage(this, GameApplet.updater.GameBaseApp.textur, 0, 0, GameApplet.updater.GameBaseApp.width,
+				GameApplet.updater.GameBaseApp.height);
+		GameApplet.GameBaseApp.map.updateFogofWar(GameBaseApp.player);
 		blendMode(PConstants.MULTIPLY);
-		ImageHandler.drawImage(this, GameApplet.updater.map.fogOfWar, 0, 0, GameApplet.updater.map.width,
-				GameApplet.updater.map.height);
+		ImageHandler.drawImage(this, GameApplet.updater.GameBaseApp.fogOfWar, 0, 0, GameApplet.updater.GameBaseApp.width,
+				GameApplet.updater.GameBaseApp.height);
 		blendMode(PConstants.BLEND);
 		imageMode(PConstants.CENTER);
 		rectMode(PConstants.CENTER);
-		for (GameObject e : GameApplet.player.visibleEntities) {
+		for (GameObject e : GameApplet.GameBaseApp.visibleEntities) {
 			e.renderTerrain();
 		}
-		for (GameObject e : GameApplet.player.visibleEntities) {
+		for (GameObject e : GameApplet.GameBaseApp.visibleEntities) {
 			e.renderGround();
 		}
-		for (GameObject e : GameApplet.player.visibleEntities) {
+		for (GameObject e : GameApplet.GameBaseApp.visibleEntities) {
 			e.renderAir();
 		}
 
 		imageMode(PConstants.CORNER);
 		imageMode(PConstants.CENTER);
-		for (GameObject e : GameApplet.player.visibleEntities) {
+		for (GameObject e : GameApplet.GameBaseApp.visibleEntities) {
 			e.display();
 		}
 	}

@@ -1,16 +1,16 @@
 package main.appdata;
 
 import g4p_controls.GDropList;
-import game.GameApplet;
+import game.GameBaseApp;
 import main.Setting;
 
 public class SettingHandler {
-	public static Setting setting;
+	private Setting setting;
 
 	GDropList settingList;
 	Setting[] settings;
 
-	private GameApplet app;
+	private GameBaseApp app;
 
 	public void setup() {
 		loadSettings();
@@ -20,15 +20,24 @@ public class SettingHandler {
 		Setting oldSettings = new Setting(app);
 		try {
 			oldSettings.fromJSON(appdataInfos.path + "settings.json");
-			setting = oldSettings;
+			setSetting(oldSettings);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public SettingHandler(GameApplet app) {
+	public SettingHandler(GameBaseApp app) {
 		this.app = app;
-		//settingList = new GDropList(app, 200, 200, 100, 400, 5);
+		setup();
+		// settingList = new GDropList(app, 200, 200, 100, 400, 5);
+	}
+
+	public Setting getSetting() {
+		return setting;
+	}
+
+	public void setSetting(Setting setting) {
+		this.setting = setting;
 	}
 
 }

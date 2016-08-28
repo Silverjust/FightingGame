@@ -1,6 +1,6 @@
 package champs;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import game.PlayerInterface;
 import gameStructure.Attacker;
@@ -26,7 +26,7 @@ public class Ticul extends Champion implements Attacker {
 
 	MeleeAttack basicAttack;
 
-	public static void loadImages(GameApplet app, ImageHandler imageHandler) {
+	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		String path = path(new GameObject(app, null) {
 		});
 		standingImg = imageHandler.load(path, "Ticul", 's', (byte) 8, (byte) 1);
@@ -34,16 +34,16 @@ public class Ticul extends Champion implements Attacker {
 		attackImg = imageHandler.load(path, "Ticul", 'b', (byte) 8, (byte) 8);
 	}
 
-	public Ticul(GameApplet app, String[] c) {
+	public Ticul(GameBaseApp app, String[] c) {
 		super(app, c);
 		System.out.println("Ticul.Ticul()");
 		if (walkingImg != null)
 			iconImg = walkingImg[0][0];
 
-		stand = new Animation(standingImg, 100);
-		walk = new Animation(walkingImg, 800);
-		death = new Death(attackImg, 500);
-		basicAttack = new MeleeAttack(attackImg, 600);
+		stand = new Animation(app, standingImg, 100);
+		walk = new Animation(app, walkingImg, 800);
+		death = new Death(app, attackImg, 500);
+		basicAttack = new MeleeAttack(app, attackImg, 600);
 
 		setAnimation(walk);
 
@@ -100,7 +100,7 @@ public class Ticul extends Champion implements Attacker {
 	public class Shot extends Spell {// ******************************************************
 		private int range = 100;
 
-		public Shot(GameApplet app, PlayerInterface inter, int pos) {
+		public Shot(GameBaseApp app, PlayerInterface inter, int pos) {
 			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
@@ -127,7 +127,7 @@ public class Ticul extends Champion implements Attacker {
 
 		private int range = 100;
 
-		public TargetedShot(GameApplet app, PlayerInterface inter, int pos) {
+		public TargetedShot(GameBaseApp app, PlayerInterface inter, int pos) {
 			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
 		}

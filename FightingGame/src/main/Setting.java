@@ -2,7 +2,7 @@ package main;
 
 import java.awt.im.InputContext;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import processing.core.PConstants;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
@@ -21,9 +21,9 @@ public class Setting {
 	public char[] baseShortcuts = new char[7];
 	public char[] hotKeys = new char[10];
 	private JSONObject shortcutsJson;
-	private GameApplet app;
+	private GameBaseApp app;
 
-	public Setting(GameApplet app) {
+	public Setting(GameBaseApp app) {
 		this.app = app;
 	}
 

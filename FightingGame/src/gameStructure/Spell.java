@@ -2,8 +2,7 @@ package gameStructure;
 
 import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
-import game.GameApplet;
-import game.HUD;
+import game.GameBaseApp;
 import game.PlayerInterface;
 import processing.core.PConstants;
 import processing.core.PGraphics;
@@ -28,14 +27,14 @@ public abstract class Spell {
 
 	static int buttonWidth = 50;
 
-	private GameApplet app;
+	private GameBaseApp app;
 
-	public Spell(GameApplet app, PlayerInterface inter, int pos, PImage symbol) {
+	public Spell(GameBaseApp app, PlayerInterface inter, int pos, PImage symbol) {
 
 		this.app = app;
 		button = new GGameButton(app, getXbyPos(inter, pos), getYbyPos(inter, pos), buttonWidth, buttonWidth,
-				HUD.buttonImageFilename());
-		button.setText(PlayerInterface.getKeyFromPos(pos));
+				app.getDrawer().getHud().buttonImageFilename());
+		button.setText(app.getDrawer().getHud().playerInterface.getKeyFromPos(pos));
 		button.setSymbol(symbol);
 		button.addEventHandler(this, "handleActiveEvents");
 		this.symbol = symbol;

@@ -4,7 +4,7 @@ import g4p_controls.GButton;
 import g4p_controls.GDropList;
 import g4p_controls.GEvent;
 import game.ClientHandler;
-import game.GameApplet;
+import game.GameBaseApp;
 import main.MainApp;
 import shared.Mode;
 import shared.Nation;
@@ -21,10 +21,10 @@ public class SandboxSelection {
 	public SandboxSelection(PreGame preGame) {
 		this.preGame = preGame;
 
-		playerDroplist = new GDropList(GameApplet.app, 200, 200, 200, 200, 6);
+		playerDroplist = new GDropList(GameBaseApp.app, 200, 200, 200, 200, 6);
 		playerDroplist.addEventHandler(this, "handleSelectPlayer");
 		updatePlayerDroplist();
-		playerDroplistNation = new GDropList(GameApplet.app, 420, 200, 100, 200, 6);
+		playerDroplistNation = new GDropList(GameBaseApp.app, 420, 200, 100, 200, 6);
 		String[] nations = new String[Nation.values().length];
 		int neutralIndex = -1;
 		for (int i = 0; i < nations.length; i++) {
@@ -41,7 +41,7 @@ public class SandboxSelection {
 			ClientHandler.send("<setNation " + 1 + " " + "Aliens");
 		}
 
-		addPlayer = new GButton(GameApplet.app, 540, 200, 100, 35, "add Player");
+		addPlayer = new GButton(GameBaseApp.app, 540, 200, 100, 35, "add Player");
 		addPlayer.addEventHandler(this, "handleAddPlayer");
 	}
 
@@ -58,7 +58,7 @@ public class SandboxSelection {
 	}
 
 	public void handleSelectPlayer(GDropList droplist, GEvent event) {
-		if (event == GEvent.SELECTED && ((MainApp) GameApplet.app).mode == Mode.PREGAME) {
+		if (event == GEvent.SELECTED && ((MainApp) GameBaseApp.app).mode == Mode.PREGAME) {
 			String[] enemyArr = new String[preGame.users.size()];
 			int i = 0;
 			for (String key : preGame.users.keySet()) {
@@ -80,7 +80,7 @@ public class SandboxSelection {
 	}
 
 	public void handleSelectNation(GDropList droplist, GEvent event) {
-		if (event == GEvent.SELECTED && ((MainApp) GameApplet.app).mode == Mode.PREGAME) {
+		if (event == GEvent.SELECTED && ((MainApp) GameBaseApp.app).mode == Mode.PREGAME) {
 			String[] enemyArr = new String[preGame.users.size()];
 			int i = 0;
 			for (String key : preGame.users.keySet()) {
@@ -105,7 +105,7 @@ public class SandboxSelection {
 	}
 
 	public void handleAddPlayer(GButton button, GEvent event) {
-		if (event == GEvent.CLICKED && ((MainApp) GameApplet.app).mode == Mode.PREGAME) {
+		if (event == GEvent.CLICKED && ((MainApp) GameBaseApp.app).mode == Mode.PREGAME) {
 			preGame.addPlayer(preGame.users.size() + 1 + "", "n000bBot" + preGame.users.size());
 			updatePlayerDroplist();
 		}

@@ -1,6 +1,6 @@
 package champs;
 
-import game.GameApplet;
+import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Damage;
 import gameStructure.Entity;
@@ -12,17 +12,17 @@ import processing.core.PImage;
 public class TestProjectile extends Projectile {
 	protected static PImage[] anim;
 
-	public static void loadImages(GameApplet app, ImageHandler imageHandler) {
+	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		String path = path(new GameObject(app, null) {
 		});
 		anim = imageHandler.load(path, "test", 's', 1);
 		System.out.println("TestProjectile.loadImages()");
 	}
 
-	public TestProjectile(GameApplet app, String[] c) {
+	public TestProjectile(GameBaseApp app, String[] c) {
 		super(app, c);
 
-		stand = new Animation(anim, 100);
+		stand = new Animation(app, anim, 100);
 		setAnimation(stand);
 
 		setxSize(20);
