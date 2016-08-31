@@ -2,41 +2,50 @@ package server;
 
 import g4p_controls.G4P;
 import game.GameBaseApp;
+import preGame.PreGameApp;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import shared.Client;
-import shared.Server;
-import shared.Updater;
+import shared.Global;
 import shared.Mode;
-import shared.Helper.Timer;
+import shared.Server;
 
 @SuppressWarnings("serial")
 public class ServerApp extends GameBaseApp {
 	public static void main(String args[]) {
-		System.out.println("starting Server...");
-		PApplet.main(new String[] { "server.ServerApp" });
+		boolean b = false;
+		// b=true;
+		if (b) {
+			System.out.println("starting Server...");
+			PApplet.main(new String[] { "server.ServerApp", "1" });
+		} else {
+			PApplet.main(new String[] { "preGame.PreGameApp" });
+		}
 	}
 
 	public ServerHandler serverHandler;
 
-	public GUI gui;
+	public ServerInterface gui;
 
-	Mode mode;
+	public PreGameManager preGame;
+
+	PreGameApp adminApp;
 
 	public void setup() {
 		size(500, 500, PConstants.P2D);
-		frame.setTitle("Server EliteEngine");
-		mode = Mode.PREGAME;
-		G4P.messagesEnabled(false);
+		frame.setTitle("Server FightingGame");
+		Global.addApp(this);
 
+		G4P.messagesEnabled(false);
 		setTextScale(1.4F);// so ungefär
 
-		setPreGameInfo(new ServerPreGame());
+		registerServer();
 
-		gui = new GUI();
-		serverHandler = new ServerHandler();
+		setMode(Mode.PREGAME);
+		preGame = new PreGameManager(this);
+		serverHandler = new ServerHandler(this);
+		gui = new ServerInterface(this);
 
-		startRF();
 	}
 
 	public void draw() {
@@ -45,10 +54,10 @@ public class ServerApp extends GameBaseApp {
 		serverHandler.update();
 		switch (mode) {
 		case PREGAME:
-			GameBaseApp.getPreGameInfo().update();
+			// getPreGameInfo().update();
 			break;
 		case LADESCREEN:
-			GameBaseApp.loader.update();
+			// GameBaseApp.loader.update();
 			break;
 		case GAME:
 			// if (frameCount % 2 == 0)
@@ -60,8 +69,28 @@ public class ServerApp extends GameBaseApp {
 
 	}
 
+	private void registerServer() {
+		if (args != null) {
+			int i = Integer.parseInt(args[0]);
+			if (i < Global.getApps().size()) {
+				GameBaseApp gameBaseApp = Global.getApps().get(i);
+				if (gameBaseApp instanceof PreGameApp) {
+					adminApp = (PreGameApp) gameBaseApp;
+				}
+			}
+			for (String arg : args) {
+				System.out.println("ServerApp.setup() arg: " + arg);
+			}
+		}
+		if (adminApp == null) {
+			System.err.println("no admin app found");
+		} else {
+			adminApp.registerServer(this);
+		}
+	}
+
 	public void serverUpdate() {
-		GameBaseApp.updater.update();
+		getUpdater().update();
 	}
 
 	public void disconnectEvent(Client client) {
@@ -72,18 +101,13 @@ public class ServerApp extends GameBaseApp {
 		serverHandler.serverEvent(server, someClient);
 	}
 
-	private void startRF() {
-		float time = (float) (((int) (Math.random() * 500.0)) / 100.0);
-		int cooldown = (int) (time * 60 * 1000);
-		GameBaseApp.getPreGameInfo().write("GAME", "resfreeze in " + (cooldown / 60.0 / 1000.0));
-		Updater.resfreeze = new Timer(cooldown);
-		if (GameBaseApp.app instanceof ServerApp)
-			((ServerApp) GameBaseApp.app).serverHandler.doProtocol = true;
-	}
-
 	@Override
 	public void dispose() {
 		serverHandler.dispose();
 		super.dispose();
+	}
+
+	public boolean hadError() {
+		return false;
 	}
 }

@@ -36,6 +36,9 @@ public abstract class Spell {
 				app.getDrawer().getHud().buttonImageFilename());
 		button.setText(app.getDrawer().getHud().playerInterface.getKeyFromPos(pos));
 		button.setSymbol(symbol);
+		button.fireAllEvents(true);
+		if (pos == 0)
+			button.setEnabled(false);
 		button.addEventHandler(this, "handleActiveEvents");
 		this.symbol = symbol;
 		this.pos = pos;

@@ -32,7 +32,6 @@ public class Entity extends GameObject {
 	private int attackDamageMult;
 	private int abilityPowerMult;
 
-	private boolean isSilenced;
 	public PImage iconImg;
 	protected String descr = " ";
 	protected String stats = " ";
@@ -40,6 +39,11 @@ public class Entity extends GameObject {
 	public int hpBarLength;
 	private ArrayList<Buff> buffs = new ArrayList<Buff>();
 	private ArrayList<Buff> buffsToRemove = new ArrayList<Buff>();
+
+	protected boolean isRooted;
+	protected boolean isSilenced;
+	protected boolean isStunned;
+	protected boolean isDisplaced;
 
 	public Entity(GameBaseApp app, String[] c) {
 		super(app, c);
@@ -52,7 +56,7 @@ public class Entity extends GameObject {
 
 	public void sendDamage(TestProjectile testProjectile, Damage damage, Player player, String origin) {
 		player.app.getUpdater()
-				.send(Coms.HIT + " " + number + " " + damage.get() + " " + player.getUser().ip + " " + origin);
+				.send(Coms.DAMAGE + " " + number + " " + damage.get() + " " + player.getUser().ip + " " + origin);
 	}
 
 	@Override
@@ -252,21 +256,6 @@ public class Entity extends GameObject {
 		PercMagicPen = percMagicPen;
 	}
 
-	public void setRooted(boolean b) {
-	}
-
-	public boolean isRooted() {
-		return true;
-	}
-
-	public boolean isSilenced() {
-		return isSilenced;
-	}
-
-	public void setSilenced(boolean isSilenced) {
-		this.isSilenced = isSilenced;
-	}
-
 	public void addBuff(Buff buff) {
 		System.out.println("Entity.addBuff()");
 		if (!Helper.listContainsInstanceOf(buff.getClass(), buffs)) {
@@ -312,6 +301,52 @@ public class Entity extends GameObject {
 
 	public void setAbilityPowerMult(int abilityPowerMult) {
 		this.abilityPowerMult = abilityPowerMult;
+	}
+
+	/**
+	 * is rooted in some sort: root, stunn, displace,etc
+	 * <p>
+	 * does not include self-root
+	 */
+	public boolean isRooted() {
+		return isRooted || isStunned || isDisplaced;
+	}
+
+	public void setRooted(boolean b) {
+		isRooted = b;
+	}
+
+	/** is silenced in some sort: silence, stunn, displace,etc */
+	public boolean isSilenced() {
+		return isSilenced || isStunned || isDisplaced;
+	}
+
+	public void setSilenced(boolean isSilenced) {
+		this.isSilenced = isSilenced;
+	}
+
+	public boolean isStunned() {
+		return isStunned;
+	}
+
+	public void setStunned(boolean isStunned) {
+		this.isStunned = isStunned;
+	}
+
+	public boolean isDisplaced() {
+		return isDisplaced;
+	}
+
+	public void setDisplaced(boolean isDisplaced) {
+		this.isDisplaced = isDisplaced;
+	}
+
+	/** interrupt channel abilities */
+	public void onHardCC(Buff buff) {
+	}
+
+	/** interrupts dashes */
+	public void onDisplace(Buff buff) {
 	}
 
 }

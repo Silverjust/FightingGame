@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import game.GameBaseApp;
 import game.Map;
+import game.MapHandler;
 import gameStructure.GameObject;
 import shared.Helper.Timer;
 
@@ -20,18 +21,16 @@ public abstract class Updater {
 	public Player neutral;
 
 	public GameState gameState = GameState.PLAY;
-	public boolean selectionChanged;
-	public boolean keepGrid;
 	protected GameBaseApp app;
+	public MapHandler mapHandler;
 
 	static public Timer resfreeze;
 
 	public Updater(GameBaseApp app) {
 		this.app = app;
-		if (resfreeze != null)
-			resfreeze.startCooldown();
-
 		app.getComHandler().addUpdater(this);
+
+		mapHandler = new MapHandler(app);
 	}
 
 	public abstract void update();

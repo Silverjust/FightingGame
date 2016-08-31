@@ -151,7 +151,7 @@ public class Astrator extends Unit implements Shooter, Buffing {
 	@Override
 	public void calculateDamage(Attack a) {
 		GameObject target = a.getTarget();
-		GameBaseApp.updater.send(HIT + " " + target.number + " " + a.damage + " " + a.pirce);
+		GameBaseApp.updater.send(DAMAGE + " " + target.number + " " + a.damage + " " + a.pirce);
 	}
 
 	@Override

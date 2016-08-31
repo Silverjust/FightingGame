@@ -194,7 +194,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this) && e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)
 					&& e.groundPosition == GroundPosition.GROUND) {
-				GameBaseApp.updater.send(HIT + S + e.number + " " + (isBuffed ? a.damage * 2 : a.damage) + " "
+				GameBaseApp.updater.send(DAMAGE + S + e.number + " " + (isBuffed ? a.damage * 2 : a.damage) + " "
 						+ (isBuffed ? 5 : a.pirce));
 			}
 		}

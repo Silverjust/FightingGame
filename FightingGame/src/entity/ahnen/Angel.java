@@ -173,7 +173,7 @@ public class Angel extends Unit implements Attacker, Shooter {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.send(Coms.HIT+" " + basicAttack.getTarget().number + " " + a.damage + " " + a.pirce);
+		GameBaseApp.updater.send(Coms.DAMAGE+" " + basicAttack.getTarget().number + " " + a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
 

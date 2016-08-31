@@ -14,7 +14,7 @@ import shared.Updater;
 
 @SuppressWarnings("serial")
 public class GameBaseApp extends PApplet {
-
+	protected int appNumber;
 	protected Menu menu;
 	protected ContentListManager contentListHandler;
 	protected Minim minim;
@@ -36,6 +36,14 @@ public class GameBaseApp extends PApplet {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+	}
+
+	public void setAppNumber(int appNumber) {
+		this.appNumber = appNumber;
+	}
+
+	public int getAppNumber() {
+		return appNumber;
 	}
 
 	/**

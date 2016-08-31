@@ -6,6 +6,14 @@ import shared.CommandHandler;
 import shared.Helper;
 import shared.Mode;
 import shared.Server;
+import shared.User;
+
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.util.HashMap;
+
+import g4p_controls.GButton;
 import g4p_controls.GCheckbox;
 import g4p_controls.GControlMode;
 import g4p_controls.GEvent;
@@ -14,10 +22,10 @@ import g4p_controls.GTextArea;
 import g4p_controls.GTextField;
 import game.GameBaseApp;
 
-public class GUI {
+public class ServerInterface {
 	String chatText = "";
 
-	GTextField ipAdress;
+	GButton ipButton;
 	GTextField modeDisplay;
 	GTextArea clients;
 	GTextField chatLine;
@@ -28,53 +36,58 @@ public class GUI {
 
 	PGraphics chat, player;
 
-	public GUI() {
+	private ServerApp app;
 
-		ipAdress = new GTextField(GameBaseApp.app, 0, 0, 300, 20);
-		ipAdress.setText(Server.ip()+ "");
+	public ServerInterface(GameBaseApp app) {
 
-		modeDisplay = new GTextField(GameBaseApp.app, 300, 0, 200, 20);
+		this.app = (ServerApp) app;
+		ipButton = new GButton(app, 0, 0, 300, 20);
+		ipButton.setText(Server.ip() + "");
+		ipButton.addEventHandler(this, "handleButtonEvents");
+
+		modeDisplay = new GTextField(app, 300, 0, 200, 20);
 		modeDisplay.setTextEditEnabled(false);
 
-		displayCommands = new GCheckbox(GameBaseApp.app, 0, GameApplet.GameBaseApp.height - 300, 30, 20);
+		displayCommands = new GCheckbox(app, 0, app.height - 300, 30, 20);
 
-		chat = GameBaseApp.app.createGraphics(500, 280);
-		player = GameBaseApp.app.createGraphics(300, 178);
+		chat = app.createGraphics(500, 280);
+		player = app.createGraphics(300, 178);
 
-		chatSlider = new GSlider(GameBaseApp.app, 500, 220, 280, 20, 20);
+		chatSlider = new GSlider(app, 500, 220, 280, 20, 20);
 		chatSlider.setRotation(PConstants.PI / 2, GControlMode.CORNER);
 		chatSlider.setLimits(0, 0, 1);
 
-		playerSlider = new GSlider(GameBaseApp.app, 300, 20, 180, 20, 20);
+		playerSlider = new GSlider(app, 300, 20, 180, 20, 20);
 		playerSlider.setRotation(PConstants.PI / 2, GControlMode.CORNER);
 		playerSlider.setLimits(0, 0, 1);
 
-		chatLine = new GTextField(GameBaseApp.app, 17, 200, 500, 20);
+		chatLine = new GTextField(app, 17, 200, 500, 20);
 		chatLine.addEventHandler(this, "chatEvents");
 	}
 
 	public void update() {
-		modeDisplay.setText(((ServerApp) GameBaseApp.app).mode.toString());
+		modeDisplay.setText(app.getMode().toString());
 
 		player.beginDraw();
 		player.background(255);
-		if (!GameApplet.GameBaseApp.users.isEmpty()) {
-			playerSlider.setLimits(0, GameApplet.GameBaseApp.users.size() * 20 - 19);
+		HashMap<String, User> users = app.preGame.getUsers();
+		if (!users.isEmpty()) {
+			playerSlider.setLimits(0, users.size() * 20 - 19);
 			int i = 0;
-			for (String key : GameApplet.GameBaseApp.users.keySet()) {
-				GameApplet.GameBaseApp.users.get(key).display(player, 0, 20 * i - playerSlider.getValueI());
+			for (String key : users.keySet()) {
+				users.get(key).display(player, 0, 20 * i - playerSlider.getValueI());
 				i++;
 			}
 		}
 		player.endDraw();
-		GameBaseApp.app.image(player, 0, 21);
+		app.image(player, 0, 21);
 
 		chat.beginDraw();
 		chat.background(255);
 		chat.fill(0);
-		chat.text(chatText.toString(), 10, GameBaseApp.app.textAscent() - chatSlider.getValueI());
+		chat.text(chatText.toString(), 10, app.textAscent() - chatSlider.getValueI());
 		chat.endDraw();
-		GameBaseApp.app.image(chat, 0, GameApplet.GameBaseApp.height - 280);
+		app.image(chat, 0, app.height - 280);
 	}
 
 	public void addChatText(String s) {
@@ -82,7 +95,7 @@ public class GUI {
 			chatText = s.concat("\n").concat(chatText);
 			int i = chatText.split("\n").length;
 			if (i < 500) {
-				chatSlider.setLimits(0, i * GameBaseApp.app.textAscent());
+				chatSlider.setLimits(0, i * app.textAscent());
 			} else {
 				chatText = "";
 			}
@@ -100,11 +113,20 @@ public class GUI {
 					addChatText(">>" + s);
 					CommandHandler.executeCommands(s);
 				} else {
-					if (((ServerApp) GameBaseApp.app).mode == Mode.GAME || ((ServerApp) GameBaseApp.app).mode == Mode.PREGAME)
-						GameBaseApp.updater.send("<say " + "SERVER" + " " + s);
+					if (app.getMode() == Mode.GAME || app.getMode() == Mode.PREGAME)
+						app.getUpdater().send("<say " + "SERVER" + " " + s);
 				}
 			}
 			textfield.setText("");
 		}
 	}
+
+	public void handleButtonEvents(GButton button, GEvent event) {
+		if (button == ipButton) {
+			StringSelection selection = new StringSelection(ipButton.getText());
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			clipboard.setContents(selection, selection);
+		}
+	}
+
 }

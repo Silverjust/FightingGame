@@ -14,12 +14,14 @@ import shared.Client;
 import shared.ComHandler;
 import shared.Coms;
 import shared.ContentListManager;
+import shared.Global;
 import shared.Mode;
 import shared.Updater.Time;
 import shared.VersionControle;
 
 @SuppressWarnings("serial")
 public class GameApp extends GameBaseApp {
+
 	public static void main(String args[]) {
 		boolean fullscreen = false;
 		fullscreen = true;
@@ -41,6 +43,7 @@ public class GameApp extends GameBaseApp {
 		frame.addWindowListener(new Listener(this));
 		// frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		// frame.setVisible(true);
+		Global.addApp(this);
 
 		font = createFont("Aharoni Fett", 40);
 		setTextScale(0.5F);// so ungefär
@@ -66,11 +69,6 @@ public class GameApp extends GameBaseApp {
 
 	public void draw() {
 		switch (mode) {
-		case HAUPTLADESCREEN:
-			break;
-		case PREGAME:
-
-			break;
 		case LADESCREEN:
 			loader.update();
 			break;
@@ -114,7 +112,7 @@ public class GameApp extends GameBaseApp {
 		try {
 			if (clientHandler.client != null)
 				updater.send(Coms.PAUSE + " true");
-			//ProfileHandler.dispose();
+			// ProfileHandler.dispose();
 			getDrawer().getHud().dispose();
 			// TODO close all ingame sounds
 			if (minim != null)

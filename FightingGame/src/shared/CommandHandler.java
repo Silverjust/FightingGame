@@ -2,22 +2,25 @@ package shared;
 
 import javax.naming.NoInitialContextException;
 
-import processing.core.PApplet;
-import server.Protocol;
-import server.ServerApp;
-import shared.Helper.Timer;
-import shared.Updater.GameState;
 import g4p_controls.GCScheme;
 import game.ClientHandler;
 import game.GameBaseApp;
 import game.GameDrawer;
-import game.ImageHandler;
-import game.MapHandler;
-import game.PreGameInfo;
 import gameStructure.GameObject;
+import processing.core.PApplet;
+import server.Protocol;
+import shared.Updater.GameState;
 
 public class CommandHandler {
-	public static void executeCommands(String command) {
+	private GameBaseApp app;
+	private ClientHandler clientHandler;
+
+	public CommandHandler(GameBaseApp app) {
+		this.app = app;
+		clientHandler = app.clientHandler;
+	}
+
+	public void executeCommands(String command) {
 		String[] c = PApplet.splitTokens(command, " ");
 
 		try {
@@ -25,47 +28,29 @@ public class CommandHandler {
 			float f;
 			GameObject e;
 			switch (c[0]) {
-			case "/hit":
-				if (c[1].equals("s")) {
-					for (GameObject entity : GameApplet.GameBaseApp.selected) {
-						ClientHandler.send("<hit " + entity.number + c[2]);
-					}
-				} else {
-					ClientHandler.send("<hit " + c[1] + " " + c[2]);
-				}
+			case "/dmg":
+				clientHandler.send(Coms.DAMAGE + " " + c[1] + " " + c[2]);
 				break;
 			case "/tp":
-				if (c[1].equals("s")) {
-					for (GameObject entity : GameApplet.GameBaseApp.selected) {
-						ClientHandler.send("<tp " + entity.number + c[2] + " " + c[3]);
-					}
-				} else {
-					ClientHandler.send("<tp " + c[1] + " " + c[2] + " " + c[3]);
-				}
+				clientHandler.send("<tp " + c[1] + " " + c[2] + " " + c[3]);
 				break;
 			case "/spawn":
 				c[0] = c[0].replaceFirst("/", "<");
 				c[2] = Helper.nameToIP(app, c[2]);
-				ClientHandler.send(PApplet.join(c, " "));
+				clientHandler.send(PApplet.join(c, " "));
 				break;
 			case "/kill":
-				ClientHandler.send(command.replaceFirst("/", "<"));
+				clientHandler.send(command.replaceFirst("/", "<"));
 				break;
 			case "/remove":
-				ClientHandler.send(command.replaceFirst("/", "<"));
+				clientHandler.send(command.replaceFirst("/", "<"));
 				break;
 			case "/say":
-				ClientHandler.send(command.replaceFirst("/", "<"));
-				break;
-			case "/load":
-				GameBaseApp.getPreGameInfo().startLoading();
-				break;
-			case "/ready":
-				GameBaseApp.loader.tryStartGame();
+				clientHandler.send(command.replaceFirst("/", "<"));
 				break;
 			case "/info":
 				i = Integer.parseInt(c[1]);
-				e = GameBaseApp.updater.getNamedObjects().get(i);
+				e = app.getUpdater().getGameObject(i);
 				if (e != null) {
 					e.info();
 				} else {
@@ -79,38 +64,29 @@ public class CommandHandler {
 				GameDrawer.yMapOffset *= f;
 				break;
 			case "/reloadImages":
-				ImageHandler.requestAllImages();
+				app.getDrawer().imageHandler.requestAllImages();
 				break;
 			case "/saveMap":
-				MapHandler.saveMap(c[1], c[2]);
+				app.getUpdater().mapHandler.saveMap(c[1], c[2]);
 				break;
 			case "/fps":
-				GameBaseApp.getPreGameInfo().write("fps", GameApplet.GameBaseApp.frameRate + "");
+				app.write("fps", app.frameRate + "");
 				break;
 			case "/scheme":
 				i = Integer.parseInt(c[1]);
 				int r = Integer.parseInt(c[2]);
 				int g = Integer.parseInt(c[3]);
 				int b = Integer.parseInt(c[4]);
-				GCScheme.setScheme(8, i, GameBaseApp.app.color(r, g, b));
-				break;case "/proto":
-					Protocol.createFile();
-					break;
-			case "/rf":
-				if (PreGameInfo.isSinglePlayer() || GameBaseApp.app instanceof ServerApp) {
-					int cooldown = (int) (Float.parseFloat(c[1]) * 60 * 1000);
-					GameBaseApp.getPreGameInfo().write("GAME", "resfreeze in " + (cooldown / 60.0 / 1000.0));
-					Updater.resfreeze = new Timer(cooldown);
-					if (GameBaseApp.app instanceof ServerApp)
-						((ServerApp) GameBaseApp.app).serverHandler.doProtocol = true;
-				} else
-					throw new IllegalArgumentException();
+				GCScheme.setScheme(8, i, app.color(r, g, b));
+				break;
+			case "/proto":
+				Protocol.createFile();
 				break;
 			case "/pause":
-				if (GameApplet.GameBaseApp.gameState == GameState.PAUSE) {
-					GameBaseApp.updater.send(Coms.PAUSE+" false");
+				if (app.getUpdater().gameState == GameState.PAUSE) {
+					app.getUpdater().send(Coms.PAUSE + " false");
 				} else {
-					GameBaseApp.updater.send(Coms.PAUSE+" true");
+					app.getUpdater().send(Coms.PAUSE + " true");
 				}
 				break;
 			case "/gamerule":
@@ -136,17 +112,17 @@ public class CommandHandler {
 		} catch (IllegalArgumentException e) {
 			System.err.println("error " + command);
 			e.printStackTrace();
-			GameBaseApp.getPreGameInfo().write("Chat", "error");
+			app.write("Chat", "error");
 		} catch (ClassCastException e) {
 			System.err.println("wrong entity " + command);
-			GameBaseApp.getPreGameInfo().write("Chat", "wrong entity");
+			app.write("Chat", "wrong entity");
 		} catch (NoInitialContextException e) {
 			System.err.println(command + " was not found");
-			GameBaseApp.getPreGameInfo().write("Chat", "command was not found");
+			app.write("Chat", "command was not found");
 		} catch (Exception e) {
 			System.err.println("command error in " + command);
 			e.printStackTrace();
-			GameBaseApp.getPreGameInfo().write("Chat", "command error");
+			app.write("Chat", "command error");
 		}
 
 	}

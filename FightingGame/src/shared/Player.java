@@ -29,7 +29,7 @@ public class Player {
 		return p;
 	}
 
-	public static Player createPlayer(User user, GameBaseApp app) {
+	public static Player createPlayer(GameBaseApp app, User user) {
 		Player p = new Player(app);
 		p.setUser(user);
 		p.getUser().player = p;

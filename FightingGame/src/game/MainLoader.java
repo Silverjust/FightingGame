@@ -43,14 +43,12 @@ public class MainLoader extends Loader {
 			}
 			break;
 		case MAP:
-			app.updater.map.setup();
+			app.getUpdater().map.setup();
 			state = State.ENTITIES;
 			break;
 		case ENTITIES:// spawn entity-setup
 
 			if (PreGameInfo.isSinglePlayer()) {
-				if (PreGameInfo.isSandbox())
-					app.updater.send("<spawn SandboxBuilding 0 20 20");
 				/*
 				 * if (GameSettings.tutorial)
 				 * ref.updater.send("<spawn Tutorial 0 20 20");

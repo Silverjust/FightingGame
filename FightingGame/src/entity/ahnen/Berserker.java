@@ -150,7 +150,7 @@ public class Berserker extends Unit implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this) && e.isInRange(x, y, e.getRadius() + a.range)) {
 				GameBaseApp.updater.send(
-						HIT + S + e.number + " " + (e instanceof Building ? a.damage / 4 : a.damage) + " " + a.pirce);
+						DAMAGE + S + e.number + " " + (e instanceof Building ? a.damage / 4 : a.damage) + " " + a.pirce);
 			}
 		}
 	}

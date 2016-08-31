@@ -93,8 +93,28 @@ public class Ticul extends Champion implements Attacker {
 
 	@Override
 	public void setupSpells(PlayerInterface inter) {
+		inter.addSpell(new Consume(player.app, inter, 0));
 		inter.addSpell(new Shot(player.app, inter, 1));
 		inter.addSpell(new TargetedShot(player.app, inter, 2));
+	}
+
+	public class Consume extends Spell {// ******************************************************	
+		public Consume(GameBaseApp app, PlayerInterface inter, int pos) {
+			super(app, inter, pos, smiteImg);
+			setCooldown(1000);
+		}
+	
+		@Override
+		public String getDescription() {
+			return null;
+		}
+
+		@Override
+		protected void onActivation() {
+			// TODO Auto-generated method stub
+			
+		}
+	
 	}
 
 	public class Shot extends Spell {// ******************************************************

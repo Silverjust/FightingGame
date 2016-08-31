@@ -62,7 +62,7 @@ public interface Coms {
 	String BUFF = "<buff";
 	String TP = "<tp";
 	String HEAL = "<heal";
-	String HIT = "<hit";
+	String DAMAGE = "<dmg";
 	@Deprecated
 	String MOVE = "<move";
 	/**

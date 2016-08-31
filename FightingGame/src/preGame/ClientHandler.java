@@ -1,5 +1,6 @@
-package game;
+package preGame;
 
+import game.GameBaseApp;
 import shared.Client;
 
 public class ClientHandler {
@@ -16,27 +17,22 @@ public class ClientHandler {
 
 	public ClientHandler(GameBaseApp app, String serverIp) {
 		this.app = app;
-		if (false) {
-			System.out.println("SinglePlayer");
-			identification = "1";
+		try {
+			client = new Client(app, serverIp, 5204);
+			identification = client.myIp();
+			// identification = socket.getLocalAddress().toString()
+			// .substring(1);
+			// socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (client == null || !client.active()) {
+			System.out.println("no connection");
+			client = null;
+			return;
 		} else {
-			try {
-				client = new Client(app, serverIp, 5204);
-				identification = client.myIp();
-				// identification = socket.getLocalAddress().toString()
-				// .substring(1);
-				// socket.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			if (client == null || !client.active()) {
-				System.out.println("no connection");
-				client = null;
-				return;
-			} else {
-				System.out.println("MultiPlayer");
-				System.out.println(identification);
-			}
+			System.out.println("MultiPlayer");
+			System.out.println(identification);
 		}
 	}
 
@@ -53,9 +49,7 @@ public class ClientHandler {
 
 	public void send(String s) {
 		if (s != null) {
-			if (PreGameInfo.isSinglePlayer()) {
-				app.getComHandler().executeCom(s);
-			} else {
+			{
 				if (client != null && client.active()) {
 					client.write(s + endSymbol);
 					if (reportCommunication)
@@ -78,6 +72,10 @@ public class ClientHandler {
 				}
 			}
 		}
+	}
+
+	public boolean wasSuccesfull() {
+		return client != null && client.active();
 	}
 
 }

@@ -22,7 +22,7 @@ public class GameUpdater extends Updater {
 
 		for (String key : app.getPreGameInfo().users.keySet()) {
 			User user = app.getPreGameInfo().users.get(key);
-			Player p = Player.createPlayer(user, app);
+			Player p = Player.createPlayer(app, user);
 			if (p.getUser().ip == app.clientHandler.identification) {
 				p.color = app.color(0, 255, 100);
 				app.player = p;
@@ -76,10 +76,7 @@ public class GameUpdater extends Updater {
 				e.updateDecisions(PreGameInfo.isSinglePlayer());
 				e.updateMovement();
 			}
-			if (selectionChanged) {
-				selectionChanged = false;
-				keepGrid = false;
-			}
+			
 		}
 
 	}

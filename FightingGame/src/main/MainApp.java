@@ -59,7 +59,7 @@ public class MainApp extends PApplet {
 		// System.out.println(font.ascent());
 		textFont(font);
 		noSmooth();
-		mode = Mode.HAUPTMENUE;
+		mode = Mode.STARTSCREEN;
 		G4P.messagesEnabled(false);
 
 		GameBaseApp.setApp(this);
@@ -75,7 +75,7 @@ public class MainApp extends PApplet {
 		switch (mode) {
 		case HAUPTLADESCREEN:
 			break;
-		case HAUPTMENUE:
+		case STARTSCREEN:
 			startPage.update();
 			break;
 		case PREGAME:

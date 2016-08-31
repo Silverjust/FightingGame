@@ -374,4 +374,8 @@ public abstract class GameObject implements Coms {
 		return this.getClass().getSimpleName();
 	}
 
+	public void info() {
+	
+	}
+
 }

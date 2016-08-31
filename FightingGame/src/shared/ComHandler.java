@@ -24,9 +24,9 @@ import server.ServerUpdater;
 import shared.Updater.GameState;;
 
 public class ComHandler implements Coms {
-	private ContentListManager contentListHandler;
-	private Updater updater;
-	private GameBaseApp app;
+	protected ContentListManager contentListHandler;
+	protected Updater updater;
+	protected GameBaseApp app;
 
 	public void addUpdater(Updater updater2) {
 		updater = updater2;
@@ -49,7 +49,7 @@ public class ComHandler implements Coms {
 			Entity e = null;
 			GameObject o = null;
 			switch (c[0]) {
-			case HIT:
+			case DAMAGE:
 				n = Integer.parseInt(c[1]);
 				o = updater.getGameObject(n);
 				if (o instanceof Entity)
@@ -138,7 +138,7 @@ public class ComHandler implements Coms {
 			// before game
 			case IDENTIFY:
 				if (c[1].equals("reconnect")) {
-					if (app.getMode() == Mode.HAUPTMENUE) {
+					if (app.getMode() == Mode.STARTSCREEN) {
 						/*
 						 * while (( app.getPreGameInfo()).display == null) { }
 						 */

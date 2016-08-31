@@ -20,10 +20,8 @@ public abstract class Unit extends Entity {
 
 	private boolean isMoving;
 	private boolean isAggro;
-
 	public Animation walk;
-	private boolean isRooted;
-
+	
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		/* code */ }
 
@@ -141,7 +139,7 @@ public abstract class Unit extends Entity {
 	}
 
 	public void info() {
-		player.app.getDrawer().getHud()	.chat.println(this.getClass().getSimpleName() + "_" + number,
+		player.app.getDrawer().getHud().chat.println(this.getClass().getSimpleName() + "_" + number,
 				"(" + getX() + "|" + getY() + ")->(" + xTarget + "|" + yTarget + ")\nhp:" + getCurrentHp());
 	}
 
@@ -165,7 +163,10 @@ public abstract class Unit extends Entity {
 
 	/** sets the movement-speed */
 	public void setSpeed(float speed) {
-		this.speed = speed;
+		if (speed <= 0)
+			System.out.println("Unit.setSpeed() cant root this way");
+		else
+			this.speed = speed;
 	}
 
 	/** tells if it is normaly able to move */
@@ -173,7 +174,7 @@ public abstract class Unit extends Entity {
 		return isMoving;
 	}
 
-	/** sets ability to move */
+	/** sets own ability to move */
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
 	}
@@ -184,15 +185,5 @@ public abstract class Unit extends Entity {
 
 	public void setSpeedMult(float speedMult) {
 		this.speedMult = speedMult;
-	}
-
-	@Override
-	public boolean isRooted() {
-		return isRooted;
-	}
-
-	@Override
-	public void setRooted(boolean b) {
-		isRooted = b;
 	}
 }
