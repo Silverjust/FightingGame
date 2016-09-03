@@ -71,7 +71,7 @@ public class BuildWallAim extends BuildAim {
 			 * Entity.xToGrid(Entity.gridToY());
 			 */
 			if (canPlaceAt(x, y)) {
-				GameBaseApp.updater.send("<spawn "
+				GameBaseApp.updater.sendDirect("<spawn "
 						+ buildable.getClass().getSimpleName() + " "
 						+ builder.player.getUser().ip + " " + x + " " + y + " start");
 				// start nur beim startbuilding
@@ -90,7 +90,7 @@ public class BuildWallAim extends BuildAim {
 				y1 = (y1 + (y2 - y1) / PApplet.dist(x1, y1, x2, y2) * (speed));
 				if (canPlaceAt(x1, y1)) {
 					GameBaseApp.updater
-							.send("<spawn "
+							.sendDirect("<spawn "
 									+ buildable.getClass().getSimpleName()
 									+ " " + builder.player.getUser().ip + " " + x1 + " "
 									+ y1 + " part");
@@ -99,7 +99,7 @@ public class BuildWallAim extends BuildAim {
 				}
 			}
 			if (canPlaceAt(x2, y2)) {
-				GameBaseApp.updater.send("<spawn "
+				GameBaseApp.updater.sendDirect("<spawn "
 						+ buildable.getClass().getSimpleName() + " "
 						+ builder.player.getUser().ip + " " + x2 + " " + y2 + " start");
 				// start nur beim startbuilding

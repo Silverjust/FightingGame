@@ -68,7 +68,7 @@ public class SandboxBuilding extends Building implements Commander {
 	@Override
 	public PImage preview() {
 		System.out.println("woat?");
-		GameBaseApp.updater.send("<say SERVER " + player.getUser().name + "cheats");
+		GameBaseApp.updater.sendDirect("<say SERVER " + player.getUser().name + "cheats");
 		return standImg;
 	}
 
@@ -189,7 +189,7 @@ public class SandboxBuilding extends Building implements Commander {
 		public void execute(float x, float y) {
 			for (GameObject e2 : GameApplet.GameBaseApp.gameObjects) {
 				if (e2 != null && e2.isInRange(x, y, e2.getRadius() + 10)) {
-					GameBaseApp.updater.send("<remove " + e2.number);
+					GameBaseApp.updater.sendDirect("<remove " + e2.number);
 				}
 			}
 		}

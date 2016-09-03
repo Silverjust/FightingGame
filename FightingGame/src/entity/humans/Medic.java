@@ -119,7 +119,7 @@ public class Medic extends Unit implements Attacker {
 	@Override
 	public void calculateDamage(Attack a) {
 		isTaged = true;
-		GameBaseApp.updater.send("<heal " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.sendDirect("<heal " + basicAttack.getTarget().number + " "
 				+ a.damage);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}

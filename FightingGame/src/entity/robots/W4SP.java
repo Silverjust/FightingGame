@@ -164,7 +164,7 @@ public class W4SP extends Unit implements Attacker, Shooter {
 			if (e != null & e.isEnemyTo(this)
 					&& e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)
 					&& e.groundPosition == GroundPosition.GROUND) {
-				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}

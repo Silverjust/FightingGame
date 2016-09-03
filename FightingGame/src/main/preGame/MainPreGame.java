@@ -23,8 +23,8 @@ public class MainPreGame extends PreGame {
 
 	public MainPreGame(GameBaseApp app, String name) {
 		this.name = name;
-		app.setContentListHandler(new ContentListManager());
-		app.getContentListHandler().load();
+		app.setContentListManager(new ContentListManager());
+		app.getContentListManager().load();
 		app.setComHandler(new ComHandler(app));
 		System.out.println("MainPreGame.MainPreGame()");
 	}
@@ -81,7 +81,7 @@ public class MainPreGame extends PreGame {
 				return;
 		if (map == null)
 			return;
-		ClientHandler.send(Coms.LOAD + "");
+		ClientHandler.sendDirect(Coms.LOAD + "");
 	}
 
 	public void setupPlayer() {

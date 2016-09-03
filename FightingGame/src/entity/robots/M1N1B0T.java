@@ -123,7 +123,7 @@ public class M1N1B0T extends Unit implements Attacker, Shooter {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
@@ -246,9 +246,9 @@ public class M1N1B0T extends Unit implements Attacker, Shooter {
 			if (trainer != null && newUnit != null
 					&& newUnit.canBeBought(trainer.player)) {
 				newUnit.buyFrom(trainer.player);
-				GameBaseApp.updater.send("<spawn RobotsDepot " + trainer.player.getUser().ip
+				GameBaseApp.updater.sendDirect("<spawn RobotsDepot " + trainer.player.getUser().ip
 						+ " " + trainer.getX() + " " + trainer.getY() + " select");
-				GameBaseApp.updater.send("<remove " + trainer.number);
+				GameBaseApp.updater.sendDirect("<remove " + trainer.number);
 			}
 		}
 

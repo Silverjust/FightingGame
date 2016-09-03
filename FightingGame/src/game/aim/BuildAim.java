@@ -74,7 +74,7 @@ public class BuildAim extends Aim {
 		 * Entity.xToGrid(Entity.gridToY());
 		 */
 		if (canPlaceAt(x, y)) {
-			GameBaseApp.updater.send("<spawn " + buildable.getClass().getSimpleName()
+			GameBaseApp.updater.sendDirect("<spawn " + buildable.getClass().getSimpleName()
 					+ " " + builder.player.getUser().ip + " " + x + " " + y);
 			buildable.buyFrom(builder.player);
 		}

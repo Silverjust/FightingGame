@@ -1,11 +1,12 @@
 package game;
 
 import ddf.minim.Minim;
+import preGame.ClientHandler;
 import processing.core.PApplet;
 import processing.core.PFont;
+import server.ServerHandler;
 import shared.ComHandler;
 import shared.ContentListManager;
-import shared.Helper;
 import shared.Loader;
 import shared.Menu;
 import shared.Mode;
@@ -31,7 +32,8 @@ public class GameBaseApp extends PApplet {
 	protected Player player;
 	protected PreGameInfo preGameInfo;
 	private ComHandler comHandler;
-	public ClientHandler clientHandler;
+	private ClientHandler clientHandler;
+	private ServerHandler serverHandler;
 
 	@Override
 	public void dispose() {
@@ -102,11 +104,11 @@ public class GameBaseApp extends PApplet {
 		this.menu = menu;
 	}
 
-	public ContentListManager getContentListHandler() {
+	public ContentListManager getContentListManager() {
 		return contentListHandler;
 	}
 
-	public void setContentListHandler(ContentListManager contentListHandler) {
+	public void setContentListManager(ContentListManager contentListHandler) {
 		this.contentListHandler = contentListHandler;
 	}
 
@@ -182,22 +184,12 @@ public class GameBaseApp extends PApplet {
 		this.preGameInfo = preGame;
 	}
 
-	public void write(String ip, String string) {
-		write(ip, new String[] { string });
+	public void write(String text) {
+		write("", text);
 	}
 
-	public void write(String ip, String[] text) {
-		String name = Helper.ipToName(ip, this);
-		String completeText = "";
-		for (int i = 2; i < text.length; i++) {// c[0] und c[1] auslassen
-			completeText = completeText.concat(" ").concat(text[i]);
-		}
-		/*
-		 * if (((MainApp) ref.app).mode == Mode.PREGAME)
-		 * display.chat.println(name, completeText); else
-		 */
-		if (mode == Mode.GAME)
-			getDrawer().getHud().chat.println(name, completeText);
+	public void write(String name, String text) {
+
 	}
 
 	public ComHandler getComHandler() {
@@ -208,6 +200,22 @@ public class GameBaseApp extends PApplet {
 
 	public void setComHandler(ComHandler comHandler) {
 		this.comHandler = comHandler;
+	}
+
+	public ClientHandler getClientHandler() {
+		return clientHandler;
+	}
+
+	public void setClientHandler(ClientHandler clientHandler) {
+		this.clientHandler = clientHandler;
+	}
+
+	public ServerHandler getServerHandler() {
+		return serverHandler;
+	}
+
+	public void setServerHandler(ServerHandler serverHandler) {
+		this.serverHandler = serverHandler;
 	}
 
 }

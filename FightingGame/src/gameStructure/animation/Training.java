@@ -29,7 +29,7 @@ public class Training extends Ability {
 			if (isServer) {
 				float xt = ((Trainer) e).getXTarget();
 				float yt = ((Trainer) e).getYTarget();
-				GameBaseApp.updater.send("<spawn "
+				GameBaseApp.updater.sendDirect("<spawn "
 						+ toTrain.getClass().getSimpleName()
 						+ " "
 						+ e.player.getUser().ip

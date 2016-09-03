@@ -134,7 +134,7 @@ public class SW4RM extends Unit implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isInRange(getX(), getY(), e.getRadius() + a.range)
 					&& a.canTargetable(e) && e.isEnemyTo(this)) {
-				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 				if (e.isMortal())
 					setHp(getCurrentHp() + a.damage

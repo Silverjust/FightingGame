@@ -11,12 +11,14 @@ public class ClientHandler {
 	public char startSymbol = '<';
 	public char endSymbol = '>';
 
-	private boolean reportCommunication = false;
+	private boolean reportCommunication = true;
 
 	private GameBaseApp app;
 
 	public ClientHandler(GameBaseApp app, String serverIp) {
 		this.app = app;
+		app.setClientHandler(this);
+		app.setComHandler(new PreGameComHandler(app));
 		try {
 			client = new Client(app, serverIp, 5204);
 			identification = client.myIp();
@@ -31,8 +33,7 @@ public class ClientHandler {
 			client = null;
 			return;
 		} else {
-			System.out.println("MultiPlayer");
-			System.out.println(identification);
+			System.out.println("client connected to server: " + identification);
 		}
 	}
 
@@ -47,13 +48,13 @@ public class ClientHandler {
 		recieve();
 	}
 
-	public void send(String s) {
-		if (s != null) {
+	public void send(String output) {
+		if (output != null) {
 			{
 				if (client != null && client.active()) {
-					client.write(s + endSymbol);
+					client.write(output + endSymbol);
 					if (reportCommunication)
-						System.out.println("out: " + s + " " + endSymbol);
+						System.out.println("c out: " + output + endSymbol);
 				} else {
 					client.stop();
 				}
@@ -63,12 +64,12 @@ public class ClientHandler {
 
 	public void recieve() {
 		if (client != null) {
-			String in = "" + client.readStringUntil(endSymbol);
-			if (in != null && !in.equals("null")) {
+			String input = "" + client.readStringUntil(endSymbol);
+			if (input != null && !input.equals("null")) {
 				if (reportCommunication)
-					System.out.println("in: " + in);
-				if (in.charAt(0) == startSymbol) {
-					app.getComHandler().executeCom(in);
+					System.out.println("c  in: " + input);
+				if (input.charAt(0) == startSymbol) {
+					app.getComHandler().executeCom(input);
 				}
 			}
 		}

@@ -124,7 +124,7 @@ public class Ticul extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 	}
 
@@ -230,7 +230,7 @@ public class Ticul extends Unit implements Attacker {
 						* range;
 				float y = e.getY() + (ty - e.getY()) / PApplet.dist(e.getX(), e.getY(), tx, ty)
 						* range;
-				ClientHandler.send("<tp " + e.number + " " + x + " " + y);
+				ClientHandler.sendDirect("<tp " + e.number + " " + x + " " + y);
 			}
 			startCooldown();
 		}

@@ -67,10 +67,11 @@ public class ServerUpdater extends Updater {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void send(String string) {
 		app.getComHandler().executeCom(string);
-		((ServerApp) app).serverHandler.send(string);
+		((ServerApp) app).getServerHandler().sendDirect(string);
 	}
 
 	/**

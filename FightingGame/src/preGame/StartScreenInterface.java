@@ -1,11 +1,11 @@
 package preGame;
 
 import g4p_controls.G4P;
-import g4p_controls.GAbstractControl;
 import g4p_controls.GButton;
 import g4p_controls.GCScheme;
 import g4p_controls.GEvent;
 import g4p_controls.GTextField;
+import game.PreGameInfo;
 import processing.core.PApplet;
 import shared.Helper;
 import shared.Mode;
@@ -14,11 +14,13 @@ public class StartScreenInterface {
 	PreGameApp app;
 
 	private GTextField nameField;
-	private GAbstractControl hostGameButton;
+	private GButton hostGameButton;
 	private GTextField ipField;
-	private GAbstractControl connectButton;
+	private GButton connectButton;
 
 	private boolean isWaiting;
+
+	public String name;
 
 	public StartScreenInterface(PreGameApp app) {
 		this.app = app;
@@ -35,6 +37,7 @@ public class StartScreenInterface {
 
 		connectButton = new GButton(app, 50, 200, 100, 30, "connect");
 		connectButton.addEventHandler(this, "handleButtonEvents");
+		System.out.println("StartScreenInterface.StartScreenInterface()");
 	}
 
 	void update() {
@@ -44,15 +47,13 @@ public class StartScreenInterface {
 			app.strokeWeight(20);
 			float angle = app.millis() / 100.0f;
 			app.arc(200, 150, 100, 100, angle, angle + 5);
-			if (app.getServerApp() != null && app.getServerApp().hadError()) {
-				setWaiting(false);
-			}
 		}
 	}
 
 	public void handleButtonEvents(GButton button, GEvent event) {
 		if (button == hostGameButton) {
 			setWaiting(true);
+			preparePregame();
 			PApplet.main(new String[] { "server.ServerApp", app.getAppNumber() + "" });
 		}
 		if (button == connectButton) {
@@ -60,15 +61,22 @@ public class StartScreenInterface {
 				ipField.setFocus(true);
 			} else {
 				setWaiting(true);
+				preparePregame();
 				String ip = Helper.secureInput(ipField.getText());
-				app.clientHandler = new ClientHandler(app, ip);
+				app.setClientHandler(new ClientHandler(app, ip));
 				setWaiting(false);
-				if (app.clientHandler.wasSuccesfull()) {
+				if (app.getClientHandler().wasSuccesfull()) {
 					dispose();
 					app.setMode(Mode.PREGAME);
 				}
 			}
 		}
+	}
+
+	void preparePregame() {
+		PreGameInfo pgi = PreGameInfo.createNewPrGaIn(app);
+		app.setPreGameInfo(pgi);
+		name = nameField.getText();
 	}
 
 	void setWaiting(boolean b) {
@@ -79,11 +87,18 @@ public class StartScreenInterface {
 		connectButton.setEnabled(!b);
 	}
 
+	public void initDummy() {
+		nameField.setText("dummy");
+		ipField.setText("127.0.0.1");
+		//handleButtonEvents((GButton) connectButton, null);
+	}
+
 	public void dispose() {
 		nameField.dispose();
 		hostGameButton.dispose();
 		ipField.dispose();
 		connectButton.dispose();
+		System.out.println("StartScreenInterface.dispose()");
 	}
 
 }

@@ -203,7 +203,7 @@ public class BioLab extends Lab {
 		@Override
 		public void execute(float x, float y) {
 			if (canPlaceAt(x, y)) {
-				GameBaseApp.updater.send("<spawn " + Swamp.class.getSimpleName() + " "
+				GameBaseApp.updater.sendDirect("<spawn " + Swamp.class.getSimpleName() + " "
 						+ builder.player.getUser().ip + " " + x + " " + y);
 				active.startCooldown();
 				((BioLab) builder).getSwampify().startCooldown();

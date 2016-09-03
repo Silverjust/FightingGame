@@ -32,13 +32,7 @@ public class MapHandler {
 						player = "0";
 					}
 					String type = entity.getString("type");
-					if (type.equals("MainBuilding")) {
-						type = app.updater.players.get(player).getNation().getNationInfo().getMainBuilding()
-								.getSimpleName();
-					} else if (type.equals("KeritMine")) {
-						type = app.updater.players.get(player).getNation().getNationInfo().getKeritMine()
-								.getSimpleName();
-					}
+
 					/*
 					 * if (type.equals("MainBuilding")) { type =
 					 * ref.updater.player.get(player).nation
@@ -54,12 +48,16 @@ public class MapHandler {
 					float y = entity.getFloat("y");
 					app.updater.send("<spawn " + type + " " + player + " " + x + " " + y);
 				}
-
 			}
-		} catch (Exception e) {
+		} catch (
+
+		Exception e)
+
+		{
 			System.err.println("there is something wrong with this map");
 			e.printStackTrace();
 		}
+
 	}
 
 	public void saveMap(String intName, String name) {

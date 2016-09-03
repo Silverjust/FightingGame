@@ -157,7 +157,7 @@ public class SN41L10N extends Unit implements Shooter {
 			if (e != null & e.isEnemyTo(this)
 					&& e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)
 					&& a.canTargetable(e)) {
-				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}

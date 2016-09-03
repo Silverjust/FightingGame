@@ -11,7 +11,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 
 import processing.core.PConstants;
-import shared.CommandHandler;
+import server.ServerCommandHandler;
 import shared.Helper;
 
 public class PreGameChat {
@@ -86,9 +86,9 @@ public class PreGameChat {
 			} else {
 				if (s.length() > 0 && s.charAt(0) == '/') {
 					println(GameBaseApp.getPreGameInfo().getUser("").name, s);
-					CommandHandler.executeCommands(s);
+					ServerCommandHandler.executeCommand(s);
 				} else {
-					ClientHandler.send("<say " + GameBaseApp.getPreGameInfo().getUser("").ip + " " + s);
+					ClientHandler.sendDirect("<say " + GameBaseApp.getPreGameInfo().getUser("").ip + " " + s);
 				}
 			}
 			textfield.setText("");

@@ -39,7 +39,7 @@ public abstract class KeritMine extends Building {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		GameBaseApp.updater.send("<spawn Kerit 0 " + getX() + " " + getY());
+		GameBaseApp.updater.sendDirect("<spawn Kerit 0 " + getX() + " " + getY());
 	}
 
 }

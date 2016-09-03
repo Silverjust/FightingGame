@@ -74,9 +74,10 @@ public class MainLoader extends Loader {
 				 * ref.updater.send("<spawn Prunam " + p.ip + " " +
 				 * ref.app.random(200, 600) + " " + ref.app.random(200, 600)); }
 				 */
-				app.updater.send("<spawn Ticul " + 1 + " " + app.random(200, 600) + " " + app.random(200, 600));
-				app.updater.send("<spawn Ticul " + 2 + " " + app.random(200, 600) + " " + app.random(200, 600));
 			}
+			app.updater.send("<spawn Ticul " + 1 + " " + app.random(200, 600) + " " + app.random(200, 600));
+			app.updater.send("<spawn Ticul " + 2 + " " + app.random(200, 600) + " " + app.random(200, 600));
+
 			app.setDrawer(new GameDrawer(app, imageHandler));
 			if (PreGameInfo.isSandbox()) {
 				GameDrawer.godeye = true;
@@ -89,7 +90,7 @@ public class MainLoader extends Loader {
 			state = State.WAIT;
 			break;
 		case WAIT:
-			app.updater.send(Coms.READY + " " + app.clientHandler.identification);
+			app.updater.send(Coms.READY + " " + app.getClientHandler().identification);
 			break;
 		case END:
 			state = State.NEWGAME;

@@ -30,7 +30,7 @@ public class ChampSelect {
 					nationButtons[i].setSwitch(true);
 					nation = Nation.fromNumber(i);
 					ClientHandler
-							.send("<setNation " + GameBaseApp.getPreGameInfo().getUser("").ip + " " + Nation.fromNumber(i).toString());
+							.sendDirect("<setNation " + GameBaseApp.getPreGameInfo().getUser("").ip + " " + Nation.fromNumber(i).toString());
 				} else {
 					nationButtons[i].setSwitch(false);
 				}

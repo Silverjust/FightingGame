@@ -37,7 +37,7 @@ public class Extract extends Ability {
 						isRFNew=false;
 					}
 				} else
-					GameBaseApp.updater.send("<give " + e.player.getUser().ip + " " + ressource + " " + amount);
+					GameBaseApp.updater.sendDirect("<give " + e.player.getUser().ip + " " + ressource + " " + amount);
 			}
 			isSetup = false;
 		}

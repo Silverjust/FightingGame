@@ -162,7 +162,7 @@ public class Rug extends Unit implements Shooter {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this)
 					&& e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)) {
-				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}
@@ -287,7 +287,7 @@ public class Rug extends Unit implements Shooter {
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (target != null && isEvent()) {
 				if (isServer) {
-					GameBaseApp.updater.send("<spawn Rugling " + e.player.getUser().ip + " "
+					GameBaseApp.updater.sendDirect("<spawn Rugling " + e.player.getUser().ip + " "
 							+ e.getX() + " " + (e.getY() + e.getRadius() + 8) + " " + target.getX()
 							+ " " + target.getY());
 					/*

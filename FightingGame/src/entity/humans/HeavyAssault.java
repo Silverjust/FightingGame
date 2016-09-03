@@ -121,7 +121,7 @@ public class HeavyAssault extends Unit implements Attacker {
 	@Override
 	public void calculateDamage(Attack a) {
 		isTaged = true;
-		GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}

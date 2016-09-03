@@ -2,11 +2,9 @@ package shared;
 
 import java.util.ArrayList;
 
-import entity.MainBuilding;
 import game.GameBaseApp;
 import gameStructure.Champion;
 import gameStructure.GameObject;
-import processing.core.PApplet;
 import shared.Updater.GameState;
 
 public class Player {
@@ -14,7 +12,6 @@ public class Player {
 
 	public ArrayList<GameObject> visibleEntities = new ArrayList<GameObject>();
 	private User user;
-	public MainBuilding mainBuilding;
 	public GameState gameState;// win, loose
 	public Champion champion;
 	public GameBaseApp app;
@@ -25,7 +22,6 @@ public class Player {
 		p.getUser().player = p;
 		p.getUser().online = true;
 		p.color = app.color(150);
-		p.setNation(Nation.NEUTRAL);
 		return p;
 	}
 
@@ -47,17 +43,6 @@ public class Player {
 			return "[" + getUser().name + "]";
 		}
 		return "offline:[" + getUser().name + "]";
-	}
-
-	@Deprecated
-	public Nation getNation() {
-		return getUser().nation;
-	}
-
-	@Deprecated
-
-	public void setNation(Nation nation) {
-		getUser().nation = nation;
 	}
 
 	public User getUser() {

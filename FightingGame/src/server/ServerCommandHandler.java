@@ -1,52 +1,48 @@
-package shared;
+package server;
 
 import javax.naming.NoInitialContextException;
 
-import g4p_controls.GCScheme;
-import game.ClientHandler;
+import game.CommandHandler;
 import game.GameBaseApp;
 import game.GameDrawer;
 import gameStructure.GameObject;
 import processing.core.PApplet;
-import server.Protocol;
+import shared.Coms;
+import shared.Helper;
 import shared.Updater.GameState;
 
-public class CommandHandler {
-	private GameBaseApp app;
-	private ClientHandler clientHandler;
+public class ServerCommandHandler extends CommandHandler {
 
-	public CommandHandler(GameBaseApp app) {
-		this.app = app;
-		clientHandler = app.clientHandler;
+	public ServerCommandHandler(GameBaseApp app) {
+		super(app);
 	}
 
-	public void executeCommands(String command) {
+	public void executeCommand(String command) {
 		String[] c = PApplet.splitTokens(command, " ");
 
 		try {
 			int i;
-			float f;
 			GameObject e;
 			switch (c[0]) {
 			case "/dmg":
-				clientHandler.send(Coms.DAMAGE + " " + c[1] + " " + c[2]);
+				send(DAMAGE + " " + c[1] + " " + c[2]);
 				break;
 			case "/tp":
-				clientHandler.send("<tp " + c[1] + " " + c[2] + " " + c[3]);
+				send(TP + " " + c[1] + " " + c[2] + " " + c[3]);
 				break;
 			case "/spawn":
 				c[0] = c[0].replaceFirst("/", "<");
 				c[2] = Helper.nameToIP(app, c[2]);
-				clientHandler.send(PApplet.join(c, " "));
+				send(PApplet.join(c, " "));
 				break;
 			case "/kill":
-				clientHandler.send(command.replaceFirst("/", "<"));
+				send(command.replaceFirst("/", "<"));
 				break;
 			case "/remove":
-				clientHandler.send(command.replaceFirst("/", "<"));
+				send(command.replaceFirst("/", "<"));
 				break;
 			case "/say":
-				clientHandler.send(command.replaceFirst("/", "<"));
+				send(command.replaceFirst("/", "<"));
 				break;
 			case "/info":
 				i = Integer.parseInt(c[1]);
@@ -57,36 +53,20 @@ public class CommandHandler {
 					throw new IllegalArgumentException("no entity found");
 				}
 				break;
-			case "/zoom":
-				f = Float.parseFloat(c[1]);
-				GameDrawer.zoom = f;
-				GameDrawer.xMapOffset *= f;
-				GameDrawer.yMapOffset *= f;
-				break;
-			case "/reloadImages":
-				app.getDrawer().imageHandler.requestAllImages();
-				break;
 			case "/saveMap":
 				app.getUpdater().mapHandler.saveMap(c[1], c[2]);
 				break;
 			case "/fps":
 				app.write("fps", app.frameRate + "");
 				break;
-			case "/scheme":
-				i = Integer.parseInt(c[1]);
-				int r = Integer.parseInt(c[2]);
-				int g = Integer.parseInt(c[3]);
-				int b = Integer.parseInt(c[4]);
-				GCScheme.setScheme(8, i, app.color(r, g, b));
-				break;
 			case "/proto":
 				Protocol.createFile();
 				break;
 			case "/pause":
 				if (app.getUpdater().gameState == GameState.PAUSE) {
-					app.getUpdater().send(Coms.PAUSE + " false");
+					send(Coms.PAUSE + " false");
 				} else {
-					app.getUpdater().send(Coms.PAUSE + " true");
+					send(Coms.PAUSE + " true");
 				}
 				break;
 			case "/gamerule":
@@ -105,6 +85,16 @@ public class CommandHandler {
 				if (c[1].equals("showrange")) {
 					GameDrawer.showRanges = Boolean.valueOf(c[2]);
 				}
+				break;
+			case "/reinit":
+				ServerHandler serverHandler = new ServerHandler((ServerApp) app);
+				((ServerApp) app).setServerHandler(serverHandler);
+				if (serverHandler.isWorking()) {
+					app.write("", "re-init succesfull");
+				}
+				break;
+			case "/dummy":
+				PApplet.main(new String[] { "preGame.PreGameApp", "dummy" });
 				break;
 			default:
 				throw new NoInitialContextException("no command found");
@@ -125,5 +115,10 @@ public class CommandHandler {
 			app.write("Chat", "command error");
 		}
 
+	}
+
+	@Override
+	protected void send(String input) {
+		app.getUpdater().send(input);
 	}
 }

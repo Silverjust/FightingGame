@@ -185,7 +185,7 @@ public class Exo extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.send("<hit " + ((MeleeAttack) a).getTarget().number + " "
+		GameBaseApp.updater.sendDirect("<hit " + ((MeleeAttack) a).getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 	}
 

@@ -123,7 +123,7 @@ public class MainApp extends PApplet {
 	public void dispose() {// Player in schlieﬂen
 		try {
 			if (ClientHandler.client != null)
-				GameBaseApp.updater.send(Coms.PAUSE + " true");
+				GameBaseApp.updater.sendDirect(Coms.PAUSE + " true");
 			if (startPage != null)
 				startPage.dispose();
 			if (GameBaseApp.getPreGameInfo() != null)

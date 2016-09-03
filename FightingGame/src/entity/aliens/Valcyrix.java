@@ -118,7 +118,7 @@ public class Valcyrix extends Unit implements Attacker, Shooter {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}

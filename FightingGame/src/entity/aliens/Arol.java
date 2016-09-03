@@ -146,7 +146,7 @@ public class Arol extends Unit implements Attacker {
 			if (e != null & e.isEnemyTo(this)
 					&& e.isInRange(x, y, e.getRadius() + a.range)
 					&& basicAttack.canTargetable(e)) {
-				GameBaseApp.updater.send("<hit " + e.number + " "
+				GameBaseApp.updater.sendDirect("<hit " + e.number + " "
 						+ (e instanceof Building ? a.damage * 2 : a.damage)
 						+ " " + a.pirce);
 			}

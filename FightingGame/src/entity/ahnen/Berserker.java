@@ -149,7 +149,7 @@ public class Berserker extends Unit implements Attacker {
 		y = (this.getY() + (yDirection - this.getY()) / PApplet.dist(this.getX(), this.getY(), xDirection, yDirection) * (attackDistance));
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this) && e.isInRange(x, y, e.getRadius() + a.range)) {
-				GameBaseApp.updater.send(
+				GameBaseApp.updater.sendDirect(
 						DAMAGE + S + e.number + " " + (e instanceof Building ? a.damage / 4 : a.damage) + " " + a.pirce);
 			}
 		}
@@ -342,7 +342,7 @@ public class Berserker extends Unit implements Attacker {
 		@Override
 		public void execute(float x, float y) {
 			if (canPlaceAt(x, y)) {
-				GameBaseApp.updater.send(SPAWN + S + buildable.getClass().getSimpleName() + " " + builder.player.getUser().ip
+				GameBaseApp.updater.sendDirect(SPAWN + S + buildable.getClass().getSimpleName() + " " + builder.player.getUser().ip
 						+ " " + x + " " + y);
 				buildable.buyFrom(builder.player);
 			}

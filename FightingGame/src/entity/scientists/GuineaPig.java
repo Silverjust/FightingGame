@@ -128,7 +128,7 @@ public class GuineaPig extends Unit implements Attacker, Shooter, Equiping {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
@@ -283,8 +283,8 @@ public class GuineaPig extends Unit implements Attacker, Shooter, Equiping {
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (isSetup() && isEvent()) {
 				if (isServer) {
-					GameBaseApp.updater.send("<remove " + e.number);
-					GameBaseApp.updater.send(//
+					GameBaseApp.updater.sendDirect("<remove " + e.number);
+					GameBaseApp.updater.sendDirect(//
 							"<spawn " + unit + " " + e.player.getUser().ip + " " + e.getX()
 									+ " " + e.getY() + " " + ((Unit) e).xTarget
 									+ " " + ((Unit) e).yTarget

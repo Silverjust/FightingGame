@@ -58,7 +58,6 @@ public abstract class Updater {
 
 		public static void setup(GameBaseApp app) {
 			Time.app = app;
-			System.out.println("Updater.Time.setup()" + Time.app);
 		}
 
 		public static void startPause() {

@@ -76,8 +76,6 @@ public class HUD {
 
 	public void dispose() {
 		try {
-
-			GroupHandler.dispose();
 			if (sound != null)
 				sound.close();
 		} catch (Exception e) {

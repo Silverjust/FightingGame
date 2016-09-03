@@ -74,7 +74,7 @@ public class Swamp extends Unit implements Attacker {
 	@Override
 	public void updateDecisions(boolean isServer) {
 		if (decay.isNotOnCooldown())
-			GameBaseApp.updater.send("<remove " + number);
+			GameBaseApp.updater.sendDirect("<remove " + number);
 		if (isServer && basicAttack.isNotOnCooldown()) {
 			basicAttack.startCooldown();
 			basicAttack.setTargetFrom(this, this);
@@ -102,7 +102,7 @@ public class Swamp extends Unit implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isEnemyTo(this)
 					&& e.isInRange(getX(), getY(), e.getRadius() + a.range)) {
-				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}

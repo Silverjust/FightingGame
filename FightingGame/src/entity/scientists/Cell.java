@@ -121,9 +121,9 @@ public class Cell extends Unit implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isInRange(getX(), getY(), e.getRadius() + a.range))
 				if (e.isAllyTo(this)) {
-					GameBaseApp.updater.send("<heal " + e.number + " " + healAmount);
+					GameBaseApp.updater.sendDirect("<heal " + e.number + " " + healAmount);
 				} else if (e.isEnemyTo(this)) {
-					GameBaseApp.updater.send("<hit " + e.number + " " + heal.damage
+					GameBaseApp.updater.sendDirect("<hit " + e.number + " " + heal.damage
 							+ " 0");
 				}
 		}

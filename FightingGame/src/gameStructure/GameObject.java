@@ -9,7 +9,6 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import shared.Coms;
-import shared.Nation;
 import shared.Player;
 import shared.Updater;
 
@@ -287,8 +286,9 @@ public abstract class GameObject implements Coms {
 		return path;
 	}
 
-	protected static String path(Nation nation, GameObject object) {
-		String path = nation.toString() + "/" + object.getClass().getEnclosingClass().getSimpleName() + "/";
+	@Deprecated
+	protected static String path1(GameObject object) {
+		String path = object.getClass().getEnclosingClass().getSimpleName() + "/";
 		return path;
 	}
 
@@ -375,7 +375,11 @@ public abstract class GameObject implements Coms {
 	}
 
 	public void info() {
-	
+
+	}
+
+	public String getIngameName() {
+		return getInternName();
 	}
 
 }

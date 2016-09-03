@@ -11,7 +11,6 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PFont;
 import shared.Client;
-import shared.ComHandler;
 import shared.Coms;
 import shared.ContentListManager;
 import shared.Global;
@@ -60,11 +59,11 @@ public class GameApp extends GameBaseApp {
 		VersionControle.versionControle();
 
 		Time.setup(this);
-		setContentListHandler(new ContentListManager(this));
-		getContentListHandler().load();
-		setComHandler(new ComHandler(this));
+		setContentListManager(new ContentListManager(this));
+		getContentListManager().load();
+		setComHandler(new GameComHandler(this));
 
-		setPreGameInfo(new PreGameInfo(this));
+		setPreGameInfo(PreGameInfo.createDummyPrGaIn(this));
 	}
 
 	public void draw() {
@@ -89,6 +88,17 @@ public class GameApp extends GameBaseApp {
 	}
 
 	@Override
+	public void write(String name, String text) {
+		/*
+		 * if (((MainApp) ref.app).mode == Mode.PREGAME)
+		 * display.chat.println(name, completeText); else
+		 */
+		if (mode == Mode.GAME) {
+			getDrawer().getHud().chat.println(name, text);
+		}
+	}
+
+	@Override
 	public void keyPressed() {
 		if (mode != Mode.GAME && key == settingHandler.getSetting().togglePause) {
 			if (menu == null) {
@@ -104,13 +114,13 @@ public class GameApp extends GameBaseApp {
 	}
 
 	public void clientEvent(Client someClient) {
-		clientHandler.clientEvent(someClient);
+		getClientHandler().clientEvent(someClient);
 	}
 
 	@Override
 	public void dispose() {// Player in schlieﬂen
 		try {
-			if (clientHandler.client != null)
+			if (getClientHandler().client != null)
 				updater.send(Coms.PAUSE + " true");
 			// ProfileHandler.dispose();
 			getDrawer().getHud().dispose();

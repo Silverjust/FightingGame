@@ -24,8 +24,8 @@ public class UpgradeAim extends BuildAim {
 		x = Building.xToGrid(x);
 		y = Building.xToGrid(y);
 		if (canPlaceAt(x, y)) {
-			GameBaseApp.updater.send("<remove " + replaced.number);
-			GameBaseApp.updater.send("<spawn " + buildable.getClass().getSimpleName()
+			GameBaseApp.updater.sendDirect("<remove " + replaced.number);
+			GameBaseApp.updater.sendDirect("<spawn " + buildable.getClass().getSimpleName()
 					+ " " + builder.player.getUser().ip + " " + x + " " + y);
 			((GameObject) buildable).buyFrom(builder.player);
 		}

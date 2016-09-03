@@ -167,14 +167,14 @@ public class Witcher extends Unit implements Attacker, Shooter {
 	@Override
 	public void calculateDamage(Attack a) {
 		if (a == basicAttack) {
-			GameBaseApp.updater.send("<hit " + a.getTarget().number + " " + a.damage
+			GameBaseApp.updater.sendDirect("<hit " + a.getTarget().number + " " + a.damage
 					* 2 + " " + a.pirce);
 			// SoundHandler.startIngameSound(HUD.hm, x, y);
 		} else {
 			for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 				if (e != null & e.isEnemyTo(this)
 						&& e.isInRange(burstX, burstY, e.getRadius() + burst.range)) {
-					GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
+					GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
 							+ a.pirce);
 				}
 			}

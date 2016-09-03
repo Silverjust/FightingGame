@@ -226,7 +226,7 @@ public class SpawnerGuineaPig extends Unit {
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (target != null && isEvent()) {
 				if (isServer) {
-					GameBaseApp.updater.send("<spawn GuineaPig " + e.player.getUser().ip + " "
+					GameBaseApp.updater.sendDirect("<spawn GuineaPig " + e.player.getUser().ip + " "
 							+ e.getX() + " " + (e.getY() + e.getRadius() + 8) + " " + target.getX()
 							+ " " + target.getY());
 				}

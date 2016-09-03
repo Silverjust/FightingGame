@@ -121,7 +121,7 @@ public class PL0S10N extends Unit implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isInRange(getX(), getY(), e.getRadius() + a.range)
 					&& a.canTargetable(e) && e.isEnemyTo(this)) {
-				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}

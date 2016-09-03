@@ -153,7 +153,7 @@ public class Ker extends Unit implements Shooter {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.send("<hit " + a.getTarget().number + " "
+		GameBaseApp.updater.sendDirect("<hit " + a.getTarget().number + " "
 				+ (a.getTarget() instanceof Building ? a.damage / 2 : a.damage)
 				+ " " + a.pirce);
 	}

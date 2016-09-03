@@ -151,7 +151,7 @@ public class ShieldGuineaPig extends Unit implements Attacker, Shooter {
 	@Override
 	public void calculateDamage(Attack a) {
 		if (a == basicAttack || a == regenerate) {
-			GameBaseApp.updater.send("<hit " + ((MeleeAttack) a).getTarget().number
+			GameBaseApp.updater.sendDirect("<hit " + ((MeleeAttack) a).getTarget().number
 					+ " " + a.damage + " " + a.pirce);
 			// SoundHandler.startIngameSound(HUD.hm, x, y);
 		} else if (a == explode) {
@@ -159,7 +159,7 @@ public class ShieldGuineaPig extends Unit implements Attacker, Shooter {
 				if (e != null & e.isEnemyTo(this)
 						&& e.isInRange(getX(), getY(), e.getRadius() + a.range)
 						&& e.groundPosition == GroundPosition.GROUND) {
-					GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
+					GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
 							+ a.pirce);
 				}
 			}

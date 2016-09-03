@@ -18,12 +18,12 @@ public class GameUpdater extends Updater {
 		this.app = app;
 		neutral = Player.createNeutralPlayer(app);
 		input = new Input(app);
-		map = new Map(app, app.preGameInfo.map);
+		map = new Map(app, app.getPreGameInfo().map);
 
 		for (String key : app.getPreGameInfo().users.keySet()) {
 			User user = app.getPreGameInfo().users.get(key);
 			Player p = Player.createPlayer(app, user);
-			if (p.getUser().ip == app.clientHandler.identification) {
+			if (p.getUser().ip == app.getClientHandler().identification) {
 				p.color = app.color(0, 255, 100);
 				app.player = p;
 			} else
@@ -86,7 +86,7 @@ public class GameUpdater extends Updater {
 
 	@Override
 	public void send(String string) {
-		app.clientHandler.send(string);
+		app.getClientHandler().send(string);
 	}
 
 	@Override

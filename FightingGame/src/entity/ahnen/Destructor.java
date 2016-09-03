@@ -194,7 +194,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this) && e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)
 					&& e.groundPosition == GroundPosition.GROUND) {
-				GameBaseApp.updater.send(DAMAGE + S + e.number + " " + (isBuffed ? a.damage * 2 : a.damage) + " "
+				GameBaseApp.updater.sendDirect(DAMAGE + S + e.number + " " + (isBuffed ? a.damage * 2 : a.damage) + " "
 						+ (isBuffed ? 5 : a.pirce));
 			}
 		}
@@ -316,7 +316,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (target != null && isEvent()) {
 				if (isServer) {
-					GameBaseApp.updater.send(SPAWN + " Orb " + e.player.getUser().ip + " " + e.getX() + " " + (e.getY() + e.getRadius() + 8)
+					GameBaseApp.updater.sendDirect(SPAWN + " Orb " + e.player.getUser().ip + " " + e.getX() + " " + (e.getY() + e.getRadius() + 8)
 							+ " " + target.getX() + " " + target.getY() + " " + e.number);
 					/*
 					 * ref.updater.send("<spawn Rugling " + e.player.ip + " " +

@@ -170,9 +170,9 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 			for (GameObject e : GameApplet.GameBaseApp.gameObjects)
 				if (e != null && e.isAllyTo(this)
 						&& e.isInRange(getX(), getY(), e.getRadius() + a.range))
-					GameBaseApp.updater.send("<heal " + e.number + " " + heal.damage);
+					GameBaseApp.updater.sendDirect("<heal " + e.number + " " + heal.damage);
 		} else
-			GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
+			GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
 					+ a.damage + " " + a.pirce);
 	}
 

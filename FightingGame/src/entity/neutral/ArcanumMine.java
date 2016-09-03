@@ -38,7 +38,7 @@ public abstract class ArcanumMine extends Building {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		GameBaseApp.updater.send("<spawn Arcanum 0 " + getX() + " " + getY());
+		GameBaseApp.updater.sendDirect("<spawn Arcanum 0 " + getX() + " " + getY());
 	}
 
 	@Override

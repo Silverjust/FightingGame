@@ -256,7 +256,7 @@ public class SpawnTower extends Building implements Commander {
 					float yt = target.getY();
 					float xt = target.getX();
 					byte shootlingRadius = 5;
-					GameBaseApp.updater.send("<spawn Shootling "
+					GameBaseApp.updater.sendDirect("<spawn Shootling "
 							+ e.player.getUser().ip
 							+ " "
 							+ (e.getX() + (xt - e.getX())

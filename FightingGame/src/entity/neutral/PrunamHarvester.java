@@ -37,7 +37,7 @@ public abstract class PrunamHarvester extends Building {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		GameBaseApp.updater.send("<spawn Prunam 0 " + getX() + " " + getY());
+		GameBaseApp.updater.sendDirect("<spawn Prunam 0 " + getX() + " " + getY());
 	}
 
 	@Override

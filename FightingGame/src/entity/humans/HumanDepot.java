@@ -113,7 +113,7 @@ public class HumanDepot extends Building implements Commander, Shooter {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this)
 					&& e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)) {
-				GameBaseApp.updater.send("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}

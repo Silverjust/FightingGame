@@ -159,7 +159,7 @@ public class Brux extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.send("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
 				+ a.damage + " " + a.pirce);
 
 	}
@@ -261,7 +261,7 @@ public class Brux extends Unit implements Attacker {
 			if (target != null && isNotOnCooldown()
 					&& target.isInRange(e.getX(), e.getY(), e.getRadius() + target.getRadius())) {
 				if (isServer) {
-					GameBaseApp.updater.send("<hit " + target.number + " " + damage
+					GameBaseApp.updater.sendDirect("<hit " + target.number + " " + damage
 							+ " " + pirce);
 					e.sendDefaultAnimation(this);
 				}

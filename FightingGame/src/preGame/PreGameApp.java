@@ -1,13 +1,19 @@
 package preGame;
 
+import g4p_controls.G4P;
 import game.GameBaseApp;
+import main.Listener;
 import processing.core.PApplet;
 import server.ServerApp;
+import shared.Client;
 import shared.Global;
 import shared.Mode;
+import shared.VersionControle;
 
 @SuppressWarnings("serial")
 public class PreGameApp extends GameBaseApp {
+
+	String gameName = "FigthingGame";
 
 	public static void main(String[] args) {
 		PApplet.main(new String[] { "preGame.PreGameApp" });
@@ -15,17 +21,21 @@ public class PreGameApp extends GameBaseApp {
 
 	private StartScreenInterface startScreen;
 	private PreGameInterface preGameInterface;
-	public ClientHandler clientHandler;
 	private ServerApp serverApp;
 
 	public void setup() {
 		size(1000, 600, JAVA2D);
 		background(50);
-		frame.setTitle("FigthingGame");
+		frame.setTitle(gameName);
+		frame.addWindowListener(new Listener(this));
 		Global.addApp(this);
+		System.out.println("\n\tFightingGame v" + VersionControle.version + "\n");
+		G4P.messagesEnabled(false);
 
-		// G4P.messagesEnabled(false);
 		setMode(Mode.STARTSCREEN);
+		if (args != null && args.length > 0 && args[0].equals("dummy")) {
+			startScreen.initDummy();
+		}
 	}
 
 	public void draw() {
@@ -59,7 +69,7 @@ public class PreGameApp extends GameBaseApp {
 			setStartscreen(new StartScreenInterface(this));
 			break;
 		case PREGAME:
-			setPreGame(new PreGameInterface(this));
+			setPreGameIntaerface(new PreGameInterface(this));
 			break;
 
 		default:
@@ -69,21 +79,30 @@ public class PreGameApp extends GameBaseApp {
 	}
 
 	public void connectToServer(String ip) {
-		clientHandler = new ClientHandler(this, ip);
 		startScreen.setWaiting(true);
+		setClientHandler(new ClientHandler(this, ip));
 		startScreen.dispose();
 		setMode(Mode.PREGAME);
 	}
 
-	public void registerServer(ServerApp serverApp) {
+	public void registerServerApp(ServerApp serverApp) {
+		gameName = "admin-" + gameName;
 		this.setServerApp(serverApp);
 	}
 
-	public PreGameInterface getPreGame() {
+	public void setServerApp(ServerApp serverApp) {
+		this.serverApp = serverApp;
+	}
+
+	public void releaseConnectionAttempt(ServerApp serverApp) {
+		startScreen.setWaiting(false);
+	}
+
+	public PreGameInterface getPreGameInterface() {
 		return preGameInterface;
 	}
 
-	public void setPreGame(PreGameInterface preGame) {
+	public void setPreGameIntaerface(PreGameInterface preGame) {
 		this.preGameInterface = preGame;
 	}
 
@@ -91,8 +110,12 @@ public class PreGameApp extends GameBaseApp {
 		return serverApp;
 	}
 
-	public void setServerApp(ServerApp serverApp) {
-		this.serverApp = serverApp;
+	public void clientEvent(Client someClient) {
+		getClientHandler().clientEvent(someClient);
 	}
 
+	@Override
+	public void dispose() {
+		super.dispose();
+	}
 }

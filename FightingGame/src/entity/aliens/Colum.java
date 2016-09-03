@@ -87,7 +87,7 @@ public class Colum extends Unit implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isAllyTo(this)
 					&& e.isInRange(getX(), getY(), e.getRadius() + a.range)) {
-				GameBaseApp.updater.send("<heal " + e.number + " " + heal.damage);
+				GameBaseApp.updater.sendDirect("<heal " + e.number + " " + heal.damage);
 			}
 		}
 	}

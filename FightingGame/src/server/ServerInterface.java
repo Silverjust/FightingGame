@@ -1,13 +1,5 @@
 package server;
 
-import processing.core.PConstants;
-import processing.core.PGraphics;
-import shared.CommandHandler;
-import shared.Helper;
-import shared.Mode;
-import shared.Server;
-import shared.User;
-
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -20,7 +12,12 @@ import g4p_controls.GEvent;
 import g4p_controls.GSlider;
 import g4p_controls.GTextArea;
 import g4p_controls.GTextField;
-import game.GameBaseApp;
+import processing.core.PConstants;
+import processing.core.PGraphics;
+import shared.Helper;
+import shared.Mode;
+import shared.Server;
+import shared.User;
 
 public class ServerInterface {
 	String chatText = "";
@@ -38,9 +35,12 @@ public class ServerInterface {
 
 	private ServerApp app;
 
-	public ServerInterface(GameBaseApp app) {
+	private ServerCommandHandler commandHandler;
 
-		this.app = (ServerApp) app;
+	public ServerInterface(ServerApp app) {
+		this.app = app;
+		app.serverInterface = this;
+		commandHandler = new ServerCommandHandler(app);
 		ipButton = new GButton(app, 0, 0, 300, 20);
 		ipButton.setText(Server.ip() + "");
 		ipButton.addEventHandler(this, "handleButtonEvents");
@@ -70,7 +70,12 @@ public class ServerInterface {
 
 		player.beginDraw();
 		player.background(255);
-		HashMap<String, User> users = app.preGame.getUsers();
+		HashMap<String, User> users;
+		if (app.getPreGameInfo() != null)
+			users = app.getPreGameInfo().getUsers();
+		else
+			users = new HashMap<>();
+
 		if (!users.isEmpty()) {
 			playerSlider.setLimits(0, users.size() * 20 - 19);
 			int i = 0;
@@ -110,11 +115,12 @@ public class ServerInterface {
 			System.out.println(s);
 			if (!s.equals("") && !s.equals(" ")) {
 				if (s.length() > 0 && s.charAt(0) == '/') {
-					addChatText(">>" + s);
-					CommandHandler.executeCommands(s);
+					app.write(">>" + s);
+					commandHandler.executeCommand(s);
 				} else {
 					if (app.getMode() == Mode.GAME || app.getMode() == Mode.PREGAME)
-						app.getUpdater().send("<say " + "SERVER" + " " + s);
+						app.getServerHandler().sendDirect("<say " + "SERVER" + " " + s);//propably before gamestart
+					
 				}
 			}
 			textfield.setText("");

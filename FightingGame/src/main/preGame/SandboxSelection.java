@@ -38,7 +38,7 @@ public class SandboxSelection {
 		playerDroplistNation.addEventHandler(this, "handleSelectNation");
 		{
 			handleSelectNation(playerDroplistNation, GEvent.SELECTED);
-			ClientHandler.send("<setNation " + 1 + " " + "Aliens");
+			ClientHandler.sendDirect("<setNation " + 1 + " " + "Aliens");
 		}
 
 		addPlayer = new GButton(GameBaseApp.app, 540, 200, 100, 35, "add Player");
@@ -98,7 +98,7 @@ public class SandboxSelection {
 				return;
 			}
 			previousNation = droplist.getSelectedIndex();
-			ClientHandler.send("<setNation " + enemyArr[playerDroplist.getSelectedIndex()] + " "
+			ClientHandler.sendDirect("<setNation " + enemyArr[playerDroplist.getSelectedIndex()] + " "
 					+ Nation.values()[droplist.getSelectedIndex()]);
 
 		}

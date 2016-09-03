@@ -10,17 +10,21 @@ import gameStructure.GameObject;
 import gameStructure.Unit;
 import gameStructure.baseBuffs.Buff;
 import processing.core.PApplet;
-import shared.ComHandler;;
+import shared.ComHandler;
+import shared.Helper;;
 
 public class GameComHandler extends ComHandler {
 
+	private GameBaseApp app;
 	public GameComHandler(GameBaseApp app) {
 		super(app);
+		this.app = app;
+
 	}
 
 	@SuppressWarnings("unused")
 	public void executeCom(String com) {
-		String[] c = PApplet.splitTokens(com, S + app.clientHandler.endSymbol);
+		String[] c = PApplet.splitTokens(com, S + app.getClientHandler().endSymbol);
 
 		try {
 			byte b;
@@ -112,7 +116,13 @@ public class GameComHandler extends ComHandler {
 				}
 				break;
 			case SAY:
-				app.write(c[1], c);
+				String name = Helper.ipToName(c[1], app);
+				String completeText = "";
+				for (int i = 2; i < c.length; i++) {// c[0] und c[1] auslassen
+					completeText = completeText.concat(" ").concat(c[i]);
+				}
+				app.write(name, completeText);
+
 				break;
 			default:
 				System.err.println(com + " was not found");

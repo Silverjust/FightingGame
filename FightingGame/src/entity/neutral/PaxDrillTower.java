@@ -38,7 +38,7 @@ public abstract class PaxDrillTower extends Building {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		GameBaseApp.updater.send("<spawn Pax 0 " + getX() + " " + getY());
+		GameBaseApp.updater.sendDirect("<spawn Pax 0 " + getX() + " " + getY());
 	}
 
 	@Override

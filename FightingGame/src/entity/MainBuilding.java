@@ -23,7 +23,7 @@ public abstract class MainBuilding extends Building implements Commander, Coms {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		GameBaseApp.updater.send(GAMEEND + " lost " + player.getUser().ip + " " + ProfileHandler.getRate());
+		GameBaseApp.updater.sendDirect(GAMEEND + " lost " + player.getUser().ip + " " + ProfileHandler.getRate());
 	}
 
 	@Override

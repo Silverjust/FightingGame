@@ -48,7 +48,7 @@ public abstract class PreGameDisplay {
 						+ ".json";
 				@SuppressWarnings("unused")
 				JSONObject mapData = GameBaseApp.app.loadJSONObject(file);
-				ClientHandler.send(
+				ClientHandler.sendDirect(
 						"<setMap " + GameBaseApp.getPreGameInfo().getUser("").ip + " " + mapSelect.intNames[list.getSelectedIndex()]);
 				mapSelect.previousMap = list.getSelectedIndex();
 			} catch (Exception e) {

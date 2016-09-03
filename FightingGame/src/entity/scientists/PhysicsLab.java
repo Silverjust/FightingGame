@@ -205,7 +205,7 @@ public class PhysicsLab extends Lab {
 							&& !(e instanceof Lab)
 							&& e.isInRange(origin.getX(), origin.getY(),
 									origin.equipRange))
-						GameBaseApp.updater.send("<tp " + e.number + " "
+						GameBaseApp.updater.sendDirect("<tp " + e.number + " "
 								+ (e.getX() + target.getX() - origin.getX()) + " "
 								+ (e.getY() + target.getY() - origin.getY()));
 				}

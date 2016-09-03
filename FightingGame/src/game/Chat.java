@@ -8,7 +8,6 @@ import g4p_controls.GEvent;
 import g4p_controls.GTextArea;
 import g4p_controls.GTextField;
 import processing.core.PConstants;
-import shared.CommandHandler;
 import shared.Helper;
 
 public class Chat {
@@ -20,10 +19,12 @@ public class Chat {
 	boolean justOpened;
 	private GameBaseApp app;
 	private HUD hud;
+	private CommandHandler commandHandler;
 
 	Chat(GameBaseApp app) {
 		this.app = app;
 		hud = app.getDrawer().getHud();
+		commandHandler = new GameCommandHandler(app);
 		chatLine = new GTextField(app, 10, app.height - hud.height - 20, 500, 20);
 		chatLine.setPromptText("chat");
 		chatLine.setFont(new Font("PLAIN", Font.BOLD, 15));
@@ -89,9 +90,9 @@ public class Chat {
 			} else {
 				if (s.length() > 0 && s.charAt(0) == '/') {
 					println(app.player.getUser().name, s);
-					CommandHandler.executeCommands(s);
+					commandHandler.executeCommand(s);
 				} else {
-					app.clientHandler.send("<say " + app.player.getUser().ip + " " + s);
+					app.getClientHandler().send("<say " + app.player.getUser().ip + " " + s);
 				}
 			}
 			textfield.setText("");

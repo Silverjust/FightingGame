@@ -11,24 +11,30 @@ import gameStructure.GameObject;
 import gameStructure.Unit;
 import gameStructure.baseBuffs.Buff;
 import processing.core.PApplet;
-import shared.ComHandler;;
+import shared.ComHandler;
+import shared.Helper;
+import shared.User;
+import shared.VersionControle;;
 
 public class ServerComHandler extends ComHandler {
+	private ServerApp serverApp;
 
 	public ServerComHandler(GameBaseApp app) {
 		super(app);
+		serverApp = (ServerApp) app;
 	}
 
 	@SuppressWarnings("unused")
+	@Override
 	public void executeCom(String com) {
-		String[] c = PApplet.splitTokens(com, S + app.clientHandler.endSymbol);
+		String[] c = PApplet.splitTokens(com, S + app.getServerHandler().endSymbol);
 
 		try {
 			byte b;
 			int n;
 			float x, y;
-			Entity e = null;
-			GameObject o = null;
+			Entity e;
+			GameObject o;
 			switch (c[0]) {
 			case DAMAGE:
 				n = Integer.parseInt(c[1]);
@@ -113,7 +119,27 @@ public class ServerComHandler extends ComHandler {
 				}
 				break;
 			case SAY:
-				app.write(c[1], c);
+				String name = Helper.ipToName(c[1], app);
+				String completeText = "";
+				for (int i = 2; i < c.length; i++) {// c[0] und c[1] auslassen
+					completeText = completeText.concat(" ").concat(c[i]);
+				}
+				app.write(name, completeText);
+				break;
+			case IDENTIFYING: {
+				User u = new User(app, c[1], c[2]);
+				app.getPreGameInfo().addUser(u);
+				if (c.length > 3 && c[3] != null && !c[3].equals(VersionControle.version)) {
+					System.err.println("player " + c[2] + " has different version than Server " + c[3] + " "
+							+ VersionControle.version + " (VersionCombiner.java:11)");
+
+					app.write("WARNING", "player " + c[2] + " has different version than Server " + c[3] + " "
+							+ VersionControle.version + " (VersionCombiner.java:11)");
+					
+				}
+				sendBack(com);
+				serverApp.serverPreGameManager.sendPregameInfo();
+			}
 				break;
 			default:
 				System.err.println(com + " was not found");
@@ -134,5 +160,10 @@ public class ServerComHandler extends ComHandler {
 			e.printStackTrace();
 		}
 
+	}
+
+	/** send the same command back to clients */
+	private void sendBack(String com) {
+		app.getServerHandler().sendDirect(com.replace(app.getServerHandler().endSymbol + "", ""));
 	}
 }

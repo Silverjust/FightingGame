@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import champs.ArmorShred;
+import champs.Mage;
 import champs.TestProjectile;
 import champs.Ticul;
 import game.GameBaseApp;
-import game.PreGameInfo;
+import gameStructure.Champion;
 import gameStructure.GameObject;
 import gameStructure.baseBuffs.Buff;
 import gameStructure.baseBuffs.Root;
@@ -33,33 +34,48 @@ public class ContentListManager {
 	 * public static JSONObject getEntityContent() { return entityList; }
 	 */
 
+	private HashMap<String, Class<? extends Champion>> champMap = new HashMap<String, Class<? extends Champion>>();
 	private HashMap<String, Class<? extends GameObject>> gameObjectMap = new HashMap<String, Class<? extends GameObject>>();
 	private HashMap<String, Class<? extends Buff>> buffMap = new HashMap<String, Class<? extends Buff>>();
 	private GameBaseApp app;
 
 	public ContentListManager(GameBaseApp app) {
 		this.app = app;
+		Updater.Time.setup(app);
+		load();
 	}
 
 	public void load() {
+		ArrayList<Class<? extends Champion>> champList = new ArrayList<Class<? extends Champion>>();
+		/** List of champions to select */
+		champList.add(Ticul.class);
+		champList.add(Mage.class);
+		/***********************************/
+
 		ArrayList<Class<? extends GameObject>> objectList = new ArrayList<Class<? extends GameObject>>();
-		// ********************************
+		/** List of GameObjects to load/spawn */
 		objectList.add(Ticul.class);
 		objectList.add(TestProjectile.class);
-		// ************************************
+		/***********************************/
+
+		ArrayList<Class<? extends Buff>> buffList = new ArrayList<Class<? extends Buff>>();
+		/** List of Buffs to buff/debuff */
+		buffList.add(Root.class);
+		buffList.add(Slow.class);
+
+		buffList.add(ArmorShred.class);
+		/***********************************/
+		for (Class<? extends Champion> c : champList) {
+			Champion o = (Champion) createGObj(c);
+			if (o != null)
+				champMap.put(o.getInternName(), o.getClass());
+		}
 		for (Class<? extends GameObject> c : objectList) {
 			GameObject o = createGObj(c);
 			if (o != null)
 				gameObjectMap.put(o.getInternName(), o.getClass());
 		}
 
-		ArrayList<Class<? extends Buff>> buffList = new ArrayList<Class<? extends Buff>>();
-		// ********************************
-		buffList.add(Root.class);
-		buffList.add(Slow.class);
-
-		buffList.add(ArmorShred.class);
-		// ************************************
 		for (Class<? extends Buff> c : buffList) {
 			Buff b = createBuff(c);
 			if (b != null)
@@ -85,7 +101,7 @@ public class ContentListManager {
 		return null;
 	}
 
-	private GameObject createGObj(Class<? extends GameObject> c) {
+	public GameObject createGObj(Class<? extends GameObject> c) {
 		Constructor<?> ctor;
 		try {
 			ctor = c.getConstructor(GameBaseApp.class, String[].class);
@@ -111,22 +127,26 @@ public class ContentListManager {
 	 */
 	@Deprecated
 	public JSONObject getModeMaps() {
-		if (PreGameInfo.isCampain()) {
-			if (app.getPreGameInfo().getUser("").nation != null
-					&& app.getPreGameInfo().getUser("").nation != Nation.NEUTRAL) {
-				return contentList.getJSONObject("maps").getJSONObject("campain")
-						.getJSONObject(app.getPreGameInfo().getUser("").nation.toString());
-			} else {
-				return new JSONObject();
-			}
-		}
 		return contentList.getJSONObject("maps").getJSONObject("standard");
+	}
+
+	public Class<? extends Champion> getChampClass(String name) {
+		Class<? extends Champion> c = champMap.get(name);
+		if (c == null) {
+			System.err.println("ERROR: " + name + " is not in champMap (ContentListManager.java:36)");
+		}
+		return c;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Class<? extends Champion>[] getChampsArray() {
+		return (Class<? extends Champion>[]) champMap.values().toArray(new Class<?>[champMap.size()]);
 	}
 
 	public Class<? extends GameObject> getGObjectClass(String name) {
 		Class<? extends GameObject> c = gameObjectMap.get(name);
 		if (c == null) {
-			System.err.println("ERROR: " + name + " is not in gameObjectMap (ContentListManager.java:40)");
+			System.err.println("ERROR: " + name + " is not in gameObjectMap (ContentListManager.java:37)");
 		}
 		return c;
 	}
@@ -139,7 +159,7 @@ public class ContentListManager {
 	public Class<? extends Buff> getBuffClass(String name) {
 		Class<? extends Buff> c = buffMap.get(name);
 		if (c == null) {
-			System.err.println("ERROR: " + name + " is not in buffMap (ContentListManager.java:51)");
+			System.err.println("ERROR: " + name + " is not in buffMap (ContentListManager.java:38)");
 		}
 		return c;
 	}
