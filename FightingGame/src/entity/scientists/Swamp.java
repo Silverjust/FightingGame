@@ -1,6 +1,5 @@
 package entity.scientists;
 
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -10,6 +9,7 @@ import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import shared.Helper.Timer;
 
 public class Swamp extends Unit implements Attacker {
@@ -74,7 +74,7 @@ public class Swamp extends Unit implements Attacker {
 	@Override
 	public void updateDecisions(boolean isServer) {
 		if (decay.isNotOnCooldown())
-			GameBaseApp.updater.sendDirect("<remove " + number);
+			GameBaseApp.getUpdater().sendDirect("<remove " + getNumber());
 		if (isServer && basicAttack.isNotOnCooldown()) {
 			basicAttack.startCooldown();
 			basicAttack.setTargetFrom(this, this);
@@ -102,7 +102,7 @@ public class Swamp extends Unit implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isEnemyTo(this)
 					&& e.isInRange(getX(), getY(), e.getRadius() + a.range)) {
-				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}
@@ -152,7 +152,7 @@ public class Swamp extends Unit implements Attacker {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

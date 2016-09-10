@@ -1,35 +1,29 @@
-package game;
+package shared;
 
 import ddf.minim.Minim;
-import preGame.ClientHandler;
+import game.GameDrawer;
 import processing.core.PApplet;
 import processing.core.PFont;
+import server.ServerApp;
 import server.ServerHandler;
-import shared.ComHandler;
-import shared.ContentListManager;
-import shared.Loader;
-import shared.Menu;
-import shared.Mode;
-import shared.Player;
-import shared.Updater;
 
 @SuppressWarnings("serial")
 public class GameBaseApp extends PApplet {
 	protected int appNumber;
 	protected Menu menu;
-	protected ContentListManager contentListHandler;
+	private ContentListManager contentListHandler;
 	protected Minim minim;
 	protected PFont font;
 	protected float textScale;
 	protected Loader loader;
 
-	protected Updater updater;
+	private Updater updater;
 	protected Mode mode;
 	/** only for client */
 	protected GameDrawer gameDrawer;
 
 	/** only for client */
-	protected Player player;
+	private Player player;
 	protected PreGameInfo preGameInfo;
 	private ComHandler comHandler;
 	private ClientHandler clientHandler;
@@ -73,27 +67,11 @@ public class GameBaseApp extends PApplet {
 	}
 
 	/**
-	 * @param player
-	 *            the player to set
-	 */
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-
-	/**
 	 * @param drawer
 	 *            the drawer to set
 	 */
 	public void setDrawer(GameDrawer drawer) {
 		this.gameDrawer = drawer;
-	}
-
-	/**
-	 * @param updater
-	 *            the updater to set
-	 */
-	public void setUpdater(Updater updater) {
-		this.updater = updater;
 	}
 
 	public Menu getMenu() {
@@ -105,11 +83,11 @@ public class GameBaseApp extends PApplet {
 	}
 
 	public ContentListManager getContentListManager() {
-		return contentListHandler;
+		return getContentListHandler();
 	}
 
 	public void setContentListManager(ContentListManager contentListHandler) {
-		this.contentListHandler = contentListHandler;
+		this.setContentListHandler(contentListHandler);
 	}
 
 	public Loader getLoader() {
@@ -132,10 +110,6 @@ public class GameBaseApp extends PApplet {
 		return minim;
 	}
 
-	public Player getPlayer() {
-		return player;
-	}
-
 	public GameDrawer getDrawer() {
 		if (gameDrawer == null)
 			System.err.println("GameDrawer not created");
@@ -148,10 +122,6 @@ public class GameBaseApp extends PApplet {
 
 	public float getTextScale() {
 		return textScale;
-	}
-
-	public Updater getUpdater() {
-		return updater;
 	}
 
 	@Override
@@ -203,6 +173,9 @@ public class GameBaseApp extends PApplet {
 	}
 
 	public ClientHandler getClientHandler() {
+		if (this instanceof ServerApp) {
+			System.out.println("GameBaseApp.getClientHandler() no client in serverApp");
+		}
 		return clientHandler;
 	}
 
@@ -216,6 +189,32 @@ public class GameBaseApp extends PApplet {
 
 	public void setServerHandler(ServerHandler serverHandler) {
 		this.serverHandler = serverHandler;
+	}
+
+	public Updater getUpdater() {
+		return updater;
+	}
+
+	public void setUpdater(Updater updater) {
+		this.updater = updater;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	@Deprecated
+	public ContentListManager getContentListHandler() {
+		return contentListHandler;
+	}
+
+	@Deprecated
+	public void setContentListHandler(ContentListManager contentListHandler) {
+		this.contentListHandler = contentListHandler;
 	}
 
 }

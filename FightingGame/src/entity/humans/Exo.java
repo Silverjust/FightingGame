@@ -1,6 +1,5 @@
 package entity.humans;
 
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -11,6 +10,7 @@ import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public class Exo extends Unit implements Attacker {
 
@@ -125,10 +125,10 @@ public class Exo extends Unit implements Attacker {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null && !isEnemyInHitRange
 					&& hook.isNotOnCooldown()) {
-				sendAnimation("hook " + importantEntity.number);
+				sendAnimation("hook " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -160,14 +160,14 @@ public class Exo extends Unit implements Attacker {
 		super.exec(c);
 		if (c[2].equals("hook")) {
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.getUpdater().getNamedObjects().get(n);
 			hook.setTargetFrom(this, e);
 			xTarget = e.getX();
 			yTarget = e.getY();
 			setAnimation(hook);
 		} else if (c[2].equals("instaAttack")) {
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.getUpdater().getNamedObjects().get(n);
 			instaAttack.setTargetFrom(this, e);
 			setAnimation(instaAttack);
 		}
@@ -177,15 +177,15 @@ public class Exo extends Unit implements Attacker {
 	public void sendDefaultAnimation(Animation oldAnimation) {
 		if (oldAnimation == hook && ((Hook) oldAnimation).getTarget() != null) {
 			sendAnimation("instaAttack "
-					+ ((MeleeAttack) oldAnimation).getTarget().number);
+					+ ((MeleeAttack) oldAnimation).getTarget().getNumber(), this);
 		} else {
-			sendAnimation("walk " + xTarget + " " + yTarget + " true");
+			sendAnimation("walk " + xTarget + " " + yTarget + " true", this);
 		}
 	}
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.sendDirect("<hit " + ((MeleeAttack) a).getTarget().number + " "
+		GameBaseApp.getUpdater().sendDirect("<hit " + ((MeleeAttack) a).getTarget().getNumber() + " "
 				+ a.damage + " " + a.pirce);
 	}
 
@@ -236,7 +236,7 @@ public class Exo extends Unit implements Attacker {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

@@ -2,10 +2,10 @@ package main;
 
 import java.awt.im.InputContext;
 
-import game.GameBaseApp;
 import processing.core.PConstants;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
+import shared.GameBaseApp;
 import shared.VersionControle;
 
 public class Setting {

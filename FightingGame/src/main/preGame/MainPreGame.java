@@ -2,17 +2,17 @@ package main.preGame;
 
 import main.MainApp;
 import game.ClientHandler;
-import game.GameBaseApp;
 import game.HUD;
 import game.MainLoader;
-import game.PreGameInfo;
 import shared.ComHandler;
 import shared.Coms;
 import shared.ContentListManager;
+import shared.GameBaseApp;
 import shared.Helper;
 import shared.Mode;
 import shared.Nation;
 import shared.PreGame;
+import shared.PreGameInfo;
 import shared.User;
 
 public class MainPreGame extends PreGame {
@@ -68,20 +68,22 @@ public class MainPreGame extends PreGame {
 	}
 
 	public void addThisPlayer(String name) {
-		User u = new User(app, ClientHandler.identification, name);
+		User u = new User(app, PreGameClientHandler.identification, name);
 		// ref.player = Player.createPlayer(u);
 		// p.color = ref.app.color(0, 255, 100);// TODO get color setting
-		users.put(ClientHandler.identification, u);
+		users.put(PreGameClientHandler.identification, u);
 
 	}
 
 	public void tryStart() {
+		System.out.println("MainPreGame.tryStart()");
 		for (String key : users.keySet())
 			if (users.get(key).nation == null)
 				return;
 		if (map == null)
 			return;
-		ClientHandler.sendDirect(Coms.LOAD + "");
+		PreGameClientHandler.sendDirect(Coms.START_GAMEAPPS + "");
+	
 	}
 
 	public void setupPlayer() {
@@ -116,7 +118,7 @@ public class MainPreGame extends PreGame {
 	@Override
 	public User getUser(String string) {
 		if (string.equals(""))// returns this user
-			return users.get(ClientHandler.identification);
+			return users.get(PreGameClientHandler.identification);
 		return super.getUser(string);
 	}
 

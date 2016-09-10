@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import game.AimHandler;
 import game.AimHandler.Cursor;
-import game.GameBaseApp;
 import game.HUD;
 import game.ImageHandler;
 import game.aim.CustomAim;
@@ -40,7 +40,7 @@ public class SandboxBuilding extends Building implements Commander {
 
 	public SandboxBuilding(String[] c) {
 		super(c);
-		player = GameBaseApp.player;// neutral
+		player = GameBaseApp.getPlayer();// neutral
 
 		iconImg = standImg;
 		stand = new Animation(standImg, 1000);
@@ -68,7 +68,7 @@ public class SandboxBuilding extends Building implements Commander {
 	@Override
 	public PImage preview() {
 		System.out.println("woat?");
-		GameBaseApp.updater.sendDirect("<say SERVER " + player.getUser().name + "cheats");
+		GameBaseApp.getUpdater().sendDirect("<say SERVER " + player.getUser().name + "cheats");
 		return standImg;
 	}
 
@@ -101,7 +101,7 @@ public class SandboxBuilding extends Building implements Commander {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -189,7 +189,7 @@ public class SandboxBuilding extends Building implements Commander {
 		public void execute(float x, float y) {
 			for (GameObject e2 : GameApplet.GameBaseApp.gameObjects) {
 				if (e2 != null && e2.isInRange(x, y, e2.getRadius() + 10)) {
-					GameBaseApp.updater.sendDirect("<remove " + e2.number);
+					GameBaseApp.getUpdater().sendDirect("<remove " + e2.getNumber());
 				}
 			}
 		}
@@ -209,7 +209,7 @@ public class SandboxBuilding extends Building implements Commander {
 			for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 				if (e instanceof SandboxBuilding) {
 					i = new ArrayList<String>(GameApplet.GameBaseApp.players.keySet())
-							.indexOf(e.player.getUser().ip) + 1;
+							.indexOf(e.player.getUser().getIp()) + 1;
 				}
 			}
 			if (i >= GameApplet.GameBaseApp.players.keySet().size())

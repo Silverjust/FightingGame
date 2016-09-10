@@ -2,7 +2,6 @@ package shared;
 
 import java.util.Set;
 
-import game.GameBaseApp;
 import main.appdata.ProfileHandler;
 import processing.core.PApplet;
 import processing.data.JSONArray;

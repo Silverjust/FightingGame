@@ -2,8 +2,8 @@ package entity.ahnen;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import shared.Nation;
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Spell;
 import gameStructure.Attacker;
@@ -168,7 +168,7 @@ public class AhnenKaserne extends Building implements Trainer, Commander {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -263,7 +263,7 @@ public class AhnenKaserne extends Building implements Trainer, Commander {
 			if (target != null && target.level < 4
 					&& target.player.canBy(getCosts(target), 0, 0, 0)) {
 				target.buyFrom(target.player, getCosts(target), 0, 0, 0);
-				target.sendAnimation("level " + (target.level + 1));
+				target.sendAnimation("level " + (target.level + 1), this);
 			}
 		}
 
@@ -327,7 +327,7 @@ public class AhnenKaserne extends Building implements Trainer, Commander {
 			if (trainer != null && toTrain != null
 					&& toTrain.canBeBought(trainer.player)) {
 				toTrain.buyFrom(trainer.player);
-				trainer.sendAnimation("train " + unit.getSimpleName());
+				trainer.sendAnimation("train " + unit.getSimpleName(), this);
 
 			}
 		}

@@ -2,10 +2,10 @@ package entity.scientists;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import game.AimHandler;
 import game.ImageHandler;
 import game.AimHandler.Cursor;
-import game.GameBaseApp;
 import game.aim.Aim;
 import gameStructure.Spell;
 import gameStructure.actives.MultiCDActive;
@@ -99,7 +99,7 @@ public class BioLab extends Lab {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -203,8 +203,8 @@ public class BioLab extends Lab {
 		@Override
 		public void execute(float x, float y) {
 			if (canPlaceAt(x, y)) {
-				GameBaseApp.updater.sendDirect("<spawn " + Swamp.class.getSimpleName() + " "
-						+ builder.player.getUser().ip + " " + x + " " + y);
+				GameBaseApp.getUpdater().sendDirect("<spawn " + Swamp.class.getSimpleName() + " "
+						+ builder.player.getUser().getIp() + " " + x + " " + y);
 				active.startCooldown();
 				((BioLab) builder).getSwampify().startCooldown();
 			}

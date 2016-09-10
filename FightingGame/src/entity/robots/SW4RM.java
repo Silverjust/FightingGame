@@ -2,7 +2,7 @@ package entity.robots;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
 import gameStructure.Unit;
@@ -100,7 +100,7 @@ public class SW4RM extends Unit implements Attacker {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null && basicAttack.isNotOnCooldown()) {
 				// änderung wegen kiter
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
@@ -134,7 +134,7 @@ public class SW4RM extends Unit implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isInRange(getX(), getY(), e.getRadius() + a.range)
 					&& a.canTargetable(e) && e.isEnemyTo(this)) {
-				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + a.damage + " "
 						+ a.pirce);
 				if (e.isMortal())
 					setHp(getCurrentHp() + a.damage

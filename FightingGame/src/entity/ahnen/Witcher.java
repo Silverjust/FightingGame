@@ -2,9 +2,9 @@ package entity.ahnen;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import game.AimHandler;
 import game.AimHandler.Cursor;
-import game.GameBaseApp;
 import game.ImageHandler;
 import game.aim.CustomAim;
 import gameStructure.Spell;
@@ -143,7 +143,7 @@ public class Witcher extends Unit implements Attacker, Shooter {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -167,14 +167,14 @@ public class Witcher extends Unit implements Attacker, Shooter {
 	@Override
 	public void calculateDamage(Attack a) {
 		if (a == basicAttack) {
-			GameBaseApp.updater.sendDirect("<hit " + a.getTarget().number + " " + a.damage
+			GameBaseApp.getUpdater().sendDirect("<hit " + a.getTarget().getNumber() + " " + a.damage
 					* 2 + " " + a.pirce);
 			// SoundHandler.startIngameSound(HUD.hm, x, y);
 		} else {
 			for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 				if (e != null & e.isEnemyTo(this)
 						&& e.isInRange(burstX, burstY, e.getRadius() + burst.range)) {
-					GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
+					GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + a.damage + " "
 							+ a.pirce);
 				}
 			}
@@ -252,7 +252,7 @@ public class Witcher extends Unit implements Attacker, Shooter {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -345,7 +345,7 @@ public class Witcher extends Unit implements Attacker, Shooter {
 			}
 			if (caster != null) {
 				Witcher.displayBurstArea = false;
-				caster.sendAnimation("burst " + x + " " + y);
+				caster.sendAnimation("burst " + x + " " + y, this);
 				startCooldown();
 			}
 		}
@@ -370,7 +370,7 @@ public class Witcher extends Unit implements Attacker, Shooter {
 						if (e2 instanceof Witcher
 								&& e.isInRange(e2.getX(), e2.getY(),
 										((Witcher) e2).upgradeRange)) {
-							e.sendAnimation("heal");
+							e.sendAnimation("heal", this);
 						}
 					}
 				}

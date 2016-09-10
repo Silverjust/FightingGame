@@ -2,7 +2,7 @@ package entity.robots;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -107,7 +107,7 @@ public class PL0S10N extends Unit implements Attacker {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + number);
+				sendAnimation("basicAttack " + getNumber(), this);
 			} else if (importantEntity != null && basicAttack.isNotOnCooldown()) {
 				// änderung wegen kiter
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
@@ -121,7 +121,7 @@ public class PL0S10N extends Unit implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isInRange(getX(), getY(), e.getRadius() + a.range)
 					&& a.canTargetable(e) && e.isEnemyTo(this)) {
-				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}
@@ -164,7 +164,7 @@ public class PL0S10N extends Unit implements Attacker {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

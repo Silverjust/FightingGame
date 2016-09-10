@@ -1,8 +1,8 @@
 package gameStructure.animation;
 
 import processing.core.PImage;
+import shared.GameBaseApp;
 import shared.Updater;
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.GameObject;
 

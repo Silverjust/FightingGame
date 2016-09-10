@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import champs.Rock;
 import entity.neutral.*;
-import game.GameBaseApp;
 import game.HUD;
-import game.PreGameInfo;
 import gameStructure.Spell;
 import gameStructure.actives.BuildWallActive;
 import gameStructure.GameObject;
+import shared.GameBaseApp;
 import shared.Helper;
 import shared.Nation;
+import shared.PreGameInfo;
 
 public class ActivesGridHandler {
 	@Deprecated
@@ -28,14 +28,14 @@ public class ActivesGridHandler {
 	public ActivesGrid displayGrid;
 
 	public ActivesGridHandler() {
-		if (GameBaseApp.player.getNation() != null) {
-			this.nation = GameBaseApp.player.getNation();
+		if (GameBaseApp.getPlayer().getNation() != null) {
+			this.nation = GameBaseApp.getPlayer().getNation();
 		}
 		Spell.x = x;
 		Spell.y = y;
 		displayGrid = baseGrid = new ActivesGrid(this, ActivesGrid.BASEGRID);
 		gridList.add(displayGrid);
-		setup(GameBaseApp.player.getNation());
+		setup(GameBaseApp.getPlayer().getNation());
 		selectionChange();
 	}
 
@@ -55,7 +55,7 @@ public class ActivesGridHandler {
 			for (int y = 0; y < gridHeight; y++)
 				if (displayGrid.get(x, y) != null && //
 						displayGrid.get(x, y).isVisible())
-					displayGrid.get(x, y).update();
+					displayGrid.get(x, y).updateButton();
 	}
 
 	public void fire(int x, int y) {
@@ -71,7 +71,7 @@ public class ActivesGridHandler {
 		ActivesGrid unitActives = baseGrid.createTab(7, 1, GameObject.class, this, "sandbox");
 		unitActives.addActive(1, 1, SandboxBuilding.DeleteActive.class);
 		unitActives.addBuildActive(2, 1, SandboxBuilding.class,
-				GameBaseApp.player.getNation().getNationInfo().getMainBuilding());
+				GameBaseApp.getPlayer().getNation().getNationInfo().getMainBuilding());
 		unitActives.addBuildActive(1, 2, SandboxBuilding.class, Kerit.class);
 		unitActives.addBuildActive(2, 2, SandboxBuilding.class, Pax.class);
 		unitActives.addBuildActive(1, 3, SandboxBuilding.class, Arcanum.class);

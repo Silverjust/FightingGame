@@ -1,10 +1,10 @@
 package entity;
 
-import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.Commander;
 import main.appdata.ProfileHandler;
 import shared.Coms;
+import shared.GameBaseApp;
 import shared.Helper.Timer;
 
 public abstract class MainBuilding extends Building implements Commander, Coms {
@@ -23,7 +23,7 @@ public abstract class MainBuilding extends Building implements Commander, Coms {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		GameBaseApp.updater.sendDirect(GAMEEND + " lost " + player.getUser().ip + " " + ProfileHandler.getRate());
+		GameBaseApp.getUpdater().sendDirect(GAMEEND + " lost " + player.getUser().getIp() + " " + ProfileHandler.getRate());
 	}
 
 	@Override

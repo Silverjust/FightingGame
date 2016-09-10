@@ -1,8 +1,8 @@
 package entity.neutral;
 
-import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.animation.Extract;
+import shared.GameBaseApp;
 
 public abstract class PrunamHarvester extends Building {
 
@@ -37,7 +37,7 @@ public abstract class PrunamHarvester extends Building {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		GameBaseApp.updater.sendDirect("<spawn Prunam 0 " + getX() + " " + getY());
+		GameBaseApp.getUpdater().sendDirect("<spawn Prunam 0 " + getX() + " " + getY());
 	}
 
 	@Override

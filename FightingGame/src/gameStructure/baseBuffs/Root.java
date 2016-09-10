@@ -1,6 +1,6 @@
 package gameStructure.baseBuffs;
 
-import game.GameBaseApp;
+import shared.GameBaseApp;
 
 public class Root extends Buff {
 	public Root(GameBaseApp app, String[] c) {

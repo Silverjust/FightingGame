@@ -2,8 +2,6 @@ package shared;
 
 import java.util.ArrayList;
 
-import game.GameBaseApp;
-
 public class Global {
 	private static ArrayList<GameBaseApp> apps = new ArrayList<GameBaseApp>();
 

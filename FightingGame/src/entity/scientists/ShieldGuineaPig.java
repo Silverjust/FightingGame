@@ -2,7 +2,7 @@ package entity.scientists;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -133,7 +133,7 @@ public class ShieldGuineaPig extends Unit implements Attacker, Shooter {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -151,7 +151,7 @@ public class ShieldGuineaPig extends Unit implements Attacker, Shooter {
 	@Override
 	public void calculateDamage(Attack a) {
 		if (a == basicAttack || a == regenerate) {
-			GameBaseApp.updater.sendDirect("<hit " + ((MeleeAttack) a).getTarget().number
+			GameBaseApp.getUpdater().sendDirect("<hit " + ((MeleeAttack) a).getTarget().getNumber()
 					+ " " + a.damage + " " + a.pirce);
 			// SoundHandler.startIngameSound(HUD.hm, x, y);
 		} else if (a == explode) {
@@ -159,7 +159,7 @@ public class ShieldGuineaPig extends Unit implements Attacker, Shooter {
 				if (e != null & e.isEnemyTo(this)
 						&& e.isInRange(getX(), getY(), e.getRadius() + a.range)
 						&& e.groundPosition == GroundPosition.GROUND) {
-					GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
+					GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + a.damage + " "
 							+ a.pirce);
 				}
 			}
@@ -177,7 +177,7 @@ public class ShieldGuineaPig extends Unit implements Attacker, Shooter {
 				shield -= damage;
 				if (shield < 0) {
 					setHp(getCurrentHp() + shield * 2);
-					sendAnimation("explode " + -shield * 2);
+					sendAnimation("explode " + -shield * 2, this);
 					shield = 0;
 				}
 			} else {
@@ -266,7 +266,7 @@ public class ShieldGuineaPig extends Unit implements Attacker, Shooter {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

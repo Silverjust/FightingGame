@@ -1,6 +1,6 @@
 package main;
 
-import game.GameBaseApp;
+import shared.GameBaseApp;
 
 public class LoadingScreen {
 

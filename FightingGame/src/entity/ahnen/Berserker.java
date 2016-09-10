@@ -2,7 +2,6 @@ package entity.ahnen;
 
 import game.AimHandler;
 import game.AimHandler.Cursor;
-import game.GameBaseApp;
 import game.ImageHandler;
 import game.aim.Aim;
 import gameStructure.Attacker;
@@ -17,6 +16,7 @@ import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public class Berserker extends Unit implements Attacker {
 
@@ -124,7 +124,7 @@ public class Berserker extends Unit implements Attacker {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -149,8 +149,8 @@ public class Berserker extends Unit implements Attacker {
 		y = (this.getY() + (yDirection - this.getY()) / PApplet.dist(this.getX(), this.getY(), xDirection, yDirection) * (attackDistance));
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this) && e.isInRange(x, y, e.getRadius() + a.range)) {
-				GameBaseApp.updater.sendDirect(
-						DAMAGE + S + e.number + " " + (e instanceof Building ? a.damage / 4 : a.damage) + " " + a.pirce);
+				GameBaseApp.getUpdater().sendDirect(
+						DAMAGE + S + e.getNumber() + " " + (e instanceof Building ? a.damage / 4 : a.damage) + " " + a.pirce);
 			}
 		}
 	}
@@ -223,7 +223,7 @@ public class Berserker extends Unit implements Attacker {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -342,7 +342,7 @@ public class Berserker extends Unit implements Attacker {
 		@Override
 		public void execute(float x, float y) {
 			if (canPlaceAt(x, y)) {
-				GameBaseApp.updater.sendDirect(SPAWN + S + buildable.getClass().getSimpleName() + " " + builder.player.getUser().ip
+				GameBaseApp.getUpdater().sendDirect(SPAWN + S + buildable.getClass().getSimpleName() + " " + builder.player.getUser().getIp()
 						+ " " + x + " " + y);
 				buildable.buyFrom(builder.player);
 			}
@@ -356,7 +356,7 @@ public class Berserker extends Unit implements Attacker {
 			}
 			if (builder != null) {
 				active.startCooldown();
-				builder.sendAnimation("buildLeuchte " + x + " " + y);
+				builder.sendAnimation("buildLeuchte " + x + " " + y, this);
 			}
 		}
 

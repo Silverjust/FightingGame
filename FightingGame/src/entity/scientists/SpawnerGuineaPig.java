@@ -2,7 +2,7 @@ package entity.scientists;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -98,7 +98,7 @@ public class SpawnerGuineaPig extends Unit {
 				}
 			}
 			if (importantEntity != null && spawn.isNotOnCooldown()) {
-				sendAnimation("spawn " + importantEntity.number);
+				sendAnimation("spawn " + importantEntity.getNumber(), this);
 			}
 		}
 		spawn.updateAbility(this, isServer);
@@ -110,7 +110,7 @@ public class SpawnerGuineaPig extends Unit {
 		if (c[2].equals("spawn")) {
 			setMoving(false);
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.getUpdater().getNamedObjects().get(n);
 			spawn.setTarget(e);
 			setAnimation(spawn);
 		}
@@ -162,7 +162,7 @@ public class SpawnerGuineaPig extends Unit {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -226,7 +226,7 @@ public class SpawnerGuineaPig extends Unit {
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (target != null && isEvent()) {
 				if (isServer) {
-					GameBaseApp.updater.sendDirect("<spawn GuineaPig " + e.player.getUser().ip + " "
+					GameBaseApp.getUpdater().sendDirect("<spawn GuineaPig " + e.player.getUser().getIp() + " "
 							+ e.getX() + " " + (e.getY() + e.getRadius() + 8) + " " + target.getX()
 							+ " " + target.getY());
 				}

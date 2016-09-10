@@ -2,7 +2,6 @@ package main;
 
 import g4p_controls.G4P;
 import game.ClientHandler;
-import game.GameBaseApp;
 import game.GameDrawer;
 import game.HUD;
 
@@ -18,6 +17,7 @@ import processing.core.PFont;
 import shared.Client;
 import shared.Coms;
 import shared.ContentListManager;
+import shared.GameBaseApp;
 import shared.Menu;
 import shared.Mode;
 import shared.VersionControle;
@@ -79,16 +79,16 @@ public class MainApp extends PApplet {
 			startPage.update();
 			break;
 		case PREGAME:
-			GameBaseApp.getPreGameInfo().update();
+			GameBaseApp.getPreGameInfo().updateButton();
 			break;
 		case LADESCREEN:
-			GameBaseApp.loader.update();
+			GameBaseApp.loader.updateButton();
 			break;
 		case GAME:
 			// if (frameCount % 100 == 0)// DEBUG
 			// CommandHandler.executeCommands("/fps");
 			// HUD.chatPrintln("fps", ""+frameRate);
-			GameBaseApp.updater.update();
+			GameBaseApp.getUpdater().update();
 			GameDrawer.update();
 
 			break;
@@ -116,14 +116,14 @@ public class MainApp extends PApplet {
 	}
 
 	public void clientEvent(Client someClient) {
-		ClientHandler.clientEvent(someClient);
+		PreGameClientHandler.clientEvent(someClient);
 	}
 
 	@Override
 	public void dispose() {// Player in schlieﬂen
 		try {
-			if (ClientHandler.client != null)
-				GameBaseApp.updater.sendDirect(Coms.PAUSE + " true");
+			if (PreGameClientHandler.client != null)
+				GameBaseApp.getUpdater().sendDirect(Coms.PAUSE + " true");
 			if (startPage != null)
 				startPage.dispose();
 			if (GameBaseApp.getPreGameInfo() != null)

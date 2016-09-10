@@ -8,6 +8,7 @@ import g4p_controls.GEvent;
 import g4p_controls.GTextArea;
 import g4p_controls.GTextField;
 import processing.core.PConstants;
+import shared.GameBaseApp;
 import shared.Helper;
 
 public class Chat {
@@ -89,10 +90,10 @@ public class Chat {
 				}
 			} else {
 				if (s.length() > 0 && s.charAt(0) == '/') {
-					println(app.player.getUser().name, s);
+					println(app.getPlayer().getUser().name, s);
 					commandHandler.executeCommand(s);
 				} else {
-					app.getClientHandler().send("<say " + app.player.getUser().ip + " " + s);
+					app.getClientHandler().send("<say " + app.getPlayer().getUser().getIp() + " " + s);
 				}
 			}
 			textfield.setText("");

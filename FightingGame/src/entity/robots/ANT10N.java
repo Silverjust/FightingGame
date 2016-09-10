@@ -2,8 +2,8 @@ package entity.robots;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import shared.Nation;
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Spell;
 import gameStructure.Attacker;
@@ -133,13 +133,13 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
 		} else if (isServer && isAnchored) {// ****************************************************
 			if (heal.isNotOnCooldown()) {
-				sendAnimation("heal");
+				sendAnimation("heal", this);
 			}
 		}
 		basicAttack.updateAbility(this, isServer);
@@ -170,9 +170,9 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 			for (GameObject e : GameApplet.GameBaseApp.gameObjects)
 				if (e != null && e.isAllyTo(this)
 						&& e.isInRange(getX(), getY(), e.getRadius() + a.range))
-					GameBaseApp.updater.sendDirect("<heal " + e.number + " " + heal.damage);
+					GameBaseApp.getUpdater().sendDirect("<heal " + e.getNumber() + " " + heal.damage);
 		} else
-			GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
+			GameBaseApp.getUpdater().sendDirect("<hit " + basicAttack.getTarget().getNumber() + " "
 					+ a.damage + " " + a.pirce);
 	}
 
@@ -231,7 +231,7 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -294,7 +294,7 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 		public void onActivation() {
 			for (GameObject e : GameApplet.GameBaseApp.selected) {
 				if (e instanceof ANT10N) {
-					e.sendAnimation("anchor");
+					e.sendAnimation("anchor", this);
 				}
 			}
 		}

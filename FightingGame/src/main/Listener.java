@@ -3,7 +3,7 @@ package main;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import game.GameBaseApp;
+import shared.GameBaseApp;
 
 public class Listener implements WindowListener {
 	private GameBaseApp app;

@@ -2,7 +2,7 @@ package entity.aliens;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.Building;
@@ -123,9 +123,9 @@ public class Ker extends Unit implements Shooter {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (isEnemyInShootRange && shoot.isNotOnCooldown()) {
-				sendAnimation("shoot " + importantEntity.number);
+				sendAnimation("shoot " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(
 						this,
@@ -143,7 +143,7 @@ public class Ker extends Unit implements Shooter {
 		super.exec(c);
 		if (c[2].equals("shoot") && shoot.isNotOnCooldown()) {
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.getUpdater().getNamedObjects().get(n);
 			shoot.setTargetFrom(this, e);
 			setAnimation(shoot);
 			setMoving(false);
@@ -153,7 +153,7 @@ public class Ker extends Unit implements Shooter {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.sendDirect("<hit " + a.getTarget().number + " "
+		GameBaseApp.getUpdater().sendDirect("<hit " + a.getTarget().getNumber() + " "
 				+ (a.getTarget() instanceof Building ? a.damage / 2 : a.damage)
 				+ " " + a.pirce);
 	}
@@ -214,7 +214,7 @@ public class Ker extends Unit implements Shooter {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

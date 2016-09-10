@@ -1,8 +1,8 @@
 package entity.scientists;
 
-import game.GameBaseApp;
 import gameStructure.GameObject;
 import gameStructure.Unit;
+import shared.GameBaseApp;
 
 public abstract class Lab extends Unit implements Equiping {
 	protected static final int TRAINTIME = 3000;

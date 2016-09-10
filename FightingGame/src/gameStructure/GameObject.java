@@ -1,6 +1,6 @@
 package gameStructure;
 
-import game.GameBaseApp;
+import champs.Ticul;
 import game.GameDrawer;
 import game.ImageHandler;
 import gameStructure.animation.Animation;
@@ -9,13 +9,13 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import shared.Coms;
+import shared.GameBaseApp;
 import shared.Player;
 import shared.Updater;
 
 public abstract class GameObject implements Coms {
 	// TODO upgrades für einheiten
-	public static int entityCounter;
-	public int number;
+	private int number;
 	public Player player;
 
 	public boolean isTaged;
@@ -49,9 +49,9 @@ public abstract class GameObject implements Coms {
 
 	public GameObject(GameBaseApp app, String[] c) {
 		if (c != null) {
-			player = app.getUpdater().getPlayer(c[2]);
-			setX(Float.parseFloat(c[3]));
-			setY(Float.parseFloat(c[4]));
+			player = app.getUpdater().getPlayer(c[3]);
+			setX(Float.parseFloat(c[4]));
+			setY(Float.parseFloat(c[5]));
 		}
 	}
 
@@ -179,12 +179,15 @@ public abstract class GameObject implements Coms {
 	}
 
 	public void sendDefaultAnimation(Animation oldAnimation) {
-		sendAnimation("stand");
+		sendAnimation("stand", this);
 	}
 
-	public void sendAnimation(String s) {
+	public void sendAnimation(String s, Object o) {
 		if (s != "") {
-			player.app.getUpdater().send("<execute " + number + " " + s);
+			if (o instanceof Ticul) {
+				System.out.println("GameObject.sendAnimation()ticul " + ((Ticul) o).getNumber());
+			}
+			player.app.getUpdater().send(Coms.EXECUTE + " " + getNumber() + " " + s);
 		}
 	}
 
@@ -255,7 +258,7 @@ public abstract class GameObject implements Coms {
 	}
 
 	public boolean isEnemyTo(Player p) {
-		return isEnemyTo(p.champion);
+		return isEnemyTo(p.getChampion());
 	}
 
 	public boolean isAllyTo(GameObject e) {
@@ -380,6 +383,14 @@ public abstract class GameObject implements Coms {
 
 	public String getIngameName() {
 		return getInternName();
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
 
 }

@@ -8,7 +8,6 @@ import champs.ArmorShred;
 import champs.Mage;
 import champs.TestProjectile;
 import champs.Ticul;
-import game.GameBaseApp;
 import gameStructure.Champion;
 import gameStructure.GameObject;
 import gameStructure.baseBuffs.Buff;

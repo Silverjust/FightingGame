@@ -2,8 +2,8 @@ package entity.scientists;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import game.AimHandler;
-import game.GameBaseApp;
 import game.ImageHandler;
 import game.aim.BuildWallAim;
 import gameStructure.Attacker;
@@ -91,7 +91,7 @@ public class ChemLab extends Lab {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

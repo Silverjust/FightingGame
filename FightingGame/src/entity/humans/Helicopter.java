@@ -2,7 +2,7 @@ package entity.humans;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -113,7 +113,7 @@ public class Helicopter extends Unit implements Attacker, Shooter {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(
 						this,
@@ -127,7 +127,7 @@ public class Helicopter extends Unit implements Attacker, Shooter {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.getUpdater().sendDirect("<hit " + basicAttack.getTarget().getNumber() + " "
 				+ a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
@@ -180,7 +180,7 @@ public class Helicopter extends Unit implements Attacker, Shooter {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

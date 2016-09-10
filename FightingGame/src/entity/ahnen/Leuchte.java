@@ -2,7 +2,7 @@ package entity.ahnen;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.Building;
@@ -96,11 +96,11 @@ public class Leuchte extends Building implements Attacker {
 		timer.updateAbility(this, isServer);
 		if (timer.isNotOnCooldown()) {
 			if (upgrade == Upgrade.STANDARD) {
-				sendAnimation("death");
+				sendAnimation("death", this);
 			} else if (upgrade == Upgrade.HEAL) {
-				sendAnimation("stand");
+				sendAnimation("stand", this);
 			} else if (upgrade == Upgrade.BUFF) {
-				sendAnimation("heal");
+				sendAnimation("heal", this);
 			}
 		}
 	}
@@ -148,7 +148,7 @@ public class Leuchte extends Building implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isAllyTo(this)
 					&& e.isInRange(getX(), getY(), e.getRadius() + a.range)) {
-				GameBaseApp.updater.sendDirect("<heal " + e.number + " " + heal.damage);
+				GameBaseApp.getUpdater().sendDirect("<heal " + e.getNumber() + " " + heal.damage);
 			}
 		}
 	}
@@ -156,11 +156,11 @@ public class Leuchte extends Building implements Attacker {
 	@Override
 	public void sendDefaultAnimation(Animation oldAnimation) {
 		if (upgrade == Upgrade.HEAL) {
-			sendAnimation("heal");
+			sendAnimation("heal", this);
 		} else if (upgrade == Upgrade.BUFF) {
-			sendAnimation("buff");
+			sendAnimation("buff", this);
 		} else
-			sendAnimation("stand");
+			sendAnimation("stand", this);
 	}
 
 	@Override
@@ -220,7 +220,7 @@ public class Leuchte extends Building implements Attacker {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

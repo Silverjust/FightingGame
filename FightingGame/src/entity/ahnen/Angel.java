@@ -3,9 +3,9 @@ package entity.ahnen;
 import processing.core.PApplet;
 import processing.core.PImage;
 import shared.Coms;
+import shared.GameBaseApp;
 import shared.Nation;
 import shared.Player;
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Spell;
 import gameStructure.Attacker;
@@ -121,7 +121,7 @@ public class Angel extends Unit implements Attacker, Shooter {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -173,7 +173,7 @@ public class Angel extends Unit implements Attacker, Shooter {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.sendDirect(Coms.DAMAGE+" " + basicAttack.getTarget().number + " " + a.damage + " " + a.pirce);
+		GameBaseApp.getUpdater().sendDirect(Coms.DAMAGE+" " + basicAttack.getTarget().getNumber() + " " + a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
 
@@ -235,7 +235,7 @@ public class Angel extends Unit implements Attacker, Shooter {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -298,7 +298,7 @@ public class Angel extends Unit implements Attacker, Shooter {
 		public void onActivation() {
 			for (GameObject e : GameApplet.GameBaseApp.selected) {
 				if (e instanceof Angel) {
-					e.sendAnimation("cloak");
+					e.sendAnimation("cloak", this);
 				}
 			}
 		}

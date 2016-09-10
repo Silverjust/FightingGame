@@ -10,6 +10,7 @@ import gameStructure.Unit;
 import processing.core.PApplet;
 import processing.core.PImage;
 import shared.ContentListManager;
+import shared.GameBaseApp;
 
 public class ImageHandler {
 	// TODO dispose with load null
@@ -25,7 +26,7 @@ public class ImageHandler {
 
 	public ImageHandler(GameBaseApp app) {
 		this.app = app;
-		contentListHandler = app.contentListHandler;
+		contentListHandler = app.getContentListManager();
 	}
 
 	public boolean requestAllImages() {

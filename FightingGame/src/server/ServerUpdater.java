@@ -1,32 +1,44 @@
 package server;
 
-import game.GameBaseApp;
+import java.util.HashMap;
+
 import game.Map;
-import game.PreGameInfo;
 import gameStructure.GameObject;
 import gameStructure.Unit;
+import shared.GameBaseApp;
 import shared.Player;
+import shared.PreGameInfo;
+import shared.SpellHandler;
+import shared.Team;
 import shared.Updater;
+import shared.User;
 
 public class ServerUpdater extends Updater {
-	public ServerUpdater(GameBaseApp app) {
+	private int entityCounter = 1;
+	public HashMap<String, ServerSpellHandler> spellHandlers = new HashMap<String, ServerSpellHandler>();
+
+	public ServerUpdater(GameBaseApp app, Team team) {
 		super(app);
 		for (String key : app.getPreGameInfo().users.keySet()) {
-			players.put(key, Player.createPlayer(app, app.getPreGameInfo().users.get(key)));
+			User user = app.getPreGameInfo().users.get(key);
+			Player player = Player.createPlayer(app, user);
+			players.put(key, player);
+			spellHandlers.put(key, new ServerSpellHandler(app, player));
 		}
-		neutral = Player.createNeutralPlayer(app);
+		neutral = Player.createNeutralPlayer(app, null);
+		leftsideNeutral = Player.createNeutralPlayer(app, Team.LEFTSIDE);
+		rightsideNeutral = Player.createNeutralPlayer(app, Team.RIGHTSIDE);
 
 		map = new Map(app, app.getPreGameInfo().map);
+
 	}
 
 	@Override
 	public void update() {
 		if (gameState == GameState.PLAY) {
 			for (int i = 0; i < toAdd.size(); i++) {
-				GameObject.entityCounter += 1;
 				gameObjects.add(toAdd.get(i));
-				namedObjects.put(GameObject.entityCounter, toAdd.get(i));
-				toAdd.get(i).number = GameObject.entityCounter;
+				namedObjects.put(toAdd.get(i).getNumber(), toAdd.get(i));
 				toAdd.get(i).onSpawn(PreGameInfo.isSinglePlayer());
 				map.mapCode.onEntitySpawn(toAdd.get(i));
 				toAdd.remove(i);
@@ -34,7 +46,7 @@ public class ServerUpdater extends Updater {
 			for (int i = 0; i < toRemove.size(); i++) {
 				GameObject entity = toRemove.get(i);
 				if (entity != null) {
-					int n = entity.number;
+					int n = entity.getNumber();
 					namedObjects.remove(n);
 					gameObjects.remove(entity);
 					toRemove.remove(i);
@@ -45,7 +57,7 @@ public class ServerUpdater extends Updater {
 				send("<say SERVER " + "sync");
 				for (GameObject e : gameObjects) {
 					if (e instanceof Unit) {
-						send("<tp " + e.number + " " + e.getX() + " " + e.getY() + " false");
+						send("<tp " + e.getNumber() + " " + e.getX() + " " + e.getY() + " false");
 					}
 				}
 			}
@@ -67,16 +79,33 @@ public class ServerUpdater extends Updater {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void send(String string) {
-		app.getComHandler().executeCom(string);
+		app.getComHandler().executeCom(string, true);
 		((ServerApp) app).getServerHandler().sendDirect(string);
 	}
 
-	/**
-	 */
 	public void reconnect() {
-		
+
 	}
+
+	/**
+	 * get current GObj number
+	 */
+	public int getCurrentGObjNumber() {
+		return entityCounter;
+	}
+
+	/**
+	 * create new GObj number
+	 */
+	public int getNextGObjNumber() {
+		entityCounter++;
+		return entityCounter - 1;
+	}
+
+	public SpellHandler getSpellHandler(String ip) {
+		return spellHandlers.get(ip);
+	}
+
 }

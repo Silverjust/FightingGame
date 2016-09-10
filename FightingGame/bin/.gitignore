@@ -1,9 +1,9 @@
-/server/
-/champs/
 /data/
+/champs/
 /entity/
 /game/
 /gameStructure/
 /main/
 /preGame/
+/server/
 /shared/

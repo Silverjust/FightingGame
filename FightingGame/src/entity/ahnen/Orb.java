@@ -1,6 +1,5 @@
 package entity.ahnen;
 
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -11,6 +10,7 @@ import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public class Orb extends Unit implements Attacker {
 
@@ -90,8 +90,8 @@ public class Orb extends Unit implements Attacker {
 	public void onSpawn(boolean isServer) {
 		if (isServer) {
 			GameObject e;
-			e = GameBaseApp.updater.getNamedObjects().get(parent);
-			e.sendAnimation("spawned " + number);
+			e = GameBaseApp.getUpdater().getNamedObjects().get(parent);
+			e.sendAnimation("spawned " + getNumber(), this);
 		}
 	}
 
@@ -126,7 +126,7 @@ public class Orb extends Unit implements Attacker {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -136,7 +136,7 @@ public class Orb extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.getUpdater().sendDirect("<hit " + basicAttack.getTarget().getNumber() + " "
 				+ a.damage + " " + a.pirce);
 	}
 
@@ -176,7 +176,7 @@ public class Orb extends Unit implements Attacker {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

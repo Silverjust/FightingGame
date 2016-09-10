@@ -7,6 +7,7 @@ import gameStructure.GameObject;
 import processing.core.PApplet;
 import server.Protocol;
 import shared.Coms;
+import shared.GameBaseApp;
 import shared.Helper;
 import shared.Updater.GameState;
 

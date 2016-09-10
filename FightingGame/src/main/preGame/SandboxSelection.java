@@ -4,8 +4,8 @@ import g4p_controls.GButton;
 import g4p_controls.GDropList;
 import g4p_controls.GEvent;
 import game.ClientHandler;
-import game.GameBaseApp;
 import main.MainApp;
+import shared.GameBaseApp;
 import shared.Mode;
 import shared.Nation;
 import shared.PreGame;
@@ -38,7 +38,7 @@ public class SandboxSelection {
 		playerDroplistNation.addEventHandler(this, "handleSelectNation");
 		{
 			handleSelectNation(playerDroplistNation, GEvent.SELECTED);
-			ClientHandler.sendDirect("<setNation " + 1 + " " + "Aliens");
+			PreGameClientHandler.sendDirect("<setNation " + 1 + " " + "Aliens");
 		}
 
 		addPlayer = new GButton(GameBaseApp.app, 540, 200, 100, 35, "add Player");
@@ -62,7 +62,7 @@ public class SandboxSelection {
 			String[] enemyArr = new String[preGame.users.size()];
 			int i = 0;
 			for (String key : preGame.users.keySet()) {
-				enemyArr[i] = preGame.users.get(key).ip;
+				enemyArr[i] = preGame.users.get(key).getIp();
 				i++;
 			}
 			Nation n = preGame.users.get(enemyArr[droplist.getSelectedIndex()]).nation;
@@ -84,7 +84,7 @@ public class SandboxSelection {
 			String[] enemyArr = new String[preGame.users.size()];
 			int i = 0;
 			for (String key : preGame.users.keySet()) {
-				enemyArr[i] = preGame.users.get(key).ip;
+				enemyArr[i] = preGame.users.get(key).getIp();
 				i++;
 			}
 			int neutralIndex = -1;
@@ -98,7 +98,7 @@ public class SandboxSelection {
 				return;
 			}
 			previousNation = droplist.getSelectedIndex();
-			ClientHandler.sendDirect("<setNation " + enemyArr[playerDroplist.getSelectedIndex()] + " "
+			PreGameClientHandler.sendDirect("<setNation " + enemyArr[playerDroplist.getSelectedIndex()] + " "
 					+ Nation.values()[droplist.getSelectedIndex()]);
 
 		}

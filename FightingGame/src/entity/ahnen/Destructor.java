@@ -2,8 +2,8 @@ package entity.ahnen;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import entity.ahnen.Leuchte.Upgrade;
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Spell;
 import gameStructure.Attacker;
@@ -141,12 +141,12 @@ public class Destructor extends Unit implements Shooter, Buffing {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null && spawn.isNotOnCooldown() && hasNoOrb() && isBuffed()) {
-				sendAnimation("spawn " + importantEntity.number);
+				sendAnimation("spawn " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -172,7 +172,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 			if (hasNoOrb()) {
 				setMoving(false);
 				int n = Integer.parseInt(c[3]);
-				GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
+				GameObject e = GameBaseApp.getUpdater().getNamedObjects().get(n);
 				spawn.setTarget(e);
 				setAnimation(spawn);
 			}
@@ -183,7 +183,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 	}
 
 	private boolean hasNoOrb() {
-		GameObject e = GameBaseApp.updater.getNamedObjects().get(orb);
+		GameObject e = GameBaseApp.getUpdater().getNamedObjects().get(orb);
 		return e == null || !e.isAlive();
 	}
 
@@ -194,7 +194,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this) && e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)
 					&& e.groundPosition == GroundPosition.GROUND) {
-				GameBaseApp.updater.sendDirect(DAMAGE + S + e.number + " " + (isBuffed ? a.damage * 2 : a.damage) + " "
+				GameBaseApp.getUpdater().sendDirect(DAMAGE + S + e.getNumber() + " " + (isBuffed ? a.damage * 2 : a.damage) + " "
 						+ (isBuffed ? 5 : a.pirce));
 			}
 		}
@@ -252,7 +252,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -316,8 +316,8 @@ public class Destructor extends Unit implements Shooter, Buffing {
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (target != null && isEvent()) {
 				if (isServer) {
-					GameBaseApp.updater.sendDirect(SPAWN + " Orb " + e.player.getUser().ip + " " + e.getX() + " " + (e.getY() + e.getRadius() + 8)
-							+ " " + target.getX() + " " + target.getY() + " " + e.number);
+					GameBaseApp.getUpdater().sendDirect(SPAWN + " Orb " + e.player.getUser().getIp() + " " + e.getX() + " " + (e.getY() + e.getRadius() + 8)
+							+ " " + target.getX() + " " + target.getY() + " " + e.getNumber());
 					/*
 					 * ref.updater.send("<spawn Rugling " + e.player.ip + " " +
 					 * e.x + " " + (e.y - e.radius - 8) + " " + target.x + " " +
@@ -352,7 +352,7 @@ public class Destructor extends Unit implements Shooter, Buffing {
 				if (e instanceof Leuchte && e.getAnimation() == ((Leuchte) e).heal) {
 					for (GameObject e2 : GameApplet.GameBaseApp.selected) {
 						if (e2 instanceof Buffing && e.isInRange(e2.getX(), e2.getY(), ((Buffing) e2).getUpgradeRange())) {
-							e.sendAnimation("buff");
+							e.sendAnimation("buff", this);
 						}
 					}
 				}

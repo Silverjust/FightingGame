@@ -6,9 +6,9 @@ import g4p_controls.GDropList;
 import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
 import game.ClientHandler;
-import game.GameBaseApp;
 import processing.data.JSONObject;
 import shared.ContentListManager;
+import shared.GameBaseApp;
 import shared.Mode;
 
 public abstract class PreGameDisplay {
@@ -48,8 +48,8 @@ public abstract class PreGameDisplay {
 						+ ".json";
 				@SuppressWarnings("unused")
 				JSONObject mapData = GameBaseApp.app.loadJSONObject(file);
-				ClientHandler.sendDirect(
-						"<setMap " + GameBaseApp.getPreGameInfo().getUser("").ip + " " + mapSelect.intNames[list.getSelectedIndex()]);
+				PreGameClientHandler.sendDirect(
+						"<setMap " + GameBaseApp.getPreGameInfo().getUser("").getIp() + " " + mapSelect.intNames[list.getSelectedIndex()]);
 				mapSelect.previousMap = list.getSelectedIndex();
 			} catch (Exception e) {
 				System.err.println(file + " does not exist or could not be read");

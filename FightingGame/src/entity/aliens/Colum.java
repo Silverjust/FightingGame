@@ -1,6 +1,5 @@
 package entity.aliens;
 
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -10,6 +9,7 @@ import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public class Colum extends Unit implements Attacker {
 
@@ -87,7 +87,7 @@ public class Colum extends Unit implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isAllyTo(this)
 					&& e.isInRange(getX(), getY(), e.getRadius() + a.range)) {
-				GameBaseApp.updater.sendDirect("<heal " + e.number + " " + heal.damage);
+				GameBaseApp.getUpdater().sendDirect("<heal " + e.getNumber() + " " + heal.damage);
 			}
 		}
 	}
@@ -128,7 +128,7 @@ public class Colum extends Unit implements Attacker {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

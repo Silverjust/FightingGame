@@ -3,7 +3,7 @@ package entity.scientists;
 import processing.core.PApplet;
 import processing.core.PImage;
 import shared.ContentListManager;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -117,7 +117,7 @@ public class GuineaPig extends Unit implements Attacker, Shooter, Equiping {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -128,7 +128,7 @@ public class GuineaPig extends Unit implements Attacker, Shooter, Equiping {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.getUpdater().sendDirect("<hit " + basicAttack.getTarget().getNumber() + " "
 				+ a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
@@ -211,7 +211,7 @@ public class GuineaPig extends Unit implements Attacker, Shooter, Equiping {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -283,9 +283,9 @@ public class GuineaPig extends Unit implements Attacker, Shooter, Equiping {
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (isSetup() && isEvent()) {
 				if (isServer) {
-					GameBaseApp.updater.sendDirect("<remove " + e.number);
-					GameBaseApp.updater.sendDirect(//
-							"<spawn " + unit + " " + e.player.getUser().ip + " " + e.getX()
+					GameBaseApp.getUpdater().sendDirect("<remove " + e.getNumber());
+					GameBaseApp.getUpdater().sendDirect(//
+							"<spawn " + unit + " " + e.player.getUser().getIp() + " " + e.getX()
 									+ " " + e.getY() + " " + ((Unit) e).xTarget
 									+ " " + ((Unit) e).yTarget
 									+ (e.isSelected ? " select" : ""));

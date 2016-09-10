@@ -1,8 +1,8 @@
 package gameStructure.animation;
 
-import game.GameBaseApp;
 import gameStructure.GameObject;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import shared.Updater;
 
 public class Extract extends Ability {
@@ -37,7 +37,7 @@ public class Extract extends Ability {
 						isRFNew=false;
 					}
 				} else
-					GameBaseApp.updater.sendDirect("<give " + e.player.getUser().ip + " " + ressource + " " + amount);
+					GameBaseApp.getUpdater().sendDirect("<give " + e.player.getUser().getIp() + " " + ressource + " " + amount);
 			}
 			isSetup = false;
 		}

@@ -1,11 +1,11 @@
 package gameStructure.animation;
 
-import game.GameBaseApp;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
 import gameStructure.Unit;
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public abstract class Attack extends Ability {
 	public byte range;
@@ -48,7 +48,7 @@ public abstract class Attack extends Ability {
 			// Attack a = ((Attacker) attacker).getBasicAttack();
 			int n = Integer.parseInt(c[3]);
 			GameObject e = app.getUpdater().getGameObject(n);
-			attacker.sendAnimation("walk " + e.getX() + " " + e.getY() + " true");
+			attacker.sendAnimation("walk " + e.getX() + " " + e.getY() + " true", "Attack.updateExecAttack()");
 			// a.setTargetFrom(attacker, e);
 
 			// walk to target and attack
@@ -66,9 +66,9 @@ public abstract class Attack extends Ability {
 						+ (target.getY() + (e.getY() - target.getY())
 								/ PApplet.dist(target.getX(), target.getY(), e.getX(), e.getY())
 								* (range + target.getRadius() - 1))
-						+ " true");
+						+ " true", "Attack.sendWalkToEnemy()");
 			} else {
-				e.sendAnimation("stand");
+				e.sendAnimation("stand", "Attack.sendWalkToEnemy()");
 			}
 		}
 	}

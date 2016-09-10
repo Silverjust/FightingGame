@@ -1,11 +1,11 @@
 package gameStructure;
 
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.animation.Animation;
 import gameStructure.animation.Attack;
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import shared.GameBaseApp;
 import shared.Helper;
 
 public abstract class Unit extends Entity {
@@ -21,15 +21,15 @@ public abstract class Unit extends Entity {
 	private boolean isMoving;
 	private boolean isAggro;
 	public Animation walk;
-	
+
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		/* code */ }
 
 	public Unit(GameBaseApp app, String[] c) {
 		super(app, c);
 		if (c != null) {
-			xTarget = c.length > 5 ? Float.parseFloat(c[5]) : getX();
-			yTarget = c.length > 6 ? Float.parseFloat(c[6]) : getY();
+			xTarget = c.length > 6 ? Float.parseFloat(c[6]) : getX();
+			yTarget = c.length > 7 ? Float.parseFloat(c[7]) : getY();
 			setMoving(true);
 		}
 	}
@@ -44,7 +44,7 @@ public abstract class Unit extends Entity {
 				if (e != this) {
 					if (isCollision(e)) {
 						if (e.getAnimation() == e.stand && e.isInRange(xTarget, yTarget, e.getRadius()))
-							sendAnimation("stand");
+							sendAnimation("stand", this);
 						hasColided = true;
 						xDeglich += getX() - e.getX();
 						yDeglich += getY() - e.getY();
@@ -59,7 +59,7 @@ public abstract class Unit extends Entity {
 			// System.out.println(1000000000+" "+(animation == walk));
 			setMoving(false);
 			setAnimation(stand);
-			sendAnimation("stand");
+			sendAnimation("stand", this);
 		}
 
 		if (isMoving() && !hasColided && !isRooted()
@@ -139,16 +139,16 @@ public abstract class Unit extends Entity {
 	}
 
 	public void info() {
-		player.app.getDrawer().getHud().chat.println(this.getClass().getSimpleName() + "_" + number,
+		player.app.getDrawer().getHud().chat.println(this.getClass().getSimpleName() + "_" + getNumber(),
 				"(" + getX() + "|" + getY() + ")->(" + xTarget + "|" + yTarget + ")\nhp:" + getCurrentHp());
 	}
 
 	@Override
 	public void sendDefaultAnimation(Animation oldAnimation) {
 		if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= getSpeed())
-			sendAnimation("walk " + xTarget + " " + yTarget + " " + isAggro);
+			sendAnimation("walk " + xTarget + " " + yTarget + " " + isAggro, this);
 		else {
-			sendAnimation("stand");
+			sendAnimation("stand", this);
 			if (Animation.observe.isAssignableFrom(this.getClass())) {
 				System.out.println(
 						"Unit.sendDefaultAnimation()send stand" + PApplet.dist(getX(), getY(), xTarget, yTarget));

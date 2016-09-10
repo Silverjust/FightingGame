@@ -1,12 +1,12 @@
 package gameStructure.animation;
 
-import game.GameBaseApp;
 import gameStructure.Attacker;
 import gameStructure.Entity;
 import gameStructure.GameObject;
 import gameStructure.Trainer;
 import gameStructure.Unit;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import shared.Updater;
 
 public class Animation {

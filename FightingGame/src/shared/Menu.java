@@ -2,7 +2,6 @@ package shared;
 
 import g4p_controls.GButton;
 import g4p_controls.GEvent;
-import game.GameBaseApp;
 
 public abstract class Menu {
 

@@ -1,6 +1,5 @@
 package champs;
 
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Damage;
 import gameStructure.Entity;
@@ -8,6 +7,7 @@ import gameStructure.GameObject;
 import gameStructure.Projectile;
 import gameStructure.animation.Animation;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public class TestProjectile extends Projectile {
 	protected static PImage[] anim;
@@ -29,17 +29,19 @@ public class TestProjectile extends Projectile {
 		setySize(20);
 
 		setSight(20);
-		setSpeed(0.9f);
+		setSpeed(3f);
 		setRadius(10);
 	}
 
 	@Override
 	protected void onHit(GameObject o) {
 		if (o.isEnemyTo(player) && o instanceof Entity) {
-			((Entity) o).sendDamage(this, new Damage((Entity) o, player.champion, 50, true), player, origin);
-			player.app.getUpdater().send(BUFF + " ArmorShred " + o.number + " " + player.champion.number + " 6000");
-			player.app.getUpdater().send(BUFF + " Slow " + player.champion.number + " " + player.champion.number + " "
-					+ (int) player.app.random(1000, 3000) + " " + (int) player.app.random(100));
+			((Entity) o).sendDamage(this, new Damage((Entity) o, player.getChampion(), 50, true), player, origin);
+			player.app.getUpdater()
+					.send(BUFF + " ArmorShred " + o.getNumber() + " " + player.getChampion().getNumber() + " 6000");
+			player.app.getUpdater()
+					.send(BUFF + " Slow " + player.getChampion().getNumber() + " " + player.getChampion().getNumber()
+							+ " " + (int) player.app.random(1000, 3000) + " " + (int) player.app.random(100));
 		}
 	}
 }

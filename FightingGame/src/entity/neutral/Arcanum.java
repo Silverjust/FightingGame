@@ -1,7 +1,7 @@
 package entity.neutral;
 
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.animation.Animation;
 

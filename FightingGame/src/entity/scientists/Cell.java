@@ -2,7 +2,7 @@ package entity.scientists;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -121,9 +121,9 @@ public class Cell extends Unit implements Attacker {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isInRange(getX(), getY(), e.getRadius() + a.range))
 				if (e.isAllyTo(this)) {
-					GameBaseApp.updater.sendDirect("<heal " + e.number + " " + healAmount);
+					GameBaseApp.getUpdater().sendDirect("<heal " + e.getNumber() + " " + healAmount);
 				} else if (e.isEnemyTo(this)) {
-					GameBaseApp.updater.sendDirect("<hit " + e.number + " " + heal.damage
+					GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + heal.damage
 							+ " 0");
 				}
 		}
@@ -166,7 +166,7 @@ public class Cell extends Unit implements Attacker {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

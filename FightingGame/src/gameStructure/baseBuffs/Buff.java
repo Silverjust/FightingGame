@@ -1,10 +1,10 @@
 package gameStructure.baseBuffs;
 
+import shared.GameBaseApp;
 import shared.Helper.Timer;
 
 import java.util.ArrayList;
 
-import game.GameBaseApp;
 import gameStructure.Entity;
 import gameStructure.GameObject;
 

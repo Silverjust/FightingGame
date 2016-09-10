@@ -2,8 +2,8 @@ package entity.ahnen;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import entity.ahnen.Leuchte.Upgrade;
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -117,7 +117,7 @@ public class Astrator extends Unit implements Shooter, Buffing {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -151,7 +151,7 @@ public class Astrator extends Unit implements Shooter, Buffing {
 	@Override
 	public void calculateDamage(Attack a) {
 		GameObject target = a.getTarget();
-		GameBaseApp.updater.sendDirect(DAMAGE + " " + target.number + " " + a.damage + " " + a.pirce);
+		GameBaseApp.getUpdater().sendDirect(DAMAGE + " " + target.getNumber() + " " + a.damage + " " + a.pirce);
 	}
 
 	@Override
@@ -206,7 +206,7 @@ public class Astrator extends Unit implements Shooter, Buffing {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

@@ -4,7 +4,10 @@ import java.util.Collections;
 
 import gameStructure.EntityHeightComparator;
 import gameStructure.GameObject;
+import shared.GameBaseApp;
 import shared.Player;
+import shared.PreGameInfo;
+import shared.Team;
 import shared.Updater;
 import shared.User;
 
@@ -15,33 +18,32 @@ public class GameUpdater extends Updater {
 
 	public GameUpdater(GameBaseApp app) {
 		super(app);
-		this.app = app;
-		neutral = Player.createNeutralPlayer(app);
+		neutral = Player.createNeutralPlayer(app, null);
+		leftsideNeutral = Player.createNeutralPlayer(app, Team.LEFTSIDE);
+		rightsideNeutral = Player.createNeutralPlayer(app, Team.RIGHTSIDE);
 		input = new Input(app);
 		map = new Map(app, app.getPreGameInfo().map);
 
 		for (String key : app.getPreGameInfo().users.keySet()) {
 			User user = app.getPreGameInfo().users.get(key);
 			Player p = Player.createPlayer(app, user);
-			if (p.getUser().ip == app.getClientHandler().identification) {
+			if (p.getUser().getIp() == app.getClientHandler().getIdentification()) {
 				p.color = app.color(0, 255, 100);
-				app.player = p;
+				app.setPlayer(p);
 			} else
 				p.color = app.color(200, 0, 0);
+
 			players.put(key, p);
 		}
+		app.setPlayer(players.get(app.getClientHandler().getIdentification()));
 	}
 
 	public void update() {
 		input.update();
-		updateAIs();
-
 		if (gameState == GameState.PLAY) {
 			for (int i = 0; i < toAdd.size(); i++) {
-				GameObject.entityCounter += 1;
 				gameObjects.add(toAdd.get(i));
-				namedObjects.put(GameObject.entityCounter, toAdd.get(i));
-				toAdd.get(i).number = GameObject.entityCounter;
+				namedObjects.put(toAdd.get(i).getNumber(), toAdd.get(i));
 				toAdd.get(i).onSpawn(PreGameInfo.isSinglePlayer());
 				map.mapCode.onEntitySpawn(toAdd.get(i));
 				toAdd.remove(i);
@@ -49,7 +51,7 @@ public class GameUpdater extends Updater {
 			for (int i = 0; i < toRemove.size(); i++) {
 				GameObject entity = toRemove.get(i);
 				if (entity != null) {
-					int n = entity.number;
+					int n = entity.getNumber();
 					namedObjects.remove(n);
 					gameObjects.remove(entity);
 					toRemove.remove(i);
@@ -69,19 +71,14 @@ public class GameUpdater extends Updater {
 				}
 			}
 			// sortierfunktion
-			Collections.sort(app.player.visibleEntities, new EntityHeightComparator());
+			Collections.sort(app.getPlayer().visibleEntities, new EntityHeightComparator());
 			map.mapCodeUpdate();
 			for (GameObject e : gameObjects) {
 				e.updateAnimation();
-				e.updateDecisions(PreGameInfo.isSinglePlayer());
+				e.updateDecisions(false);
 				e.updateMovement();
 			}
-			
 		}
-
-	}
-
-	private void updateAIs() {
 	}
 
 	@Override

@@ -1,10 +1,10 @@
 package gameStructure;
 
-import game.GameBaseApp;
 import game.ImageHandler;
 import game.aim.BuildAim;
 import processing.core.PGraphics;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public abstract class Building extends GameObject {
 

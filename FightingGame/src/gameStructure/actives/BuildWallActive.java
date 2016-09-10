@@ -1,11 +1,11 @@
 package gameStructure.actives;
 
 import game.AimHandler;
-import game.GameBaseApp;
 import game.aim.BuildWallAim;
 import gameStructure.Building;
 import gameStructure.GameObject;
 import gameStructure.Spell;
+import shared.GameBaseApp;
 
 public class BuildWallActive extends Spell {
 	protected Class<? extends Building> building;

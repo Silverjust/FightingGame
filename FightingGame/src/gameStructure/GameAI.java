@@ -1,6 +1,6 @@
 package gameStructure;
 
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import shared.User;
 
 public class GameAI extends User {

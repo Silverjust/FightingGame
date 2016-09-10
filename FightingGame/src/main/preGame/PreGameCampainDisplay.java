@@ -2,7 +2,7 @@ package main.preGame;
 
 import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 
 public class PreGameCampainDisplay extends PreGameDisplay {
 	public PreGameCampainDisplay() {

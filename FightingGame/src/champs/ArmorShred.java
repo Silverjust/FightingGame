@@ -1,7 +1,7 @@
 package champs;
 
-import game.GameBaseApp;
 import gameStructure.baseBuffs.Buff;
+import shared.GameBaseApp;
 
 public class ArmorShred extends Buff {
 	private int amount = 30;

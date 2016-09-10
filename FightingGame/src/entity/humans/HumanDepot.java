@@ -2,7 +2,7 @@ package entity.humans;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.Building;
@@ -95,7 +95,7 @@ public class HumanDepot extends Building implements Commander, Shooter {
 				}
 			}
 			if (importantEntity != null && getBasicAttack().isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			}
 		}
 		basicAttack.updateAbility(this, isServer);
@@ -113,7 +113,7 @@ public class HumanDepot extends Building implements Commander, Shooter {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this)
 					&& e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)) {
-				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}
@@ -175,7 +175,7 @@ public class HumanDepot extends Building implements Commander, Shooter {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

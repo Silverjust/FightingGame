@@ -2,8 +2,8 @@ package entity.robots;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import shared.Nation;
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Spell;
 import gameStructure.Attacker;
@@ -118,7 +118,7 @@ public class SN41L10N extends Unit implements Shooter {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			}
 		}
 		basicAttack.updateAbility(this, isServer);
@@ -127,7 +127,7 @@ public class SN41L10N extends Unit implements Shooter {
 	@Override
 	public void sendDefaultAnimation(Animation oldAnimation) {
 		if (isAnchored)
-			sendAnimation("anchored");
+			sendAnimation("anchored", this);
 		else
 			super.sendDefaultAnimation(oldAnimation);
 	}
@@ -157,7 +157,7 @@ public class SN41L10N extends Unit implements Shooter {
 			if (e != null & e.isEnemyTo(this)
 					&& e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)
 					&& a.canTargetable(e)) {
-				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}
@@ -211,7 +211,7 @@ public class SN41L10N extends Unit implements Shooter {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -274,7 +274,7 @@ public class SN41L10N extends Unit implements Shooter {
 		public void onActivation() {
 			for (GameObject e : GameApplet.GameBaseApp.selected) {
 				if (e instanceof SN41L10N) {
-					e.sendAnimation("anchor");
+					e.sendAnimation("anchor", this);
 				}
 			}
 		}

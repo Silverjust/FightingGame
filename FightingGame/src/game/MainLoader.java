@@ -2,8 +2,10 @@ package game;
 
 import main.LoadingScreen;
 import shared.Coms;
+import shared.GameBaseApp;
 import shared.Loader;
 import shared.Mode;
+import shared.PreGameInfo;
 
 public class MainLoader extends Loader {
 	public boolean isReconnectLoad;
@@ -20,7 +22,7 @@ public class MainLoader extends Loader {
 
 		case NEWGAME:// create players
 			loadingScreen = new LoadingScreen(app);
-			app.updater = new GameUpdater(app);
+			app.setUpdater(new GameUpdater(app));
 			state = State.STARTIMAGES;
 			break;
 		case STARTIMAGES:
@@ -48,36 +50,6 @@ public class MainLoader extends Loader {
 			break;
 		case ENTITIES:// spawn entity-setup
 
-			if (PreGameInfo.isSinglePlayer()) {
-				/*
-				 * if (GameSettings.tutorial)
-				 * ref.updater.send("<spawn Tutorial 0 20 20");
-				 */
-				// MapHandler.setupEntities(ref.updater.map.mapData);
-				/*
-				 * int i = 0; for (String key : ref.updater.player.keySet()) {
-				 * i++; Player p = ref.updater.player.get(key); if (i == 1) {
-				 * ref.updater.send("<spawn AlienMainBuilding " + p.ip + " " +
-				 * 100 + " " + 800); ref.updater.send("<spawn KeritMine " + p.ip
-				 * + " " + 35 + " " + 850); } else if (i == 2) {
-				 * ref.updater.send("<spawn AlienMainBuilding " + p.ip + " " +
-				 * 700 + " " + 100); ref.updater.send("<spawn KeritMine " + p.ip
-				 * + " " + 750 + " " + 35); }
-				 * ref.updater.send("<spawn KeritMine " + p.ip + " " +
-				 * ref.app.random(200, 600) + " " + ref.app.random(200, 600));
-				 * ref.updater.send("<spawn Kerit " + p.ip + " " +
-				 * ref.app.random(200, 600) + " " + ref.app.random(200, 600));
-				 * ref.updater.send("<spawn Pax " + p.ip + " " +
-				 * ref.app.random(200, 600) + " " + ref.app.random(200, 600));
-				 * ref.updater.send("<spawn Arcanum " + p.ip + " " +
-				 * ref.app.random(200, 600) + " " + ref.app.random(200, 600));
-				 * ref.updater.send("<spawn Prunam " + p.ip + " " +
-				 * ref.app.random(200, 600) + " " + ref.app.random(200, 600)); }
-				 */
-			}
-			app.updater.send("<spawn Ticul " + 1 + " " + app.random(200, 600) + " " + app.random(200, 600));
-			app.updater.send("<spawn Ticul " + 2 + " " + app.random(200, 600) + " " + app.random(200, 600));
-
 			app.setDrawer(new GameDrawer(app, imageHandler));
 			if (PreGameInfo.isSandbox()) {
 				GameDrawer.godeye = true;
@@ -86,16 +58,17 @@ public class MainLoader extends Loader {
 				GameDrawer.showRanges = true;
 			}
 			if (isReconnectLoad)
-				app.updater.send(Coms.RECONNECT + "");
+				app.getUpdater().send(Coms.RECONNECT + "");
 			state = State.WAIT;
 			break;
 		case WAIT:
-			app.updater.send(Coms.READY + " " + app.getClientHandler().identification);
+			app.getUpdater().send(Coms.READY + " " + app.getClientHandler().getIdentification());
 			break;
 		case END:
+
 			state = State.NEWGAME;
-			app.updater.onGameStart();
-			app.mode = Mode.GAME;
+			app.getUpdater().onGameStart();
+			app.setMode(Mode.GAME);
 			// System.out.println(ref.updater);
 			System.out.println("Game Start");
 			break;
@@ -112,9 +85,11 @@ public class MainLoader extends Loader {
 	@Override
 	public void startGame() {
 		if (state == State.WAIT) {
+			System.out.println("MainLoader.startGame() update updater");
+			app.getUpdater().update();
 			state = State.END;
 		} else {
-			System.out.println("game started to early: " + state);
+			System.err.println("game started to early: " + state);
 		}
 	}
 

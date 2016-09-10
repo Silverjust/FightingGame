@@ -1,8 +1,6 @@
 package champs;
 
-import game.GameBaseApp;
 import game.ImageHandler;
-import game.PlayerInterface;
 import gameStructure.Attacker;
 import gameStructure.Champion;
 import gameStructure.GameObject;
@@ -12,7 +10,9 @@ import gameStructure.animation.Attack;
 import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PImage;
-import shared.Helper;
+import shared.GameBaseApp;
+import shared.Player;
+import shared.SpellHandler;
 
 public class Mage extends Champion implements Attacker {
 	// TODO animations are displayed wrong
@@ -77,7 +77,7 @@ public class Mage extends Champion implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		player.app.getUpdater().send("<hit " + basicAttack.getTarget().number + " " + a.damage + " " + a.pirce);
+		player.app.getUpdater().send("<hit " + basicAttack.getTarget().getNumber() + " " + a.damage + " " + a.pirce);
 	}
 
 	@Override
@@ -92,48 +92,36 @@ public class Mage extends Champion implements Attacker {
 	}
 
 	@Override
-	public void setupSpells(PlayerInterface inter) {
+	public void setupSpells(GameBaseApp app, SpellHandler inter) {
 		inter.addSpell(new Consume(player.app, inter, 0));
 		inter.addSpell(new Shot(player.app, inter, 1));
 		inter.addSpell(new TargetedShot(player.app, inter, 2));
 	}
 
-	public class Consume extends Spell {// ******************************************************	
-		public Consume(GameBaseApp app, PlayerInterface inter, int pos) {
+	static public class Consume extends Spell {// ******************************************************
+		public Consume(GameBaseApp app, SpellHandler inter, int pos) {
 			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
-	
+
 		@Override
 		public String getDescription() {
 			return null;
 		}
 
 		@Override
-		protected void onActivation() {
+		public void recieveInput(String[] c, Player player) {
 			// TODO Auto-generated method stub
-			
+
 		}
-	
+
 	}
 
-	public class Shot extends Spell {// ******************************************************
-		private int range = 100;
+	static public class Shot extends Spell {// ******************************************************
 
-		public Shot(GameBaseApp app, PlayerInterface inter, int pos) {
+		public Shot(GameBaseApp app, SpellHandler inter, int pos) {
 			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
-		}
-
-		@Override
-		public void onActivation() {
-
-			System.out.println("Ticul.Shot.onActivation()");
-			player.app.getUpdater()
-					.send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY() + " "
-							+ Helper.gridToX(player.app.mouseX) + " " + Helper.gridToY(player.app.mouseY) + " "
-							+ getInternName());
-			startCooldown();
 		}
 
 		@Override
@@ -141,29 +129,30 @@ public class Mage extends Champion implements Attacker {
 			return null;
 		}
 
+		@Override
+		public void recieveInput(String[] c, Player player) {
+			// TODO Auto-generated method stub
+
+		}
+
 	}
 
-	public class TargetedShot extends Spell {// ******************************************************
+	static public class TargetedShot extends Spell {// ******************************************************
 
-		private int range = 100;
-
-		public TargetedShot(GameBaseApp app, PlayerInterface inter, int pos) {
+		public TargetedShot(GameBaseApp app, SpellHandler inter, int pos) {
 			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
 
 		@Override
-		public void onActivation() {
-
-			System.out.println("Ticul.Shot.onActivation()");
-			player.app.getUpdater().send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY()
-					+ " " + HOMING + " " + 2 + " " + getInternName());
-			startCooldown();
+		public String getDescription() {
+			return null;
 		}
 
 		@Override
-		public String getDescription() {
-			return null;
+		public void recieveInput(String[] c, Player player) {
+			// TODO Auto-generated method stub
+
 		}
 
 	}

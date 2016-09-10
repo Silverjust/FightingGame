@@ -1,8 +1,8 @@
 package game.aim;
 
 import processing.core.PApplet;
+import shared.GameBaseApp;
 import game.AimHandler;
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Building;
 import gameStructure.GameObject;
@@ -71,9 +71,9 @@ public class BuildWallAim extends BuildAim {
 			 * Entity.xToGrid(Entity.gridToY());
 			 */
 			if (canPlaceAt(x, y)) {
-				GameBaseApp.updater.sendDirect("<spawn "
+				GameBaseApp.getUpdater().sendDirect("<spawn "
 						+ buildable.getClass().getSimpleName() + " "
-						+ builder.player.getUser().ip + " " + x + " " + y + " start");
+						+ builder.player.getUser().getIp() + " " + x + " " + y + " start");
 				// start nur beim startbuilding
 				buildable.buyFrom(builder.player);
 			}
@@ -89,19 +89,19 @@ public class BuildWallAim extends BuildAim {
 				x1 = (x1 + (x2 - x1) / PApplet.dist(x1, y1, x2, y2) * (speed));
 				y1 = (y1 + (y2 - y1) / PApplet.dist(x1, y1, x2, y2) * (speed));
 				if (canPlaceAt(x1, y1)) {
-					GameBaseApp.updater
+					GameBaseApp.getUpdater()
 							.sendDirect("<spawn "
 									+ buildable.getClass().getSimpleName()
-									+ " " + builder.player.getUser().ip + " " + x1 + " "
+									+ " " + builder.player.getUser().getIp() + " " + x1 + " "
 									+ y1 + " part");
 					// part nur beim partbuilding
 					buildable.buyFrom(builder.player);
 				}
 			}
 			if (canPlaceAt(x2, y2)) {
-				GameBaseApp.updater.sendDirect("<spawn "
+				GameBaseApp.getUpdater().sendDirect("<spawn "
 						+ buildable.getClass().getSimpleName() + " "
-						+ builder.player.getUser().ip + " " + x2 + " " + y2 + " start");
+						+ builder.player.getUser().getIp() + " " + x2 + " " + y2 + " start");
 				// start nur beim startbuilding
 				buildable.buyFrom(builder.player);
 			}

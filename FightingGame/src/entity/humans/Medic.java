@@ -2,7 +2,7 @@ package entity.humans;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -108,7 +108,7 @@ public class Medic extends Unit implements Attacker {
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()
 					&& !basicAttack.isSetup()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -119,7 +119,7 @@ public class Medic extends Unit implements Attacker {
 	@Override
 	public void calculateDamage(Attack a) {
 		isTaged = true;
-		GameBaseApp.updater.sendDirect("<heal " + basicAttack.getTarget().number + " "
+		GameBaseApp.getUpdater().sendDirect("<heal " + basicAttack.getTarget().getNumber() + " "
 				+ a.damage);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
@@ -170,7 +170,7 @@ public class Medic extends Unit implements Attacker {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

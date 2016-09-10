@@ -3,7 +3,7 @@ package entity.aliens;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.Building;
@@ -102,7 +102,7 @@ public class ThornTower extends Building implements Shooter, Commander {
 				}
 			}
 			if (importantEntity != null && getBasicAttack().isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			}
 		}
 		basicAttack.updateAbility(this, isServer);
@@ -117,7 +117,7 @@ public class ThornTower extends Building implements Shooter, Commander {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.getUpdater().sendDirect("<hit " + basicAttack.getTarget().getNumber() + " "
 				+ a.damage + " " + a.pirce);
 
 	}
@@ -192,7 +192,7 @@ public class ThornTower extends Building implements Shooter, Commander {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

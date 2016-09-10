@@ -28,7 +28,7 @@ public class UserLabelManager {
 			float x = u.team == Team.LEFTSIDE ? 20 : app.width - 20 - 100;
 
 			for (UserLabel label : leftUserLabels)
-				if (label != null && label.getUser() == u) {
+				if (label.getUser() == u) {
 					userLabelExists = true;
 					if (u.team != Team.LEFTSIDE) {
 						leftUserLabelsRemove.add(label);
@@ -36,7 +36,7 @@ public class UserLabelManager {
 					}
 				}
 			for (UserLabel label : rightUserLabels)
-				if (label != null && label.getUser() == u) {
+				if (label.getUser() == u) {
 					userLabelExists = true;
 					if (u.team != Team.RIGHTSIDE) {
 						rightUserLabelsRemove.add(label);

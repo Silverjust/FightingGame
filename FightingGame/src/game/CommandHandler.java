@@ -1,6 +1,7 @@
 package game;
 
 import shared.Coms;
+import shared.GameBaseApp;
 
 public abstract class CommandHandler implements Coms {
 	protected GameBaseApp app;

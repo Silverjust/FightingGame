@@ -3,12 +3,12 @@ package server;
 import java.util.HashMap;
 
 import game.ClientHandler;
-import game.GameBaseApp;
 import gameStructure.GameObject;
 import processing.core.PApplet;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
 import shared.Coms;
+import shared.GameBaseApp;
 import shared.Mode;
 import shared.Player;
 import shared.Updater;
@@ -26,8 +26,8 @@ public class Protocol {
 			if (((ServerApp) GameBaseApp.app).mode == Mode.GAME) {
 				for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 					if (e.getClass().equals(clazz)) {
-						addInfo("0 " + e.number + " :" + e.getAnimation().toString());
-						addInfo("0 " + e.number + " :" + e.player.kerit);
+						addInfo("0 " + e.getNumber() + " :" + e.getAnimation().toString());
+						addInfo("0 " + e.getNumber() + " :" + e.player.kerit);
 					}
 				}
 			}
@@ -38,9 +38,9 @@ public class Protocol {
 
 	public static void filterComs(String info, String s) {
 		try {
-			String[] c = PApplet.splitTokens(s, " " + ClientHandler.endSymbol);
+			String[] c = PApplet.splitTokens(s, " " + PreGameClientHandler.endSymbol);
 			if (c[0].equals(Coms.EXECUTE)
-					&& GameBaseApp.updater.getNamedObjects().get(Integer.parseInt(c[1])).getClass().equals(clazz))
+					&& GameBaseApp.getUpdater().getNamedObjects().get(Integer.parseInt(c[1])).getClass().equals(clazz))
 				addInfo(info + s);
 
 			if (c[0].equals("<give") && Integer.parseInt(c[3]) < 0)

@@ -1,6 +1,6 @@
 package gameStructure.baseBuffs;
 
-import game.GameBaseApp;
+import shared.GameBaseApp;
 
 public class Stunn extends Buff {
 	public Stunn(GameBaseApp app, String[] c) {

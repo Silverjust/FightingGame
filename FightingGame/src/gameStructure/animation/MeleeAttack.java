@@ -1,9 +1,9 @@
 package gameStructure.animation;
 
-import game.GameBaseApp;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public class MeleeAttack extends Attack {
 	public Explosion explosion;

@@ -1,7 +1,7 @@
 package gameStructure;
 
-import game.GameBaseApp;
-import game.PlayerInterface;
+import shared.GameBaseApp;
+import shared.SpellHandler;
 
 public abstract class Champion extends Unit {
 	protected String championName;
@@ -9,13 +9,13 @@ public abstract class Champion extends Unit {
 	public Champion(GameBaseApp app, String[] c) {
 		super(app, c);
 		try {
-			player.champion = this;
+			player.setChampion(this);
 		} catch (Exception e) {
 		}
 		hpBarLength = 40;
 	}
 
-	public abstract void setupSpells(PlayerInterface playerInterface);
+	public abstract void setupSpells(GameBaseApp app, SpellHandler spellHandler	);
 
 	@Override
 	public String getIngameName() {

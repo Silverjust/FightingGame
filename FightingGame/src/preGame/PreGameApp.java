@@ -1,11 +1,11 @@
 package preGame;
 
 import g4p_controls.G4P;
-import game.GameBaseApp;
 import main.Listener;
 import processing.core.PApplet;
 import server.ServerApp;
 import shared.Client;
+import shared.GameBaseApp;
 import shared.Global;
 import shared.Mode;
 import shared.VersionControle;
@@ -28,6 +28,7 @@ public class PreGameApp extends GameBaseApp {
 		background(50);
 		frame.setTitle(gameName);
 		frame.addWindowListener(new Listener(this));
+		
 		Global.addApp(this);
 		System.out.println("\n\tFightingGame v" + VersionControle.version + "\n");
 		G4P.messagesEnabled(false);
@@ -80,7 +81,7 @@ public class PreGameApp extends GameBaseApp {
 
 	public void connectToServer(String ip) {
 		startScreen.setWaiting(true);
-		setClientHandler(new ClientHandler(this, ip));
+		setClientHandler(new PreGameClientHandler(this, ip));
 		startScreen.dispose();
 		setMode(Mode.PREGAME);
 	}

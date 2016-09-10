@@ -2,10 +2,10 @@ package main.appdata;
 
 import processing.core.PConstants;
 import processing.data.JSONObject;
+import shared.GameBaseApp;
 import g4p_controls.G4P;
 import g4p_controls.GTextArea;
 import g4p_controls.GWindow;
-import game.GameBaseApp;
 
 public class StatScreen {
 

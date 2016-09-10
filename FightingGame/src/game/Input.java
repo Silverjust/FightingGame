@@ -7,6 +7,7 @@ import processing.core.PConstants;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import shared.Coms;
+import shared.GameBaseApp;
 import shared.Helper;
 import shared.Mode;
 import shared.Updater.GameState;
@@ -48,12 +49,12 @@ public class Input {
 			if (Helper.isMouseOver(app, 0, 0, rimSize, app.height) && GameDrawer.xMapOffset < 0)
 				GameDrawer.xMapOffset += screenSpeed;
 			if (Helper.isMouseOver(app, app.width - rimSize, 0, app.width, app.height)
-					&& -GameDrawer.xMapOffset + app.width <= app.updater.map.width * GameDrawer.zoom)
+					&& -GameDrawer.xMapOffset + app.width <= app.getUpdater().map.width * GameDrawer.zoom)
 				GameDrawer.xMapOffset -= screenSpeed;
 			if (Helper.isMouseOver(app, 0, 0, app.width, rimSize) && GameDrawer.yMapOffset < 0)
 				GameDrawer.yMapOffset += screenSpeed;
 			if (Helper.isMouseOver(app, 0, app.height - rimSize, app.width, app.height) && -GameDrawer.yMapOffset
-					+ app.height - app.getDrawer().getHud().height <= app.updater.map.height / 2 * GameDrawer.zoom)
+					+ app.height - app.getDrawer().getHud().height <= app.getUpdater().map.height / 2 * GameDrawer.zoom)
 				GameDrawer.yMapOffset -= screenSpeed;
 		}
 	}
@@ -62,10 +63,10 @@ public class Input {
 		app.getDrawer().getHud().chat.update();
 		if (isKeyFocusInGame()) {
 			if (app.key == app.settingHandler.getSetting().togglePause) {
-				if (app.updater.gameState == GameState.PAUSE) {
-					app.updater.send(Coms.PAUSE + " false");
-				} else if (app.updater.gameState == GameState.PLAY) {
-					app.updater.send(Coms.PAUSE + " true");
+				if (app.getUpdater().gameState == GameState.PAUSE) {
+					app.getUpdater().send(Coms.PAUSE + " false");
+				} else if (app.getUpdater().gameState == GameState.PLAY) {
+					app.getUpdater().send(Coms.PAUSE + " true");
 				}
 			}
 			/*
@@ -159,7 +160,7 @@ public class Input {
 	}
 
 	public void keyEvent(KeyEvent event) {
-		if (app.mode == Mode.GAME) {
+		if (app.getMode() == Mode.GAME) {
 			switch (event.getAction()) {
 			case KeyEvent.PRESS:
 				keyPressed();
@@ -177,7 +178,7 @@ public class Input {
 	}
 
 	public void mouseEvent(MouseEvent event) {
-		if (app.mode == Mode.GAME) {
+		if (app.getMode() == Mode.GAME) {
 			switch (event.getAction()) {
 			case MouseEvent.PRESS:
 				mousePressed();

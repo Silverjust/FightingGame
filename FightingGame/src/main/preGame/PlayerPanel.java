@@ -2,9 +2,9 @@ package main.preGame;
 
 import g4p_controls.GControlMode;
 import g4p_controls.GSlider;
-import game.GameBaseApp;
 import processing.core.PConstants;
 import processing.core.PGraphics;
+import shared.GameBaseApp;
 
 public class PlayerPanel {
 	public GSlider playerSlider;

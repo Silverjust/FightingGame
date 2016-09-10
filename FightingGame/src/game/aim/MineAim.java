@@ -1,12 +1,12 @@
 package game.aim;
 
+import shared.GameBaseApp;
 import shared.NationInfo;
 import entity.neutral.Arcanum;
 import entity.neutral.Kerit;
 import entity.neutral.Pax;
 import entity.neutral.Prunam;
 import game.AimHandler;
-import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.GameObject;
 import gameStructure.actives.UpgradeActive;

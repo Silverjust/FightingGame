@@ -2,10 +2,10 @@ package entity.scientists;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import shared.Nation;
 import game.AimHandler;
 import game.AimHandler.Cursor;
-import game.GameBaseApp;
 import game.ImageHandler;
 import game.aim.CustomAim;
 import gameStructure.AimingActive;
@@ -105,7 +105,7 @@ public class PhysicsLab extends Lab {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -174,7 +174,7 @@ public class PhysicsLab extends Lab {
 					origin = (PhysicsLab) e;
 			}
 			if (origin != null) {
-				origin.sendAnimation("sendTeleport");
+				origin.sendAnimation("sendTeleport", this);
 				AimHandler.setAim(new CustomAim(this, Cursor.SELECT));
 			}
 		}
@@ -191,21 +191,21 @@ public class PhysicsLab extends Lab {
 			// x = Entity.xToGrid(Entity.gridToX());
 			// y = Entity.xToGrid(Entity.gridToY());
 			for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
-				if (e.isAllyTo(GameBaseApp.player) && e instanceof PhysicsLab
+				if (e.isAllyTo(GameBaseApp.getPlayer()) && e instanceof PhysicsLab
 						&& PApplet.dist(x, y, e.getX(), e.getY() - e.flyHeight()) <= e.getRadius())
 					target = e;
 			}
 			if (target != null) {
 				PhysicsLab origin = this.origin;
 				origin.getTeleport().startCooldown();
-				target.sendAnimation("recieveTeleport");
+				target.sendAnimation("recieveTeleport", this);
 				for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
-					if (e.isAllyTo(GameBaseApp.player)
+					if (e.isAllyTo(GameBaseApp.getPlayer())
 							&& e instanceof Unit
 							&& !(e instanceof Lab)
 							&& e.isInRange(origin.getX(), origin.getY(),
 									origin.equipRange))
-						GameBaseApp.updater.sendDirect("<tp " + e.number + " "
+						GameBaseApp.getUpdater().sendDirect("<tp " + e.getNumber() + " "
 								+ (e.getX() + target.getX() - origin.getX()) + " "
 								+ (e.getY() + target.getY() - origin.getY()));
 				}

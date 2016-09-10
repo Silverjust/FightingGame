@@ -1,11 +1,11 @@
 package server;
 
 import g4p_controls.G4P;
-import game.GameBaseApp;
 import main.Listener;
 import preGame.PreGameApp;
 import processing.core.PApplet;
 import shared.Client;
+import shared.GameBaseApp;
 import shared.Global;
 import shared.Mode;
 import shared.Server;
@@ -54,7 +54,7 @@ public class ServerApp extends GameBaseApp {
 			// getPreGameInfo().update();
 			break;
 		case LADESCREEN:
-			// GameBaseApp.loader.update();
+			getLoader().update();
 			break;
 		case GAME:
 			// if (frameCount % 2 == 0)

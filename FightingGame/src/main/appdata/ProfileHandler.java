@@ -1,8 +1,8 @@
 package main.appdata;
 
-import game.GameBaseApp;
-import game.PreGameInfo;
 import processing.data.JSONObject;
+import shared.GameBaseApp;
+import shared.PreGameInfo;
 import shared.VersionControle;
 import shared.Updater.GameState;
 
@@ -82,13 +82,13 @@ public class ProfileHandler implements appdataInfos {
 
 			if (GameApplet.GameBaseApp.gameState == GameState.WON) {
 				int wins = profile.getInt("wins");
-				int nationWins = profile.getInt(GameBaseApp.player.getNation().toString()
+				int nationWins = profile.getInt(GameBaseApp.getPlayer().getNation().toString()
 						+ "-wins");
 				wins++;
 				nationWins++;
 
 				profile.setInt("wins", wins);
-				profile.setInt(GameBaseApp.player.getNation().toString() + "-wins",
+				profile.setInt(GameBaseApp.getPlayer().getNation().toString() + "-wins",
 						nationWins);
 			}
 		}

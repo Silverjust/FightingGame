@@ -1,18 +1,21 @@
 package champs;
 
-import game.GameBaseApp;
 import game.ImageHandler;
-import game.PlayerInterface;
 import gameStructure.Attacker;
 import gameStructure.Champion;
 import gameStructure.GameObject;
+import gameStructure.Projectile;
 import gameStructure.Spell;
 import gameStructure.animation.Animation;
 import gameStructure.animation.Attack;
 import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PImage;
+import shared.Coms;
+import shared.GameBaseApp;
 import shared.Helper;
+import shared.Player;
+import shared.SpellHandler;
 
 public class Ticul extends Champion implements Attacker {
 	// TODO animations are displayed wrong
@@ -46,7 +49,8 @@ public class Ticul extends Champion implements Attacker {
 		basicAttack = new MeleeAttack(app, attackImg, 600);
 
 		setAnimation(walk);
-
+		if (player != null)
+			player.setChampion(this);
 		// ************************************
 		setxSize(50);
 		setySize(50);
@@ -57,7 +61,7 @@ public class Ticul extends Champion implements Attacker {
 
 		setSpeed(1.2f);
 		setRadius(15);
-		setSight(100);
+		setSight(200);
 
 		aggroRange = (byte) (getRadius() + 50);
 		basicAttack.range = 9;
@@ -77,7 +81,7 @@ public class Ticul extends Champion implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		player.app.getUpdater().send("<hit " + basicAttack.getTarget().number + " " + a.damage + " " + a.pirce);
+		player.app.getUpdater().send("<hit " + basicAttack.getTarget().getNumber() + " " + a.damage + " " + a.pirce);
 	}
 
 	@Override
@@ -92,18 +96,18 @@ public class Ticul extends Champion implements Attacker {
 	}
 
 	@Override
-	public void setupSpells(PlayerInterface inter) {
-		inter.addSpell(new Consume(player.app, inter, 0));
-		inter.addSpell(new Shot(player.app, inter, 1));
-		inter.addSpell(new TargetedShot(player.app, inter, 2));
+	public void setupSpells(GameBaseApp app, SpellHandler inter) {
+		inter.addSpell(new Consume(app, inter, 0));
+		inter.addSpell(new Shot(app, inter, 1));
+		inter.addSpell(new TargetedShot(app, inter, 2));
 	}
 
-	public class Consume extends Spell {// ******************************************************	
-		public Consume(GameBaseApp app, PlayerInterface inter, int pos) {
+	static public class Consume extends Spell {// ******************************************************
+		public Consume(GameBaseApp app, SpellHandler inter, int pos) {
 			super(app, inter, pos, smiteImg);
-			setCooldown(1000);
+			setPassive(true);
 		}
-	
+
 		@Override
 		public String getDescription() {
 			return null;
@@ -111,29 +115,23 @@ public class Ticul extends Champion implements Attacker {
 
 		@Override
 		protected void onActivation() {
+		}
+
+		@Override
+		public void recieveInput(String[] c, Player player) {
 			// TODO Auto-generated method stub
-			
+
 		}
-	
+
 	}
 
-	public class Shot extends Spell {// ******************************************************
-		private int range = 100;
+	static public class Shot extends Spell {
+		private int maxRange = 120;
 
-		public Shot(GameBaseApp app, PlayerInterface inter, int pos) {
+		// ******************************************************
+		public Shot(GameBaseApp app, SpellHandler inter, int pos) {
 			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
-		}
-
-		@Override
-		public void onActivation() {
-
-			System.out.println("Ticul.Shot.onActivation()");
-			player.app.getUpdater()
-					.send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY() + " "
-							+ Helper.gridToX(player.app.mouseX) + " " + Helper.gridToY(player.app.mouseY) + " "
-							+ getInternName());
-			startCooldown();
 		}
 
 		@Override
@@ -141,29 +139,41 @@ public class Ticul extends Champion implements Attacker {
 			return null;
 		}
 
+		@Override
+		protected void onActivation() {
+			float xo = app.getPlayer().getChampion().getX();
+			float yo = app.getPlayer().getChampion().getY();
+			float xt = Projectile.cutProjectileRangeX(Helper.gridToX(app.mouseX) - xo, Helper.gridToY(app.mouseY) - yo,
+					maxRange, maxRange);
+			float yt = Projectile.cutProjectileRangeY(Helper.gridToX(app.mouseX) - xo, Helper.gridToY(app.mouseY) - yo,
+					maxRange, maxRange);
+			app.getUpdater().send(Coms.INPUT + " " + app.getPlayer().getUser().getIp() + " " + getPos() + " 1 "
+					+ (xt + xo) + " " + (yt + yo));
+		}
+
+		@Override
+		public void recieveInput(String[] c, Player player) {
+			app.getUpdater().sendSpawn(TestProjectile.class, player, player.getChampion().getX() + " "
+					+ player.getChampion().getY() + " " + c[4] + " " + c[5] + " " + getInternName());
+		}
+
 	}
 
-	public class TargetedShot extends Spell {// ******************************************************
-
-		private int range = 100;
-
-		public TargetedShot(GameBaseApp app, PlayerInterface inter, int pos) {
+	static public class TargetedShot extends Spell {// ******************************************************
+		public TargetedShot(GameBaseApp app, SpellHandler inter, int pos) {
 			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
 
 		@Override
-		public void onActivation() {
-
-			System.out.println("Ticul.Shot.onActivation()");
-			player.app.getUpdater().send(SPAWN + " TestProjectile " + player.getUser().ip + " " + getX() + " " + getY()
-					+ " " + HOMING + " " + 2 + " " + getInternName());
-			startCooldown();
+		public String getDescription() {
+			return null;
 		}
 
 		@Override
-		public String getDescription() {
-			return null;
+		public void recieveInput(String[] c, Player player) {
+			// TODO Auto-generated method stub
+
 		}
 
 	}

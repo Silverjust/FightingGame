@@ -2,28 +2,26 @@ package preGame;
 
 import javax.naming.NoInitialContextException;
 
-import game.GameBaseApp;
-import game.MainLoader;
 import processing.core.PApplet;
 import server.ServerUpdater;
 import shared.ComHandler;
+import shared.GameBaseApp;
 import shared.Mode;
+import shared.Team;
 import shared.User;
 import shared.VersionControle;;
 
 public class PreGameComHandler extends ComHandler {
 
 	private PreGameApp preGameApp;
-	private ClientHandler clientHandler;
 
 	public PreGameComHandler(GameBaseApp app) {
 		super(app);
 		preGameApp = (PreGameApp) app;
-		clientHandler = app.getClientHandler();
 	}
 
 	@Override
-	public void executeCom(String com) {
+	public void executeCom(String com, boolean isIntern) {
 		String[] c = PApplet.splitTokens(com, S + app.getClientHandler().endSymbol);
 		try {
 			switch (c[0]) {
@@ -32,13 +30,14 @@ public class PreGameComHandler extends ComHandler {
 
 			// before game
 			case IDENTIFY:
-				if (c[1].equals(clientHandler.identification)) {
-					User u = new User(app, app.getClientHandler().identification, preGameApp.getStartscreen().name);
+				if (c[1].equals(app.getClientHandler().getIdentification())) {
+					User u = new User(app, app.getClientHandler().getIdentification(),
+							preGameApp.getStartscreen().name);
 					app.getPreGameInfo().addUser(u);
 					System.out.println("identifying " + app.getPreGameInfo().getUser("").name);
 				}
-				app.getClientHandler().send(IDENTIFYING + S + app.getClientHandler().identification + S
-						+ app.getPreGameInfo().getUser("").name + S + VersionControle.version);
+				app.getClientHandler().send(IDENTIFYING + S + app.getClientHandler().getIdentification() + S
+						+ app.getPreGameInfo().getUser("").name + S + PGCLIENT + S + VersionControle.version);
 
 				break;
 			case IDENTIFYING: {
@@ -46,52 +45,77 @@ public class PreGameComHandler extends ComHandler {
 				app.getPreGameInfo().addUser(u);
 				if (preGameApp.getPreGameInterface() != null)
 					preGameApp.getPreGameInterface().updateUsers(preGameApp);
-				if (c.length > 3 && c[3] != null && !c[3].equals(VersionControle.version)) {
-					System.err.println("player " + c[2] + " has different version than Server " + c[3] + " "
-							+ VersionControle.version + " (VersionCombiner.java:11)");
-					app.write("WARNING", "player " + c[2] + " has different version than Server " + c[3] + " "
-							+ VersionControle.version + " (VersionCombiner.java:11)");
+				if (c.length > 4 && c[4] != null && !c[4].equals(VersionControle.version)) {
+					System.err.println("player " + c[2] + " has different version than Server " + c[4] + " "
+							+ VersionControle.version + " (VersionControle.java:12)");
+					app.write("WARNING", "player " + c[2] + " has different version than Server " + c[4] + " "
+							+ VersionControle.version + " (VersionControle.java:12)");
 				}
 			}
 				break;
 			case SET_MAP:
 				// app.getPreGameInfo().setMap(c[2]);
 				break;
-			case LOAD:
-				app.setLoader(new MainLoader(app));
-				app.setMode(Mode.LADESCREEN);
+			case SET_TEAM:
+				User u = app.getPreGameInfo().getUser(c[1]);
+				if (c[2].equals(LEFTSIDE)) {
+					u.team = Team.LEFTSIDE;
+					preGameApp.getPreGameInterface().updateUsers(preGameApp);
+				} else if (c[2].equals(RIGHTSIDE)) {
+					u.team = Team.RIGHTSIDE;
+					preGameApp.getPreGameInterface().updateUsers(preGameApp);
+				} else {
+					throw new IllegalArgumentException(c[2] + " is not a team");
+				}
+				break;
+			case SET_CHAMP:
+				u = app.getPreGameInfo().getUser(c[1]);
+				u.championName = c[2];
+				preGameApp.getPreGameInterface().updateUsers(preGameApp);
+				break;
+			case START_GAMEAPPS:
+				PApplet.main(new String[] { "--present", "game.GameApp", app.getClientHandler().getServerIp() });
+				app.setMode(Mode.GAME);
+				break;
+			case START_LOADING:
+				/* code */
 				break;
 			case RECONNECT:
 				((ServerUpdater) updater).reconnect();
 				break;
 			case READY:
-				// System.out.println(ref.preGame.player);
-				app.getPreGameInfo().users.get(c[1]).isReady = true;
-				app.getLoader().tryStartGame();
 				break;
+			case START_GAME:
+				break;
+
+			case DAMAGE:
+				break;
+			case HEAL:
+				break;
+			case TP:
+				break;
+			case SPAWN:
+				break;
+			case BUFF:
+				break;
+			case EXECUTE:
+				break;
+			case REMOVE:
+				break;
+			case PAUSE:
+				break;
+
 			default:
-				System.err.println(com + " was not found");
+				handleErrorNoCommandFound(com, c);
 				throw new NoInitialContextException("no command found");
 			}
-		} catch (
-
-		IllegalArgumentException e)
-
-		{
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			// can be ignored
-		} catch (
-
-		ClassCastException e)
-
-		{
+		} catch (ClassCastException e) {
 			e.printStackTrace();
 			// can be ignored
-		} catch (
-
-		Exception e)
-
-		{
+		} catch (Exception e) {
 			System.err.println("com error in " + com);
 			e.printStackTrace();
 		}

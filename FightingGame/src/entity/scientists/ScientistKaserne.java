@@ -2,7 +2,7 @@ package entity.scientists;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Spell;
 import gameStructure.Attacker;
@@ -157,7 +157,7 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -262,7 +262,7 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 			if (trained != null && newUnit != null
 					&& newUnit.canBeBought(trained.player)) {
 				newUnit.buyFrom(trained.player);
-				trained.sendAnimation("equip " + unit.getSimpleName());
+				trained.sendAnimation("equip " + unit.getSimpleName(), this);
 			}
 		}
 
@@ -315,7 +315,7 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 			if (trainer != null && toTrain != null
 					&& toTrain.canBeBought(trainer.player)) {
 				toTrain.buyFrom(trainer.player);
-				trainer.sendAnimation("train " + unit.getSimpleName());
+				trainer.sendAnimation("train " + unit.getSimpleName(), this);
 
 			}
 		}

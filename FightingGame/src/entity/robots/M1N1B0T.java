@@ -2,8 +2,8 @@ package entity.robots;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import gameStructure.Spell;
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -113,7 +113,7 @@ public class M1N1B0T extends Unit implements Attacker, Shooter {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -123,7 +123,7 @@ public class M1N1B0T extends Unit implements Attacker, Shooter {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.getUpdater().sendDirect("<hit " + basicAttack.getTarget().getNumber() + " "
 				+ a.damage + " " + a.pirce);
 		// SoundHandler.startIngameSound(HUD.hm, x, y);
 	}
@@ -176,7 +176,7 @@ public class M1N1B0T extends Unit implements Attacker, Shooter {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -246,9 +246,9 @@ public class M1N1B0T extends Unit implements Attacker, Shooter {
 			if (trainer != null && newUnit != null
 					&& newUnit.canBeBought(trainer.player)) {
 				newUnit.buyFrom(trainer.player);
-				GameBaseApp.updater.sendDirect("<spawn RobotsDepot " + trainer.player.getUser().ip
+				GameBaseApp.getUpdater().sendDirect("<spawn RobotsDepot " + trainer.player.getUser().getIp()
 						+ " " + trainer.getX() + " " + trainer.getY() + " select");
-				GameBaseApp.updater.sendDirect("<remove " + trainer.number);
+				GameBaseApp.getUpdater().sendDirect("<remove " + trainer.getNumber());
 			}
 		}
 

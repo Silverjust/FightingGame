@@ -5,6 +5,7 @@ import g4p_controls.G4P;
 import g4p_controls.GButton;
 import g4p_controls.GCScheme;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import shared.Menu;
 
 public class HUD {
@@ -24,7 +25,7 @@ public class HUD {
 	private SoundHandler soundHandler;
 
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
-		if (app.player != null) {
+		if (app.getPlayer() != null) {
 			overlay = imageHandler.load("hud/", "overlay");
 			// sound = ref.minim
 			// .loadFile(ref.player.getNation().toString() + "/" +

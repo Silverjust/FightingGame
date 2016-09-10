@@ -6,6 +6,7 @@ import g4p_controls.GEvent;
 import main.OptionsMenu;
 import main.appdata.ProfileHandler;
 import shared.Coms;
+import shared.GameBaseApp;
 import shared.Menu;
 
 public class IngameMenu extends Menu {
@@ -34,13 +35,13 @@ public class IngameMenu extends Menu {
 	public void handleButtonEvents(GButton button, GEvent event) {
 		if (event == GEvent.CLICKED) {
 			if (button == surrender) {
-				app.updater.send("<gameend lost " + app.player.getUser().ip + " " + ProfileHandler.getRate());
+				app.getUpdater().send("<gameend lost " + app.getPlayer().getUser().getIp() + " " + ProfileHandler.getRate());
 				dispose();
 			} else if (button == options) {
 				dispose();
 				app.getDrawer().getHud().menue = new OptionsMenu();
 			} else if (button == returnToGame) {
-				app.updater.send(Coms.PAUSE + " false");
+				app.getUpdater().send(Coms.PAUSE + " false");
 			}
 		}
 	}

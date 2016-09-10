@@ -2,7 +2,6 @@ package entity;
 
 import java.lang.reflect.Constructor;
 
-import game.GameBaseApp;
 import gameStructure.Spell;
 import gameStructure.actives.BuildActive;
 import gameStructure.actives.GridActive;
@@ -10,6 +9,7 @@ import gameStructure.actives.UpgradeActive;
 import gameStructure.Building;
 import gameStructure.GameObject;
 import main.appdata.SettingHandler;
+import shared.GameBaseApp;
 import shared.Helper;
 
 public class ActivesGrid {

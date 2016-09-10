@@ -5,10 +5,10 @@ import g4p_controls.GButton;
 import g4p_controls.GCScheme;
 import g4p_controls.GEvent;
 import g4p_controls.GTextField;
-import game.PreGameInfo;
 import processing.core.PApplet;
 import shared.Helper;
 import shared.Mode;
+import shared.PreGameInfo;
 
 public class StartScreenInterface {
 	PreGameApp app;
@@ -63,7 +63,7 @@ public class StartScreenInterface {
 				setWaiting(true);
 				preparePregame();
 				String ip = Helper.secureInput(ipField.getText());
-				app.setClientHandler(new ClientHandler(app, ip));
+				app.setClientHandler(new PreGameClientHandler(app, ip));
 				setWaiting(false);
 				if (app.getClientHandler().wasSuccesfull()) {
 					dispose();
@@ -74,7 +74,7 @@ public class StartScreenInterface {
 	}
 
 	void preparePregame() {
-		PreGameInfo pgi = PreGameInfo.createNewPrGaIn(app);
+		PreGameInfo pgi = new PreGameInfo(app);
 		app.setPreGameInfo(pgi);
 		name = nameField.getText();
 	}
@@ -90,7 +90,7 @@ public class StartScreenInterface {
 	public void initDummy() {
 		nameField.setText("dummy");
 		ipField.setText("127.0.0.1");
-		//handleButtonEvents((GButton) connectButton, null);
+		// handleButtonEvents((GButton) connectButton, null);
 	}
 
 	public void dispose() {

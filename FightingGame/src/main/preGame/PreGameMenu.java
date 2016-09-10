@@ -7,7 +7,7 @@ import main.OptionsMenu;
 import g4p_controls.G4P;
 import g4p_controls.GButton;
 import g4p_controls.GEvent;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import shared.Menu;
 
 public class PreGameMenu extends Menu {

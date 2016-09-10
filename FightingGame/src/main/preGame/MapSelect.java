@@ -2,8 +2,8 @@ package main.preGame;
 
 import processing.data.JSONObject;
 import shared.ContentListManager;
+import shared.GameBaseApp;
 import g4p_controls.GDropList;
-import game.GameBaseApp;
 
 public class MapSelect {
 	public int previousMap;

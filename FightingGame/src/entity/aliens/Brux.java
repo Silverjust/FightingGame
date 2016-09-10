@@ -1,6 +1,5 @@
 package entity.aliens;
 
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -11,6 +10,7 @@ import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public class Brux extends Unit implements Attacker {
 
@@ -115,10 +115,10 @@ public class Brux extends Unit implements Attacker {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null && !isEnemyInHitRange
 					&& jump.isNotOnCooldown()) {
-				sendAnimation("jump " + importantEntity.number);
+				sendAnimation("jump " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -149,7 +149,7 @@ public class Brux extends Unit implements Attacker {
 		super.exec(c);
 		if (c[2].equals("jump")) {
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.getUpdater().getNamedObjects().get(n);
 			jump.setTargetFrom(this, e);
 			xTarget = e.getX();
 			yTarget = e.getY();
@@ -159,7 +159,7 @@ public class Brux extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.getUpdater().sendDirect("<hit " + basicAttack.getTarget().getNumber() + " "
 				+ a.damage + " " + a.pirce);
 
 	}
@@ -200,7 +200,7 @@ public class Brux extends Unit implements Attacker {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -261,7 +261,7 @@ public class Brux extends Unit implements Attacker {
 			if (target != null && isNotOnCooldown()
 					&& target.isInRange(e.getX(), e.getY(), e.getRadius() + target.getRadius())) {
 				if (isServer) {
-					GameBaseApp.updater.sendDirect("<hit " + target.number + " " + damage
+					GameBaseApp.getUpdater().sendDirect("<hit " + target.getNumber() + " " + damage
 							+ " " + pirce);
 					e.sendDefaultAnimation(this);
 				}

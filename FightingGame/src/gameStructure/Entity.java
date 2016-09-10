@@ -3,12 +3,12 @@ package gameStructure;
 import java.util.ArrayList;
 
 import champs.TestProjectile;
-import game.GameBaseApp;
 import gameStructure.animation.Death;
 import gameStructure.baseBuffs.Buff;
 import processing.core.PApplet;
 import processing.core.PImage;
 import shared.Coms;
+import shared.GameBaseApp;
 import shared.Helper;
 import shared.Player;
 
@@ -56,7 +56,7 @@ public class Entity extends GameObject {
 
 	public void sendDamage(TestProjectile testProjectile, Damage damage, Player player, String origin) {
 		player.app.getUpdater()
-				.send(Coms.DAMAGE + " " + number + " " + damage.get() + " " + player.getUser().ip + " " + origin);
+				.send(Coms.DAMAGE + " " + getNumber() + " " + damage.get() + " " + player.getUser().getIp() + " " + origin);
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class Entity extends GameObject {
 	}
 
 	public void info() {
-		player.app.getDrawer().getHud().chat.println(this.getClass().getSimpleName() + "_" + number,
+		player.app.getDrawer().getHud().chat.println(this.getClass().getSimpleName() + "_" + getNumber(),
 				"(" + getX() + "|" + getY() + ")" + "\nhp:" + getCurrentHp());
 	}
 
@@ -122,7 +122,7 @@ public class Entity extends GameObject {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

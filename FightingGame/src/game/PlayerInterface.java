@@ -2,14 +2,14 @@ package game;
 
 import java.util.ArrayList;
 
-import g4p_controls.GEvent;
-import g4p_controls.GGameButton;
 import gameStructure.Champion;
 import gameStructure.Spell;
 import main.appdata.SettingHandler;
+import shared.ContentListManager;
+import shared.GameBaseApp;
+import shared.SpellHandler;
 
-public class PlayerInterface {
-	Champion champ;
+public class PlayerInterface extends SpellHandler {
 	private ArrayList<Spell> spells = new ArrayList<Spell>();
 	public int x = 400;
 	public int y;
@@ -19,18 +19,20 @@ public class PlayerInterface {
 		hud.playerInterface = this;
 		settingHandler = ((GameApp) app).settingHandler;
 		y = app.height - hud.height + 5;
-		champ = app.player.champion;
-		champ.setupSpells(this);
+		String championName = app.getPlayer().getUser().championName;
+		if (championName != null && !championName.equals("") && !championName.equals("null")) {
+			ContentListManager contentListManager = app.getContentListManager();
+			Champion champ = (Champion) contentListManager.createGObj(contentListManager.getChampClass(championName));
+			champ.setupSpells(app, this);
+		} else {
+			System.err.println("PlayerInterface.PlayerInterface()   " + championName + " is not a champion");
+		}
 	}
 
 	public void update() {
 		for (Spell spell : spells) {
-			spell.update();
+			spell.updateButton();
 		}
-	}
-
-	public void handleSpellEvent(GGameButton gamebutton, GEvent event) {
-		System.out.println("PlayerInterface.handleSpellEvent()" + event);
 	}
 
 	public Spell addSpell(Spell spell) {

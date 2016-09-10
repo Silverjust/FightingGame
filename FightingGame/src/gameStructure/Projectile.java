@@ -2,9 +2,9 @@ package gameStructure;
 
 import java.util.ArrayList;
 
-import game.GameBaseApp;
 import processing.core.PApplet;
 import shared.Coms;
+import shared.GameBaseApp;
 
 public class Projectile extends GameObject {
 	private float xTarget;
@@ -17,15 +17,17 @@ public class Projectile extends GameObject {
 
 	public Projectile(GameBaseApp app, String[] c) {
 		super(app, c);
-		if (c != null && c.length > 7) {
-			if (c[5].equals(HOMING)) {
-				targetObject = app.getUpdater().getGameObject(Integer.parseInt(c[6]));
+		if (c != null && c.length > 8) {
+			if (c[6].equals(HOMING)) {
+				targetObject = app.getUpdater().getGameObject(Integer.parseInt(c[7]));
 				System.out.println("Projectile.Projectile() homing to" + targetObject);
 			} else {
-				xTarget = Float.parseFloat(c[5]);
-				yTarget = Float.parseFloat(c[6]);
+				xTarget = Float.parseFloat(c[6]);
+				yTarget = Float.parseFloat(c[7]);
 			}
-			origin = c[7];
+			origin = c[8];
+		} else {
+			System.err.println("Projectile.Projectile() wrong spawn command");
 		}
 
 	}
@@ -61,7 +63,7 @@ public class Projectile extends GameObject {
 
 	protected void onEnd() {
 		// setSight(0);
-		player.app.getUpdater().send(Coms.REMOVE + " " + number);
+		player.app.getUpdater().send(Coms.REMOVE + " " + getNumber());
 	}
 
 	protected void onHit(GameObject o) {
@@ -125,5 +127,26 @@ public class Projectile extends GameObject {
 	@Override
 	public boolean isCollidable(GameObject entity) {
 		return false;
+	}
+
+	static public float cutProjectileRangeX(float x, float y, int maxRange, int minRange) {
+		float a = PApplet.atan2(y, x);
+		float d = PApplet.dist(0, 0, x, y);
+		if (d > maxRange)
+			d = maxRange;
+		if (d < minRange)
+			d = minRange;
+		return d * PApplet.cos(a);
+	}
+
+	static public float cutProjectileRangeY(float x, float y, int maxRange, int minRange) {
+
+		float a = PApplet.atan2(y, x);
+		float d = PApplet.dist(0, 0, x, y);
+		if (d > maxRange)
+			d = maxRange;
+		if (d < minRange)
+			d = minRange;
+		return d * PApplet.sin(a);
 	}
 }

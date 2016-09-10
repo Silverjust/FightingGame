@@ -2,7 +2,7 @@ package entity.robots;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -126,7 +126,7 @@ public class W4SP extends Unit implements Attacker, Shooter {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -134,7 +134,7 @@ public class W4SP extends Unit implements Attacker, Shooter {
 		if (speeding.isSetup() && speeding.isEvent()) {
 			System.out.println("W4SP.updateDecisions()");
 			speeding.setTargetFrom(null, null);
-			sendAnimation("speeddown");
+			sendAnimation("speeddown", this);
 		}
 		basicAttack.updateAbility(this, isServer);
 	}
@@ -164,7 +164,7 @@ public class W4SP extends Unit implements Attacker, Shooter {
 			if (e != null & e.isEnemyTo(this)
 					&& e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)
 					&& e.groundPosition == GroundPosition.GROUND) {
-				GameBaseApp.updater.sendDirect("<hit " + e.number + " " + a.damage + " "
+				GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + a.damage + " "
 						+ a.pirce);
 			}
 		}
@@ -240,7 +240,7 @@ public class W4SP extends Unit implements Attacker, Shooter {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -304,7 +304,7 @@ public class W4SP extends Unit implements Attacker, Shooter {
 		public void onActivation() {
 			for (GameObject e : GameApplet.GameBaseApp.selected) {
 				if (e instanceof W4SP) {
-					e.sendAnimation("speed");
+					e.sendAnimation("speed", this);
 				}
 			}
 		}

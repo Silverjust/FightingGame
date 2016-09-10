@@ -7,35 +7,35 @@ import g4p_controls.G4P;
 import main.Listener;
 import main.appdata.SettingHandler;
 import main.preGame.PreGameMenu;
-import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PFont;
 import shared.Client;
 import shared.Coms;
 import shared.ContentListManager;
+import shared.GameBaseApp;
 import shared.Global;
 import shared.Mode;
+import shared.PreGameInfo;
 import shared.Updater.Time;
 import shared.VersionControle;
 
 @SuppressWarnings("serial")
 public class GameApp extends GameBaseApp {
 
-	public static void main(String args[]) {
-		boolean fullscreen = false;
-		fullscreen = true;
-		if (fullscreen) {
-			PApplet.main(new String[] { "--present", "game.GameApp" });
-		} else {
-			PApplet.main(new String[] { "game.GameApp" });
-		}
-	}
+	/*
+	 * public static void main(String args[]) { boolean fullscreen = false;
+	 * fullscreen = true; if (fullscreen) { PApplet.main(new String[] {
+	 * "--present", "game.GameApp" }); } else { PApplet.main(new String[] {
+	 * "game.GameApp" }); } }
+	 */
 
 	PFont font;
 	SettingHandler settingHandler;
 
 	public void setup() {
+		System.out.println("GameApp.setup() creating PApplet");
 		size(displayWidth, displayHeight, P2D);
+		System.out.println("GameApp.setup() setup the rest");
 		frame.setExtendedState(frame.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 		frame.setResizable(true);
 		frame.setTitle("FigthingGame");
@@ -63,11 +63,16 @@ public class GameApp extends GameBaseApp {
 		getContentListManager().load();
 		setComHandler(new GameComHandler(this));
 
-		setPreGameInfo(PreGameInfo.createDummyPrGaIn(this));
+		setPreGameInfo(new PreGameInfo(this));
+		setClientHandler(new GameClientHandler(this, args[0]));
+		System.out.println("GameApp.setup()" + getPreGameInfo());
+		setMode(Mode.PREGAME);
 	}
 
 	public void draw() {
 		switch (mode) {
+		case PREGAME:
+			break;
 		case LADESCREEN:
 			loader.update();
 			break;
@@ -75,7 +80,7 @@ public class GameApp extends GameBaseApp {
 			// if (frameCount % 100 == 0)// DEBUG
 			// CommandHandler.executeCommands("/fps");
 			// HUD.chatPrintln("fps", ""+frameRate);
-			updater.update();
+			getUpdater().update();
 			getDrawer().update();
 
 			break;
@@ -121,7 +126,7 @@ public class GameApp extends GameBaseApp {
 	public void dispose() {// Player in schlieﬂen
 		try {
 			if (getClientHandler().client != null)
-				updater.send(Coms.PAUSE + " true");
+				getUpdater().send(Coms.PAUSE + " true");
 			// ProfileHandler.dispose();
 			getDrawer().getHud().dispose();
 			// TODO close all ingame sounds

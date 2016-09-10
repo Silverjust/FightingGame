@@ -1,8 +1,8 @@
 package entity.neutral;
 
-import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.animation.Extract;
+import shared.GameBaseApp;
 
 public abstract class PaxDrillTower extends Building {
 
@@ -38,7 +38,7 @@ public abstract class PaxDrillTower extends Building {
 	@Override
 	protected void onDeath() {
 		super.onDeath();
-		GameBaseApp.updater.sendDirect("<spawn Pax 0 " + getX() + " " + getY());
+		GameBaseApp.getUpdater().sendDirect("<spawn Pax 0 " + getX() + " " + getY());
 	}
 
 	@Override

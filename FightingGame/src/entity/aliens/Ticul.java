@@ -1,7 +1,6 @@
 package entity.aliens;
 
 import game.ClientHandler;
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Spell;
 import gameStructure.Attacker;
@@ -13,6 +12,7 @@ import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import shared.Helper;
 import shared.Nation;
 
@@ -114,7 +114,7 @@ public class Ticul extends Unit implements Attacker {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			}
@@ -124,7 +124,7 @@ public class Ticul extends Unit implements Attacker {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.getUpdater().sendDirect("<hit " + basicAttack.getTarget().getNumber() + " "
 				+ a.damage + " " + a.pirce);
 	}
 
@@ -164,7 +164,7 @@ public class Ticul extends Unit implements Attacker {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -230,7 +230,7 @@ public class Ticul extends Unit implements Attacker {
 						* range;
 				float y = e.getY() + (ty - e.getY()) / PApplet.dist(e.getX(), e.getY(), tx, ty)
 						* range;
-				ClientHandler.sendDirect("<tp " + e.number + " " + x + " " + y);
+				PreGameClientHandler.sendDirect("<tp " + e.getNumber() + " " + x + " " + y);
 			}
 			startCooldown();
 		}

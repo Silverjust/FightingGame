@@ -2,7 +2,6 @@ package shared;
 
 import java.util.ArrayList;
 
-import game.GameBaseApp;
 import gameStructure.Champion;
 import gameStructure.GameObject;
 import shared.Updater.GameState;
@@ -13,15 +12,23 @@ public class Player {
 	public ArrayList<GameObject> visibleEntities = new ArrayList<GameObject>();
 	private User user;
 	public GameState gameState;// win, loose
-	public Champion champion;
+	private Champion champion;
 	public GameBaseApp app;
 
-	public static Player createNeutralPlayer(GameBaseApp app) {
+	public static Player createNeutralPlayer(GameBaseApp app, Team team) {
 		Player p = new Player(app);
 		p.setUser(new User(app, "", "neutral"));
+		p.getUser().team = team;
 		p.getUser().player = p;
-		p.getUser().online = true;
+		p.getUser().setOnline(true);
 		p.color = app.color(150);
+		if (team != null)
+			p.getUser().setIp("0");
+		else if (team == Team.LEFTSIDE)
+			p.getUser().setIp("-1");
+		else if (team == Team.RIGHTSIDE)
+			p.getUser().setIp("-2");
+
 		return p;
 	}
 
@@ -39,7 +46,7 @@ public class Player {
 
 	@Override
 	public String toString() {
-		if (getUser().online) {
+		if (getUser().isOnline()) {
 			return "[" + getUser().name + "]";
 		}
 		return "offline:[" + getUser().name + "]";
@@ -52,6 +59,14 @@ public class Player {
 	public void setUser(User user) {
 		System.out.println("Player.setUser()");
 		this.user = user;
+	}
+
+	public Champion getChampion() {
+		return champion;
+	}
+
+	public void setChampion(Champion champion) {
+		this.champion = champion;
 	}
 
 }

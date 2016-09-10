@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import entity.MainBuilding;
 import entity.neutral.KeritMine;
 import entity.neutral.SandboxBuilding;
+import gameStructure.Champion;
 import gameStructure.GameObject;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
+import shared.GameBaseApp;
+import shared.Player;
+import shared.Team;
 
 public class MapHandler {
 
@@ -18,16 +22,28 @@ public class MapHandler {
 	}
 
 	public void setupEntities(JSONObject map) {
+		for (String ip : app.getUpdater().players.keySet()) {
+			Player player = app.getUpdater().getPlayer(ip);
+			System.out.println("MapHandler.setupEntities()" + player.getUser().championName);
+			if (player.getUser().championName != null && !player.getUser().championName.equals("")
+					&& !player.getUser().championName.equals("null")) {
+				Class<? extends Champion> c = app.getContentListManager().getChampClass(player.getUser().championName);
+				player.app.getUpdater().sendSpawn(c, player,
+						(player.getUser().team == Team.LEFTSIDE ? app.random(100, 200) : app.random(600, 700)) + " "
+								+ app.random(200, 600));
+				System.out.println("MapHandler.setupEntities() champs");
+			}
+		}
 		try {
 			JSONArray entitys = map.getJSONArray("entities");
 			System.out.println("MapHandler.setupEntities() " + entitys.size() + " Entities to spawn");
 			for (int i = 0; i < entitys.size(); i++) {
 				JSONObject entity = entitys.getJSONObject(i);
 				int playerNumber = entity.getInt("player");
-				if (app.updater.players.keySet().size() > playerNumber) {
+				if (app.getUpdater().players.keySet().size() > playerNumber) {
 					String player;
 					if (playerNumber >= 0) {
-						player = new ArrayList<String>(app.updater.players.keySet()).get(playerNumber);
+						player = new ArrayList<String>(app.getUpdater().players.keySet()).get(playerNumber);
 					} else {
 						player = "0";
 					}
@@ -46,14 +62,12 @@ public class MapHandler {
 					 */
 					float x = entity.getFloat("x");
 					float y = entity.getFloat("y");
-					app.updater.send("<spawn " + type + " " + player + " " + x + " " + y);
+					Class<? extends Champion> c = app.getContentListManager().getChampClass(type);
+					if (c != null)
+						app.getUpdater().sendSpawn(c, app.getUpdater().neutral, x + " " + y);
 				}
 			}
-		} catch (
-
-		Exception e)
-
-		{
+		} catch (Exception e) {
 			System.err.println("there is something wrong with this map");
 			e.printStackTrace();
 		}
@@ -67,11 +81,11 @@ public class MapHandler {
 		map.setString("descr", " ");
 		map.setString("texture", oldMap.getString("texture"));
 		map.setString("coll", oldMap.getString("coll"));
-		map.setInt("w", app.updater.map.width);
-		map.setInt("h", app.updater.map.height);
+		map.setInt("w", app.getUpdater().map.width);
+		map.setInt("h", app.getUpdater().map.height);
 
 		JSONArray entities = new JSONArray();
-		for (GameObject e : app.updater.getGameObjects()) {
+		for (GameObject e : app.getUpdater().getGameObjects()) {
 			if (e.getClass() != SandboxBuilding.class) {
 				JSONObject atributes = new JSONObject();
 				String type = e.getClass().getSimpleName().toString();
@@ -81,7 +95,8 @@ public class MapHandler {
 					type = "KeritMine";
 
 				atributes.setString("type", type);
-				int playerNumber = new ArrayList<String>(app.updater.players.keySet()).indexOf(e.player.getUser().ip);
+				int playerNumber = new ArrayList<String>(app.getUpdater().players.keySet())
+						.indexOf(e.player.getUser().getIp());
 				atributes.setInt("player", playerNumber);
 				atributes.setFloat("x", e.getX());
 				atributes.setFloat("y", e.getY());

@@ -1,11 +1,11 @@
 package game.aim;
 
 import game.AimHandler.Cursor;
-import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.Commander;
 import gameStructure.GameObject;
 import gameStructure.GameObject.GroundPosition;
+import shared.GameBaseApp;
 import game.ImageHandler;
 
 public class BuildAim extends Aim {
@@ -74,8 +74,8 @@ public class BuildAim extends Aim {
 		 * Entity.xToGrid(Entity.gridToY());
 		 */
 		if (canPlaceAt(x, y)) {
-			GameBaseApp.updater.sendDirect("<spawn " + buildable.getClass().getSimpleName()
-					+ " " + builder.player.getUser().ip + " " + x + " " + y);
+			GameBaseApp.getUpdater().sendDirect("<spawn " + buildable.getClass().getSimpleName()
+					+ " " + builder.player.getUser().getIp() + " " + x + " " + y);
 			buildable.buyFrom(builder.player);
 		}
 	}

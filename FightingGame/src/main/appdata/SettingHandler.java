@@ -1,8 +1,8 @@
 package main.appdata;
 
 import g4p_controls.GDropList;
-import game.GameBaseApp;
 import main.Setting;
+import shared.GameBaseApp;
 
 public class SettingHandler {
 	private Setting setting;

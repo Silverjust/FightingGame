@@ -4,6 +4,7 @@ import game.aim.Aim;
 import game.aim.EmptyAim;
 import processing.core.PConstants;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public class AimHandler {
 
@@ -39,7 +40,7 @@ public class AimHandler {
 		if (aim != null) {
 			aim.move(x, y);
 		}
-		app.player.champion.sendAnimation("walk " + x + " " + y + "  ");
+		app.getPlayer().getChampion().sendAnimation("walk " + x + " " + y + "  ", this);
 	}
 
 	public void end() {

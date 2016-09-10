@@ -6,6 +6,7 @@ import ddf.minim.AudioPlayer;
 import ddf.minim.AudioSample;
 import ddf.minim.AudioSnippet;
 import processing.core.PApplet;
+import shared.GameBaseApp;
 import shared.Helper;
 
 @SuppressWarnings("deprecation")
@@ -60,7 +61,7 @@ public class SoundHandler {
 		private void calcVolume() {
 			float dist = PApplet.dist(x, y, Helper.gridToX(app.getxCenter()),
 					Helper.gridToY(app.getyCenter() - app.getDrawer().getHud().height / 2));
-			float f = PApplet.map(dist, 0, PApplet.dist(0, 0, app.updater.map.width, app.updater.map.height), 0, -50);
+			float f = PApplet.map(dist, 0, PApplet.dist(0, 0, app.getUpdater().map.width, app.getUpdater().map.height), 0, -50);
 			System.out.println(dist + "= " + x + " " + y + " " + Helper.gridToX(app.getxCenter()) + " "
 					+ Helper.gridToY(app.getyCenter() - app.getDrawer().getHud().height / 2));
 			sample.setGain(f);

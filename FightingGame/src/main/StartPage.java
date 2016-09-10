@@ -3,8 +3,10 @@ package main;
 import main.preGame.MainPreGame;
 import main.appdata.ProfileHandler;
 import main.appdata.StatScreen;
+import shared.GameBaseApp;
 import shared.Helper;
 import shared.Mode;
+import shared.PreGameInfo;
 import g4p_controls.G4P;
 import g4p_controls.GButton;
 import g4p_controls.GEvent;
@@ -12,8 +14,6 @@ import g4p_controls.GPassword;
 import g4p_controls.GTextArea;
 import g4p_controls.GTextField;
 import game.ClientHandler;
-import game.GameBaseApp;
-import game.PreGameInfo;
 
 public class StartPage {
 
@@ -108,8 +108,8 @@ public class StartPage {
 			System.out.println(PreGameInfo.isSinglePlayer());
 
 			GameBaseApp.setPreGameInfo(new MainPreGame(name));
-			ClientHandler.setup(ip);
-			if (!PreGameInfo.isSinglePlayer() && ClientHandler.client == null) {
+			PreGameClientHandler.setup(ip);
+			if (!PreGameInfo.isSinglePlayer() && PreGameClientHandler.client == null) {
 				serverIp.setFocus(true);
 				((MainPreGame) GameBaseApp.getPreGameInfo()).closeBecauseServer();
 				return;

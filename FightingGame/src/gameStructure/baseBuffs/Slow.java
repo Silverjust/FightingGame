@@ -2,8 +2,8 @@ package gameStructure.baseBuffs;
 
 import java.util.ArrayList;
 
-import game.GameBaseApp;
 import gameStructure.Unit;
+import shared.GameBaseApp;
 
 public class Slow extends Buff {
 	private int slow;

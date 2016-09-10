@@ -2,11 +2,14 @@ package gameStructure;
 
 import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
-import game.GameBaseApp;
 import game.PlayerInterface;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
+import shared.Coms;
+import shared.GameBaseApp;
+import shared.Player;
+import shared.SpellHandler;
 import shared.Updater;
 import shared.Updater.GameState;
 
@@ -27,11 +30,16 @@ public abstract class Spell {
 
 	static int buttonWidth = 50;
 
-	private GameBaseApp app;
+	protected GameBaseApp app;
 
-	public Spell(GameBaseApp app, PlayerInterface inter, int pos, PImage symbol) {
-
+	public Spell(GameBaseApp app, SpellHandler inter, int pos, PImage symbol) {
 		this.app = app;
+		if (inter instanceof PlayerInterface)
+			setupButton(app, (PlayerInterface) inter, pos, symbol);
+		this.pos = pos;
+	}
+
+	public void setupButton(GameBaseApp app, PlayerInterface inter, int pos, PImage symbol) {
 		button = new GGameButton(app, getXbyPos(inter, pos), getYbyPos(inter, pos), buttonWidth, buttonWidth,
 				app.getDrawer().getHud().buttonImageFilename());
 		button.setText(app.getDrawer().getHud().playerInterface.getKeyFromPos(pos));
@@ -41,7 +49,6 @@ public abstract class Spell {
 			button.setEnabled(false);
 		button.addEventHandler(this, "handleActiveEvents");
 		this.symbol = symbol;
-		this.pos = pos;
 	}
 
 	public int getXbyPos(PlayerInterface inter, int pos) {
@@ -52,7 +59,7 @@ public abstract class Spell {
 		return inter.y + 0 * (buttonWidth + 10);
 	}
 
-	public void update() {
+	public void updateButton() {
 		if (isActivateable) {
 			button.setCooldownState(1 - getCooldownPercent());
 			if (button.isVisible() && !button.isEnabled() && isNotOnCooldown())
@@ -86,7 +93,9 @@ public abstract class Spell {
 		}
 	}
 
-	protected abstract void onActivation();
+	protected void onActivation() {
+		app.getUpdater().send(Coms.INPUT + " " + app.getPlayer().getUser().getIp() + " " + getPos() + " 1");
+	}
 
 	public void setVisible(boolean b) {
 		button.setVisible(b);
@@ -142,5 +151,12 @@ public abstract class Spell {
 	public String getInternName() {
 		return this.getClass().getSimpleName();
 	}
+
+	protected void setPassive(boolean b) {
+		if (button != null)
+		button.setEnabled(b);
+	}
+
+	public abstract void recieveInput(String[] c, Player player);
 
 }

@@ -1,8 +1,8 @@
 package game.aim;
 
-import game.GameBaseApp;
 import gameStructure.Building;
 import gameStructure.GameObject;
+import shared.GameBaseApp;
 
 public class UpgradeAim extends BuildAim {
 	Class<? extends GameObject> oldBuildable;
@@ -24,9 +24,9 @@ public class UpgradeAim extends BuildAim {
 		x = Building.xToGrid(x);
 		y = Building.xToGrid(y);
 		if (canPlaceAt(x, y)) {
-			GameBaseApp.updater.sendDirect("<remove " + replaced.number);
-			GameBaseApp.updater.sendDirect("<spawn " + buildable.getClass().getSimpleName()
-					+ " " + builder.player.getUser().ip + " " + x + " " + y);
+			GameBaseApp.getUpdater().sendDirect("<remove " + replaced.getNumber());
+			GameBaseApp.getUpdater().sendDirect("<spawn " + buildable.getClass().getSimpleName()
+					+ " " + builder.player.getUser().getIp() + " " + x + " " + y);
 			((GameObject) buildable).buyFrom(builder.player);
 		}
 	}

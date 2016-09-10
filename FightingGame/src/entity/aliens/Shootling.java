@@ -1,6 +1,5 @@
 package entity.aliens;
 
-import game.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.GameObject;
@@ -12,6 +11,7 @@ import gameStructure.animation.Death;
 import gameStructure.animation.ShootAttack;
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public class Shootling extends Unit implements Shooter {
 
@@ -103,11 +103,11 @@ public class Shootling extends Unit implements Shooter {
 				}
 			}
 			if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
-				sendAnimation("basicAttack " + importantEntity.number);
+				sendAnimation("basicAttack " + importantEntity.getNumber(), this);
 			} else if (importantEntity != null) {
 				Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range);
 			} else if (importantEntity == null) {
-				sendAnimation("splashDeath");
+				sendAnimation("splashDeath", this);
 			}
 		}
 		basicAttack.updateAbility(this, isServer);
@@ -121,7 +121,7 @@ public class Shootling extends Unit implements Shooter {
 
 	@Override
 	public void calculateDamage(Attack a) {
-		GameBaseApp.updater.sendDirect("<hit " + basicAttack.getTarget().number + " "
+		GameBaseApp.getUpdater().sendDirect("<hit " + basicAttack.getTarget().getNumber() + " "
 				+ a.damage + " " + a.pirce);
 
 	}
@@ -186,7 +186,7 @@ public class Shootling extends Unit implements Shooter {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {

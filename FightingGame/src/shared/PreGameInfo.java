@@ -1,10 +1,6 @@
-package game;
+package shared;
 
 import java.util.HashMap;
-
-import preGame.ClientHandler;
-import shared.Coms;
-import shared.User;
 
 public class PreGameInfo {
 
@@ -17,35 +13,16 @@ public class PreGameInfo {
 	public static boolean againstAI;
 	private GameBaseApp app;
 
-	public static PreGameInfo createDummyPrGaIn(GameApp app) {
-		PreGameInfo pgi = new PreGameInfo(app);
-
-		pgi.app.setClientHandler(new ClientHandler(app, ""));
-		User u = new User(app, app.getClientHandler().identification, "you");
-		pgi.addUser(u);
-		User u2 = new User(app, "2", "enemy");
-		pgi.addUser(u2);
-		pgi.map = "maps/alpha_YangDesert/alpha_YangDesert";
-
-		app.getClientHandler().send(Coms.LOAD + "");
-
-		return pgi;
-	}
-
 	public void addUser(User u) {
-		if (users.get(u.ip) == null)
-			users.put(u.ip, u);
+		if (users.get(u.getIp()) == null)
+			users.put(u.getIp(), u);
 		else
-			users.get(u.ip).name = u.name;
+			users.get(u.getIp()).name = u.name;
 	}
 
-	public static PreGameInfo createNewPrGaIn(GameBaseApp app) {
-		PreGameInfo pgi = new PreGameInfo(app);
-		return pgi;
-	}
-
-	private PreGameInfo(GameBaseApp app) {
+	public PreGameInfo(GameBaseApp app) {
 		this.app = app;
+		map = "maps/alpha_YangDesert/alpha_YangDesert";
 	}
 
 	public static boolean isSinglePlayer() {
@@ -81,8 +58,9 @@ public class PreGameInfo {
 	}
 
 	public User getUser(String string) {
-		if (string.equals(""))// returns this user
-			return users.get(app.getClientHandler().identification);
+		if (string.equals("")) {// returns this user
+			return users.get(app.getClientHandler().getIdentification());
+		}
 		return users.get(string);
 	}
 

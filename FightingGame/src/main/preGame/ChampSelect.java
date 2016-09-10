@@ -3,8 +3,8 @@ package main.preGame;
 import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
 import game.ClientHandler;
-import game.GameBaseApp;
 import main.MainApp;
+import shared.GameBaseApp;
 import shared.Mode;
 import shared.Nation;
 
@@ -29,8 +29,8 @@ public class ChampSelect {
 				if (nationButtons[i] == button) {
 					nationButtons[i].setSwitch(true);
 					nation = Nation.fromNumber(i);
-					ClientHandler
-							.sendDirect("<setNation " + GameBaseApp.getPreGameInfo().getUser("").ip + " " + Nation.fromNumber(i).toString());
+					PreGameClientHandler
+							.sendDirect("<setNation " + GameBaseApp.getPreGameInfo().getUser("").getIp() + " " + Nation.fromNumber(i).toString());
 				} else {
 					nationButtons[i].setSwitch(false);
 				}

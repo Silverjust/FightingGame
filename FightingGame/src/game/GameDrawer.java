@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import gameStructure.GameObject;
 import processing.core.PConstants;
+import shared.GameBaseApp;
 import shared.Updater.GameState;
 
 public class GameDrawer {
@@ -24,13 +25,13 @@ public class GameDrawer {
 	public ImageHandler imageHandler;
 
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
-		app.updater.map.loadImages(app, imageHandler);
+		app.getUpdater().map.loadImages(app, imageHandler);
 	}
 
 	public GameDrawer(GameBaseApp app, ImageHandler imageHandler) {
 		this.app = app;
 		this.imageHandler = imageHandler;
-		this.updater = (GameUpdater) app.updater;
+		this.updater = (GameUpdater) app.getUpdater();
 
 		app.setDrawer(this);// set oficial drawer so hud, etc can access it
 		setHud(new HUD(app, this));
@@ -58,28 +59,28 @@ public class GameDrawer {
 		}
 		app.imageMode(PConstants.CORNER);
 		app.rectMode(PConstants.CORNER);
-		updater.map.updateFogofWar(app.player);
+		updater.map.updateFogofWar(app.getPlayer());
 		app.blendMode(PConstants.MULTIPLY);
 		imageHandler.drawImage(app, updater.map.fogOfWar, 0, 0, updater.map.width, updater.map.height / 2);// hä?
 		app.blendMode(PConstants.BLEND);
 		app.imageMode(PConstants.CENTER);
 		app.rectMode(PConstants.CENTER);
-		for (GameObject e : app.player.visibleEntities) {
+		for (GameObject e : app.getPlayer().visibleEntities) {
 			e.renderUnder();
 		}
 		if (showRanges) {
-			for (GameObject e : app.player.visibleEntities) {
+			for (GameObject e : app.getPlayer().visibleEntities) {
 				e.renderRange();
 			}
 		}
-		for (GameObject e : app.player.visibleEntities) {
+		for (GameObject e : app.getPlayer().visibleEntities) {
 			e.renderGround();
 		}
-		for (GameObject e : app.player.visibleEntities) {
+		for (GameObject e : app.getPlayer().visibleEntities) {
 			e.renderAir();
 		}
 
-		for (GameObject e : app.player.visibleEntities) {
+		for (GameObject e : app.getPlayer().visibleEntities) {
 			e.display();
 		}
 

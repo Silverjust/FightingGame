@@ -3,10 +3,10 @@ package shared;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import game.GameBaseApp;
 import game.Map;
 import game.MapHandler;
 import gameStructure.GameObject;
+import server.ServerUpdater;
 import shared.Helper.Timer;
 
 public abstract class Updater {
@@ -19,6 +19,8 @@ public abstract class Updater {
 
 	public HashMap<String, Player> players = new HashMap<String, Player>();
 	public Player neutral;
+	protected Player rightsideNeutral;
+	protected Player leftsideNeutral;
 
 	public GameState gameState = GameState.PLAY;
 	protected GameBaseApp app;
@@ -38,7 +40,7 @@ public abstract class Updater {
 	public boolean arePlayerReady() {
 		boolean b = true;
 		for (String key : players.keySet()) {
-			if (!players.get(key).getUser().isReady)
+			if (!players.get(key).getUser().isReady())
 				b = false;
 		}
 		return b;
@@ -90,7 +92,6 @@ public abstract class Updater {
 	}
 
 	public void dispose() {
-		GameObject.entityCounter = 0;
 		namedObjects.clear();
 		gameObjects.clear();
 		toAdd.clear();
@@ -108,15 +109,20 @@ public abstract class Updater {
 	}
 
 	public GameObject getGameObject(int n) {
+		System.out.println("Updater.getGameObject()" + n + " " + namedObjects.size());
 		return namedObjects.get(n);
 	}
 
-	public void addGameObject(GameObject o, String string) {
+	public void addGameObject(GameObject o) {
 		toAdd.add(o);
-		System.out.println("Updater.addGameObject() " + string + " " + o);
 	}
 
 	public ArrayList<GameObject> getGameObjects() {
 		return gameObjects;
+	}
+
+	public void sendSpawn(Class<? extends GameObject> c, Player owner, String content) {
+		send(Coms.SPAWN + " " + c.getSimpleName() + " " + ((ServerUpdater) this).getNextGObjNumber() + " "
+				+ owner.getUser().getIp() + " " + content);
 	}
 }

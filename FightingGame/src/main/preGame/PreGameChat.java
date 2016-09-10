@@ -5,13 +5,13 @@ import g4p_controls.GEvent;
 import g4p_controls.GTextArea;
 import g4p_controls.GTextField;
 import game.ClientHandler;
-import game.GameBaseApp;
 
 import java.awt.Font;
 import java.util.ArrayList;
 
 import processing.core.PConstants;
 import server.ServerCommandHandler;
+import shared.GameBaseApp;
 import shared.Helper;
 
 public class PreGameChat {
@@ -88,7 +88,7 @@ public class PreGameChat {
 					println(GameBaseApp.getPreGameInfo().getUser("").name, s);
 					ServerCommandHandler.executeCommand(s);
 				} else {
-					ClientHandler.sendDirect("<say " + GameBaseApp.getPreGameInfo().getUser("").ip + " " + s);
+					PreGameClientHandler.sendDirect("<say " + GameBaseApp.getPreGameInfo().getUser("").getIp() + " " + s);
 				}
 			}
 			textfield.setText("");

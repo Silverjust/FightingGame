@@ -1,7 +1,7 @@
 package server;
 
-import game.GameBaseApp;
 import shared.Coms;
+import shared.GameBaseApp;
 import shared.Loader;
 import shared.Mode;
 
@@ -18,7 +18,7 @@ public class ServerLoader extends Loader {
 		switch (state) {
 
 		case NEWGAME:
-			app.setUpdater(new ServerUpdater(app));
+			app.setUpdater(new ServerUpdater(app, null));
 			state = State.MAP;// map
 			break;
 		case MAP:
@@ -29,6 +29,7 @@ public class ServerLoader extends Loader {
 			break;
 		case ENTITIES:// spawn entity-setup
 			app.getUpdater().mapHandler.setupEntities(app.getUpdater().map.mapData);
+			app.getUpdater().update();
 			state = State.END;
 			break;
 		case END:

@@ -47,7 +47,7 @@ public class ServerHandler {
 				Client client = server.available();
 				if (client != null) {
 					input = "" + client.readStringUntil(endSymbol);
-					if (input != null) {
+					if (input != null && !input.equals("") && !input.equals("null")) {
 						if (app.serverInterface.displayCommands.isSelected())
 							app.write("in  " + input);
 						if (reportCommunication)
@@ -57,7 +57,7 @@ public class ServerHandler {
 						// Protocol.filterComs("< ", input);
 
 						if (input.charAt(0) == '<')
-							comHandler.executeCom(input);
+							comHandler.executeCom(input, false);
 
 					}
 				}

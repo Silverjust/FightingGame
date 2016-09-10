@@ -2,7 +2,7 @@ package entity.aliens;
 
 import processing.core.PGraphics;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Building;
 import gameStructure.Commander;

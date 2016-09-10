@@ -28,8 +28,8 @@ public class UserLabel {
 	}
 
 	public void updateText() {
-		String champion = u.champion;
-		if (champion == null) {
+		String champion = u.championName;
+		if (champion == null || champion.equals("") || champion.equals("null")) {
 			champion = "-not selected-";
 		}
 		label.setText(u.name + "\n" + champion);

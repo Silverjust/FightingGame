@@ -1,8 +1,8 @@
 package gameStructure.animation;
 
-import game.GameBaseApp;
 import gameStructure.GameObject;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 public class Death extends Animation {
 

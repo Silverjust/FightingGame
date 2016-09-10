@@ -2,11 +2,11 @@ package gameStructure.actives;
 
 import java.lang.reflect.Method;
 
-import game.GameBaseApp;
 import gameStructure.GameObject;
 import gameStructure.Spell;
 import gameStructure.animation.Ability;
 import processing.core.PImage;
+import shared.GameBaseApp;
 
 /**
  * Aktive Fähigkeit

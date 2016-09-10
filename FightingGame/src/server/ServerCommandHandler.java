@@ -3,11 +3,11 @@ package server;
 import javax.naming.NoInitialContextException;
 
 import game.CommandHandler;
-import game.GameBaseApp;
 import game.GameDrawer;
 import gameStructure.GameObject;
 import processing.core.PApplet;
 import shared.Coms;
+import shared.GameBaseApp;
 import shared.Helper;
 import shared.Updater.GameState;
 

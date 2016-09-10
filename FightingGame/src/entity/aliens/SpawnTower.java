@@ -3,7 +3,7 @@ package entity.aliens;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
-import game.GameBaseApp;
+import shared.GameBaseApp;
 import game.ImageHandler;
 import gameStructure.Attacker;
 import gameStructure.Building;
@@ -103,7 +103,7 @@ public class SpawnTower extends Building implements Commander {
 			}
 			if (importantEntity != null && spawn.isNotOnCooldown()
 					&& getShootlingsInRange() < maxShootlings) {
-				sendAnimation("spawn " + importantEntity.number);
+				sendAnimation("spawn " + importantEntity.getNumber(), this);
 			}
 		}
 		spawn.updateAbility(this, isServer);
@@ -125,7 +125,7 @@ public class SpawnTower extends Building implements Commander {
 		super.exec(c);
 		if (c[2].equals("spawn")) {
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.getUpdater().getNamedObjects().get(n);
 			spawn.setTarget(e);
 			setAnimation(spawn);
 		}
@@ -189,7 +189,7 @@ public class SpawnTower extends Building implements Commander {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -256,8 +256,8 @@ public class SpawnTower extends Building implements Commander {
 					float yt = target.getY();
 					float xt = target.getX();
 					byte shootlingRadius = 5;
-					GameBaseApp.updater.sendDirect("<spawn Shootling "
-							+ e.player.getUser().ip
+					GameBaseApp.getUpdater().sendDirect("<spawn Shootling "
+							+ e.player.getUser().getIp()
 							+ " "
 							+ (e.getX() + (xt - e.getX())
 									/ PApplet.dist(e.getX(), e.getY(), xt, yt)
@@ -266,7 +266,7 @@ public class SpawnTower extends Building implements Commander {
 							+ (e.getY() + (yt - e.getY())
 									/ PApplet.dist(e.getX(), e.getY(), xt, yt)
 									* (e.getRadius() + shootlingRadius)) + " " + xt
-							+ " " + yt + " " + e.number);
+							+ " " + yt + " " + e.getNumber());
 					/*
 					 * ref.updater.send("<spawn Rugling " + e.player.ip + " " +
 					 * e.x + " " + (e.y - e.radius - 8) + " " + target.x + " " +

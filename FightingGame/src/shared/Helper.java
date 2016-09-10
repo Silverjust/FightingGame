@@ -2,7 +2,6 @@ package shared;
 
 import java.util.ArrayList;
 
-import game.GameBaseApp;
 import game.GameDrawer;
 import gameStructure.GameObject;
 
@@ -59,21 +58,21 @@ public class Helper {
 		Player p;
 		p = app.getUpdater().players.get(name);
 		if (p != null)
-			return p.getUser().ip;// ip from ip
+			return p.getUser().getIp();// ip from ip
 		for (String key : app.getUpdater().players.keySet()) {
 			if (app.getUpdater().players.get(key).getUser().name.equalsIgnoreCase(name))
-				return app.getUpdater().players.get(key).getUser().ip;// ip
+				return app.getUpdater().players.get(key).getUser().getIp();// ip
 			// from
 			// name
 		}
 		try {
 			String[] a = app.getUpdater().players.keySet()
 					.toArray(new String[app.getUpdater().players.keySet().size()]);
-			return app.getUpdater().players.get(a[Integer.parseInt(name)]).getUser().ip;
+			return app.getUpdater().players.get(a[Integer.parseInt(name)]).getUser().getIp();
 			// ip from number
 		} catch (Exception e) { // not a number
 		}
-		return app.getPlayer().getUser().ip; // ip from this player
+		return app.getPlayer().getUser().getIp(); // ip from this player
 	}
 
 	public static String ipToName(String ip, GameBaseApp app) {

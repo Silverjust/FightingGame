@@ -1,6 +1,6 @@
 package gameStructure.baseBuffs;
 
-import game.GameBaseApp;
+import shared.GameBaseApp;
 
 public class Silence extends Buff {
 	public Silence(GameBaseApp app, String[] c) {

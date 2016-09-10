@@ -6,6 +6,7 @@ import processing.core.PConstants;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.data.JSONObject;
+import shared.GameBaseApp;
 import shared.Player;
 import shared.VersionControle;
 
@@ -70,9 +71,9 @@ public class Map {
 		fogOfWar.background(80);
 		fogOfWar.noStroke();
 		fogOfWar.fill(200);
-		for (GameObject e : app.updater.getGameObjects()) {
+		for (GameObject e : app.getUpdater().getGameObjects()) {
 			if (e.player == player) {
-				e.drawSight(app.updater);
+				e.drawSight(app.getUpdater());
 			}
 		}
 		fogOfWar.endDraw();

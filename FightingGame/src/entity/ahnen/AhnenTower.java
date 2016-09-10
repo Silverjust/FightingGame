@@ -2,10 +2,10 @@ package entity.ahnen;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import shared.GameBaseApp;
 import game.AimHandler;
 import game.ImageHandler;
 import game.AimHandler.Cursor;
-import game.GameBaseApp;
 import game.aim.CustomAim;
 import gameStructure.Spell;
 import gameStructure.AimingActive;
@@ -113,7 +113,7 @@ public class AhnenTower extends Building implements Commander {
 	public void updateDecisions(boolean isServer) {
 		if (unit != null) {
 			if (!GameApplet.GameBaseApp.gameObjects.contains(unit))
-				unit.number = number;
+				unit.setNumber(number);
 			unit.updateDecisions(isServer);
 		}
 	}
@@ -123,7 +123,7 @@ public class AhnenTower extends Building implements Commander {
 		super.exec(c);
 		if (c[2].equals("in")) {
 			int n = Integer.parseInt(c[3]);
-			GameObject e = GameBaseApp.updater.getNamedObjects().get(n);
+			GameObject e = GameBaseApp.getUpdater().getNamedObjects().get(n);
 			if (e.isAlive() && isAllyTo(player) && e instanceof Unit) {
 				if (unit != null) {
 					GameObject normalUnit = null;
@@ -215,7 +215,7 @@ public class AhnenTower extends Building implements Commander {
 	}
 
 	protected void onDeath() {
-		sendAnimation("death");
+		sendAnimation("death", this);
 	}
 
 	void drawHpBar() {
@@ -297,7 +297,7 @@ public class AhnenTower extends Building implements Commander {
 			// x = Entity.xToGrid(Entity.gridToX());
 			// y = Entity.xToGrid(Entity.gridToY());
 			for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
-				if (e.isAllyTo(GameBaseApp.player)
+				if (e.isAllyTo(GameBaseApp.getPlayer())
 						&& e instanceof Unit
 						&& PApplet.dist(x, y, e.getX(), e.getY() - e.flyHeight()) <= e.getRadius())
 					target = e;
@@ -322,7 +322,7 @@ public class AhnenTower extends Building implements Commander {
 					}
 				}
 				if (tower != null)
-					tower.sendAnimation("in " + target.number);
+					tower.sendAnimation("in " + target.getNumber(), this);
 				AimHandler.end();
 			}
 		}
