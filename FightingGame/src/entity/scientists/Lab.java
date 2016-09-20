@@ -16,16 +16,16 @@ public abstract class Lab extends Unit implements Equiping {
 
 		setHp(hp_max = 700);
 		armor = 1;
-		setSpeed(0.7f);
-		setRadius(12);
+		getStats.setSpeed(0.7f);
+		getStats().setRadius(12);
 		setHeight(30);
-		setSight(70);
+		animation.setSight(70);
 		groundPosition = GameObject.GroundPosition.AIR;
 
 		equipRange = 120;
 
 		descr = " ";
-		stats = " ";
+		setStats(" ");
 		// ************************************
 	}
 

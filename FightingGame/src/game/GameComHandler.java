@@ -168,7 +168,8 @@ public class GameComHandler extends ComHandler {
 				break;
 			case SET_CHAMP:
 				u = app.getPreGameInfo().getUser(c[1]);
-				u.championName = c[2];
+				if (u != null)
+					u.championName = c[2];
 				break;
 			case START_GAMEAPPS:
 				break;

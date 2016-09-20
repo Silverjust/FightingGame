@@ -6,6 +6,7 @@ import gameStructure.Entity;
 import gameStructure.GameObject;
 import gameStructure.Projectile;
 import gameStructure.animation.Animation;
+import gameStructure.baseBuffs.Slow;
 import processing.core.PImage;
 import shared.GameBaseApp;
 
@@ -28,20 +29,18 @@ public class TestProjectile extends Projectile {
 		setxSize(20);
 		setySize(20);
 
-		setSight(20);
+		getStats().setSight(20);
 		setSpeed(3f);
-		setRadius(10);
+		getStats().setRadius(10);
 	}
 
 	@Override
 	protected void onHit(GameObject o) {
 		if (o.isEnemyTo(player) && o instanceof Entity) {
 			((Entity) o).sendDamage(this, new Damage((Entity) o, player.getChampion(), 50, true), player, origin);
-			player.app.getUpdater()
-					.send(BUFF + " ArmorShred " + o.getNumber() + " " + player.getChampion().getNumber() + " 6000");
-			player.app.getUpdater()
-					.send(BUFF + " Slow " + player.getChampion().getNumber() + " " + player.getChampion().getNumber()
-							+ " " + (int) player.app.random(1000, 3000) + " " + (int) player.app.random(100));
+			player.app.getUpdater().sendBuff(ArmorShred.class, (Entity) o, player.getChampion(), 6000, "");
+			player.app.getUpdater().sendBuff(Slow.class, player.getChampion(), player.getChampion(),
+					(int) player.app.random(1000, 3000), (int) player.app.random(100) + "");
 		}
 	}
 }

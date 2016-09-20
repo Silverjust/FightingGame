@@ -30,7 +30,7 @@ public class Prunam extends Building {
 		setxSize(30);
 		setySize(30);
 
-		setRadius(15);
+		getStats().setRadius(15);
 		// ************************************
 	}
 

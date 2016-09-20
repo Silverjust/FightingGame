@@ -43,10 +43,10 @@ public class RobotsDepot extends Building implements Commander {
 		prunam = 0;
 		build.setBuildTime(2000);
 
-		setSight(50);
+		animation.setSight(50);
 
 		setHp(hp_max = 1000);
-		setRadius(13);
+		getStats().setRadius(13);
 
 		/*
 		 * splashrange = 10; basicAttack.range = 70; basicAttack.damage = 13;
@@ -57,7 +57,7 @@ public class RobotsDepot extends Building implements Commander {
 		commandingRange = 100;
 
 		descr = " ";
-		stats = " ";
+		setStats(" ");
 		// ************************************
 	}
 

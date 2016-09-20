@@ -50,9 +50,9 @@ public class Swamp extends Unit implements Attacker {
 		setxSize(70);
 		setySize(35);
 
-		setSpeed(2.2f);
-		setRadius(0);
-		setSight((byte) (35 + 5));
+		getStats.setSpeed(2.2f);
+		stats.setRadius(0);
+		animation.setSight((byte) (35 + 5));
 		groundPosition = GameObject.GroundPosition.GROUND;
 
 		basicAttack.range = 35;
@@ -101,7 +101,7 @@ public class Swamp extends Unit implements Attacker {
 	public void calculateDamage(Attack a) {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isEnemyTo(this)
-					&& e.isInRange(getX(), getY(), e.getRadius() + a.range)) {
+					&& e.isInRange(getX(), getY(), e.getStats().getRadius() + a.range)) {
 				GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + a.damage + " "
 						+ a.pirce);
 			}
@@ -159,17 +159,17 @@ public class Swamp extends Unit implements Attacker {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;

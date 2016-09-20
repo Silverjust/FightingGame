@@ -76,9 +76,9 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 
 		setHp(hp_max = 200);
 		armor = 1;
-		setSpeed(0.7f);
-		setRadius(10);
-		setSight(90);
+		getStats.setSpeed(0.7f);
+		stats.setRadius(10);
+		animation.setSight(90);
 		groundPosition = GameObject.GroundPosition.GROUND;
 
 		aggroRange = 110;
@@ -89,7 +89,7 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 		basicAttack.setCastTime(200);// eventtime is defined by target distance
 		basicAttack.speed = 1f;
 
-		heal.range = (byte) (getRadius() + 25);
+		heal.range = (byte) (stats.getRadius() + 25);
 		heal.damage = 25;// heal
 		heal.pirce = -1;// heal
 		heal.cooldown = 5000;
@@ -112,7 +112,7 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (e.isEnemyTo(this)) {
-						if (e.isInRange(getX(), getY(), aggroRange + e.getRadius())
+						if (e.isInRange(getX(), getY(), aggroRange + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
@@ -120,7 +120,7 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 								importantEntity = e;
 							}
 						}
-						if (e.isInRange(getX(), getY(), basicAttack.range + e.getRadius())
+						if (e.isInRange(getX(), getY(), basicAttack.range + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							isEnemyInHitRange = true;
 							float newImportance = calcImportanceOf(e);
@@ -151,7 +151,7 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 		super.exec(c);
 		if (c[2].equals("anchor")) {
 			isAnchored = true;
-			setMoving(false);
+			getStats.setMoving(this, false);
 			setHeight(0);
 		} else if (c[2].equals("walk")) {
 			isAnchored = false;
@@ -169,7 +169,7 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 		if (a == heal) {
 			for (GameObject e : GameApplet.GameBaseApp.gameObjects)
 				if (e != null && e.isAllyTo(this)
-						&& e.isInRange(getX(), getY(), e.getRadius() + a.range))
+						&& e.isInRange(getX(), getY(), e.getStats().getRadius() + a.range))
 					GameBaseApp.getUpdater().sendDirect("<heal " + e.getNumber() + " " + heal.damage);
 		} else
 			GameBaseApp.getUpdater().sendDirect("<hit " + basicAttack.getTarget().getNumber() + " "
@@ -238,17 +238,17 @@ public class ANT10N extends Unit implements Attacker, Shooter {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;

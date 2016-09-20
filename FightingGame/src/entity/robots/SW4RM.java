@@ -49,16 +49,16 @@ public class SW4RM extends Unit implements Attacker {
 		setHp(100);
 		hp_max = 400;
 		armor = 1;
-		setSpeed(0.9f);
-		setRadius(hpToRadius());
-		setSight(70);
+		getStats.setSpeed(0.9f);
+		getStats().setRadius(hpToRadius());
+		animation.setSight(70);
 		groundPosition = GameObject.GroundPosition.AIR;
 
-		aggroRange = (byte) (getRadius() + 50);
+		aggroRange = (byte) (getStats().getRadius() + 50);
 		basicAttack.damage = 10;
 		basicAttack.pirce = 0;
 		basicAttack.cooldown = 1000;
-		basicAttack.range = getRadius();
+		basicAttack.range = getStats().getRadius();
 		basicAttack.setCastTime(500);// eventtime is defined by target distance
 
 		descr = "B0T§can move while§attack";
@@ -79,7 +79,7 @@ public class SW4RM extends Unit implements Attacker {
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (e.isEnemyTo(this)) {
-						if (e.isInRange(getX(), getY(), aggroRange + e.getRadius())
+						if (e.isInRange(getX(), getY(), aggroRange + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
@@ -87,7 +87,7 @@ public class SW4RM extends Unit implements Attacker {
 								importantEntity = e;
 							}
 						}
-						if (e.isInRange(getX(), getY(), basicAttack.range + e.getRadius())
+						if (e.isInRange(getX(), getY(), basicAttack.range + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							isEnemyInHitRange = true;
 							float newImportance = calcImportanceOf(e);
@@ -116,23 +116,23 @@ public class SW4RM extends Unit implements Attacker {
 		if ("walk".equals(c[2])) {
 			xTarget = Float.parseFloat(c[3]);
 			yTarget = Float.parseFloat(c[4]);
-			if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= getSpeed()) {
-				setMoving(true);
+			if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= getStats.getSpeed()) {
+				getStats.setMoving(this, true);
 				// isAggro = Boolean.valueOf(c[5]);
 				// setAnimation(walk);
 			} else {
-				setMoving(false);
+				getStats.setMoving(this, false);
 				// setAnimation(stand);
 			}
 		}
 		if (c[2].equals("basicAttack"))
-			setMoving(true);
+			getStats.setMoving(this, true);
 	}
 
 	@Override
 	public void calculateDamage(Attack a) {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
-			if (e != null && e.isInRange(getX(), getY(), e.getRadius() + a.range)
+			if (e != null && e.isInRange(getX(), getY(), e.getStats().getRadius() + a.range)
 					&& a.canTargetable(e) && e.isEnemyTo(this)) {
 				GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + a.damage + " "
 						+ a.pirce);

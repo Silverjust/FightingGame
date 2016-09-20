@@ -31,7 +31,7 @@ public class Pax extends Building {
 		setxSize(40);
 		setySize(40);
 
-		setRadius(0);
+		getStats().setRadius(0);
 
 		descr = "pax";
 		// ************************************

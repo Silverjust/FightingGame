@@ -77,9 +77,9 @@ public class W4SP extends Unit implements Attacker, Shooter {
 
 		setHp(hp_max = 100);
 		armor = 3;
-		setSpeed(0.8f);
-		setRadius(5);
-		setSight(70);
+		getStats.setSpeed(0.8f);
+		stats.setRadius(5);
+		animation.setSight(70);
 		groundPosition = GameObject.GroundPosition.AIR;
 
 		aggroRange = 60;
@@ -103,7 +103,7 @@ public class W4SP extends Unit implements Attacker, Shooter {
 	@Override
 	public void updateDecisions(boolean isServer) {
 		if (isServer
-				&& ((getAnimation() == walk && isMoving()) && isAggro || (getAnimation() == stand && !isMoving()))) {
+				&& ((getAnimation() == walk && getStats.isMoving()) && isAggro || (getAnimation() == stand && !getStats.isMoving()))) {
 			// ****************************************************
 			boolean isEnemyInHitRange = false;
 			float importance = 0;
@@ -111,14 +111,14 @@ public class W4SP extends Unit implements Attacker, Shooter {
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (e.isEnemyTo(this)) {
-						if (e.isInRange(getX(), getY(), aggroRange + e.getRadius())
+						if (e.isInRange(getX(), getY(), aggroRange + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
 								importance = newImportance;
 								importantEntity = e;
 							}
-							if (e.isInRange(getX(), getY(), basicAttack.range + e.getRadius()))
+							if (e.isInRange(getX(), getY(), basicAttack.range + e.getStats().getRadius()))
 								isEnemyInHitRange = true;
 						}
 
@@ -145,13 +145,13 @@ public class W4SP extends Unit implements Attacker, Shooter {
 		if (c[2].equals("speed")) {
 			if (speeding.isNotOnCooldown()) {
 				armor = 5;
-				setSpeed(speedingSpeed);
+				getStats.setSpeed(speedingSpeed);
 				speeding.setTargetFrom(this, this);
 				speeding.setup(this);
 			}
 		} else if (c[2].equals("speeddown")) {
 			armor = 3;
-			setSpeed(speedingSpeed);
+			getStats.setSpeed(speedingSpeed);
 		}
 	}
 
@@ -162,7 +162,7 @@ public class W4SP extends Unit implements Attacker, Shooter {
 		GameObject target = ((ShootAttack) a).getTarget();
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null & e.isEnemyTo(this)
-					&& e.isInRange(target.getX(), target.getY(), e.getRadius() + splashrange)
+					&& e.isInRange(target.getX(), target.getY(), e.getStats().getRadius() + splashrange)
 					&& e.groundPosition == GroundPosition.GROUND) {
 				GameBaseApp.getUpdater().sendDirect("<hit " + e.getNumber() + " " + a.damage + " "
 						+ a.pirce);
@@ -247,17 +247,17 @@ public class W4SP extends Unit implements Attacker, Shooter {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;

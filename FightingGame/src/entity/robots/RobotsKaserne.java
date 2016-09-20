@@ -45,13 +45,13 @@ public class RobotsKaserne extends Building implements  Trainer {
 		prunam = 0;
 		build.setBuildTime(3000);
 
-		setSight(50);
+		animation.setSight(50);
 
 		setHp(hp_max = 1000);
-		setRadius(15);
+		getStats().setRadius(15);
 
 		descr = " ";
-		stats = " ";
+		setStats(" ");
 		// ************************************
 	}
 

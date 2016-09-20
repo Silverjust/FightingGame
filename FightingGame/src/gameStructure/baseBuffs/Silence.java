@@ -10,14 +10,14 @@ public class Silence extends Buff {
 	@Override
 	public void onStart() {
 		super.onStart();
-		owner.setSilenced(true);
-		owner.onHardCC(this);
+		owner.getStats().setSilenced(true);
+		onHardCC();
 
 	}
 
 	@Override
 	public void onEnd() {
 		super.onEnd();
-		owner.setRooted(false);
+		owner.getStats().setRooted(false);
 	}
 }

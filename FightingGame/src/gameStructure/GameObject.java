@@ -21,8 +21,7 @@ public abstract class GameObject implements Coms {
 	public boolean isTaged;
 
 	private float x, y;
-	private int radius = 1;
-	private int sight = 10;
+	protected Stats stats;
 	private int height;
 	private int currentFrame;
 	private int xSize, ySize;
@@ -35,7 +34,6 @@ public abstract class GameObject implements Coms {
 	private Animation animation;
 	private Animation nextAnimation;
 	protected String descr = " ";
-	protected String stats = " ";
 
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		String path = path(new GameObject(null, null) {
@@ -48,6 +46,7 @@ public abstract class GameObject implements Coms {
 	}
 
 	public GameObject(GameBaseApp app, String[] c) {
+		initStats(app);
 		if (c != null) {
 			player = app.getUpdater().getPlayer(c[3]);
 			setX(Float.parseFloat(c[4]));
@@ -115,7 +114,7 @@ public abstract class GameObject implements Coms {
 
 	protected void drawShadow() {
 		player.app.getDrawer().imageHandler.drawImage(player.app, shadowImg, xToGrid(getX()), yToGrid(getY()),
-				getRadius() * 2, getRadius());
+				getStats().getRadius() * 2, getStats().getRadius());
 	}
 
 	protected void drawTaged() {
@@ -123,7 +122,8 @@ public abstract class GameObject implements Coms {
 		if (isTaged) {
 			player.app.fill(0, 0);
 			player.app.stroke(player.color);
-			player.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 0.3f, getRadius() * 2, getRadius() * 1.5f);
+			player.app.rect(xToGrid(getX()), yToGrid(getY()) - getStats().getRadius() * 0.3f,
+					getStats().getRadius() * 2, getStats().getRadius() * 1.5f);
 			player.app.stroke(0);
 		}
 		isTaged = false;
@@ -133,10 +133,11 @@ public abstract class GameObject implements Coms {
 		int h = 1;
 		if (true) {//
 			player.app.fill(0, 150);
-			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getRadius() * 1.5f, getRadius() * 2, h);
+			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f,
+					getStats().getRadius() * 2, h);
 			player.app.tint(200);
 			player.app.getDrawer().imageHandler.drawImage(player.app, hpImg, xToGrid(getX()),
-					yToGrid(getY() - h * 3) - getRadius() * 1.5f, getRadius() * 2 * f, h);
+					yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f, getStats().getRadius() * 2 * f, h);
 			player.app.tint(255);
 		}
 	}
@@ -145,10 +146,11 @@ public abstract class GameObject implements Coms {
 		int h = 1;
 		if (true) {//
 			player.app.fill(0, 150);
-			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getRadius() * 1.5f, getRadius() * 2, h);
+			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f,
+					getStats().getRadius() * 2, h);
 			player.app.tint(c);
 			player.app.getDrawer().imageHandler.drawImage(player.app, hpImg, xToGrid(getX()),
-					yToGrid(getY() - h * 3) - getRadius() * 1.5f, getRadius() * 2 * f, h);
+					yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f, getStats().getRadius() * 2 * f, h);
 			player.app.tint(255);
 		}
 	}
@@ -175,7 +177,8 @@ public abstract class GameObject implements Coms {
 
 	public void drawSight(Updater updater) {
 		int scale = updater.map.fogScale;
-		updater.map.fogOfWar.ellipse(getX() / scale, getY() / scale / 2, getSight() * 2 / scale, getSight() / scale);
+		updater.map.fogOfWar.ellipse(getX() / scale, getY() / scale / 2, getStats().getSight() * 2 / scale,
+				getStats().getSight() / scale);
 	}
 
 	public void sendDefaultAnimation(Animation oldAnimation) {
@@ -228,10 +231,10 @@ public abstract class GameObject implements Coms {
 	}
 
 	public boolean isCollision(GameObject e) {
-		if (getRadius() == 0 || e.getRadius() == 0)
+		if (getStats().getRadius() == 0 || e.getStats().getRadius() == 0)
 			return false;
 		float f = PApplet.dist(getX(), getY(), e.getX(), e.getY());
-		boolean b = f < getRadius() + e.getRadius() && e.isCollidable(this);
+		boolean b = f < getStats().getRadius() + e.getStats().getRadius() && e.isCollidable(this);
 		// if(b)System.out.println(number + "/" + e.number + ":" + f + b);
 		return b;
 	}
@@ -272,8 +275,8 @@ public abstract class GameObject implements Coms {
 	public boolean isVisibleTo(Player p) {
 		boolean isVisible = false;
 		for (GameObject spotter : player.app.getUpdater().getGameObjects()) {
-			if (spotter.player == p && spotter.getSight() > 0
-					&& spotter.isInRange(getX(), getY(), spotter.getSight() + getRadius()))
+			if (spotter.player == p && spotter.getStats().getSight() > 0
+					&& spotter.isInRange(getX(), getY(), spotter.getStats().getSight() + getStats().getRadius()))
 				isVisible = true;
 			if (player == player.app.getUpdater().neutral)
 				isVisible = true;
@@ -345,27 +348,10 @@ public abstract class GameObject implements Coms {
 		this.y = y;
 	}
 
-	public int getRadius() {
-		return radius;
-	}
-
-	/** sets the colission-circle-size */
-	public void setRadius(int i) {
-		this.radius = i;
-	}
-
-	public int getSight() {
-		return sight;
-	}
-
-	/** sets the sight-radius */
-	public void setSight(int i) {
-		this.sight = i;
-	}
-
 	public float calcImportanceOf(Entity e) {
-		float importance = PApplet.abs(10000
-				/ (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+		float importance = PApplet
+				.abs(10000 / (e.getStats().getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY())
+						- getStats().getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;
@@ -391,6 +377,14 @@ public abstract class GameObject implements Coms {
 
 	public void setNumber(int number) {
 		this.number = number;
+	}
+
+	public Stats getStats() {
+		return stats;
+	}
+
+	public void initStats(GameBaseApp app) {
+		stats = new Stats(app);
 	}
 
 }

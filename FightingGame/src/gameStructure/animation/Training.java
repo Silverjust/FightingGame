@@ -35,10 +35,10 @@ public class Training extends Ability {
 						+ e.player.getUser().getIp()
 						+ " "
 						+ (e.getX() + (xt - e.getX()) / PApplet.dist(e.getX(), e.getY(), xt, yt)
-								* (e.getRadius() + toTrain.getRadius()))
+								* (e.getStats().getRadius() + toTrain.getStats().getRadius()))
 						+ " "
 						+ (e.getY() + (yt - e.getY()) / PApplet.dist(e.getX(), e.getY(), xt, yt)
-								* (e.getRadius() + toTrain.getRadius()))//
+								* (e.getStats().getRadius() + toTrain.getStats().getRadius()))//
 						+ " " //
 						+ xt //
 						+ " " //

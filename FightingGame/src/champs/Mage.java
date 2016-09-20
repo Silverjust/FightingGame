@@ -51,22 +51,21 @@ public class Mage extends Champion implements Attacker {
 		setxSize(50);
 		setySize(50);
 
-		initHp(500);
-		setArmor(30);
-		setMagicResist(30);
+		getStats().initHp(500);
+		getStats().setArmor(30);
+		getStats().setMagicResist(30);
 
-		setSpeed(1.2f);
-		setRadius(15);
-		setSight(100);
+		getStats().setSpeed(1.2f);
+		getStats().setRadius(15);
+		getStats().setSight(100);
 
-		aggroRange = (byte) (getRadius() + 50);
+		aggroRange = (byte) (getStats().getRadius() + 50);
 		basicAttack.range = 9;
 		basicAttack.damage = 40;
 		basicAttack.cooldown = 2000;
 		basicAttack.setCastTime(500);
 
 		descr = " ";
-		stats = " ";
 		// ************************************
 	}
 

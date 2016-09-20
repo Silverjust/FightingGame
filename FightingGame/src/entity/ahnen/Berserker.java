@@ -76,12 +76,12 @@ public class Berserker extends Unit implements Attacker {
 
 		setHp(hp_max = 250);
 		armor = 1;
-		setSpeed(0.9f);
-		setRadius(7);
-		setSight(70);
+		getStats.setSpeed(0.9f);
+		stats.setRadius(7);
+		animation.setSight(70);
 		groundPosition = GameObject.GroundPosition.GROUND;
 
-		aggroRange = (byte) (getRadius() + 50);
+		aggroRange = (byte) (stats.getRadius() + 50);
 		basicAttack.range = 10;
 		basicAttack.damage = 45;
 		basicAttack.cooldown = 1500;
@@ -105,14 +105,14 @@ public class Berserker extends Unit implements Attacker {
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (e.isEnemyTo(this)) {
-						if (e.isInRange(getX(), getY(), aggroRange + e.getRadius()) && basicAttack.canTargetable(e)) {
+						if (e.isInRange(getX(), getY(), aggroRange + e.getStats().getRadius()) && basicAttack.canTargetable(e)) {
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
 								importance = newImportance;
 								importantEntity = e;
 							}
 						}
-						if (e.isInRange(getX(), getY(), basicAttack.range + e.getRadius()) && basicAttack.canTargetable(e)) {
+						if (e.isInRange(getX(), getY(), basicAttack.range + e.getStats().getRadius()) && basicAttack.canTargetable(e)) {
 							isEnemyInHitRange = true;
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
@@ -148,7 +148,7 @@ public class Berserker extends Unit implements Attacker {
 		x = (this.getX() + (xDirection - this.getX()) / PApplet.dist(this.getX(), this.getY(), xDirection, yDirection) * (attackDistance));
 		y = (this.getY() + (yDirection - this.getY()) / PApplet.dist(this.getX(), this.getY(), xDirection, yDirection) * (attackDistance));
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
-			if (e != null & e.isEnemyTo(this) && e.isInRange(x, y, e.getRadius() + a.range)) {
+			if (e != null & e.isEnemyTo(this) && e.isInRange(x, y, e.getStats().getRadius() + a.range)) {
 				GameBaseApp.getUpdater().sendDirect(
 						DAMAGE + S + e.getNumber() + " " + (e instanceof Building ? a.damage / 4 : a.damage) + " " + a.pirce);
 			}
@@ -230,17 +230,17 @@ public class Berserker extends Unit implements Attacker {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;
@@ -364,7 +364,7 @@ public class Berserker extends Unit implements Attacker {
 			boolean placeFree = true;
 			boolean inBerserkerRange = false;
 			for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
-				if (e.isInRange(x, y, buildable.getRadius() + e.getRadius()) && e.groundPosition == GroundPosition.GROUND)
+				if (e.isInRange(x, y, buildable.stats.getRadius() + e.getStats().getRadius()) && e.groundPosition == GroundPosition.GROUND)
 					placeFree = false;
 				if (e instanceof Berserker && e.player == builder.player
 						&& e.isInRange(x, y, ((Berserker) e).buildRange)

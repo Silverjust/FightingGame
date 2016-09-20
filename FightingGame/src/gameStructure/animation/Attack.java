@@ -61,11 +61,11 @@ public abstract class Attack extends Ability {
 				e.sendAnimation("walk "
 						+ (target.getX() + (e.getX() - target.getX())
 								/ PApplet.dist(target.getX(), target.getY(), e.getX(), e.getY())
-								* (range + target.getRadius() - 1))
+								* (range + target.getStats().getRadius() - 1))
 						+ " "
 						+ (target.getY() + (e.getY() - target.getY())
 								/ PApplet.dist(target.getX(), target.getY(), e.getX(), e.getY())
-								* (range + target.getRadius() - 1))
+								* (range + target.getStats().getRadius() - 1))
 						+ " true", "Attack.sendWalkToEnemy()");
 			} else {
 				e.sendAnimation("stand", "Attack.sendWalkToEnemy()");

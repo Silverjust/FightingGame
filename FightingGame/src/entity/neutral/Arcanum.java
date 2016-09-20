@@ -30,7 +30,7 @@ public class Arcanum extends Building {
 		setxSize(50);
 		setySize(50);
 
-		setRadius(15);
+		getStats().setRadius(15);
 
 		descr = "Kerit";
 		// ************************************

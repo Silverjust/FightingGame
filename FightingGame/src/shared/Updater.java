@@ -5,7 +5,9 @@ import java.util.HashMap;
 
 import game.Map;
 import game.MapHandler;
+import gameStructure.Entity;
 import gameStructure.GameObject;
+import gameStructure.baseBuffs.Buff;
 import server.ServerUpdater;
 import shared.Helper.Timer;
 
@@ -124,5 +126,14 @@ public abstract class Updater {
 	public void sendSpawn(Class<? extends GameObject> c, Player owner, String content) {
 		send(Coms.SPAWN + " " + c.getSimpleName() + " " + ((ServerUpdater) this).getNextGObjNumber() + " "
 				+ owner.getUser().getIp() + " " + content);
+	}
+
+	public void sendBuff(Class<? extends Buff> c, Entity target, Entity origin, String time, String content) {
+		send(Coms.BUFF + " " + c.getSimpleName() + " " + target.getNumber() + " " + origin.getNumber() + " " + time
+				+ " " + content);
+	}
+
+	public void sendBuff(Class<? extends Buff> c, Entity target, Entity origin, int time, String content) {
+		sendBuff(c, target, origin, time + "", content);
 	}
 }

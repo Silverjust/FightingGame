@@ -10,6 +10,7 @@ import gameStructure.animation.Animation;
 import gameStructure.animation.Attack;
 import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
+import gameStructure.baseBuffs.SpeedBuff;
 import processing.core.PImage;
 import shared.Coms;
 import shared.GameBaseApp;
@@ -55,22 +56,22 @@ public class Ticul extends Champion implements Attacker {
 		setxSize(50);
 		setySize(50);
 
-		initHp(500);
-		setArmor(30);
-		setMagicResist(30);
+		getStats().initHp(500);
+		getStats().setArmor(30);
+		getStats().setMagicResist(30);
 
-		setSpeed(1.2f);
-		setRadius(15);
-		setSight(200);
+		getStats().setSpeed(1.2f);
+		getStats().setRadius(15);
+		getStats().setSight(200);
+		getStats().setSight(200);
 
-		aggroRange = (byte) (getRadius() + 50);
+		aggroRange = (byte) (getStats().getRadius() + 50);
 		basicAttack.range = 9;
 		basicAttack.damage = 40;
 		basicAttack.cooldown = 2000;
 		basicAttack.setCastTime(500);
 
 		descr = " ";
-		stats = " ";
 		// ************************************
 	}
 
@@ -98,8 +99,8 @@ public class Ticul extends Champion implements Attacker {
 	@Override
 	public void setupSpells(GameBaseApp app, SpellHandler inter) {
 		inter.addSpell(new Consume(app, inter, 0));
-		inter.addSpell(new Shot(app, inter, 1));
-		inter.addSpell(new TargetedShot(app, inter, 2));
+		inter.addSpell(new ShotSpell(app, inter, 1));
+		inter.addSpell(new SpeedBuffSpell(app, inter, 2));
 	}
 
 	static public class Consume extends Spell {// ******************************************************
@@ -125,13 +126,13 @@ public class Ticul extends Champion implements Attacker {
 
 	}
 
-	static public class Shot extends Spell {
+	static public class ShotSpell extends Spell {
 		private int maxRange = 120;
 
 		// ******************************************************
-		public Shot(GameBaseApp app, SpellHandler inter, int pos) {
+		public ShotSpell(GameBaseApp app, SpellHandler inter, int pos) {
 			super(app, inter, pos, smiteImg);
-			setCooldown(1000);
+			setCooldown(2000);
 		}
 
 		@Override
@@ -149,20 +150,22 @@ public class Ticul extends Champion implements Attacker {
 					maxRange, maxRange);
 			app.getUpdater().send(Coms.INPUT + " " + app.getPlayer().getUser().getIp() + " " + getPos() + " 1 "
 					+ (xt + xo) + " " + (yt + yo));
+			startCooldown();
 		}
 
 		@Override
 		public void recieveInput(String[] c, Player player) {
 			app.getUpdater().sendSpawn(TestProjectile.class, player, player.getChampion().getX() + " "
 					+ player.getChampion().getY() + " " + c[4] + " " + c[5] + " " + getInternName());
+			startCooldown();
 		}
 
 	}
 
-	static public class TargetedShot extends Spell {// ******************************************************
-		public TargetedShot(GameBaseApp app, SpellHandler inter, int pos) {
+	static public class SpeedBuffSpell extends Spell {// ******************************************************
+		public SpeedBuffSpell(GameBaseApp app, SpellHandler inter, int pos) {
 			super(app, inter, pos, smiteImg);
-			setCooldown(1000);
+			setCooldown(5000);
 		}
 
 		@Override
@@ -172,8 +175,9 @@ public class Ticul extends Champion implements Attacker {
 
 		@Override
 		public void recieveInput(String[] c, Player player) {
-			// TODO Auto-generated method stub
-
+			player.app.getUpdater().sendBuff(SpeedBuff.class, player.getChampion(), player.getChampion(), 1500,
+					70 + "");
+			startCooldown();
 		}
 
 	}

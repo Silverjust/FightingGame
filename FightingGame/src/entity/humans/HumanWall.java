@@ -39,14 +39,14 @@ public class HumanWall extends Building {
 		prunam = 0;
 		build.setBuildTime(5000);
 
-		setSight(20);
+		animation.setSight(20);
 
 		setHp(hp_max = 500);
 		armor = 2;
-		setRadius(10);
+		getStats().setRadius(10);
 
 		descr = "wall ";
-		stats = " ";
+		setStats(" ");
 		// ************************************
 	}
 

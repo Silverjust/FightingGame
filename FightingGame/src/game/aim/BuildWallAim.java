@@ -34,7 +34,7 @@ public class BuildWallAim extends BuildAim {
 			float x1 = xStartWall, y1 = yStartWall;
 			float x2 = Building.xToGrid(Building.gridToX(app.mouseX)), y2 = Building
 					.xToGrid(Building.gridToY(player.app.mouseY));
-			float speed = buildable.getRadius() * 2;
+			float speed = buildable.getStats().getRadius() * 2;
 			while (PApplet.dist(x1, y1, x2, y2) > speed) {
 				x1 = (x1 + (x2 - x1) / PApplet.dist(x1, y1, x2, y2) * (speed));
 				y1 = (y1 + (y2 - y1) / PApplet.dist(x1, y1, x2, y2) * (speed));
@@ -84,7 +84,7 @@ public class BuildWallAim extends BuildAim {
 			 * .xToGrid(Building.gridToY());
 			 */
 			float x2 = x, y2 = y;
-			float speed = buildable.getRadius() * 2;
+			float speed = buildable.getStats().getRadius() * 2;
 			while (PApplet.dist(x1, y1, x2, y2) > speed) {
 				x1 = (x1 + (x2 - x1) / PApplet.dist(x1, y1, x2, y2) * (speed));
 				y1 = (y1 + (y2 - y1) / PApplet.dist(x1, y1, x2, y2) * (speed));

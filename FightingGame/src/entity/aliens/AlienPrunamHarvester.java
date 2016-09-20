@@ -34,8 +34,8 @@ public class AlienPrunamHarvester extends PrunamHarvester   {
 		((Extract) stand).efficenty = efficenty;
 
 		descr = " ";
-		stats = "ressource/s: "
-				+ (((Extract) stand).efficenty / ((Extract) stand).cooldown * 1000);
+		setStats("ressource/s: "
+				+ (((Extract) stand).efficenty / ((Extract) stand).cooldown * 1000));
 		// ************************************
 	}
 

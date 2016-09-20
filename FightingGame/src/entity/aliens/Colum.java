@@ -57,13 +57,13 @@ public class Colum extends Unit implements Attacker {
 		trainTime = 5000;
 
 		setHp(hp_max = 300);
-		setSpeed(0.9f);
-		setRadius(7);
-		setSight((byte) 127);
+		getStats.setSpeed(0.9f);
+		stats.setRadius(7);
+		animation.setSight((byte) 127);
 		groundPosition = GameObject.GroundPosition.AIR;
 		setHeight(50);
 
-		heal.range = (byte) (getRadius() + 25);
+		heal.range = (byte) (stats.getRadius() + 25);
 		heal.damage = 25;// heal
 		heal.pirce = -1;// heal
 		heal.cooldown = 5000;
@@ -86,7 +86,7 @@ public class Colum extends Unit implements Attacker {
 	public void calculateDamage(Attack a) {
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 			if (e != null && e.isAllyTo(this)
-					&& e.isInRange(getX(), getY(), e.getRadius() + a.range)) {
+					&& e.isInRange(getX(), getY(), e.getStats().getRadius() + a.range)) {
 				GameBaseApp.getUpdater().sendDirect("<heal " + e.getNumber() + " " + heal.damage);
 			}
 		}
@@ -135,17 +135,17 @@ public class Colum extends Unit implements Attacker {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;

@@ -76,13 +76,13 @@ public class Angel extends Unit implements Attacker, Shooter {
 
 		setHp(hp_max = 100);
 		armor = 1;
-		setSpeed(0.7f);
-		setRadius(7);
-		setSight(90);
+		getStats.setSpeed(0.7f);
+		stats.setRadius(7);
+		animation.setSight(90);
 		groundPosition = GameObject.GroundPosition.AIR;
 
-		aggroRange = (byte) (getRadius() + 60);
-		basicAttack.range = (byte) (getRadius() + 20);
+		aggroRange = (byte) (stats.getRadius() + 60);
+		basicAttack.range = (byte) (stats.getRadius() + 20);
 		basicAttack.damage = 80;
 		basicAttack.pirce = 1;
 		basicAttack.cooldown = 3000;
@@ -107,13 +107,13 @@ public class Angel extends Unit implements Attacker, Shooter {
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (e.isEnemyTo(this)) {
-						if (e.isInRange(getX(), getY(), aggroRange + e.getRadius()) && basicAttack.canTargetable(e)) {
+						if (e.isInRange(getX(), getY(), aggroRange + e.getStats().getRadius()) && basicAttack.canTargetable(e)) {
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
 								importance = newImportance;
 								importantEntity = e;
 							}
-							if (e.isInRange(getX(), getY(), basicAttack.range + e.getRadius()))
+							if (e.isInRange(getX(), getY(), basicAttack.range + e.getStats().getRadius()))
 								isEnemyInHitRange = true;
 						}
 
@@ -155,8 +155,8 @@ public class Angel extends Unit implements Attacker, Shooter {
 			if (getAnimation() != cloak) {
 				isCloaked = true;
 				setHeight(5);
-				setRadius(5);
-				setMoving(false);
+				stats.setRadius(5);
+				getStats.setMoving(this, false);
 				groundPosition = GroundPosition.GROUND;
 				cloak.startCooldown();
 				setAnimation(cloak);
@@ -165,7 +165,7 @@ public class Angel extends Unit implements Attacker, Shooter {
 			if (getAnimation() == cloak) {
 				isCloaked = false;
 				setHeight(30);
-				setRadius(7);
+				stats.setRadius(7);
 				groundPosition = GroundPosition.AIR;
 			}
 		}
@@ -242,17 +242,17 @@ public class Angel extends Unit implements Attacker, Shooter {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;

@@ -15,9 +15,6 @@ public abstract class Unit extends Entity {
 	public float xTarget;
 	public float yTarget;
 	protected byte direction;
-	private float speed;
-	private float speedMult = 100;
-
 	private boolean isMoving;
 	private boolean isAggro;
 	public Animation walk;
@@ -35,15 +32,25 @@ public abstract class Unit extends Entity {
 	}
 
 	@Override
+	public void initStats(GameBaseApp app) {
+		stats = new UnitStats(app);
+	}
+
+	@Override
+	public UnitStats getStats() {
+		return (UnitStats) stats;
+	}
+
+	@Override
 	public void updateMovement() {
 		float xDeglich = 0;
 		float yDeglich = 0;
 		boolean hasColided = false;
-		if (isMoving() && !isRooted()) {// ****************************************************
+		if (isMoving() && !getStats().isRooted()) {// ****************************************************
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (isCollision(e)) {
-						if (e.getAnimation() == e.stand && e.isInRange(xTarget, yTarget, e.getRadius()))
+						if (e.getAnimation() == e.stand && e.isInRange(xTarget, yTarget, e.getStats().getRadius()))
 							sendAnimation("stand", this);
 						hasColided = true;
 						xDeglich += getX() - e.getX();
@@ -55,18 +62,19 @@ public abstract class Unit extends Entity {
 			// stand still
 		}
 
-		if (PApplet.dist(getX(), getY(), xTarget, yTarget) < getSpeed() && getAnimation() == walk) {
+		if (PApplet.dist(getX(), getY(), xTarget, yTarget) < getStats().getSpeed() && getAnimation() == walk) {
 			// System.out.println(1000000000+" "+(animation == walk));
 			setMoving(false);
 			setAnimation(stand);
 			sendAnimation("stand", this);
 		}
 
-		if (isMoving() && !hasColided && !isRooted()
-				&& PApplet.dist(getX(), getY(), xTarget + xDeglich, yTarget + yDeglich) > getSpeed()) {
+		if (isMoving() && !hasColided && !getStats().isRooted()
+				&& PApplet.dist(getX(), getY(), xTarget + xDeglich, yTarget + yDeglich) > getStats().getSpeed()) {
 			setX(xNext(xTarget + xDeglich, yTarget + yDeglich));
 			setY(yNext(xTarget + xDeglich, yTarget + yDeglich));
-		} else if (!isRooted() && PApplet.dist(getX(), getY(), getX() + xDeglich, getY() + yDeglich) > getSpeed()) {
+		} else if (!getStats().isRooted()
+				&& PApplet.dist(getX(), getY(), getX() + xDeglich, getY() + yDeglich) > getStats().getSpeed()) {
 			setX(xNext(getX() + xDeglich, getY() + yDeglich));
 			setY(yNext(getX() + xDeglich, getY() + yDeglich));
 		}
@@ -84,17 +92,17 @@ public abstract class Unit extends Entity {
 	}
 
 	protected float xNext(float X, float Y) {
-		return getX() + (X - getX()) / PApplet.dist(getX(), getY(), X, Y) * getSpeed();
+		return getX() + (X - getX()) / PApplet.dist(getX(), getY(), X, Y) * getStats().getSpeed();
 	}
 
 	protected float yNext(float X, float Y) {
-		return getY() + (Y - getY()) / PApplet.dist(getX(), getY(), X, Y) * getSpeed();
+		return getY() + (Y - getY()) / PApplet.dist(getX(), getY(), X, Y) * getStats().getSpeed();
 	}
 
 	@Override
 	public void drawOnMinimap(PGraphics graphics) {
 		graphics.fill(player.color);
-		graphics.ellipse(getX(), getY(), getRadius() * 2, getRadius() * 2);
+		graphics.ellipse(getX(), getY(), getStats().getRadius() * 2, getStats().getRadius() * 2);
 	}
 
 	@Override
@@ -108,7 +116,7 @@ public abstract class Unit extends Entity {
 		if ("walk".equals(string) && getAnimation().isInterruptable()) {
 			xTarget = Float.parseFloat(c[3]);
 			yTarget = Float.parseFloat(c[4]);
-			if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= getSpeed()) {
+			if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= getStats().getSpeed()) {
 				setMoving(true);
 				if (c.length > 5)
 					isAggro = Boolean.valueOf(c[5]);
@@ -140,12 +148,12 @@ public abstract class Unit extends Entity {
 
 	public void info() {
 		player.app.getDrawer().getHud().chat.println(this.getClass().getSimpleName() + "_" + getNumber(),
-				"(" + getX() + "|" + getY() + ")->(" + xTarget + "|" + yTarget + ")\nhp:" + getCurrentHp());
+				"(" + getX() + "|" + getY() + ")->(" + xTarget + "|" + yTarget + ")\nhp:" + getStats().getCurrentHp());
 	}
 
 	@Override
 	public void sendDefaultAnimation(Animation oldAnimation) {
-		if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= getSpeed())
+		if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= getStats().getSpeed())
 			sendAnimation("walk " + xTarget + " " + yTarget + " " + isAggro, this);
 		else {
 			sendAnimation("stand", this);
@@ -156,19 +164,6 @@ public abstract class Unit extends Entity {
 		}
 	}
 
-	/** gives you the movement-speed */
-	public float getSpeed() {
-		return speed * speedMult / 100.0f;
-	}
-
-	/** sets the movement-speed */
-	public void setSpeed(float speed) {
-		if (speed <= 0)
-			System.out.println("Unit.setSpeed() cant root this way");
-		else
-			this.speed = speed;
-	}
-
 	/** tells if it is normaly able to move */
 	public boolean isMoving() {
 		return isMoving;
@@ -177,13 +172,5 @@ public abstract class Unit extends Entity {
 	/** sets own ability to move */
 	public void setMoving(boolean isMoving) {
 		this.isMoving = isMoving;
-	}
-
-	public float getSpeedMult() {
-		return speedMult;
-	}
-
-	public void setSpeedMult(float speedMult) {
-		this.speedMult = speedMult;
 	}
 }

@@ -65,10 +65,10 @@ public class ThornTower extends Building implements Shooter, Commander {
 		prunam = 0;
 		build.setBuildTime(10000);
 
-		setSight(70);
+		animation.setSight(70);
 
 		setHp(hp_max = 800);
-		setRadius(15);
+		stats.setRadius(15);
 
 		basicAttack.range = 70;
 		basicAttack.damage = 55;
@@ -90,7 +90,7 @@ public class ThornTower extends Building implements Shooter, Commander {
 		if (isServer && (getAnimation() == stand)) {// ****************************************************
 			for (GameObject e : player.visibleEntities) {
 				if (e.isEnemyTo(this)) {
-					if (e.isInRange(getX(), getY(), basicAttack.range + e.getRadius())
+					if (e.isInRange(getX(), getY(), basicAttack.range + e.getStats().getRadius())
 							&& basicAttack.canTargetable(e)
 							&& !(e instanceof Building)) {
 						float newImportance = calcImportanceOf(e);
@@ -199,17 +199,17 @@ public class ThornTower extends Building implements Shooter, Commander {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;

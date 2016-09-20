@@ -63,10 +63,10 @@ public class AhnenTower extends Building implements Commander {
 		prunam = 0;
 		build.setBuildTime(2000);
 
-		setSight(80);
+		animation.setSight(80);
 
 		setHp(hp_max = 500);
-		setRadius(12);
+		stats.setRadius(12);
 
 		commandingRange = 100;
 		selectRange = 30;
@@ -136,7 +136,7 @@ public class AhnenTower extends Building implements Commander {
 					}
 					normalUnit.player = unit.player;
 					normalUnit.setX(x);
-					normalUnit.setY(getY() + getRadius() + 10);
+					normalUnit.setY(getY() + stats.getRadius() + 10);
 					normalUnit.setHp(unit.getCurrentHp());
 					armor = 0;
 					GameApplet.GameBaseApp.toAdd.add(normalUnit);
@@ -144,7 +144,7 @@ public class AhnenTower extends Building implements Commander {
 				unit = (Unit) e;
 				unit.setX(x);
 				unit.setY(y);
-				unit.setMoving(false);
+				unit.getStats.setMoving(unit, false);
 				unit.isSelected = false;
 				unit.setHeight(unitHeight);
 				GameApplet.GameBaseApp.toRemove.add(unit);
@@ -222,17 +222,17 @@ public class AhnenTower extends Building implements Commander {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;
@@ -299,7 +299,7 @@ public class AhnenTower extends Building implements Commander {
 			for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
 				if (e.isAllyTo(GameBaseApp.getPlayer())
 						&& e instanceof Unit
-						&& PApplet.dist(x, y, e.getX(), e.getY() - e.flyHeight()) <= e.getRadius())
+						&& PApplet.dist(x, y, e.getX(), e.getY() - e.flyHeight()) <= e.getStats().getRadius())
 					target = e;
 			}
 			if (target != null) {

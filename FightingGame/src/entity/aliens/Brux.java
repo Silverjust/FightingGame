@@ -64,18 +64,18 @@ public class Brux extends Unit implements Attacker {
 		trainTime = 3000;
 
 		setHp(hp_max = 160);
-		setSpeed(0.8f);
-		setRadius(8);
-		setSight(80);
+		getStats.setSpeed(0.8f);
+		stats.setRadius(8);
+		animation.setSight(80);
 		groundPosition = GameObject.GroundPosition.GROUND;
 
-		aggroRange = (byte) (getRadius() + 50);
-		basicAttack.range = (byte) (getRadius() + 10);
+		aggroRange = (byte) (stats.getRadius() + 50);
+		basicAttack.range = (byte) (stats.getRadius() + 10);
 		basicAttack.damage = 15;
 		basicAttack.cooldown = 1200;
 		basicAttack.setCastTime(500);
 
-		jump.range = (byte) (getRadius() + 10);
+		jump.range = (byte) (stats.getRadius() + 10);
 		jump.damage = 20;
 		jump.pirce = 2;
 		jump.cooldown = 7000;
@@ -96,14 +96,14 @@ public class Brux extends Unit implements Attacker {
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (e.isEnemyTo(this)) {
-						if (e.isInRange(getX(), getY(), aggroRange + e.getRadius())&& basicAttack.canTargetable(e)) {
+						if (e.isInRange(getX(), getY(), aggroRange + e.getStats().getRadius())&& basicAttack.canTargetable(e)) {
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
 								importance = newImportance;
 								importantEntity = e;
 							}
 						}
-						if (e.isInRange(getX(), getY(), basicAttack.range + e.getRadius())&& basicAttack.canTargetable(e)) {
+						if (e.isInRange(getX(), getY(), basicAttack.range + e.getStats().getRadius())&& basicAttack.canTargetable(e)) {
 							isEnemyInHitRange = true;
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
@@ -130,11 +130,11 @@ public class Brux extends Unit implements Attacker {
 	@Override
 	public void updateMovement() {
 		if (getAnimation() == jump) {
-			setSpeed(getSpeed() + jump.speed);
+			getStats.setSpeed(getStats.getSpeed() + jump.speed);
 		}
 		super.updateMovement();
 		if (getAnimation() == jump) {
-			setSpeed(getSpeed() - jump.speed);
+			getStats.setSpeed(getStats.getSpeed() - jump.speed);
 		}
 	}
 
@@ -207,17 +207,17 @@ public class Brux extends Unit implements Attacker {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;
@@ -259,7 +259,7 @@ public class Brux extends Unit implements Attacker {
 		@Override
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (target != null && isNotOnCooldown()
-					&& target.isInRange(e.getX(), e.getY(), e.getRadius() + target.getRadius())) {
+					&& target.isInRange(e.getX(), e.getY(), e.getStats().getRadius() + target.getStats().getRadius())) {
 				if (isServer) {
 					GameBaseApp.getUpdater().sendDirect("<hit " + target.getNumber() + " " + damage
 							+ " " + pirce);

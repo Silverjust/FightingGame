@@ -50,15 +50,15 @@ public class AlienKaserneArcanum extends Building implements Commander, Trainer 
 		prunam = 0;
 		build.setBuildTime(10000);
 
-		setSight(50);
+		animation.setSight(50);
 
 		setHp(hp_max = 1000);
-		setRadius(18);
+		getStats().setRadius(18);
 
 		commandRange = 250;
 
 		descr = " ";
-		stats = " ";
+		setStats(" ");
 		// ************************************
 	}
 

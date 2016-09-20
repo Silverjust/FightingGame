@@ -10,13 +10,13 @@ public class Stunn extends Buff {
 	@Override
 	public void onStart() {
 		super.onStart();
-		owner.setStunned(true);
-		owner.onHardCC(this);
+		owner.getStats().setStunned(true);
+		onHardCC();
 	}
 
 	@Override
 	public void onEnd() {
 		super.onEnd();
-		owner.setStunned(false);
+		owner.getStats().setStunned(false);
 	}
 }

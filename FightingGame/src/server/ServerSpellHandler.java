@@ -34,7 +34,8 @@ public class ServerSpellHandler extends SpellHandler {
 	public void input(String[] c) {
 		for (Spell spell : spells) {
 			if (spell.getPos() == Integer.parseInt(c[2])) {
-				spell.recieveInput(c, player);
+				if (spell.isNotOnCooldown()&&spell.isActivateable())
+					spell.recieveInput(c, player);
 			}
 		}
 	}

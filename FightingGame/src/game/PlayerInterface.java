@@ -7,6 +7,7 @@ import gameStructure.Spell;
 import main.appdata.SettingHandler;
 import shared.ContentListManager;
 import shared.GameBaseApp;
+import shared.Player;
 import shared.SpellHandler;
 
 public class PlayerInterface extends SpellHandler {
@@ -14,12 +15,17 @@ public class PlayerInterface extends SpellHandler {
 	public int x = 400;
 	public int y;
 	private SettingHandler settingHandler;
+	private GameBaseApp app;
+	private Player player;
+	private float statsDisplayX = 10;
 
 	public PlayerInterface(GameBaseApp app, HUD hud) {
+		this.app = app;
 		hud.playerInterface = this;
 		settingHandler = ((GameApp) app).settingHandler;
 		y = app.height - hud.height + 5;
-		String championName = app.getPlayer().getUser().championName;
+		player = app.getPlayer();
+		String championName = player.getUser().championName;
 		if (championName != null && !championName.equals("") && !championName.equals("null")) {
 			ContentListManager contentListManager = app.getContentListManager();
 			Champion champ = (Champion) contentListManager.createGObj(contentListManager.getChampClass(championName));
@@ -33,6 +39,7 @@ public class PlayerInterface extends SpellHandler {
 		for (Spell spell : spells) {
 			spell.updateButton();
 		}
+		app.text(player.getChampion().getStats().getSpeed(), statsDisplayX, y + app.textAscent());
 	}
 
 	public Spell addSpell(Spell spell) {
@@ -41,9 +48,9 @@ public class PlayerInterface extends SpellHandler {
 	}
 
 	public void handleKeyPressed(char c) {
-		for (Spell s : spells) {
-			if (s.getPos() == getPosOfKey(c) && s.isActivateable())
-				s.pressManually();
+		for (Spell spell : spells) {
+			if (spell.getPos() == getPosOfKey(c) && spell.isActivateable())
+				spell.pressManually();
 		}
 	}
 

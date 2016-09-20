@@ -35,15 +35,15 @@ public class HumanMainBuilding extends MainBuilding implements Commander {
 		setxSize(60);
 		setySize(60);
 
-		setSight(50);
+		animation.setSight(50);
 
 		setHp(hp_max = 1500);
-		setRadius(RADIUS);
+		getStats().setRadius(RADIUS);
 
 		commandingRange = 250;
 
 		descr = "United Humans Main Building§when it dies, you loose";
-		stats = " ";
+		setStats(" ");
 		// ************************************
 	}
 

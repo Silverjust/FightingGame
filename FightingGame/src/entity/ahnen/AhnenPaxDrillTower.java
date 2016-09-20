@@ -35,8 +35,8 @@ public class AhnenPaxDrillTower extends PaxDrillTower   {
 		((Extract) stand).efficenty = efficenty;
 
 		descr = " ";
-		stats = "ressource/s: "
-				+ (((Extract) stand).efficenty / ((Extract) stand).cooldown * 1000);
+		setStats("ressource/s: "
+				+ (((Extract) stand).efficenty / ((Extract) stand).cooldown * 1000));
 		// ************************************
 	}
 

@@ -35,15 +35,15 @@ public class AlienMainBuilding extends MainBuilding implements Commander {
 		setxSize(85);
 		setySize(85);
 
-		setSight(50);
+		animation.setSight(50);
 
 		setHp(hp_max = 1500);
-		setRadius(RADIUS);
+		getStats().setRadius(RADIUS);
 
 		commandingRange = 250;
 
 		descr = "Alien Main Building§when it dies, you loose";
-		stats = " ";
+		setStats(" ");
 		// ************************************
 	}
 

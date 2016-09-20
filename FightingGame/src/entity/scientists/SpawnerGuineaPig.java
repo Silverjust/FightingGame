@@ -63,9 +63,9 @@ public class SpawnerGuineaPig extends Unit {
 		trainTime = 5000;
 
 		setHp(hp_max = 400);
-		setSpeed(0.9f);
-		setRadius(7);
-		setSight(90);
+		getStats.setSpeed(0.9f);
+		stats.setRadius(7);
+		animation.setSight(90);
 		groundPosition = GameObject.GroundPosition.GROUND;
 
 		spawnRange = 90;
@@ -86,7 +86,7 @@ public class SpawnerGuineaPig extends Unit {
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (e.isEnemyTo(this)) {
-						if (e.isInRange(getX(), getY(), spawnRange + e.getRadius())) {
+						if (e.isInRange(getX(), getY(), spawnRange + e.getStats().getRadius())) {
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
 								importance = newImportance;
@@ -108,7 +108,7 @@ public class SpawnerGuineaPig extends Unit {
 	public void exec(String[] c) {
 		super.exec(c);
 		if (c[2].equals("spawn")) {
-			setMoving(false);
+			getStats.setMoving(this, false);
 			int n = Integer.parseInt(c[3]);
 			GameObject e = GameBaseApp.getUpdater().getNamedObjects().get(n);
 			spawn.setTarget(e);
@@ -169,17 +169,17 @@ public class SpawnerGuineaPig extends Unit {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;
@@ -227,7 +227,7 @@ public class SpawnerGuineaPig extends Unit {
 			if (target != null && isEvent()) {
 				if (isServer) {
 					GameBaseApp.getUpdater().sendDirect("<spawn GuineaPig " + e.player.getUser().getIp() + " "
-							+ e.getX() + " " + (e.getY() + e.getRadius() + 8) + " " + target.getX()
+							+ e.getX() + " " + (e.getY() + e.getStats().getRadius() + 8) + " " + target.getX()
 							+ " " + target.getY());
 				}
 				/*

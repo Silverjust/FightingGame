@@ -64,12 +64,12 @@ public class B0T extends Unit implements Shooter {
 
 		setHp(hp_max = 85);
 		armor = 1;
-		setSpeed(0.9f);
-		setRadius(5);
-		setSight(70);
+		getStats.setSpeed(0.9f);
+		stats.setRadius(5);
+		animation.setSight(70);
 		groundPosition = GameObject.GroundPosition.GROUND;
 
-		aggroRange = (byte) (getRadius() + 50);
+		aggroRange = (byte) (stats.getRadius() + 50);
 		basicAttack.damage = 30;
 		basicAttack.pirce = 0;
 		basicAttack.cooldown = 1500;
@@ -91,7 +91,7 @@ public class B0T extends Unit implements Shooter {
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (e.isEnemyTo(this)) {
-						if (e.isInRange(getX(), getY(), aggroRange + e.getRadius())
+						if (e.isInRange(getX(), getY(), aggroRange + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
@@ -99,7 +99,7 @@ public class B0T extends Unit implements Shooter {
 								importantEntity = e;
 							}
 						}
-						if (e.isInRange(getX(), getY(), basicAttack.range + e.getRadius())
+						if (e.isInRange(getX(), getY(), basicAttack.range + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							isEnemyInHitRange = true;
 							float newImportance = calcImportanceOf(e);
@@ -128,17 +128,17 @@ public class B0T extends Unit implements Shooter {
 		if ("walk".equals(c[2])) {
 			xTarget = Float.parseFloat(c[3]);
 			yTarget = Float.parseFloat(c[4]);
-			if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= getSpeed()) {
-				setMoving(true);
+			if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= getStats.getSpeed()) {
+				getStats.setMoving(this, true);
 				// isAggro = Boolean.valueOf(c[5]);
 				// setAnimation(walk);
 			} else {
-				setMoving(false);
+				getStats.setMoving(this, false);
 				// setAnimation(stand);
 			}
 		}
 		if (c[2].equals("basicAttack"))
-			setMoving(true);
+			getStats.setMoving(this, true);
 	}
 
 	@Override
@@ -203,17 +203,17 @@ public class B0T extends Unit implements Shooter {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;

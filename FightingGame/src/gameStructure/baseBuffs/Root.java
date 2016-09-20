@@ -10,12 +10,12 @@ public class Root extends Buff {
 	@Override
 	public void onStart() {
 		super.onStart();
-		owner.setRooted(true);
+		owner.getStats().setRooted(true);
 	}
 
 	@Override
 	public void onEnd() {
 		super.onEnd();
-		owner.setRooted(false);
+		owner.getStats().setRooted(false);
 	}
 }

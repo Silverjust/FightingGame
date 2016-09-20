@@ -58,15 +58,18 @@ public class PreGameComHandler extends ComHandler {
 				break;
 			case SET_TEAM:
 				User u = app.getPreGameInfo().getUser(c[1]);
-				if (c[2].equals(LEFTSIDE)) {
-					u.team = Team.LEFTSIDE;
-					preGameApp.getPreGameInterface().updateUsers(preGameApp);
-				} else if (c[2].equals(RIGHTSIDE)) {
-					u.team = Team.RIGHTSIDE;
-					preGameApp.getPreGameInterface().updateUsers(preGameApp);
-				} else {
-					throw new IllegalArgumentException(c[2] + " is not a team");
-				}
+				if (u != null) {
+					if (c[2].equals(LEFTSIDE)) {
+						u.team = Team.LEFTSIDE;
+						preGameApp.getPreGameInterface().updateUsers(preGameApp);
+					} else if (c[2].equals(RIGHTSIDE)) {
+						u.team = Team.RIGHTSIDE;
+						preGameApp.getPreGameInterface().updateUsers(preGameApp);
+					} else {
+						throw new IllegalArgumentException(c[2] + " is not a team");
+					}
+				} else
+					throw new IllegalArgumentException(c[1] + " player not found");
 				break;
 			case SET_CHAMP:
 				u = app.getPreGameInfo().getUser(c[1]);

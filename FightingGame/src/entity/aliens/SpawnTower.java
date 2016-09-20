@@ -67,10 +67,10 @@ public class SpawnTower extends Building implements Commander {
 		prunam = 0;
 		build.setBuildTime(10000);
 
-		setSight(70);
+		animation.setSight(70);
 
 		setHp(hp_max = 200);
-		setRadius(15);
+		stats.setRadius(15);
 
 		spawnRange = 150;
 		maxShootlings = 12;
@@ -91,7 +91,7 @@ public class SpawnTower extends Building implements Commander {
 		if (isServer && (getAnimation() == stand)) {// ****************************************************
 			for (GameObject e : player.visibleEntities) {
 				if (e.isEnemyTo(this)) {
-					if (e.isInRange(getX(), getY(), spawnRange + e.getRadius())
+					if (e.isInRange(getX(), getY(), spawnRange + e.getStats().getRadius())
 							&& !(e instanceof Building)) {
 						float newImportance = calcImportanceOf(e);
 						if (newImportance > importance) {
@@ -196,17 +196,17 @@ public class SpawnTower extends Building implements Commander {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;
@@ -261,11 +261,11 @@ public class SpawnTower extends Building implements Commander {
 							+ " "
 							+ (e.getX() + (xt - e.getX())
 									/ PApplet.dist(e.getX(), e.getY(), xt, yt)
-									* (e.getRadius() + shootlingRadius))
+									* (e.getStats().getRadius() + shootlingRadius))
 							+ " "
 							+ (e.getY() + (yt - e.getY())
 									/ PApplet.dist(e.getX(), e.getY(), xt, yt)
-									* (e.getRadius() + shootlingRadius)) + " " + xt
+									* (e.getStats().getRadius() + shootlingRadius)) + " " + xt
 							+ " " + yt + " " + e.getNumber());
 					/*
 					 * ref.updater.send("<spawn Rugling " + e.player.ip + " " +

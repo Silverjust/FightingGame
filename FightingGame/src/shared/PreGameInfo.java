@@ -58,10 +58,15 @@ public class PreGameInfo {
 	}
 
 	public User getUser(String string) {
-		if (string.equals("")) {// returns this user
-			return users.get(app.getClientHandler().getIdentification());
+		User u;
+		if (string.equals("")) // returns this user
+			u = users.get(app.getClientHandler().getIdentification());
+		else
+			u = users.get(string);
+		if (u == null) {
+			System.err.println("PreGameInfo.getUser()" + string + " User not found" );
 		}
-		return users.get(string);
+		return u;
 	}
 
 	public HashMap<String, User> getUsers() {

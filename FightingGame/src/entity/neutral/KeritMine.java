@@ -25,8 +25,8 @@ public abstract class KeritMine extends Building {
 		// buildtime in child
 
 		setHp(hp_max = 500);
-		setRadius(10);
-		setSight(50);
+		getStats().setRadius(10);
+		animation.setSight(50);
 		// ************************************
 	}
 

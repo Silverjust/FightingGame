@@ -76,7 +76,9 @@ public class Helper {
 	}
 
 	public static String ipToName(String ip, GameBaseApp app) {
-		User u = app.getPreGameInfo().getUser(ip);
+		User u = null;
+		if (!ip.equals("SERVER"))
+			u = app.getPreGameInfo().getUser(ip);
 		String name = null;
 		if (u != null)
 			name = u.name;

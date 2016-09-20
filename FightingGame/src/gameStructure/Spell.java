@@ -93,8 +93,10 @@ public abstract class Spell {
 		}
 	}
 
+	/** clientside */
 	protected void onActivation() {
 		app.getUpdater().send(Coms.INPUT + " " + app.getPlayer().getUser().getIp() + " " + getPos() + " 1");
+		startCooldown();
 	}
 
 	public void setVisible(boolean b) {
@@ -111,12 +113,13 @@ public abstract class Spell {
 
 	public void pressManually() {
 		if (isNotOnCooldown())
-			button.pressManually();
+			onActivation();
 	}
 
 	public void startCooldown() {
 		cooldownTimer = Updater.Time.getMillis() + getCooldown();
-		button.setEnabled(false);
+		if (button != null)
+			button.setEnabled(false);
 	}
 
 	public boolean isNotOnCooldown() {
@@ -154,9 +157,10 @@ public abstract class Spell {
 
 	protected void setPassive(boolean b) {
 		if (button != null)
-		button.setEnabled(b);
+			button.setEnabled(b);
 	}
 
+	/** Serverside */
 	public abstract void recieveInput(String[] c, Player player);
 
 }

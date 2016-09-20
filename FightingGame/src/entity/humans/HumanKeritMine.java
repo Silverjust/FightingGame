@@ -30,8 +30,8 @@ public class HumanKeritMine extends entity.neutral.KeritMine {
 		((Extract) stand).ressource = ressource;
 		((Extract) stand).efficenty = efficenty;
 		descr = " ";
-		stats = "ressource/s: "
-				+ (((Extract) stand).efficenty / ((Extract) stand).cooldown * 1000);
+		setStats("ressource/s: "
+				+ (((Extract) stand).efficenty / ((Extract) stand).cooldown * 1000));
 		// ************************************
 	}
 

@@ -50,15 +50,15 @@ public class AlienKasernePrunam extends Building implements Commander, Trainer {
 		prunam = 10;
 		build.setBuildTime(10000);
 
-		setSight(50);
+		animation.setSight(50);
 
 		setHp(hp_max = 1000);
-		setRadius(18);
+		getStats().setRadius(18);
 
 		commanderRange = 250;
 
 		descr = " ";
-		stats = " ";
+		setStats(" ");
 		// ************************************
 	}
 

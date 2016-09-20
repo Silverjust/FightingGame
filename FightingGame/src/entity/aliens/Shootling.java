@@ -59,13 +59,13 @@ public class Shootling extends Unit implements Shooter {
 		setySize(30);
 
 		setHp(hp_max = 80);
-		setSpeed(3.2f);
-		setRadius(4);
-		setSight(50);
+		getStats.setSpeed(3.2f);
+		stats.setRadius(4);
+		animation.setSight(50);
 		groundPosition = GameObject.GroundPosition.GROUND;
 
-		aggroRange = (byte) (getRadius() + 100);
-		basicAttack.range = (byte) (getRadius() + 12);
+		aggroRange = (byte) (stats.getRadius() + 100);
+		basicAttack.range = (byte) (stats.getRadius() + 12);
 		basicAttack.damage = 10;
 		basicAttack.cooldown = 1500;
 		basicAttack.setCastTime(500);
@@ -82,7 +82,7 @@ public class Shootling extends Unit implements Shooter {
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (e.isEnemyTo(this)) {
-						if (e.isInRange(getX(), getY(), aggroRange + e.getRadius())
+						if (e.isInRange(getX(), getY(), aggroRange + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
@@ -90,7 +90,7 @@ public class Shootling extends Unit implements Shooter {
 								importantEntity = e;
 							}
 						}
-						if (e.isInRange(getX(), getY(), basicAttack.range + e.getRadius())
+						if (e.isInRange(getX(), getY(), basicAttack.range + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							isEnemyInHitRange = true;
 							float newImportance = calcImportanceOf(e);
@@ -193,17 +193,17 @@ public class Shootling extends Unit implements Shooter {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;

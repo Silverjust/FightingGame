@@ -18,7 +18,7 @@ public class Animation {
 	PImage[] img;
 	public int duration;
 	int start;
-	protected GameBaseApp app;
+	public GameBaseApp app;
 
 	public Animation(GameBaseApp app, PImage[][] IMG, int duration) {
 		this.app = app;
@@ -157,4 +157,5 @@ public class Animation {
 			return "ability";
 		return super.toString();
 	}
+
 }

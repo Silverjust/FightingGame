@@ -62,10 +62,10 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 		prunam = 0;
 		build.setBuildTime(5000);
 
-		setSight(50);
+		animation.setSight(50);
 
 		setHp(hp_max = 1000);
-		setRadius(15);
+		stats.setRadius(15);
 
 		commandingRange = 250;
 
@@ -164,17 +164,17 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;
@@ -296,7 +296,7 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 					for (GameObject e2 : GameApplet.GameBaseApp.visibleEntities) {
 						if (e2.player == e.player
 								&& e2.getClass().equals(lab)
-								&& e.isInRange(e2.getX(), e2.getY(), e.getRadius()
+								&& e.isInRange(e2.getX(), e2.getY(), e.getStats().getRadius()
 										+ ((Lab) e2).equipRange)) {
 							trainer = e;
 						}
@@ -328,7 +328,7 @@ public class ScientistKaserne extends Building implements Commander, Trainer,
 					for (GameObject e2 : GameApplet.GameBaseApp.visibleEntities) {
 						if (e2.player == e.player
 								&& e2.getClass().equals(lab)
-								&& e.isInRange(e2.getX(), e2.getY(), e.getRadius()
+								&& e.isInRange(e2.getX(), e2.getY(), e.getStats().getRadius()
 										+ ((Lab) e2).equipRange)) {
 							isActivateable = true;
 						}

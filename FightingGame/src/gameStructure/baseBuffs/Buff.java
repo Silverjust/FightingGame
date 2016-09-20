@@ -89,4 +89,12 @@ public class Buff {
 	public String getInternName() {
 		return this.getClass().getSimpleName();
 	}
+
+	/** interrupt channel abilities */
+	public void onHardCC() {
+	}
+
+	/** interrupts dashes */
+	public void onDisplace() {
+	}
 }

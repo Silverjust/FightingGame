@@ -26,7 +26,7 @@ public class Projectile extends GameObject {
 				yTarget = Float.parseFloat(c[7]);
 			}
 			origin = c[8];
-		} else {
+		} else if (c != null){
 			System.err.println("Projectile.Projectile() wrong spawn command");
 		}
 
@@ -38,7 +38,7 @@ public class Projectile extends GameObject {
 			for (GameObject o : player.app.getUpdater().getGameObjects()) {
 				if (o != this && o instanceof Entity) {
 					if (isCollision(o)) {
-						if (o.isInRange(getX(), getY(), o.getRadius() + getRadius()))
+						if (o.isInRange(getX(), getY(), o.getStats().getRadius() + getStats().getRadius()))
 							if (!collidedEntities.contains(o)) {
 								collidedEntities.add((Entity) o);
 								onHit(o);

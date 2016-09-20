@@ -15,14 +15,14 @@ public class ArmorShred extends Buff {
 	@Override
 	public void onStart() {
 		super.onStart();
-		owner.setArmor(owner.getArmor() - amount);
+		owner.getStats().setArmor(owner.getStats().getArmor() - amount);
 		totalAmount += amount;
 	}
 
 	@Override
 	public void onEnd() {
 		super.onEnd();
-		owner.setArmor(owner.getArmor() - totalAmount);
+		owner.getStats().setArmor(owner.getStats().getArmor() - totalAmount);
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class ArmorShred extends Buff {
 	@Override
 	protected void onStackApply(int i) {
 		super.onStackApply(i);
-		owner.setArmor(owner.getArmor() - amount);
+		owner.getStats().setArmor(owner.getStats().getArmor() - amount);
 		totalAmount += amount;
 	}
 }

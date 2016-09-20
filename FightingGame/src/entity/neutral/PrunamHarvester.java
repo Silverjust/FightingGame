@@ -23,8 +23,8 @@ public abstract class PrunamHarvester extends Building {
 		prunam = 0;
 
 		setHp(hp_max = 500);
-		setRadius(15);
-		setSight(50);
+		getStats().setRadius(15);
+		animation.setSight(50);
 		// ************************************
 	}
 

@@ -13,6 +13,7 @@ import gameStructure.GameObject;
 import gameStructure.baseBuffs.Buff;
 import gameStructure.baseBuffs.Root;
 import gameStructure.baseBuffs.Slow;
+import gameStructure.baseBuffs.SpeedBuff;
 import processing.data.JSONObject;
 
 public class ContentListManager {
@@ -61,6 +62,7 @@ public class ContentListManager {
 		/** List of Buffs to buff/debuff */
 		buffList.add(Root.class);
 		buffList.add(Slow.class);
+		buffList.add(SpeedBuff.class);
 
 		buffList.add(ArmorShred.class);
 		/***********************************/

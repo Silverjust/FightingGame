@@ -72,12 +72,12 @@ public class Ticul extends Unit implements Attacker {
 		trainTime = 3000;
 
 		setHp(hp_max = 50);
-		setSpeed(1.2f);
-		setRadius(5);
-		setSight(70);
+		getStats.setSpeed(1.2f);
+		stats.setRadius(5);
+		animation.setSight(70);
 		groundPosition = GameObject.GroundPosition.GROUND;
 
-		aggroRange = (byte) (getRadius() + 50);
+		aggroRange = (byte) (stats.getRadius() + 50);
 		basicAttack.range = 9;
 		basicAttack.damage = 40;
 		basicAttack.cooldown = 2000;
@@ -99,14 +99,14 @@ public class Ticul extends Unit implements Attacker {
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (e.isEnemyTo(this)) {
-						if (e.isInRange(getX(), getY(), aggroRange + e.getRadius())
+						if (e.isInRange(getX(), getY(), aggroRange + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
 								importance = newImportance;
 								importantEntity = e;
 							}
-							if (e.isInRange(getX(), getY(), basicAttack.range + e.getRadius()))
+							if (e.isInRange(getX(), getY(), basicAttack.range + e.getStats().getRadius()))
 								isEnemyInHitRange = true;
 						}
 
@@ -171,17 +171,17 @@ public class Ticul extends Unit implements Attacker {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;

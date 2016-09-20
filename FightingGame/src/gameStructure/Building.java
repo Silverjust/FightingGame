@@ -52,7 +52,7 @@ public abstract class Building extends GameObject {
 	@Override
 	public void drawOnMinimap(PGraphics graphics) {
 		graphics.fill(player.color);
-		graphics.rect(getX(), getY(), getRadius() * 2, getRadius() * 2);
+		graphics.rect(getX(), getY(), getStats().getRadius() * 2, getStats().getRadius() * 2);
 	}
 
 	/*

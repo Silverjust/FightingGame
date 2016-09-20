@@ -28,7 +28,7 @@ public class PreGameApp extends GameBaseApp {
 		background(50);
 		frame.setTitle(gameName);
 		frame.addWindowListener(new Listener(this));
-		
+
 		Global.addApp(this);
 		System.out.println("\n\tFightingGame v" + VersionControle.version + "\n");
 		G4P.messagesEnabled(false);
@@ -83,6 +83,7 @@ public class PreGameApp extends GameBaseApp {
 		startScreen.setWaiting(true);
 		setClientHandler(new PreGameClientHandler(this, ip));
 		startScreen.dispose();
+		System.out.println("PreGameApp.connectToServer()");
 		setMode(Mode.PREGAME);
 	}
 

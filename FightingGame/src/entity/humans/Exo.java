@@ -66,24 +66,24 @@ public class Exo extends Unit implements Attacker {
 		trainTime = 3000;
 
 		setHp(hp_max = 160);
-		setSpeed(0.7f);
-		setRadius(8);
-		setSight(80);
+		getStats.setSpeed(0.7f);
+		stats.setRadius(8);
+		animation.setSight(80);
 		groundPosition = GameObject.GroundPosition.GROUND;
 
-		aggroRange = (byte) (getRadius() + 50);
-		basicAttack.range = (byte) (getRadius() + 10);
+		aggroRange = (byte) (stats.getRadius() + 50);
+		basicAttack.range = (byte) (stats.getRadius() + 10);
 		basicAttack.damage = 30;
 		basicAttack.cooldown = 1200;
 		basicAttack.setCastTime(500);
 		basicAttack.targetable=groundPosition;
 
-		instaAttack.range = (byte) (getRadius() + 10);
+		instaAttack.range = (byte) (stats.getRadius() + 10);
 		instaAttack.damage = 30;
 		instaAttack.cooldown = 4000;
 		instaAttack.setCastTime(100);
 
-		hook.range = (byte) (getRadius() + 10);
+		hook.range = (byte) (stats.getRadius() + 10);
 		hook.damage = 55;
 		hook.pirce = 2;
 		hook.cooldown = 5000;
@@ -104,7 +104,7 @@ public class Exo extends Unit implements Attacker {
 			for (GameObject e : player.visibleEntities) {
 				if (e != this) {
 					if (e.isEnemyTo(this)) {
-						if (e.isInRange(getX(), getY(), aggroRange + e.getRadius())
+						if (e.isInRange(getX(), getY(), aggroRange + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							float newImportance = calcImportanceOf(e);
 							if (newImportance > importance) {
@@ -112,7 +112,7 @@ public class Exo extends Unit implements Attacker {
 								importantEntity = e;
 							}
 						}
-						if (e.isInRange(getX(), getY(), basicAttack.range + e.getRadius())
+						if (e.isInRange(getX(), getY(), basicAttack.range + e.getStats().getRadius())
 								&& basicAttack.canTargetable(e)) {
 							isEnemyInHitRange = true;
 							float newImportance = calcImportanceOf(e);
@@ -141,11 +141,11 @@ public class Exo extends Unit implements Attacker {
 	@Override
 	public void updateMovement() {
 		if (getAnimation() == hook) {
-			setSpeed(getSpeed() + hook.speed);
+			getStats.setSpeed(getStats.getSpeed() + hook.speed);
 		}
 		super.updateMovement();
 		if (getAnimation() == hook) {
-			setSpeed(getSpeed() - hook.speed);
+			getStats.setSpeed(getStats.getSpeed() - hook.speed);
 		}
 	}
 
@@ -243,17 +243,17 @@ public class Exo extends Unit implements Attacker {
 		int h = 1;
 		if (isAlive() && isMortal()) {//
 			GameBaseApp.app.fill(0, 150);
-			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f, getRadius() * 2, h);
+			GameBaseApp.app.rect(xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f, stats.getRadius() * 2, h);
 			GameBaseApp.app.tint(player.color);
-			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - getRadius() * 1.5f,
-					getRadius() * 2 * getCurrentHp() / hp_max, h);
+			ImageHandler.drawImage(GameBaseApp.app, hpImg, xToGrid(getX()), yToGrid(getY()) - stats.getRadius() * 1.5f,
+					stats.getRadius() * 2 * getCurrentHp() / hp_max, h);
 			GameBaseApp.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(GameObject e) {
 		float importance = PApplet.abs(
-				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - getRadius() - e.getRadius()));
+				10000 / (e.getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY()) - stats.getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
 		if (e instanceof Attacker) {
 			importance *= 20;
@@ -295,7 +295,7 @@ public class Exo extends Unit implements Attacker {
 		@Override
 		public void updateAbility(GameObject e, boolean isServer) {
 			if (isSetup() && isNotOnCooldown()
-					&& target.isInRange(e.getX(), e.getY(), e.getRadius() + target.getRadius())) {
+					&& target.isInRange(e.getX(), e.getY(), e.getStats().getRadius() + target.getStats().getRadius())) {
 				if (isServer) {
 					e.sendDefaultAnimation(this);
 				}
