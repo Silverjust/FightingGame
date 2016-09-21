@@ -9,6 +9,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
 import shared.Coms;
+import shared.ContentListManager;
 import shared.GameBaseApp;
 import shared.Player;
 import shared.Updater;
@@ -113,7 +114,7 @@ public abstract class GameObject implements Coms {
 	}
 
 	protected void drawShadow() {
-		player.app.getDrawer().imageHandler.drawImage(player.app, shadowImg, xToGrid(getX()), yToGrid(getY()),
+		player.app.getDrawer().getImageHandler().drawImage(player.app, shadowImg, xToGrid(getX()), yToGrid(getY()),
 				getStats().getRadius() * 2, getStats().getRadius());
 	}
 
@@ -136,7 +137,7 @@ public abstract class GameObject implements Coms {
 			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f,
 					getStats().getRadius() * 2, h);
 			player.app.tint(200);
-			player.app.getDrawer().imageHandler.drawImage(player.app, hpImg, xToGrid(getX()),
+			player.app.getDrawer().getImageHandler().drawImage(player.app, hpImg, xToGrid(getX()),
 					yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f, getStats().getRadius() * 2 * f, h);
 			player.app.tint(255);
 		}
@@ -149,19 +150,19 @@ public abstract class GameObject implements Coms {
 			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f,
 					getStats().getRadius() * 2, h);
 			player.app.tint(c);
-			player.app.getDrawer().imageHandler.drawImage(player.app, hpImg, xToGrid(getX()),
+			player.app.getDrawer().getImageHandler().drawImage(player.app, hpImg, xToGrid(getX()),
 					yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f, getStats().getRadius() * 2 * f, h);
 			player.app.tint(255);
 		}
 	}
 
 	protected void drawCircle(int r) {
-		player.app.getDrawer().imageHandler.drawImage(player.app, selectedImg, xToGrid(getX()), yToGrid(getY()), r * 2,
-				r);
+		player.app.getDrawer().getImageHandler().drawImage(player.app, selectedImg, xToGrid(getX()), yToGrid(getY()),
+				r * 2, r);
 	}
 
 	protected void drawCircle(float x, float y, byte range) {
-		player.app.getDrawer().imageHandler.drawImage(player.app, selectedImg, xToGrid(x), yToGrid(y), range * 2,
+		player.app.getDrawer().getImageHandler().drawImage(player.app, selectedImg, xToGrid(x), yToGrid(y), range * 2,
 				range);
 	}
 
@@ -285,11 +286,7 @@ public abstract class GameObject implements Coms {
 	}
 
 	protected static String path(GameObject object) {
-		String pack = object.getClass().getEnclosingClass().getPackage().getName();
-		pack = pack.substring(pack.lastIndexOf('.') + 1, pack.length());
-
-		String path = pack + "/" + object.getClass().getEnclosingClass().getSimpleName() + "/";
-		return path;
+		return object.getClass().getEnclosingClass().getName().replace('.', '/').replace('$', '/') + "/";
 	}
 
 	@Deprecated
@@ -385,6 +382,11 @@ public abstract class GameObject implements Coms {
 
 	public void initStats(GameBaseApp app) {
 		stats = new Stats(app);
+	}
+
+	/** empty */
+	public void onAdditionTo(ContentListManager contentListManager) {
+
 	}
 
 }

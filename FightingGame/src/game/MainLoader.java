@@ -23,6 +23,7 @@ public class MainLoader extends Loader {
 		case NEWGAME:// create players
 			loadingScreen = new LoadingScreen(app);
 			app.setUpdater(new GameUpdater(app));
+
 			state = State.STARTIMAGES;
 			break;
 		case STARTIMAGES:
@@ -49,8 +50,9 @@ public class MainLoader extends Loader {
 			state = State.ENTITIES;
 			break;
 		case ENTITIES:// spawn entity-setup
+			app.setDrawer(new GameDrawer(app));
+			app.getDrawer().setImageHandler(imageHandler);
 
-			app.setDrawer(new GameDrawer(app, imageHandler));
 			if (PreGameInfo.isSandbox()) {
 				GameDrawer.godeye = true;
 				GameDrawer.godhand = true;

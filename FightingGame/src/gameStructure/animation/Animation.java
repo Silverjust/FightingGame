@@ -89,10 +89,10 @@ public class Animation {
 		}
 
 		if (imgWD != null && j < directions && i < frames) {
-			app.getDrawer().imageHandler.drawImage(app, imgWD[j][i], GameObject.xToGrid(e.getX()),
+			app.getDrawer().getImageHandler().drawImage(app, imgWD[j][i], GameObject.xToGrid(e.getX()),
 					GameObject.yToGrid(e.getY()), e.getxSize(), e.getySize());
 		} else if (img != null && i < frames) {
-			app.getDrawer().imageHandler.drawImage(app, img[i], GameObject.xToGrid(e.getX()),
+			app.getDrawer().getImageHandler().drawImage(app, img[i], GameObject.xToGrid(e.getX()),
 					GameObject.yToGrid(e.getY() - e.getHeight()), e.getxSize(), e.getySize());
 		}
 		if (Animation.observe.isAssignableFrom(e.getClass())) {
@@ -112,10 +112,10 @@ public class Animation {
 		}
 
 		if (imgWD != null && d < directions && f < frames) {
-			app.getDrawer().imageHandler.drawImage(app, imgWD[d][f], GameObject.xToGrid(x), GameObject.yToGrid(y),
+			app.getDrawer().getImageHandler().drawImage(app, imgWD[d][f], GameObject.xToGrid(x), GameObject.yToGrid(y),
 					e.getxSize(), e.getySize());
 		} else if (img != null && f < frames) {
-			app.getDrawer().imageHandler.drawImage(app, img[f], GameObject.xToGrid(x),
+			app.getDrawer().getImageHandler().drawImage(app, img[f], GameObject.xToGrid(x),
 					GameObject.yToGrid(y - e.getHeight()), e.getxSize(), e.getySize());
 		}
 		if (Animation.observe.isAssignableFrom(e.getClass())) {

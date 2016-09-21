@@ -22,15 +22,14 @@ public class GameDrawer {
 	private GameBaseApp app;
 	private AimHandler aimHandler;
 	private HUD hud;
-	public ImageHandler imageHandler;
+	private ImageHandler imageHandler;
 
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		app.getUpdater().map.loadImages(app, imageHandler);
 	}
 
-	public GameDrawer(GameBaseApp app, ImageHandler imageHandler) {
+	public GameDrawer(GameBaseApp app) {
 		this.app = app;
-		this.imageHandler = imageHandler;
 		this.updater = (GameUpdater) app.getUpdater();
 
 		app.setDrawer(this);// set oficial drawer so hud, etc can access it
@@ -49,7 +48,7 @@ public class GameDrawer {
 		app.scale(zoom);
 		app.stroke(0);
 
-		imageHandler.drawImage(app, updater.map.textur, 0, 0, updater.map.width, updater.map.height / 2);
+		getImageHandler().drawImage(app, updater.map.textur, 0, 0, updater.map.width, updater.map.height / 2);
 		app.imageMode(PConstants.CENTER);
 		app.rectMode(PConstants.CENTER);
 		ArrayList<GameObject> entities = updater.getGameObjects();
@@ -61,7 +60,7 @@ public class GameDrawer {
 		app.rectMode(PConstants.CORNER);
 		updater.map.updateFogofWar(app.getPlayer());
 		app.blendMode(PConstants.MULTIPLY);
-		imageHandler.drawImage(app, updater.map.fogOfWar, 0, 0, updater.map.width, updater.map.height / 2);// hä?
+		getImageHandler().drawImage(app, updater.map.fogOfWar, 0, 0, updater.map.width, updater.map.height / 2);// hä?
 		app.blendMode(PConstants.BLEND);
 		app.imageMode(PConstants.CENTER);
 		app.rectMode(PConstants.CENTER);
@@ -110,7 +109,7 @@ public class GameDrawer {
 	}
 
 	public void dispose() {
-		imageHandler.dispose();
+		getImageHandler().dispose();
 	}
 
 	public AimHandler getAimHandler() {
@@ -129,5 +128,13 @@ public class GameDrawer {
 
 	public void setHud(HUD hud) {
 		this.hud = hud;
+	}
+
+	public ImageHandler getImageHandler() {
+		return imageHandler;
+	}
+
+	public void setImageHandler(ImageHandler imageHandler) {
+		this.imageHandler = imageHandler;
 	}
 }

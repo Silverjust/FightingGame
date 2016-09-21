@@ -38,7 +38,7 @@ public abstract class Building extends GameObject {
 				&& player.app.getDrawer().getAimHandler().getAim() instanceof BuildAim) {
 			Commander c = (Commander) this;
 			player.app.tint(player.color);
-			player.app.getDrawer().imageHandler.drawImage(player.app, selectedImg, xToGrid(getX()), yToGrid(getY()),
+			player.app.getDrawer().getImageHandler().drawImage(player.app, selectedImg, xToGrid(getX()), yToGrid(getY()),
 					c.commandRange() * 2, c.commandRange());
 			player.app.tint(255);
 		}

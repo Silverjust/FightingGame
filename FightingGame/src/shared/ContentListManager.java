@@ -8,8 +8,10 @@ import champs.ArmorShred;
 import champs.Mage;
 import champs.TestProjectile;
 import champs.Ticul;
+import g4p_controls.GOption;
 import gameStructure.Champion;
 import gameStructure.GameObject;
+import gameStructure.Spell;
 import gameStructure.baseBuffs.Buff;
 import gameStructure.baseBuffs.Root;
 import gameStructure.baseBuffs.Slow;
@@ -33,11 +35,12 @@ public class ContentListManager {
 	/*
 	 * public static JSONObject getEntityContent() { return entityList; }
 	 */
+	private GameBaseApp app;
 
 	private HashMap<String, Class<? extends Champion>> champMap = new HashMap<String, Class<? extends Champion>>();
 	private HashMap<String, Class<? extends GameObject>> gameObjectMap = new HashMap<String, Class<? extends GameObject>>();
 	private HashMap<String, Class<? extends Buff>> buffMap = new HashMap<String, Class<? extends Buff>>();
-	private GameBaseApp app;
+	private HashMap<String, Class<? extends Spell>> spellMap = new HashMap<String, Class<? extends Spell>>();
 
 	public ContentListManager(GameBaseApp app) {
 		this.app = app;
@@ -46,48 +49,61 @@ public class ContentListManager {
 	}
 
 	public void load() {
-		ArrayList<Class<? extends Champion>> champList = new ArrayList<Class<? extends Champion>>();
 		/** List of champions to select */
-		champList.add(Ticul.class);
-		champList.add(Mage.class);
+		addClassToChamps(Mage.class);
 		/***********************************/
 
-		ArrayList<Class<? extends GameObject>> objectList = new ArrayList<Class<? extends GameObject>>();
 		/** List of GameObjects to load/spawn */
-		objectList.add(Ticul.class);
-		objectList.add(TestProjectile.class);
+		addClassToGObjects(Ticul.class);
+		addClassToGObjects(TestProjectile.class);
 		/***********************************/
 
-		ArrayList<Class<? extends Buff>> buffList = new ArrayList<Class<? extends Buff>>();
 		/** List of Buffs to buff/debuff */
-		buffList.add(Root.class);
-		buffList.add(Slow.class);
-		buffList.add(SpeedBuff.class);
-
-		buffList.add(ArmorShred.class);
+		addClassToBuffs(Root.class);
+		addClassToBuffs(Slow.class);
+		addClassToBuffs(SpeedBuff.class);
 		/***********************************/
-		for (Class<? extends Champion> c : champList) {
-			Champion o = (Champion) createGObj(c);
-			if (o != null)
-				champMap.put(o.getInternName(), o.getClass());
-		}
-		for (Class<? extends GameObject> c : objectList) {
-			GameObject o = createGObj(c);
-			if (o != null)
-				gameObjectMap.put(o.getInternName(), o.getClass());
-		}
 
-		for (Class<? extends Buff> c : buffList) {
-			Buff b = createBuff(c);
-			if (b != null)
-				buffMap.put(b.getInternName(), b.getClass());
-		}
+		/** List of Spells to load */
+		/***********************************/
 
 		contentList = app.loadJSONObject(path);
 		campainEntityList = contentList.getJSONObject("campainEntities");
 		for (Object o : campainEntityList.keys()) {
 			entityList.setString((String) o, campainEntityList.getString((String) o));
 		}
+	}
+
+	public void addClassToChamps(Class<? extends Champion> c) {
+		String key = null;
+		Champion o = (Champion) createGObj(c);
+		if (o != null)
+			key = o.getInternName();
+		champMap.put(key, c);
+	}
+
+	public void addClassToGObjects(Class<? extends GameObject> c) {
+		String key = null;
+		GameObject o = createGObj(c);
+		if (o != null) {
+			o.onAdditionTo(this);
+			key = o.getInternName();
+		}
+		gameObjectMap.put(key, c);
+	}
+
+	public void addClassToBuffs(Class<? extends Buff> c) {
+		String key = null;
+		Buff o = createBuff(c);
+		if (o != null)
+			key = o.getInternName();
+		buffMap.put(key, c);
+	}
+
+	public void addClassToSpells(Class<? extends Spell> c) {
+		String key = null;
+		key = c.getName();
+		spellMap.put(key, c);
 	}
 
 	private Buff createBuff(Class<? extends Buff> c) {
@@ -168,5 +184,10 @@ public class ContentListManager {
 	@SuppressWarnings("unchecked")
 	public Class<? extends GameObject>[] getBuffArray() {
 		return (Class<? extends GameObject>[]) buffMap.values().toArray(new Class<?>[gameObjectMap.size()]);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Class<? extends Spell>[] getSpellArray() {
+		return (Class<? extends Spell>[]) spellMap.values().toArray(new Class<?>[spellMap.size()]);
 	}
 }

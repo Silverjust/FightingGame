@@ -116,7 +116,7 @@ public class Entity extends GameObject {
 			player.app.fill(0, 150);
 			player.app.rect(xToGrid(getX()), yToGrid(getY()) - getStats().getRadius() * 1.5f, hpBarLength, h);
 			player.app.tint(player.color);
-			player.app.getDrawer().imageHandler.drawImage(player.app, hpImg, xToGrid(getX()),
+			player.app.getDrawer().getImageHandler().drawImage(player.app, hpImg, xToGrid(getX()),
 					yToGrid(getY()) - getStats().getRadius() * 1.5f,
 					hpBarLength * getStats().getCurrentHp() / getStats().getTotalHp(), h);
 			player.app.tint(255);

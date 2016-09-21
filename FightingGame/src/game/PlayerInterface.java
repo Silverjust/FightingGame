@@ -1,5 +1,7 @@
 package game;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import gameStructure.Champion;
@@ -18,6 +20,11 @@ public class PlayerInterface extends SpellHandler {
 	private GameBaseApp app;
 	private Player player;
 	private float statsDisplayX = 10;
+	private String championName;
+
+	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
+
+	}
 
 	public PlayerInterface(GameBaseApp app, HUD hud) {
 		this.app = app;
@@ -25,7 +32,7 @@ public class PlayerInterface extends SpellHandler {
 		settingHandler = ((GameApp) app).settingHandler;
 		y = app.height - hud.height + 5;
 		player = app.getPlayer();
-		String championName = player.getUser().championName;
+		championName = player.getUser().championName;
 		if (championName != null && !championName.equals("") && !championName.equals("null")) {
 			ContentListManager contentListManager = app.getContentListManager();
 			Champion champ = (Champion) contentListManager.createGObj(contentListManager.getChampClass(championName));

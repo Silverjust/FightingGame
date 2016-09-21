@@ -64,7 +64,7 @@ public class HUD {
 	public void update() {
 		soundHandler.update();
 		app.fill(app.color(255));
-		gameDrawer.imageHandler.drawImage(app, overlay, 0, app.height - height, app.width, height);
+		gameDrawer.getImageHandler().drawImage(app, overlay, 0, app.height - height, app.width, height);
 		// SelectionDisplay.update();
 		minimap.update();
 		playerInterface.update();

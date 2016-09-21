@@ -2,9 +2,6 @@ package game;
 
 import java.util.ArrayList;
 
-import entity.MainBuilding;
-import entity.neutral.KeritMine;
-import entity.neutral.SandboxBuilding;
 import gameStructure.Champion;
 import gameStructure.GameObject;
 import processing.data.JSONArray;
@@ -86,13 +83,9 @@ public class MapHandler {
 
 		JSONArray entities = new JSONArray();
 		for (GameObject e : app.getUpdater().getGameObjects()) {
-			if (e.getClass() != SandboxBuilding.class) {
+			{
 				JSONObject atributes = new JSONObject();
 				String type = e.getClass().getSimpleName().toString();
-				if (e instanceof MainBuilding)
-					type = "MainBuilding";
-				else if (e instanceof KeritMine)
-					type = "KeritMine";
 
 				atributes.setString("type", type);
 				int playerNumber = new ArrayList<String>(app.getUpdater().players.keySet())

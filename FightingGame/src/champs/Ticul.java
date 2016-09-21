@@ -1,6 +1,7 @@
 package champs;
 
 import game.ImageHandler;
+import game.PlayerInterface;
 import gameStructure.Attacker;
 import gameStructure.Champion;
 import gameStructure.GameObject;
@@ -13,6 +14,7 @@ import gameStructure.animation.MeleeAttack;
 import gameStructure.baseBuffs.SpeedBuff;
 import processing.core.PImage;
 import shared.Coms;
+import shared.ContentListManager;
 import shared.GameBaseApp;
 import shared.Helper;
 import shared.Player;
@@ -24,7 +26,6 @@ public class Ticul extends Champion implements Attacker {
 	private static PImage[][] standingImg;
 	private static PImage[][] walkingImg;
 	private static PImage[][] attackImg;
-	private static PImage smiteImg;
 
 	byte aggroRange;
 
@@ -40,7 +41,7 @@ public class Ticul extends Champion implements Attacker {
 
 	public Ticul(GameBaseApp app, String[] c) {
 		super(app, c);
-		System.out.println("Ticul.Ticul()");
+		// System.out.println("Ticul.Ticul()");
 		if (walkingImg != null)
 			iconImg = walkingImg[0][0];
 
@@ -98,15 +99,24 @@ public class Ticul extends Champion implements Attacker {
 
 	@Override
 	public void setupSpells(GameBaseApp app, SpellHandler inter) {
-		inter.addSpell(new Consume(app, inter, 0));
-		inter.addSpell(new ShotSpell(app, inter, 1));
-		inter.addSpell(new SpeedBuffSpell(app, inter, 2));
+		inter.addSpell(new PassiveSpell(app, inter, 0));
+		inter.addSpell(new QSpell(app, inter, 1));
+		inter.addSpell(new WSpell(app, inter, 2));
 	}
 
-	static public class Consume extends Spell {// ******************************************************
-		public Consume(GameBaseApp app, SpellHandler inter, int pos) {
-			super(app, inter, pos, smiteImg);
+	static public class PassiveSpell extends Spell {// ******************************************************
+		private static PImage symbolImg;
+
+		public PassiveSpell(GameBaseApp app, SpellHandler inter, int pos) {
+			super(app, inter, pos, symbolImg);
 			setPassive(true);
+		}
+
+		public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
+			String path = path(new GameObject(app, null) {
+			});
+			symbolImg = imageHandler.load(path, "symbol");
+			System.out.println("Ticul.PassiveSpell.loadImages()" + symbolImg);
 		}
 
 		@Override
@@ -126,12 +136,18 @@ public class Ticul extends Champion implements Attacker {
 
 	}
 
-	static public class ShotSpell extends Spell {
+	static public class QSpell extends Spell {// ******************************************************
 		private int maxRange = 120;
+		private static PImage symbolImg;
 
-		// ******************************************************
-		public ShotSpell(GameBaseApp app, SpellHandler inter, int pos) {
-			super(app, inter, pos, smiteImg);
+		public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
+			String path = path(new GameObject(app, null) {
+			});
+			symbolImg = imageHandler.load(path, "symbol");
+		}
+
+		public QSpell(GameBaseApp app, SpellHandler inter, int pos) {
+			super(app, inter, pos, symbolImg);
 			setCooldown(2000);
 		}
 
@@ -162,9 +178,17 @@ public class Ticul extends Champion implements Attacker {
 
 	}
 
-	static public class SpeedBuffSpell extends Spell {// ******************************************************
-		public SpeedBuffSpell(GameBaseApp app, SpellHandler inter, int pos) {
-			super(app, inter, pos, smiteImg);
+	static public class WSpell extends Spell {// ******************************************************
+		private static PImage symbolImg;
+
+		public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
+			String path = path(new GameObject(app, null) {
+			});
+			symbolImg = imageHandler.load(path, "symbol");
+		}
+
+		public WSpell(GameBaseApp app, SpellHandler inter, int pos) {
+			super(app, inter, pos, symbolImg);
 			setCooldown(5000);
 		}
 
@@ -182,4 +206,13 @@ public class Ticul extends Champion implements Attacker {
 
 	}
 
+	@Override
+	public void onAdditionTo(ContentListManager contentListManager) {
+		contentListManager.addClassToChamps(Ticul.class);
+		contentListManager.addClassToBuffs(ArmorShred.class);
+		contentListManager.addClassToSpells(Ticul.PassiveSpell.class);
+		contentListManager.addClassToSpells(Ticul.QSpell.class);
+		contentListManager.addClassToSpells(Ticul.WSpell.class);
+
+	}
 }

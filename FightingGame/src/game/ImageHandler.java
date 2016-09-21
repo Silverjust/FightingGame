@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import gameStructure.Building;
 import gameStructure.GameObject;
+import gameStructure.Spell;
 import gameStructure.Unit;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -47,7 +48,11 @@ public class ImageHandler {
 				classes.add(Unit.class);
 				classes.add(Building.class);
 				classes.add(AimHandler.class);
+				classes.add(PlayerInterface.class);
 				for (Class<? extends GameObject> c : contentListHandler.getGameObjectArray()) {
+					classes.add(c);
+				}
+				for (Class<? extends Spell> c : contentListHandler.getSpellArray()) {
 					classes.add(c);
 				}
 			}
@@ -57,17 +62,16 @@ public class ImageHandler {
 			for (Class<?> c : classes) {
 				Method m = null;
 				try {
-
 					m = c.getDeclaredMethod("loadImages", GameBaseApp.class, this.getClass());
 					m.invoke(null, new Object[] { app, this });
 				} catch (Exception e) {
 					if (m != null && e instanceof NullPointerException) {
 						System.out.println("loadImage is not static, (" + c.getSimpleName()
-								+ ".java:1) change to:\npublic static void loadImages(GameApplet app, ImageHandler imageHandler){ /*code*/ }");
+								+ ".java:1) change to:\npublic static void loadImages(GameBaseApp app, ImageHandler imageHandler){ /*code*/ }");
 
 					} else if (e instanceof NoSuchMethodException) {
 						System.out.println("no loadImage method, (" + c.getSimpleName()
-								+ ".java:1) add:\npublic static void loadImages(GameApplet app, ImageHandler imageHandler){ /*code*/ }");
+								+ ".java:1) add:\npublic static void loadImages(GameBaseApp app, ImageHandler imageHandler){ /*code*/ }");
 
 					}
 					e.printStackTrace();

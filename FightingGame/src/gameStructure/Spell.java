@@ -17,69 +17,36 @@ import shared.Updater.GameState;
  * Aktive Fähigkeit
  */
 public abstract class Spell {
-	public GGameButton button;
+	SpellDisplay spellDisplay;
 
 	private int pos;
 
 	private int cooldown;
 	private int cooldownTimer;
 
-	private PImage symbol;
-
-	private boolean isActivateable = true;
-
-	static int buttonWidth = 50;
-
 	protected GameBaseApp app;
 
 	public Spell(GameBaseApp app, SpellHandler inter, int pos, PImage symbol) {
 		this.app = app;
+		System.out.println("Spell.Spell()" + symbol);
 		if (inter instanceof PlayerInterface)
-			setupButton(app, (PlayerInterface) inter, pos, symbol);
+			spellDisplay = new SpellDisplay(app, this, (PlayerInterface) inter, pos, symbol);
 		this.pos = pos;
 	}
 
-	public void setupButton(GameBaseApp app, PlayerInterface inter, int pos, PImage symbol) {
-		button = new GGameButton(app, getXbyPos(inter, pos), getYbyPos(inter, pos), buttonWidth, buttonWidth,
-				app.getDrawer().getHud().buttonImageFilename());
-		button.setText(app.getDrawer().getHud().playerInterface.getKeyFromPos(pos));
-		button.setSymbol(symbol);
-		button.fireAllEvents(true);
-		if (pos == 0)
-			button.setEnabled(false);
-		button.addEventHandler(this, "handleActiveEvents");
-		this.symbol = symbol;
-	}
-
-	public int getXbyPos(PlayerInterface inter, int pos) {
-		return inter.x + (pos - 1) * (buttonWidth + 10);
-	}
-
-	public int getYbyPos(PlayerInterface inter, int pos) {
-		return inter.y + 0 * (buttonWidth + 10);
-	}
-
 	public void updateButton() {
-		if (isActivateable) {
-			button.setCooldownState(1 - getCooldownPercent());
-			if (button.isVisible() && !button.isEnabled() && isNotOnCooldown())
-				button.setEnabled(true);
-			else if (button.isVisible() && button.isEnabled() && !isNotOnCooldown())
-				button.setEnabled(false);
-		} else {
-			if (button.isVisible()/* && button.isEnabled() */) {
-				button.setEnabled(false);
-				button.setCooldownState(0.999f);
-			}
-		}
-	}
-
-	public void selectionUpdate() {
-		if (button.isVisible() && !button.isEnabled() && isNotOnCooldown() && isActivateable()) {
-			isActivateable = true;
-		} else if (button.isVisible() && button.isEnabled() && (!isNotOnCooldown() || !isActivateable())) {
-			isActivateable = false;
-		}
+		/*
+		 * if (isActivateable) { button.setCooldownState(1 -
+		 * getCooldownPercent()); if (button.isVisible() && !button.isEnabled()
+		 * && isNotOnCooldown()) button.setEnabled(true); else if
+		 * (button.isVisible() && button.isEnabled() && !isNotOnCooldown())
+		 * button.setEnabled(false); } else { if (button.isVisible()/* &&
+		 * button.isEnabled()
+		 *//*
+			 * ) { button.setEnabled(false); button.setCooldownState(0.999f); }
+			 * }
+			 */
+		spellDisplay.update();
 	}
 
 	public void handleActiveEvents(GGameButton gamebutton, GEvent event) {
@@ -100,11 +67,11 @@ public abstract class Spell {
 	}
 
 	public void setVisible(boolean b) {
-		button.setVisible(b);
+		spellDisplay.setVisible(b);
 	}
 
 	public boolean isVisible() {
-		return button.isVisible();
+		return spellDisplay.isVisible();
 	}
 
 	public boolean isActivateable() {
@@ -118,8 +85,8 @@ public abstract class Spell {
 
 	public void startCooldown() {
 		cooldownTimer = Updater.Time.getMillis() + getCooldown();
-		if (button != null)
-			button.setEnabled(false);
+		if (spellDisplay != null)
+			spellDisplay.setEnabled(false);
 	}
 
 	public boolean isNotOnCooldown() {
@@ -131,11 +98,11 @@ public abstract class Spell {
 		return f > 1 || f < 0 ? 1 : f;
 	}
 
-	public void drawIcon(PGraphics graphic, float x, float y, int size) {
+	/*public void drawIcon(PGraphics graphic, float x, float y, int size) {
 		// TODO gleich wie entity
 		if (symbol != null)
 			graphic.image(symbol, x, y, size, size);
-	}
+	}*/
 
 	public abstract String getDescription();
 
@@ -156,8 +123,8 @@ public abstract class Spell {
 	}
 
 	protected void setPassive(boolean b) {
-		if (button != null)
-			button.setEnabled(b);
+		if (spellDisplay != null)
+			spellDisplay.setEnabled(b);
 	}
 
 	/** Serverside */
