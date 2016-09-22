@@ -13,7 +13,7 @@ public class BuildActive extends Spell {
 
 	public BuildActive(int x, int y, char n, Building b,
 			Class<?> builder) {
-		super(x, y, n, b.iconImg);
+		super(champ, y, n, b.iconImg);
 		building = b.getClass();
 		descr = b.getDescription();
 		stats = b.getStatistics();

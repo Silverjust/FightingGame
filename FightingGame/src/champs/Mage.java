@@ -99,7 +99,7 @@ public class Mage extends Champion implements Attacker {
 
 	static public class Consume extends Spell {// ******************************************************
 		public Consume(GameBaseApp app, SpellHandler inter, int pos) {
-			super(app, inter, pos, smiteImg);
+			super(champ, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
 
@@ -119,7 +119,7 @@ public class Mage extends Champion implements Attacker {
 	static public class Shot extends Spell {// ******************************************************
 
 		public Shot(GameBaseApp app, SpellHandler inter, int pos) {
-			super(app, inter, pos, smiteImg);
+			super(champ, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
 
@@ -139,7 +139,7 @@ public class Mage extends Champion implements Attacker {
 	static public class TargetedShot extends Spell {// ******************************************************
 
 		public TargetedShot(GameBaseApp app, SpellHandler inter, int pos) {
-			super(app, inter, pos, smiteImg);
+			super(champ, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
 

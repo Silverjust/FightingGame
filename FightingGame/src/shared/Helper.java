@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import game.GameDrawer;
 import gameStructure.GameObject;
+import processing.core.PApplet;
+import processing.core.PImage;
 
 public class Helper {
 
@@ -154,5 +156,62 @@ public class Helper {
 			return (cooldownTimer - Updater.Time.getMillis());
 		}
 
+	}
+
+	public static void text(GameBaseApp app, String input, float x, float y) {
+		int startFillColor = app.g.fillColor;
+		String[] line = PApplet.split(input, '\n');
+		for (int i = 0; i < line.length; i++) {
+			float lineHeight = app.textAscent() + app.textDescent();
+			float textWidth = 0;
+			String[] text = PApplet.split(line[i], '§');
+			for (int j = 0; j < text.length; j++) {
+				if (j % 2 == 1) {
+					String[] c = PApplet.split(text[j], ' ');
+					switch (c[0]) {
+					case "color":
+						if (c[1].equals("reset")) {
+							app.fill(startFillColor);
+						} else {
+							float r = Float.parseFloat(c[1]);
+							float g = Float.parseFloat(c[2]);
+							float b = Float.parseFloat(c[3]);
+							app.fill(r, g, b);
+						}
+						break;
+					case "size": {
+						float s = Float.parseFloat(c[1]);
+						app.textSize(s);
+					}
+						break;
+					case "rect": {
+						app.rect(x + textWidth, y + i * lineHeight - lineHeight, lineHeight, lineHeight);
+						textWidth += lineHeight;
+					}
+						break;
+					case "img": {
+						PImage symbol = app.getDrawer().getSymbol(c[1]);
+						app.image(symbol, x + textWidth, y + i * lineHeight - lineHeight, lineHeight, lineHeight);
+						textWidth += lineHeight;
+					}
+						break;
+					case "lineheight": {
+						float lh = Float.parseFloat(c[1]);
+						lineHeight += lh;
+					}
+						break;
+					case "paragraph":
+						text[j + 1] = "§" + text[j + 1];
+						break;
+					default:
+						System.err.println("styleText command " + c[0] + " not found");
+						break;
+					}
+				} else {
+					app.text(text[j], x + textWidth, y + i * lineHeight);
+					textWidth += app.textWidth(text[j]);
+				}
+			}
+		}
 	}
 }

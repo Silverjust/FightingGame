@@ -67,6 +67,8 @@ public class Player {
 
 	public void setChampion(Champion champion) {
 		this.champion = champion;
+		app.getUpdater().handleChampionInit(champion);
+
 	}
 
 }

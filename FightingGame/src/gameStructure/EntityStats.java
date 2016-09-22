@@ -7,24 +7,24 @@ public class EntityStats extends Stats {
 		super(app);
 	}
 
-	public int hp;
-	public int hp_max;
-	public int bonus_hp;
-	public int armor;
-	public int magicResist;
-	public int ArmorPen;
-	public int MagicPen;
-	public int PercArmorPen;
-	public int PercMagicPen;
-	public int attackDamage;
-	public int abilityPower;
-	public int attackDamageMult;
-	public int abilityPowerMult;
-	
-	public boolean isRooted;
-	public boolean isSilenced;
-	public boolean isStunned;
-	public boolean isDisplaced;
+	protected int hp;
+	protected int hp_max;
+	protected int bonus_hp;
+	protected int armor;
+	protected int magicResist;
+	protected int ArmorPen;
+	protected int MagicPen;
+	protected int PercArmorPen;
+	protected int PercMagicPen;
+	protected int attackDamage;
+	protected int abilityPower;
+	protected int attackDamageMult;
+	protected int abilityPowerMult;
+
+	protected boolean isRooted;
+	protected boolean isSilenced;
+	protected boolean isStunned;
+	protected boolean isDisplaced;
 
 	/** gives you the current-health */
 	public int getCurrentHp() {
@@ -78,6 +78,7 @@ public class EntityStats extends Stats {
 
 	/**
 	 * sets the bonus-max-health
+	 * 
 	 * @param bonus_hp
 	 *            TODO
 	 */

@@ -2,6 +2,7 @@ package game;
 
 import java.util.Collections;
 
+import gameStructure.Champion;
 import gameStructure.EntityHeightComparator;
 import gameStructure.GameObject;
 import shared.GameBaseApp;
@@ -95,6 +96,11 @@ public class GameUpdater extends Updater {
 	public void endPause() {
 		app.getDrawer().getHud().menue.dispose();
 		app.getDrawer().getHud().menue = null;
+	}
+
+	@Override
+	public void handleChampionInit(Champion champion) {
+		app.getDrawer().getHud().playerInterface.registerChampion(champion);
 	}
 
 }

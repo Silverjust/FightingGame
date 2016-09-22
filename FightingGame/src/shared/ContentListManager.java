@@ -1,14 +1,11 @@
 package shared;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import champs.ArmorShred;
 import champs.Mage;
 import champs.TestProjectile;
 import champs.Ticul;
-import g4p_controls.GOption;
 import gameStructure.Champion;
 import gameStructure.GameObject;
 import gameStructure.Spell;
@@ -23,7 +20,6 @@ public class ContentListManager {
 	static JSONObject contentList;
 	static JSONObject entityList;
 	static JSONObject campainEntityList;
-
 	/*
 	 * public static void load() { contentList = ref.app.loadJSONObject(path);
 	 * entityList = contentList.getJSONObject("entities"); campainEntityList =
@@ -86,7 +82,7 @@ public class ContentListManager {
 		String key = null;
 		GameObject o = createGObj(c);
 		if (o != null) {
-			o.onAdditionTo(this);
+			o.onRegistration(this);
 			key = o.getInternName();
 		}
 		gameObjectMap.put(key, c);

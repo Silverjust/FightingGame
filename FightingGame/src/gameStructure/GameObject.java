@@ -385,7 +385,7 @@ public abstract class GameObject implements Coms {
 	}
 
 	/** empty */
-	public void onAdditionTo(ContentListManager contentListManager) {
+	public void onRegistration(ContentListManager contentListManager) {
 
 	}
 

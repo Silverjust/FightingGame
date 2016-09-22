@@ -12,7 +12,7 @@ public class BuildWallActive extends Spell {
 	String descr = " ", stats = " ";
 
 	public BuildWallActive(int x, int y, char n, GameObject b, Class<?> builder) {
-		super(x, y, n, b.iconImg);
+		super(champ, y, n, b.iconImg);
 		building = ((Building) b).getClass();
 		descr = b.getDescription();
 		stats = b.getStatistics();

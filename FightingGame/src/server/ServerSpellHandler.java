@@ -1,7 +1,5 @@
 package server;
 
-import java.util.ArrayList;
-
 import gameStructure.Champion;
 import gameStructure.Spell;
 import shared.ContentListManager;
@@ -10,8 +8,6 @@ import shared.Player;
 import shared.SpellHandler;
 
 public class ServerSpellHandler extends SpellHandler {
-	private ArrayList<Spell> spells = new ArrayList<Spell>();
-	private Player player;
 
 	public ServerSpellHandler(GameBaseApp app, Player player) {
 		this.player = player;

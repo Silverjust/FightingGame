@@ -3,6 +3,7 @@ package server;
 import java.util.HashMap;
 
 import game.Map;
+import gameStructure.Champion;
 import gameStructure.GameObject;
 import gameStructure.Unit;
 import shared.GameBaseApp;
@@ -19,11 +20,11 @@ public class ServerUpdater extends Updater {
 
 	public ServerUpdater(GameBaseApp app, Team team) {
 		super(app);
-		for (String key : app.getPreGameInfo().users.keySet()) {
-			User user = app.getPreGameInfo().users.get(key);
+		for (String ip : app.getPreGameInfo().users.keySet()) {
+			User user = app.getPreGameInfo().users.get(ip);
 			Player player = Player.createPlayer(app, user);
-			players.put(key, player);
-			spellHandlers.put(key, new ServerSpellHandler(app, player));
+			players.put(ip, player);
+			spellHandlers.put(ip, new ServerSpellHandler(app, player));
 		}
 		neutral = Player.createNeutralPlayer(app, null);
 		leftsideNeutral = Player.createNeutralPlayer(app, Team.LEFTSIDE);
@@ -106,6 +107,11 @@ public class ServerUpdater extends Updater {
 
 	public SpellHandler getSpellHandler(String ip) {
 		return spellHandlers.get(ip);
+	}
+
+	@Override
+	public void handleChampionInit(Champion champion) {
+		getSpellHandler(champion.player.getUser().getIp()).registerChampion(champion);
 	}
 
 }

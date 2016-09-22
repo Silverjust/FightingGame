@@ -1,7 +1,6 @@
 package champs;
 
 import game.ImageHandler;
-import game.PlayerInterface;
 import gameStructure.Attacker;
 import gameStructure.Champion;
 import gameStructure.GameObject;
@@ -11,6 +10,7 @@ import gameStructure.animation.Animation;
 import gameStructure.animation.Attack;
 import gameStructure.animation.Death;
 import gameStructure.animation.MeleeAttack;
+import gameStructure.baseBuffs.Buff;
 import gameStructure.baseBuffs.SpeedBuff;
 import processing.core.PImage;
 import shared.Coms;
@@ -102,6 +102,19 @@ public class Ticul extends Champion implements Attacker {
 		inter.addSpell(new PassiveSpell(app, inter, 0));
 		inter.addSpell(new QSpell(app, inter, 1));
 		inter.addSpell(new WSpell(app, inter, 2));
+		inter.addSpell(new RSpell(app, inter, 4));
+	}
+
+	@Override
+	public void onRegistration(ContentListManager contentListManager) {
+		contentListManager.addClassToChamps(Ticul.class);
+		contentListManager.addClassToBuffs(ArmorShred.class);
+		contentListManager.addClassToBuffs(RBuff.class);
+		contentListManager.addClassToSpells(Ticul.PassiveSpell.class);
+		contentListManager.addClassToSpells(Ticul.QSpell.class);
+		contentListManager.addClassToSpells(Ticul.WSpell.class);
+		contentListManager.addClassToSpells(Ticul.RSpell.class);
+
 	}
 
 	static public class PassiveSpell extends Spell {// ******************************************************
@@ -152,11 +165,6 @@ public class Ticul extends Champion implements Attacker {
 		}
 
 		@Override
-		public String getDescription() {
-			return null;
-		}
-
-		@Override
 		protected void onActivation() {
 			float xo = app.getPlayer().getChampion().getX();
 			float yo = app.getPlayer().getChampion().getY();
@@ -174,6 +182,11 @@ public class Ticul extends Champion implements Attacker {
 			app.getUpdater().sendSpawn(TestProjectile.class, player, player.getChampion().getX() + " "
 					+ player.getChampion().getY() + " " + c[4] + " " + c[5] + " " + getInternName());
 			startCooldown();
+		}
+
+		@Override
+		public String getDescription() {
+			return "shoots a projectile that stunns the first target hit for 1 sec";
 		}
 
 	}
@@ -194,7 +207,7 @@ public class Ticul extends Champion implements Attacker {
 
 		@Override
 		public String getDescription() {
-			return null;
+			return "gives Ticul a 70%§img ms§ buff for 1,5 sec";
 		}
 
 		@Override
@@ -206,13 +219,89 @@ public class Ticul extends Champion implements Attacker {
 
 	}
 
-	@Override
-	public void onAdditionTo(ContentListManager contentListManager) {
-		contentListManager.addClassToChamps(Ticul.class);
-		contentListManager.addClassToBuffs(ArmorShred.class);
-		contentListManager.addClassToSpells(Ticul.PassiveSpell.class);
-		contentListManager.addClassToSpells(Ticul.QSpell.class);
-		contentListManager.addClassToSpells(Ticul.WSpell.class);
+	static public class RSpell extends Spell {// ******************************************************
+		private static PImage symbolImg;
 
+		public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
+			String path = path(new GameObject(app, null) {
+			});
+			symbolImg = imageHandler.load(path, "symbol");
+		}
+
+		public RSpell(GameBaseApp app, SpellHandler inter, int pos) {
+			super(app, inter, pos, symbolImg);
+			setCooldown(5000);
+		}
+
+		@Override
+		public String getDescription() {
+			return "gives Ticul 30§img armor§ and  30§img mr§ for 4 sec";
+		}
+
+		@Override
+		public void recieveInput(String[] c, Player player) {
+			player.app.getUpdater().sendBuff(RBuff.class, player.getChampion(), player.getChampion(), 4000, 70 + "");
+			startCooldown();
+		}
+
+	}
+
+	static public class RBuff extends Buff {
+		private int amount = 30;
+
+		public RBuff(GameBaseApp app, String[] c) {
+			super(app, c);
+		}
+
+		@Override
+		public void onStart() {
+			super.onStart();
+			owner.getStats().setArmor(owner.getStats().getArmor() + amount);
+			owner.getStats().setMagicResist(owner.getStats().getMagicResist() + amount);
+		}
+
+		@Override
+		public void onEnd() {
+			super.onEnd();
+			owner.getStats().setArmor(owner.getStats().getArmor() - amount);
+			owner.getStats().setMagicResist(owner.getStats().getMagicResist() - amount);
+
+		}
+	}
+
+	static public class ArmorShred extends Buff {
+		private int amount = 30;
+		private int totalAmount = 0;
+
+		public ArmorShred(GameBaseApp app, String[] c) {
+			super(app, c);
+			maxStacks = 3;
+		}
+
+		@Override
+		public void onStart() {
+			super.onStart();
+			owner.getStats().setArmor(owner.getStats().getArmor() - amount);
+			totalAmount += amount;
+		}
+
+		@Override
+		public void onEnd() {
+			super.onEnd();
+			owner.getStats().setArmor(owner.getStats().getArmor() - totalAmount);
+		}
+
+		@Override
+		public boolean doesStack() {
+			return stacks < maxStacks;
+		}
+
+		/** only apply 1 at a time */
+		@Override
+		protected void onStackApply(int i) {
+			super.onStackApply(i);
+			owner.getStats().setArmor(owner.getStats().getArmor() - amount);
+			totalAmount += amount;
+		}
 	}
 }

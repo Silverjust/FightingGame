@@ -14,7 +14,7 @@ public class UpgradeActive extends Spell {
 
 	public UpgradeActive(int x, int y, char n, GameObject b,
 			Class<? extends Building> oldBuilding, Class<?> builder) {
-		super(x, y, n, b.iconImg);
+		super(champ, y, n, b.iconImg);
 		this.newBuilding = ((Building) b).getClass();
 		this.oldBuilding = oldBuilding;
 		descr = b.getDescription();

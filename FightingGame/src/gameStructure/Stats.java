@@ -3,13 +3,11 @@ package gameStructure;
 import shared.GameBaseApp;
 
 public class Stats {
-	private GameBaseApp app;
 
 	private int radius;
 	private int sight;
 
 	public Stats(GameBaseApp app) {
-		this.app = app;
 	}
 
 	public int getRadius() {

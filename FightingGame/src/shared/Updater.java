@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import game.Map;
 import game.MapHandler;
+import gameStructure.Champion;
 import gameStructure.Entity;
 import gameStructure.GameObject;
 import gameStructure.baseBuffs.Buff;
@@ -136,4 +137,6 @@ public abstract class Updater {
 	public void sendBuff(Class<? extends Buff> c, Entity target, Entity origin, int time, String content) {
 		sendBuff(c, target, origin, time + "", content);
 	}
+
+	public abstract void handleChampionInit(Champion champion);
 }

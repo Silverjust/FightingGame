@@ -3,6 +3,7 @@ package gameStructure;
 import game.PlayerInterface;
 import processing.core.PImage;
 import shared.GameBaseApp;
+import shared.Helper;
 
 public class SpellDisplay {
 	static final int buttonWidth = 50;
@@ -14,23 +15,34 @@ public class SpellDisplay {
 	private int w;
 	private int h;
 	private String buttonChar;
-	private PlayerInterface inter;
 	private PImage symbol;
 
 	public SpellDisplay(GameBaseApp app, Spell spell, PlayerInterface inter, int pos, PImage symbol) {
 		this.app = app;
 		this.spell = spell;
-		this.inter = inter;
 		this.symbol = symbol;
 		this.x = getXbyPos(inter, pos);
 		this.y = getYbyPos(inter, pos);
 		this.w = buttonWidth;
 		this.h = buttonWidth;
 		buttonChar = app.getDrawer().getHud().playerInterface.getKeyFromPos(pos);
-		app.image(symbol, x, y, w, h);
+		// app.image(symbol, x, y, w, h);
 	}
 
 	public void update() {
+		if (Helper.isMouseOver(app, x, y, x + w, y + h)) {
+			System.out.println("SpellDisplay.update()");
+			app.pushStyle();
+			app.fill(30);
+			app.rect(x, y - 200, 500, 200);
+			app.fill(230);
+
+			String string = "§size 25§" + spell.getInternName() + "§size 15§\n";
+			if (spell.getDescription() != null)
+				string += spell.getDescription();
+			Helper.text(app, string, x + b, y - 200 + b + app.textAscent());
+			app.popStyle();
+		}
 		app.fill(30);
 		app.rect(x, y, w, h);
 		app.fill(230);

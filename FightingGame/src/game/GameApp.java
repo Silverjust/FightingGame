@@ -46,9 +46,9 @@ public class GameApp extends GameBaseApp {
 
 		font = createFont("Aharoni Fett", 40);
 		setTextScale(0.5F);// so ungefär
-		setFont(font);
+		//setFont(font);
 		// System.out.println(font.ascent());
-		textFont(font);
+		//textFont(font);
 		noSmooth();
 		G4P.messagesEnabled(false);
 

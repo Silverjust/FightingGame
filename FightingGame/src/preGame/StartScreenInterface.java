@@ -48,6 +48,8 @@ public class StartScreenInterface {
 			float angle = app.millis() / 100.0f;
 			app.arc(200, 150, 100, 100, angle, angle + 5);
 		}
+		Helper.text(app, "bla§color 100 100 255§colorbla§rect§bladibla1\n" //
+				+ "bla§color 255 255 0§colorbla§rect§bladibla2\nbla§color reset§blä", 200, 200);
 	}
 
 	public void handleButtonEvents(GButton button, GEvent event) {

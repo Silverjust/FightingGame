@@ -49,6 +49,7 @@ public class ImageHandler {
 				classes.add(Building.class);
 				classes.add(AimHandler.class);
 				classes.add(PlayerInterface.class);
+				classes.add(SymbolManager.class);
 				for (Class<? extends GameObject> c : contentListHandler.getGameObjectArray()) {
 					classes.add(c);
 				}
@@ -66,11 +67,11 @@ public class ImageHandler {
 					m.invoke(null, new Object[] { app, this });
 				} catch (Exception e) {
 					if (m != null && e instanceof NullPointerException) {
-						System.out.println("loadImage is not static, (" + c.getSimpleName()
+						System.err.println("loadImage is not static, (" + c.getSimpleName()
 								+ ".java:1) change to:\npublic static void loadImages(GameBaseApp app, ImageHandler imageHandler){ /*code*/ }");
 
 					} else if (e instanceof NoSuchMethodException) {
-						System.out.println("no loadImage method, (" + c.getSimpleName()
+						System.err.println("no loadImage method, (" + c.getSimpleName()
 								+ ".java:1) add:\npublic static void loadImages(GameBaseApp app, ImageHandler imageHandler){ /*code*/ }");
 
 					}

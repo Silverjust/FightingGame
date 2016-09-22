@@ -1,24 +1,17 @@
 package game;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-
 import gameStructure.Champion;
 import gameStructure.Spell;
 import main.appdata.SettingHandler;
 import shared.ContentListManager;
 import shared.GameBaseApp;
-import shared.Player;
+import shared.Helper;
 import shared.SpellHandler;
 
 public class PlayerInterface extends SpellHandler {
-	private ArrayList<Spell> spells = new ArrayList<Spell>();
 	public int x = 400;
 	public int y;
 	private SettingHandler settingHandler;
-	private GameBaseApp app;
-	private Player player;
 	private float statsDisplayX = 10;
 	private String championName;
 
@@ -31,6 +24,9 @@ public class PlayerInterface extends SpellHandler {
 		hud.playerInterface = this;
 		settingHandler = ((GameApp) app).settingHandler;
 		y = app.height - hud.height + 5;
+	}
+
+	public void setup() {
 		player = app.getPlayer();
 		championName = player.getUser().championName;
 		if (championName != null && !championName.equals("") && !championName.equals("null")) {
@@ -46,7 +42,10 @@ public class PlayerInterface extends SpellHandler {
 		for (Spell spell : spells) {
 			spell.updateButton();
 		}
-		app.text(player.getChampion().getStats().getSpeed(), statsDisplayX, y + app.textAscent());
+		String string = "§img armor§" + player.getChampion().getStats().getArmor()//
+				+ "\n§img mr§" + player.getChampion().getStats().getMagicResist()//
+				+ "\n§img ms§" + player.getChampion().getStats().getSpeed();
+		Helper.text(app, string, statsDisplayX, y + app.textAscent());
 	}
 
 	public Spell addSpell(Spell spell) {

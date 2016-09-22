@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import gameStructure.GameObject;
 import processing.core.PConstants;
+import processing.core.PImage;
 import shared.GameBaseApp;
 import shared.Updater.GameState;
 
@@ -18,6 +19,7 @@ public class GameDrawer {
 	public static boolean godhand;
 	public static boolean nocosts;
 	public static boolean showRanges;
+	private static SymbolManager symbolManager;
 	private GameUpdater updater;
 	private GameBaseApp app;
 	private AimHandler aimHandler;
@@ -26,6 +28,7 @@ public class GameDrawer {
 
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		app.getUpdater().map.loadImages(app, imageHandler);
+		app.getDrawer().symbolManager = new SymbolManager(app);
 	}
 
 	public GameDrawer(GameBaseApp app) {
@@ -121,7 +124,7 @@ public class GameDrawer {
 	}
 
 	public HUD getHud() {
-		if (hud==null) 
+		if (hud == null)
 			System.err.println("hud not created");
 		return hud;
 	}
@@ -137,4 +140,9 @@ public class GameDrawer {
 	public void setImageHandler(ImageHandler imageHandler) {
 		this.imageHandler = imageHandler;
 	}
+
+	public PImage getSymbol(String string) {
+		return symbolManager.getSymbol(string);
+	}
+
 }

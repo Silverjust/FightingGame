@@ -4,7 +4,6 @@ import g4p_controls.GEvent;
 import g4p_controls.GGameButton;
 import game.PlayerInterface;
 import processing.core.PConstants;
-import processing.core.PGraphics;
 import processing.core.PImage;
 import shared.Coms;
 import shared.GameBaseApp;
@@ -25,6 +24,8 @@ public abstract class Spell {
 	private int cooldownTimer;
 
 	protected GameBaseApp app;
+
+	private Champion champ;
 
 	public Spell(GameBaseApp app, SpellHandler inter, int pos, PImage symbol) {
 		this.app = app;
@@ -75,6 +76,8 @@ public abstract class Spell {
 	}
 
 	public boolean isActivateable() {
+		if (champ.getStats().isSilenced())
+			return false;
 		return true;
 	}
 
@@ -98,11 +101,11 @@ public abstract class Spell {
 		return f > 1 || f < 0 ? 1 : f;
 	}
 
-	/*public void drawIcon(PGraphics graphic, float x, float y, int size) {
-		// TODO gleich wie entity
-		if (symbol != null)
-			graphic.image(symbol, x, y, size, size);
-	}*/
+	/*
+	 * public void drawIcon(PGraphics graphic, float x, float y, int size) { //
+	 * TODO gleich wie entity if (symbol != null) graphic.image(symbol, x, y,
+	 * size, size); }
+	 */
 
 	public abstract String getDescription();
 
@@ -129,5 +132,9 @@ public abstract class Spell {
 
 	/** Serverside */
 	public abstract void recieveInput(String[] c, Player player);
+
+	public void registerChampion(Champion champion) {
+		champ = champion;
+	}
 
 }
