@@ -1,20 +1,18 @@
 package champs;
 
 import game.ImageHandler;
-import gameStructure.Attacker;
 import gameStructure.Champion;
 import gameStructure.GameObject;
 import gameStructure.Spell;
 import gameStructure.animation.Animation;
 import gameStructure.animation.Attack;
 import gameStructure.animation.Death;
-import gameStructure.animation.MeleeAttack;
 import processing.core.PImage;
 import shared.GameBaseApp;
 import shared.Player;
 import shared.SpellHandler;
 
-public class Mage extends Champion implements Attacker {
+public class Mage extends Champion {
 	// TODO animations are displayed wrong
 
 	private static PImage[][] standingImg;
@@ -24,7 +22,7 @@ public class Mage extends Champion implements Attacker {
 
 	byte aggroRange;
 
-	MeleeAttack basicAttack;
+	Attack basicAttack;
 
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		String path = path(new GameObject(app, null) {
@@ -43,7 +41,7 @@ public class Mage extends Champion implements Attacker {
 		stand = new Animation(app, standingImg, 100);
 		walk = new Animation(app, walkingImg, 800);
 		death = new Death(app, attackImg, 500);
-		basicAttack = new MeleeAttack(app, attackImg, 600);
+		basicAttack = new Attack(app, attackImg, 600);
 
 		setAnimation(walk);
 
@@ -75,7 +73,7 @@ public class Mage extends Champion implements Attacker {
 	}
 
 	@Override
-	public void calculateDamage(Attack a) {
+	public void doAttack(Attack a) {
 		player.app.getUpdater().send("<hit " + basicAttack.getTarget().getNumber() + " " + a.damage + " " + a.pirce);
 	}
 
@@ -99,7 +97,7 @@ public class Mage extends Champion implements Attacker {
 
 	static public class Consume extends Spell {// ******************************************************
 		public Consume(GameBaseApp app, SpellHandler inter, int pos) {
-			super(champ, inter, pos, smiteImg);
+			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
 
@@ -119,7 +117,7 @@ public class Mage extends Champion implements Attacker {
 	static public class Shot extends Spell {// ******************************************************
 
 		public Shot(GameBaseApp app, SpellHandler inter, int pos) {
-			super(champ, inter, pos, smiteImg);
+			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
 
@@ -139,7 +137,7 @@ public class Mage extends Champion implements Attacker {
 	static public class TargetedShot extends Spell {// ******************************************************
 
 		public TargetedShot(GameBaseApp app, SpellHandler inter, int pos) {
-			super(champ, inter, pos, smiteImg);
+			super(app, inter, pos, smiteImg);
 			setCooldown(1000);
 		}
 

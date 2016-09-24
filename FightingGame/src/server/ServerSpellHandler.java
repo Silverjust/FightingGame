@@ -28,10 +28,28 @@ public class ServerSpellHandler extends SpellHandler {
 	}
 
 	public void input(String[] c) {
-		for (Spell spell : spells) {
-			if (spell.getPos() == Integer.parseInt(c[2])) {
-				if (spell.isNotOnCooldown()&&spell.isActivateable())
-					spell.recieveInput(c, player);
+		boolean isSpellInput;
+		int pos = 0;
+		try {
+			pos = Integer.parseInt(c[2]);
+			isSpellInput = true;
+		} catch (Exception e) {
+			isSpellInput = false;
+		}
+
+		if (isSpellInput) {
+			for (Spell spell : spells) {
+				if (spell.getPos() == pos) {
+					if (spell.isNotOnCooldown() && spell.isActivateable())
+						spell.recieveInput(c, player);
+				}
+			}
+
+		} else {
+			if (c[2].equals("walk")) {
+				player.getChampion().sendAnimation(c[2] + " " + c[3] + " " + c[4], this);
+			} else if (c[2].equals("basicAttack")) {
+				player.getChampion().sendAnimation(c[2] + " " + c[3], this);
 			}
 		}
 	}

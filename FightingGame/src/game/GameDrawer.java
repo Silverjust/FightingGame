@@ -67,22 +67,22 @@ public class GameDrawer {
 		app.blendMode(PConstants.BLEND);
 		app.imageMode(PConstants.CENTER);
 		app.rectMode(PConstants.CENTER);
-		for (GameObject e : app.getPlayer().visibleEntities) {
+		for (GameObject e : app.getPlayer().visibleGObjects) {
 			e.renderUnder();
 		}
 		if (showRanges) {
-			for (GameObject e : app.getPlayer().visibleEntities) {
+			for (GameObject e : app.getPlayer().visibleGObjects) {
 				e.renderRange();
 			}
 		}
-		for (GameObject e : app.getPlayer().visibleEntities) {
+		for (GameObject e : app.getPlayer().visibleGObjects) {
 			e.renderGround();
 		}
-		for (GameObject e : app.getPlayer().visibleEntities) {
+		for (GameObject e : app.getPlayer().visibleGObjects) {
 			e.renderAir();
 		}
 
-		for (GameObject e : app.getPlayer().visibleEntities) {
+		for (GameObject e : app.getPlayer().visibleGObjects) {
 			e.display();
 		}
 

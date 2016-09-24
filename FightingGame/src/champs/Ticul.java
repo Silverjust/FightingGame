@@ -1,7 +1,6 @@
 package champs;
 
 import game.ImageHandler;
-import gameStructure.Attacker;
 import gameStructure.Champion;
 import gameStructure.GameObject;
 import gameStructure.Projectile;
@@ -9,27 +8,21 @@ import gameStructure.Spell;
 import gameStructure.animation.Animation;
 import gameStructure.animation.Attack;
 import gameStructure.animation.Death;
-import gameStructure.animation.MeleeAttack;
 import gameStructure.baseBuffs.Buff;
 import gameStructure.baseBuffs.SpeedBuff;
 import processing.core.PImage;
-import shared.Coms;
 import shared.ContentListManager;
 import shared.GameBaseApp;
 import shared.Helper;
 import shared.Player;
 import shared.SpellHandler;
 
-public class Ticul extends Champion implements Attacker {
+public class Ticul extends Champion {
 	// TODO animations are displayed wrong
 
 	private static PImage[][] standingImg;
 	private static PImage[][] walkingImg;
 	private static PImage[][] attackImg;
-
-	byte aggroRange;
-
-	MeleeAttack basicAttack;
 
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		String path = path(new GameObject(app, null) {
@@ -48,7 +41,7 @@ public class Ticul extends Champion implements Attacker {
 		stand = new Animation(app, standingImg, 100);
 		walk = new Animation(app, walkingImg, 800);
 		death = new Death(app, attackImg, 500);
-		basicAttack = new MeleeAttack(app, attackImg, 600);
+		basicAttack = new Attack(app, attackImg, 600);
 
 		setAnimation(walk);
 		if (player != null)
@@ -66,8 +59,7 @@ public class Ticul extends Champion implements Attacker {
 		getStats().setSight(200);
 		getStats().setSight(200);
 
-		aggroRange = (byte) (getStats().getRadius() + 50);
-		basicAttack.range = 9;
+		basicAttack.range = 30;
 		basicAttack.damage = 40;
 		basicAttack.cooldown = 2000;
 		basicAttack.setCastTime(500);
@@ -79,11 +71,6 @@ public class Ticul extends Champion implements Attacker {
 	@Override
 	public void updateDecisions(boolean isServer) {
 		super.updateDecisions(isServer);
-	}
-
-	@Override
-	public void calculateDamage(Attack a) {
-		player.app.getUpdater().send("<hit " + basicAttack.getTarget().getNumber() + " " + a.damage + " " + a.pirce);
 	}
 
 	@Override
@@ -172,8 +159,7 @@ public class Ticul extends Champion implements Attacker {
 					maxRange, maxRange);
 			float yt = Projectile.cutProjectileRangeY(Helper.gridToX(app.mouseX) - xo, Helper.gridToY(app.mouseY) - yo,
 					maxRange, maxRange);
-			app.getUpdater().send(Coms.INPUT + " " + app.getPlayer().getUser().getIp() + " " + getPos() + " 1 "
-					+ (xt + xo) + " " + (yt + yo));
+			app.getUpdater().sendInput(app.getPlayer(), getPos(), 1, +(xt + xo) + " " + (yt + yo));
 			startCooldown();
 		}
 

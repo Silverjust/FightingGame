@@ -2,6 +2,7 @@ package game;
 
 import game.aim.Aim;
 import game.aim.EmptyAim;
+import gameStructure.GameObject;
 import processing.core.PConstants;
 import processing.core.PImage;
 import shared.GameBaseApp;
@@ -36,11 +37,11 @@ public class AimHandler {
 		}
 	}
 
-	public void move(float x, float y) {
+	public void cancel(float x, float y) {
 		if (aim != null) {
 			aim.move(x, y);
 		}
-		app.getPlayer().getChampion().sendAnimation("walk " + x + " " + y + "  ", this);
+		
 	}
 
 	public void end() {
@@ -89,5 +90,10 @@ public class AimHandler {
 
 	public boolean isDefault() {
 		return aim instanceof EmptyAim;
+	}
+
+	public void attack(GameObject e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

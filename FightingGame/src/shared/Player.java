@@ -9,7 +9,7 @@ import shared.Updater.GameState;
 public class Player {
 	public int color;
 
-	public ArrayList<GameObject> visibleEntities = new ArrayList<GameObject>();
+	public ArrayList<GameObject> visibleGObjects = new ArrayList<GameObject>();
 	private User user;
 	public GameState gameState;// win, loose
 	private Champion champion;

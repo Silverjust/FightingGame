@@ -112,7 +112,7 @@ public abstract class Updater {
 	}
 
 	public GameObject getGameObject(int n) {
-		System.out.println("Updater.getGameObject()" + n + " " + namedObjects.size());
+	//	System.out.println("Updater.getGameObject()" + n + " " + namedObjects.size());
 		return namedObjects.get(n);
 	}
 
@@ -123,6 +123,8 @@ public abstract class Updater {
 	public ArrayList<GameObject> getGameObjects() {
 		return gameObjects;
 	}
+
+	public abstract void handleChampionInit(Champion champion);
 
 	public void sendSpawn(Class<? extends GameObject> c, Player owner, String content) {
 		send(Coms.SPAWN + " " + c.getSimpleName() + " " + ((ServerUpdater) this).getNextGObjNumber() + " "
@@ -138,5 +140,11 @@ public abstract class Updater {
 		sendBuff(c, target, origin, time + "", content);
 	}
 
-	public abstract void handleChampionInit(Champion champion);
+	public void sendInput(Player player, int spellNum, int spellInstance, String content) {
+		send(Coms.INPUT + " " + player.getUser().getIp() + " " + spellNum + " " + spellInstance + " " + content);
+	}
+
+	public void sendInput(Player player, String inputType, String content) {
+		send(Coms.INPUT + " " + player.getUser().getIp() + " " + inputType + " " + content);
+	}
 }

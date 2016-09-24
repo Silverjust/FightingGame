@@ -26,7 +26,7 @@ public class Projectile extends GameObject {
 				yTarget = Float.parseFloat(c[7]);
 			}
 			origin = c[8];
-		} else if (c != null){
+		} else if (c != null) {
 			System.err.println("Projectile.Projectile() wrong spawn command");
 		}
 
@@ -34,31 +34,37 @@ public class Projectile extends GameObject {
 
 	@Override
 	public void updateMovement() {
-		if (isMoving()) {// ****************************************************
-			for (GameObject o : player.app.getUpdater().getGameObjects()) {
-				if (o != this && o instanceof Entity) {
-					if (isCollision(o)) {
-						if (o.isInRange(getX(), getY(), o.getStats().getRadius() + getStats().getRadius()))
-							if (!collidedEntities.contains(o)) {
-								collidedEntities.add((Entity) o);
-								onHit(o);
-							}
-					}
-				}
-			}
-		} else {// ****************************************************
-			// stand still
-		}
 
-		if (PApplet.dist(getX(), getY(), getxTarget(), getyTarget()) < getSpeed()) {
-			// System.out.println(1000000000+" "+(animation == walk));
-			setMoving(false);
-			onEnd();
-		}
 		if (isMoving() && PApplet.dist(getX(), getY(), getxTarget(), getyTarget()) > getSpeed()) {
 			setX(xNext(getxTarget(), getyTarget()));
 			setY(yNext(getxTarget(), getyTarget()));
 		}
+	}
+
+	@Override
+	public void updateDecisions(boolean isServer) {
+		if (isServer) {
+			if (isMoving()) {// ****************************************************
+				for (GameObject o : player.app.getUpdater().getGameObjects()) {
+					if (o != this && o instanceof Entity) {
+						if (isCollision(o)) {
+							if (o.isInRange(getX(), getY(), o.getStats().getRadius() + getStats().getRadius()))
+								if (!collidedEntities.contains(o)) {
+									collidedEntities.add((Entity) o);
+									onHit(o);
+								}
+						}
+					}
+				}
+			} // ****************************************************
+
+			if (PApplet.dist(getX(), getY(), getxTarget(), getyTarget()) < getSpeed()) {
+				// System.out.println(1000000000+" "+(animation == walk));
+				setMoving(false);
+				onEnd();
+			}
+		}
+		super.updateDecisions(isServer);
 	}
 
 	protected void onEnd() {

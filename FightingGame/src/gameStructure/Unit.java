@@ -47,7 +47,7 @@ public abstract class Unit extends Entity {
 		float yDeglich = 0;
 		boolean hasColided = false;
 		if (isMoving() && !getStats().isRooted()) {// ****************************************************
-			for (GameObject e : player.visibleEntities) {
+			for (GameObject e : player.visibleGObjects) {
 				if (e != this) {
 					if (isCollision(e)) {
 						if (e.getAnimation() == e.stand && e.isInRange(xTarget, yTarget, e.getStats().getRadius()))
@@ -83,9 +83,8 @@ public abstract class Unit extends Entity {
 	@Override
 	public void renderUnder() {
 		direction = Helper.getDirection(getX(), getY(), xTarget, yTarget);
-		if (this instanceof Attacker && ((Attacker) this).getBasicAttack().getTarget() != null
-				&& ((Attacker) this).getBasicAttack() == getAnimation()) {
-			Attack a = ((Attacker) this).getBasicAttack();
+		if (getBasicAttack().getTarget() != null && getBasicAttack() == getAnimation()) {
+			Attack a = getBasicAttack();
 			direction = Helper.getDirection(getX(), getY(), a.getTarget().getX(), a.getTarget().getY());
 		}
 		drawShadow();
@@ -126,7 +125,6 @@ public abstract class Unit extends Entity {
 				setAnimation(stand);
 			}
 		}
-		Attack.updateExecAttack(player.app, c, this);
 	}
 
 	@Deprecated

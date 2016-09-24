@@ -85,8 +85,8 @@ public abstract class GameObject implements Coms {
 	}
 
 	public void renderRange() {
-		if (this instanceof Attacker && ((Attacker) this).getBasicAttack() != null) {
-			Attack a = ((Attacker) this).getBasicAttack();
+		if (this instanceof Entity && ((Entity) this).getBasicAttack() != null) {
+			Attack a = ((Entity) this).getBasicAttack();
 			drawCircle(a.range);
 			drawCircle((int) (a.range * a.getCooldownPercent()));
 		}
@@ -184,6 +184,10 @@ public abstract class GameObject implements Coms {
 
 	public void sendDefaultAnimation(Animation oldAnimation) {
 		sendAnimation("stand", this);
+	}
+
+	public Animation getDefaultAnimation() {
+		return null;
 	}
 
 	public void sendAnimation(String s, Object o) {
@@ -350,9 +354,7 @@ public abstract class GameObject implements Coms {
 				.abs(10000 / (e.getStats().getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY())
 						- getStats().getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
-		if (e instanceof Attacker) {
-			importance *= 20;
-		}
+
 		return importance;
 	}
 

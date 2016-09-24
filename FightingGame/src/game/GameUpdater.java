@@ -60,19 +60,19 @@ public class GameUpdater extends Updater {
 				}
 			}
 			for (String key : players.keySet()) {
-				players.get(key).visibleEntities.clear();
+				players.get(key).visibleGObjects.clear();
 				for (GameObject e : gameObjects) {
 					/*
 					 * if (player.get(key) == ref.player) { selected.remove(e);
 					 * if (e.isSelected) { selected.add(e); } }
 					 */
 					if (GameDrawer.godeye || e.isVisibleTo(players.get(key))) {
-						players.get(key).visibleEntities.add(e);
+						players.get(key).visibleGObjects.add(e);
 					}
 				}
 			}
 			// sortierfunktion
-			Collections.sort(app.getPlayer().visibleEntities, new EntityHeightComparator());
+			Collections.sort(app.getPlayer().visibleGObjects, new EntityHeightComparator());
 			map.mapCodeUpdate();
 			for (GameObject e : gameObjects) {
 				e.updateAnimation();

@@ -3,6 +3,8 @@ package gameStructure;
 import java.util.ArrayList;
 
 import champs.TestProjectile;
+import gameStructure.animation.Animation;
+import gameStructure.animation.Attack;
 import gameStructure.animation.Death;
 import gameStructure.baseBuffs.Buff;
 import processing.core.PApplet;
@@ -16,9 +18,13 @@ public class Entity extends GameObject {
 
 	public PImage iconImg;
 	public Death death;
+	public Attack basicAttack;
+	public Animation stand;
+
 	public int hpBarLength;
 	private ArrayList<Buff> buffs = new ArrayList<Buff>();
 	private ArrayList<Buff> buffsToRemove = new ArrayList<Buff>();
+	protected int aggroRange = 50;
 
 	public Entity(GameBaseApp app, String[] c) {
 		super(app, c);
@@ -56,6 +62,38 @@ public class Entity extends GameObject {
 		for (Buff buff : buffs) {
 			buff.updateDecisions(isServer);
 		}
+
+		if (basicAttack != null)
+			updateBasicAttackBehavior(isServer);
+	}
+
+	public void updateBasicAttackBehavior(boolean isServer) {
+		// System.out.println("Entity.updateBasicAttackBehavior()");
+		/*
+		 * if (isServer && (getAnimation().isInterruptable() && isAggro ||
+		 * getAnimation() == stand)) {//
+		 * ****************************************************
+		 * System.out.println("Entity.updateBasicAttackBehavior()"); boolean
+		 * isEnemyInHitRange = false; float importance = 0; Entity
+		 * importantEntity = null; for (GameObject e : player.visibleGObjects) {
+		 * if (e instanceof Entity && e != this) { if (e.isEnemyTo(this)) { if
+		 * (e.isInRange(getX(), getY(), aggroRange + e.getStats().getRadius())
+		 * && basicAttack.canTargetable(e)) { float newImportance =
+		 * calcImportanceOf((Entity) e); if (newImportance > importance) {
+		 * importance = newImportance; importantEntity = (Entity) e; } } if
+		 * (e.isInRange(getX(), getY(), basicAttack.range +
+		 * e.getStats().getRadius()) && basicAttack.canTargetable(e)) {
+		 * isEnemyInHitRange = true; float newImportance =
+		 * calcImportanceOf((Entity) e); if (newImportance > importance) {
+		 * importance = newImportance; importantEntity = (Entity) e; } } } } }
+		 * if (isEnemyInHitRange && basicAttack.isNotOnCooldown()) {
+		 * System.out.println("Entity.updateBasicAttackBehavior()attack!!!!");
+		 * sendAnimation("basicAttack " + importantEntity.getNumber(), this); }
+		 * else if (importantEntity != null) {
+		 * System.out.println("Entity.updateBasicAttackBehavior() walk");
+		 * Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range); } }
+		 */
+		basicAttack.updateAbility(this, isServer);
 	}
 
 	@Override
@@ -73,7 +111,7 @@ public class Entity extends GameObject {
 			PApplet.printArray(c);
 			e.printStackTrace();
 		}
-
+		Attack.updateExecAttack(player.app, c, this);
 	}
 
 	public void info() {
@@ -128,9 +166,6 @@ public class Entity extends GameObject {
 				.abs(10000 / (e.getStats().getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY())
 						- getStats().getRadius() - e.getStats().getRadius()));
 		// TODO speziefische Thread werte
-		if (e instanceof Attacker) {
-			importance *= 20;
-		}
 		return importance;
 	}
 
@@ -157,6 +192,21 @@ public class Entity extends GameObject {
 		buff.onEnd();
 		buffsToRemove.add(buff);
 
+	}
+
+	public Attack getBasicAttack() {
+		return basicAttack;
+	}
+
+	public void doAttack(Attack a) {
+		if (a == basicAttack)
+			doBasicAttack(a);
+	}
+
+	private void doBasicAttack(Attack a) {
+		System.out.println("Entity.doBasicAttack()");
+		player.app.getUpdater().sendSpawn(TestProjectile.class, player, player.getChampion().getX() + " "
+				+ player.getChampion().getY() + " " + HOMING + " " + a.getTarget().getNumber() + " " + getInternName());
 	}
 
 }

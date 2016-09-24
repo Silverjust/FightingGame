@@ -3,6 +3,8 @@ package game;
 import java.awt.Toolkit;
 import java.awt.event.MouseWheelEvent;
 
+import gameStructure.GameObject;
+import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.event.KeyEvent;
 import processing.event.MouseEvent;
@@ -200,7 +202,17 @@ public class Input {
 
 	void mouseCommands(float x, float y) {
 		if (app.mouseButton == app.settingHandler.getSetting().mouseMove) {
-			app.getDrawer().getAimHandler().move(x, y);
+			boolean isAttack = false;
+			for (GameObject e : app.getUpdater().getGameObjects())
+				if (GameDrawer.godhand || e.isEnemyTo(app.getPlayer())) {
+					if (PApplet.dist(x, y, e.getX(), e.getY() - e.getHeight()) <= e.getStats().getRadius()) {
+						app.getPlayer().getChampion().handleAttackInput(e);
+						isAttack = true;
+					}
+				}
+			app.getDrawer().getAimHandler().cancel(x, y);
+			if (!isAttack)
+				app.getPlayer().getChampion().handleWalkInput(x, y);
 		} else if (app.mouseButton == app.settingHandler.getSetting().mouseCommand) {
 			app.getDrawer().getAimHandler().execute(x, y);
 		}

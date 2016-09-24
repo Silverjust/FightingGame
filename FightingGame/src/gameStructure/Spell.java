@@ -5,7 +5,6 @@ import g4p_controls.GGameButton;
 import game.PlayerInterface;
 import processing.core.PConstants;
 import processing.core.PImage;
-import shared.Coms;
 import shared.GameBaseApp;
 import shared.Player;
 import shared.SpellHandler;
@@ -63,7 +62,7 @@ public abstract class Spell {
 
 	/** clientside */
 	protected void onActivation() {
-		app.getUpdater().send(Coms.INPUT + " " + app.getPlayer().getUser().getIp() + " " + getPos() + " 1");
+		app.getUpdater().sendInput(app.getPlayer(), getPos(), 1, "");
 		startCooldown();
 	}
 

@@ -15,13 +15,21 @@ public abstract class Champion extends Unit {
 		hpBarLength = 40;
 	}
 
-	public abstract void setupSpells(GameBaseApp app, SpellHandler spellHandler	);
+	public abstract void setupSpells(GameBaseApp app, SpellHandler spellHandler);
 
 	@Override
 	public String getIngameName() {
 		if (championName != null && !championName.equals(""))
 			return championName;
 		return super.getIngameName();
+	}
+
+	public void handleWalkInput(float x, float y) {
+		player.app.getUpdater().sendInput(player, "walk", x + " " + y);
+	}
+
+	public void handleAttackInput(GameObject e) {
+		player.app.getUpdater().sendInput(player, "basicAttack", e.getNumber() + "");
 	}
 
 }

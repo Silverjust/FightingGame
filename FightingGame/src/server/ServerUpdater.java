@@ -64,10 +64,10 @@ public class ServerUpdater extends Updater {
 			}
 
 			for (String key : players.keySet()) {
-				players.get(key).visibleEntities.clear();
+				players.get(key).visibleGObjects.clear();
 				for (GameObject e : gameObjects) {
 					if (e.isVisibleTo(players.get(key))) {
-						players.get(key).visibleEntities.add(e);
+						players.get(key).visibleGObjects.add(e);
 					}
 				}
 			}

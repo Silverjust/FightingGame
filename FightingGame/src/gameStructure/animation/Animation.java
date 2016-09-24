@@ -1,6 +1,5 @@
 package gameStructure.animation;
 
-import gameStructure.Attacker;
 import gameStructure.Entity;
 import gameStructure.GameObject;
 import gameStructure.Trainer;
@@ -151,7 +150,7 @@ public class Animation {
 			return "train";
 		if (o instanceof Unit && this == ((Unit) o).walk)
 			return "walk";
-		if (o instanceof Attacker && this == ((Attacker) o).getBasicAttack())
+		if (o instanceof Entity && this == ((Entity) o).getBasicAttack())
 			return "basicAttack";
 		if (this instanceof Ability)
 			return "ability";
