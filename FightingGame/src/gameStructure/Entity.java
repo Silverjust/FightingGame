@@ -45,7 +45,7 @@ public class Entity extends GameObject {
 		drawHpBar();
 	}
 
-	public void sendDamage(TestProjectile testProjectile, Damage damage, Player player, String origin) {
+	public void sendDamage(Damage damage, Player player, String origin) {
 		player.app.getUpdater().send(
 				Coms.DAMAGE + " " + getNumber() + " " + damage.get() + " " + player.getUser().getIp() + " " + origin);
 	}
@@ -205,8 +205,13 @@ public class Entity extends GameObject {
 
 	private void doBasicAttack(Attack a) {
 		System.out.println("Entity.doBasicAttack()");
-		player.app.getUpdater().sendSpawn(TestProjectile.class, player, player.getChampion().getX() + " "
-				+ player.getChampion().getY() + " " + HOMING + " " + a.getTarget().getNumber() + " " + getInternName());
+		player.app.getUpdater().sendSpawn(BasicAttack.class, player,
+				player.getChampion().getX() + " " + player.getChampion().getY() + " " + this.getNumber() + " " + HOMING
+						+ " " + a.getTarget().getNumber() + " " + getInternName());
+	}
+
+	public PImage[] getBasicAttackAnim() {
+		return null;
 	}
 
 }

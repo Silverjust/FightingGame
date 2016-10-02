@@ -25,6 +25,7 @@ public class PreGameInterface {
 	private GAbstractControl switchSideButton;
 	private UserLabelManager userLabelManager;
 	private ClientHandler clientHandler;
+	private boolean isFirstLoop = true;
 
 	public PreGameInterface(PreGameApp app) {
 		this.app = app;
@@ -56,6 +57,7 @@ public class PreGameInterface {
 
 		switchSideButton = new GButton(app, 50, 550, 100, 30, "switch Team");
 		switchSideButton.addEventHandler(this, "switchSideButtonEvents");
+
 	}
 
 	public void updateUsers(PreGameApp app) {
@@ -66,6 +68,15 @@ public class PreGameInterface {
 
 	void update() {
 		app.background(150);
+		if (isFirstLoop) {
+			champsOptionsMap.get("Ticul").setSelected(true);
+			clientHandler.send(Coms.SET_CHAMP + " " + clientHandler.getIdentification() + " Ticul");
+			if (app.getServerApp() == null)
+				clientHandler.send(Coms.SET_TEAM + " " + clientHandler.getIdentification() + " " + Coms.RIGHTSIDE);
+			isFirstLoop = false;
+		}
+		if (app.frameCount % 100 == 0)
+			updateUsers(app);
 	}
 
 	public void champOption_clicked(GOption option, GEvent event) {

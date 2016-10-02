@@ -7,6 +7,7 @@ import g4p_controls.GEvent;
 import g4p_controls.GTextField;
 import processing.core.PApplet;
 import shared.Helper;
+import shared.Helper.Timer;
 import shared.Mode;
 import shared.PreGameInfo;
 
@@ -21,6 +22,8 @@ public class StartScreenInterface {
 	private boolean isWaiting;
 
 	public String name;
+
+	private Timer dummyInitTimer;
 
 	public StartScreenInterface(PreGameApp app) {
 		this.app = app;
@@ -37,11 +40,13 @@ public class StartScreenInterface {
 
 		connectButton = new GButton(app, 50, 200, 100, 30, "connect");
 		connectButton.addEventHandler(this, "handleButtonEvents");
+
 		System.out.println("StartScreenInterface.StartScreenInterface()");
 	}
 
 	void update() {
 		app.background(50);
+
 		if (isWaiting) {
 			app.noFill();
 			app.strokeWeight(20);
@@ -50,6 +55,11 @@ public class StartScreenInterface {
 		}
 		Helper.text(app, "bla§color 100 100 255§colorbla§rect§bladibla1\n" //
 				+ "bla§color 255 255 0§colorbla§rect§bladibla2\nbla§color reset§blä", 200, 200);
+
+		if (dummyInitTimer != null && dummyInitTimer.isNotOnCooldown()) {
+			handleButtonEvents((GButton) connectButton, null);
+			dummyInitTimer = null;
+		}
 	}
 
 	public void handleButtonEvents(GButton button, GEvent event) {
@@ -62,6 +72,7 @@ public class StartScreenInterface {
 			if (ipField.getText().equals("") || ipField.getText().equals(" ")) {
 				ipField.setFocus(true);
 			} else {
+				System.out.println("StartScreenInterface.handleButtonEvents()***************************************");
 				setWaiting(true);
 				preparePregame();
 				String ip = Helper.secureInput(ipField.getText());
@@ -92,7 +103,8 @@ public class StartScreenInterface {
 	public void initDummy() {
 		nameField.setText("dummy");
 		ipField.setText("127.0.0.1");
-		// handleButtonEvents((GButton) connectButton, null);
+		dummyInitTimer = new Timer(1000);
+		dummyInitTimer.startCooldown();
 	}
 
 	public void dispose() {

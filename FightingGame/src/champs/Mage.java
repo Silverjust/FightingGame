@@ -34,17 +34,16 @@ public class Mage extends Champion {
 
 	public Mage(GameBaseApp app, String[] c) {
 		super(app, c);
-		System.out.println("Ticul.Ticul()");
 		if (walkingImg != null)
 			iconImg = walkingImg[0][0];
-
+/*
 		stand = new Animation(app, standingImg, 100);
 		walk = new Animation(app, walkingImg, 800);
 		death = new Death(app, attackImg, 500);
 		basicAttack = new Attack(app, attackImg, 600);
 
 		setAnimation(walk);
-
+*/
 		// ************************************
 		setxSize(50);
 		setySize(50);
@@ -58,12 +57,12 @@ public class Mage extends Champion {
 		getStats().setSight(100);
 
 		aggroRange = (byte) (getStats().getRadius() + 50);
-		basicAttack.range = 9;
+		/*basicAttack.range = 9;
 		basicAttack.damage = 40;
 		basicAttack.cooldown = 2000;
 		basicAttack.setCastTime(500);
 
-		descr = " ";
+		descr = " ";*/
 		// ************************************
 	}
 

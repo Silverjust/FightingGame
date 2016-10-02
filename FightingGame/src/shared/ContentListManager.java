@@ -6,6 +6,7 @@ import java.util.HashMap;
 import champs.Mage;
 import champs.TestProjectile;
 import champs.Ticul;
+import gameStructure.BasicAttack;
 import gameStructure.Champion;
 import gameStructure.GameObject;
 import gameStructure.Spell;
@@ -51,6 +52,7 @@ public class ContentListManager {
 
 		/** List of GameObjects to load/spawn */
 		addClassToGObjects(Ticul.class);
+		addClassToGObjects(BasicAttack.class);
 		addClassToGObjects(TestProjectile.class);
 		/***********************************/
 

@@ -13,19 +13,22 @@ public class Projectile extends GameObject {
 	private boolean isMoving = true;
 	private float speed;
 	private ArrayList<Entity> collidedEntities = new ArrayList<Entity>();
-	protected String origin;
+	protected String originInfo;
+	protected GameObject origin;
 
 	public Projectile(GameBaseApp app, String[] c) {
 		super(app, c);
-		if (c != null && c.length > 8) {
-			if (c[6].equals(HOMING)) {
-				targetObject = app.getUpdater().getGameObject(Integer.parseInt(c[7]));
+		if (c != null && c.length > 9) {
+			int n = Integer.parseInt(c[6]);
+			origin = player.app.getUpdater().getGameObject(n);
+			if (c[7].equals(HOMING)) {
+				targetObject = app.getUpdater().getGameObject(Integer.parseInt(c[8]));
 				System.out.println("Projectile.Projectile() homing to" + targetObject);
 			} else {
-				xTarget = Float.parseFloat(c[6]);
-				yTarget = Float.parseFloat(c[7]);
+				xTarget = Float.parseFloat(c[7]);
+				yTarget = Float.parseFloat(c[8]);
 			}
-			origin = c[8];
+			originInfo = c[9];
 		} else if (c != null) {
 			System.err.println("Projectile.Projectile() wrong spawn command");
 		}
@@ -48,11 +51,10 @@ public class Projectile extends GameObject {
 				for (GameObject o : player.app.getUpdater().getGameObjects()) {
 					if (o != this && o instanceof Entity) {
 						if (isCollision(o)) {
-							if (o.isInRange(getX(), getY(), o.getStats().getRadius() + getStats().getRadius()))
-								if (!collidedEntities.contains(o)) {
-									collidedEntities.add((Entity) o);
-									onHit(o);
-								}
+							if (!collidedEntities.contains(o)) {
+								collidedEntities.add((Entity) o);
+								onHit(o);
+							}
 						}
 					}
 				}

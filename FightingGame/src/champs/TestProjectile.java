@@ -37,10 +37,12 @@ public class TestProjectile extends Projectile {
 	@Override
 	protected void onHit(GameObject o) {
 		if (o.isEnemyTo(player) && o instanceof Entity) {
-			((Entity) o).sendDamage(this, new Damage((Entity) o, player.getChampion(), 50, true), player, origin);
+			((Entity) o).sendDamage(new Damage((Entity) o, player.getChampion(), 50, true), player, originInfo);
 			player.app.getUpdater().sendBuff(Stunn.class, (Entity) o, player.getChampion(), 1000, "");
-			//player.app.getUpdater().sendBuff(Slow.class, player.getChampion(), player.getChampion(),
-			//		(int) player.app.random(1000, 3000), (int) player.app.random(100) + "");
+			// player.app.getUpdater().sendBuff(Slow.class,
+			// player.getChampion(), player.getChampion(),
+			// (int) player.app.random(1000, 3000), (int) player.app.random(100)
+			// + "");
 		}
 	}
 }

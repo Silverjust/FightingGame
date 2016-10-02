@@ -68,8 +68,14 @@ public class PreGameComHandler extends ComHandler {
 					} else {
 						throw new IllegalArgumentException(c[2] + " is not a team");
 					}
-				} else
-					throw new IllegalArgumentException(c[1] + " player not found");
+				} else {
+					System.out.println("PreGameComHandler.executeCom()set team    client name:"
+							+ app.getPreGameInfo().getUser("").name + " " + c[1]);
+					for (String ip : app.getPreGameInfo().getUsers().keySet()) {
+						System.out.println("PreGameComHandler.executeCom() " + ip);
+					}
+					throw new IllegalArgumentException(c[1] + " user not found");
+				}
 				break;
 			case SET_CHAMP:
 				u = app.getPreGameInfo().getUser(c[1]);
@@ -112,13 +118,25 @@ public class PreGameComHandler extends ComHandler {
 				handleErrorNoCommandFound(com, c);
 				throw new NoInitialContextException("no command found");
 			}
-		} catch (IllegalArgumentException e) {
+		} catch (
+
+		IllegalArgumentException e)
+
+		{
 			e.printStackTrace();
 			// can be ignored
-		} catch (ClassCastException e) {
+		} catch (
+
+		ClassCastException e)
+
+		{
 			e.printStackTrace();
 			// can be ignored
-		} catch (Exception e) {
+		} catch (
+
+		Exception e)
+
+		{
 			System.err.println("com error in " + com);
 			e.printStackTrace();
 		}
