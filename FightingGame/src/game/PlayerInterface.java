@@ -2,6 +2,7 @@ package game;
 
 import gameStructure.Champion;
 import gameStructure.Spell;
+import gameStructure.Stats;
 import main.appdata.SettingHandler;
 import shared.ContentListManager;
 import shared.GameBaseApp;
@@ -42,9 +43,12 @@ public class PlayerInterface extends SpellHandler {
 		for (Spell spell : spells) {
 			spell.updateButton();
 		}
-		String string = "§img armor§" + player.getChampion().getStats().getArmor()//
-				+ "\n§img mr§" + player.getChampion().getStats().getMagicResist()//
-				+ "\n§img ms§" + player.getChampion().getStats().getSpeed();
+		String string = "§img armor§" + player.getChampion().getStats().getArmor().getTotalAmount()//
+				+ "\n§img mr§" + player.getChampion().getStats().getMagicResist().getTotalAmount()//
+				+ "\n§img ms§" + (float) player.getChampion().getStats().getMovementSpeed().getTotalAmount()//
+				+ "\n§img ad§" + player.getChampion().getStats().getAttackDamage().getTotalAmount()//
+				+ "\n§img ad§" + player.getChampion().getStats().get(Stats.ATTACK_DAMAGE).getTotalAmount()
+				;
 		Helper.text(app, string, statsDisplayX, y + app.textAscent());
 	}
 

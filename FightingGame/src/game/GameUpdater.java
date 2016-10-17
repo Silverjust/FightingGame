@@ -19,9 +19,9 @@ public class GameUpdater extends Updater {
 
 	public GameUpdater(GameBaseApp app) {
 		super(app);
-		neutral = Player.createNeutralPlayer(app, null);
-		leftsideNeutral = Player.createNeutralPlayer(app, Team.LEFTSIDE);
-		rightsideNeutral = Player.createNeutralPlayer(app, Team.RIGHTSIDE);
+		neutral = Player.createNeutralPlayer(app, null, players);
+		leftsideNeutral = Player.createNeutralPlayer(app, Team.LEFTSIDE, players);
+		rightsideNeutral = Player.createNeutralPlayer(app, Team.RIGHTSIDE, players);
 		input = new Input(app);
 		map = new Map(app, app.getPreGameInfo().map);
 
@@ -45,7 +45,7 @@ public class GameUpdater extends Updater {
 			for (int i = 0; i < toAdd.size(); i++) {
 				gameObjects.add(toAdd.get(i));
 				namedObjects.put(toAdd.get(i).getNumber(), toAdd.get(i));
-				toAdd.get(i).onSpawn(PreGameInfo.isSinglePlayer());
+				toAdd.get(i).onSpawn(false);
 				map.mapCode.onEntitySpawn(toAdd.get(i));
 				toAdd.remove(i);
 			}

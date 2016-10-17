@@ -7,23 +7,22 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import shared.GameBaseApp;
 
-public  class Attack extends Ability {
-	public byte range;
-	public byte damage;
-	public byte pirce;
+public class Attack extends Ability {
+	private int range;
+	private int damage;
 	protected GameObject target;
 	private boolean isSetup;
 
-	public Attack(GameBaseApp app, PImage[][] IMG, int duration) {
-		super(app, IMG, duration);
+	public Attack(GameBaseApp app, GameObject animated, PImage[][] IMG, int duration) {
+		super(app, animated, IMG, duration);
 	}
 
-	public Attack(GameBaseApp app, PImage[] IMG, int duration) {
-		super(app, IMG, duration);
+	public Attack(GameBaseApp app, GameObject animated,PImage[] IMG, int duration) {
+		super(app, animated, IMG, duration);
 	}
 
-	public Attack(GameBaseApp app, PImage IMG, int duration) {
-		super(app, IMG, duration);
+	public Attack(GameBaseApp app,GameObject animated, PImage IMG, int duration) {
+		super(app, animated, IMG, duration);
 	}
 
 	public GameObject getTarget() {
@@ -49,16 +48,24 @@ public  class Attack extends Ability {
 	}
 
 	@Override
+	public void onEnd() {
+		startCooldown();
+	}
+
+	@Override
 	public void updateAbility(GameObject e, boolean isServer) {
 		/*
 		 * if (isSetup())System.out.println("setup"); if
 		 * (isEvent())System.out.println("event"); if
 		 * (isNotOnCooldown())System.out.println("ncool");
 		 */
-		if (isSetup() && isEvent()) {
-			if (isServer)
-				((Entity) e).doAttack(this);
-			isSetup = false;
+		if (isSetup() && isEvent() && e.getAnimation() == this) {
+			if (getTarget().isAlive() && getTarget().isTargetable() && e.isInRange(getTarget(), getRange())) {
+				if (isServer)
+					((Entity) e).doAttack(this);
+				isSetup = false;
+				startCooldown();
+			}
 		}
 	}
 
@@ -89,15 +96,15 @@ public  class Attack extends Ability {
 	public static void sendWalkToEnemy(GameObject e, GameObject target, byte range) {
 		if (e instanceof Entity) {
 			if (range < PApplet.dist(target.getX(), target.getY(), e.getX(), e.getY())) {
-				e.sendAnimation("walk "
-						+ (target.getX() + (e.getX() - target.getX())
+				e.sendAnimation(
+						"walk " + (target.getX() + (e.getX() - target.getX())
 								/ PApplet.dist(target.getX(), target.getY(), e.getX(), e.getY())
-								* (range + target.getStats().getRadius() - 1))
+								* (range + target.getStats().getRadius().getTotalAmount() - 1))
 						+ " "
 						+ (target.getY() + (e.getY() - target.getY())
 								/ PApplet.dist(target.getX(), target.getY(), e.getX(), e.getY())
-								* (range + target.getStats().getRadius() - 1))
-						+ " true", "Attack.sendWalkToEnemy()");
+								* (range + target.getStats().getRadius().getTotalAmount() - 1)) + " true",
+						"Attack.sendWalkToEnemy()");
 			} else {
 				e.sendAnimation("stand", "Attack.sendWalkToEnemy()");
 			}
@@ -111,5 +118,26 @@ public  class Attack extends Ability {
 
 	public boolean canTargetable(GameObject e) {
 		return true;
+	}
+
+	@Override
+	public boolean doRepeat(GameObject e) {
+		return true;
+	}
+
+	public int getRange() {
+		return range;
+	}
+
+	public void setRange(int range) {
+		this.range = range;
+	}
+
+	public int getDamage() {
+		return damage;
+	}
+
+	public void setDamage(int i) {
+		this.damage = i;
 	}
 }

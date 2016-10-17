@@ -7,6 +7,7 @@ import gameStructure.Entity;
 import gameStructure.GameObject;
 import gameStructure.Unit;
 import gameStructure.baseBuffs.Buff;
+import gameStructure.items.InventoryItem;
 import processing.core.PApplet;
 import shared.ComHandler;
 import shared.GameBaseApp;
@@ -24,7 +25,7 @@ public class GameComHandler extends ComHandler {
 	}
 
 	@SuppressWarnings("unused")
-	public void executeCom(String com, boolean isIntern) {
+	public void executeCom(String com, boolean isIntern, String ip) {
 		String[] c = PApplet.splitTokens(com, S + app.getClientHandler().endSymbol);
 
 		try {
@@ -100,6 +101,20 @@ public class GameComHandler extends ComHandler {
 				if (o instanceof Entity) {
 					((Entity) o).addBuff(buff);
 				}
+				break;
+			case ITEM:
+				System.out.println("GameComHandler.executeCom()item");
+				Class<?> iClazz = contentListHandler.getItemClass(c[1]);
+				Constructor<?> iCtor = iClazz.getConstructor(GameBaseApp.class, String[].class);
+				InventoryItem item = (InventoryItem) iCtor.newInstance(new Object[] { app, c });
+				n = Integer.parseInt(c[2]);
+				o = updater.getGameObject(n);
+				System.out.println("GameComHandler.executeCom() i 2");
+				if (o instanceof Entity) {
+					System.out.println("GameComHandler.executeCom() i 3");
+					((Entity) o).addItem(item);
+				}
+				System.out.println("GameComHandler.executeCom() i 4");
 				break;
 			case EXECUTE:// who what info
 				n = Integer.parseInt(c[1]);

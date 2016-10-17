@@ -217,4 +217,8 @@ public class GameBaseApp extends PApplet {
 		this.contentListHandler = contentListHandler;
 	}
 
+	public boolean isServer() {
+		return false;
+	}
+
 }

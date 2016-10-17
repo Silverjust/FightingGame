@@ -9,6 +9,7 @@ import gameStructure.Entity;
 import gameStructure.GameObject;
 import gameStructure.Unit;
 import gameStructure.baseBuffs.Buff;
+import gameStructure.items.InventoryItem;
 import processing.core.PApplet;
 import shared.ComHandler;
 import shared.GameBaseApp;
@@ -29,9 +30,8 @@ public class ServerComHandler extends ComHandler {
 
 	@SuppressWarnings("unused")
 	@Override
-	public void executeCom(String com, boolean isIntern) {
+	public void executeCom(String com, boolean isIntern, String senderIp) {
 		String[] c = PApplet.splitTokens(com, S + app.getServerHandler().endSymbol);
-
 		try {
 			byte b;
 			int n;
@@ -115,6 +115,20 @@ public class ServerComHandler extends ComHandler {
 					o = updater.getGameObject(n);
 					if (o instanceof Entity) {
 						((Entity) o).addBuff(buff);
+					}
+				} else
+					System.err.println(com + " blocked by server");
+				break;
+			case ITEM:
+				if (isIntern) {
+					Class<?> iClazz = contentListHandler.getItemClass(c[1]);
+					System.out.println("ServerComHandler.executeCom()" + iClazz);
+					Constructor<?> iCtor = iClazz.getConstructor(GameBaseApp.class, String[].class);
+					InventoryItem item = (InventoryItem) iCtor.newInstance(new Object[] { app, c });
+					n = Integer.parseInt(c[2]);
+					o = updater.getGameObject(n);
+					if (o instanceof Entity) {
+						((Entity) o).addItem(item);
 					}
 				} else
 					System.err.println(com + " blocked by server");

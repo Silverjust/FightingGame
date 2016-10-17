@@ -117,4 +117,9 @@ public class ServerApp extends GameBaseApp {
 		this.adminApp = adminApp;
 	}
 
+	@Override
+	public boolean isServer() {
+		return true;
+	}
+
 }

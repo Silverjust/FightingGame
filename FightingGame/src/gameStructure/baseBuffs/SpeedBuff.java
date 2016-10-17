@@ -15,13 +15,15 @@ public class SpeedBuff extends Buff {
 	@Override
 	public void onStart() {
 		super.onStart();
-		((Unit) owner).getStats().setSpeedMult(((Unit) owner).getStats().getSpeedMult() + amount);
+		((Unit) owner).getStats().getMovementSpeed()
+				.setTotalAmountMult(((Unit) owner).getStats().getMovementSpeed().getTotalAmountMult() + amount);
 	}
 
 	@Override
 	public void onEnd() {
 		super.onEnd();
-		((Unit) owner).getStats().setSpeedMult(((Unit) owner).getStats().getSpeedMult() - amount);
+		((Unit) owner).getStats().getMovementSpeed()
+				.setTotalAmountMult(((Unit) owner).getStats().getMovementSpeed().getTotalAmountMult() - amount);
 	}
 
 }

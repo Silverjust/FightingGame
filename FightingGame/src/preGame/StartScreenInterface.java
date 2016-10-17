@@ -5,6 +5,7 @@ import g4p_controls.GButton;
 import g4p_controls.GCScheme;
 import g4p_controls.GEvent;
 import g4p_controls.GTextField;
+import gameStructure.GameObject;
 import processing.core.PApplet;
 import shared.Helper;
 import shared.Helper.Timer;
@@ -55,7 +56,32 @@ public class StartScreenInterface {
 		}
 		Helper.text(app, "bla§color 100 100 255§colorbla§rect§bladibla1\n" //
 				+ "bla§color 255 255 0§colorbla§rect§bladibla2\nbla§color reset§blä", 200, 200);
+		{
+			app.pushMatrix();
+			// app.shearX(app.millis() / 12000.f);
+			// app.shearY(app.millis() / 14000.f);
 
+			app.translate(GameObject.xToGrid(400), GameObject.yToGrid(300));
+			// app.rotate(app.millis() / 10000.f);
+			app.scale(1, 0.5f);
+			app.ellipse(0, 0, 20, 20);
+			app.translate(app.cos(app.millis() / 5000.f) * 10, app.sin(app.millis() / 5000.f) * 5);
+			app.scale(1, 0.5f);
+			app.ellipse(0, 0, 10, 10);
+			app.popMatrix();
+
+			app.pushMatrix();
+			// app.shearX(app.millis() / 12000.f);
+			// app.shearY(app.millis() / 14000.f);
+
+			app.translate(GameObject.xToGrid(300), GameObject.yToGrid(300));
+			app.scale(1, 0.5f);
+			app.rotate(app.millis() / 10000.f);
+
+			app.rect(0, 0, 20, 50);
+			app.ellipse(10, 0, 10, 10);
+			app.popMatrix();
+		}
 		if (dummyInitTimer != null && dummyInitTimer.isNotOnCooldown()) {
 			handleButtonEvents((GButton) connectButton, null);
 			dummyInitTimer = null;

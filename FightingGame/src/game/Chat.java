@@ -21,6 +21,7 @@ public class Chat {
 	private GameBaseApp app;
 	private HUD hud;
 	private CommandHandler commandHandler;
+	private boolean hidden;
 
 	Chat(GameBaseApp app) {
 		this.app = app;
@@ -65,8 +66,10 @@ public class Chat {
 
 	public void hide() {
 		// System.out.println("Chat.hide()");
-		if (chatLine.isVisible())
+		if (chatLine.isVisible() && !hidden) {
 			chatLine.setVisible(false);
+			hidden = true;
+		}
 	}
 
 	public void println(String name, String s) {
@@ -86,6 +89,7 @@ public class Chat {
 			if (s.equals("")) {
 				if (!justOpened) {
 					System.out.println("Chat.chatEvents() hide cause empty and enter");
+
 					hide();
 				}
 			} else {
@@ -100,6 +104,7 @@ public class Chat {
 			break;
 		case LOST_FOCUS:
 			if (textfield.isVisible()) {
+				System.out.println("Chat.chatEvents()");
 				hide();
 			}
 			break;

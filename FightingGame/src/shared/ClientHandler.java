@@ -1,5 +1,7 @@
 package shared;
 
+import server.ServerHandler;
+
 public abstract class ClientHandler {
 
 	protected String identification;
@@ -7,7 +9,6 @@ public abstract class ClientHandler {
 	public Client client;
 	public char startSymbol = '<';
 	public char endSymbol = '>';
-	private boolean reportCommunication = true;
 	protected GameBaseApp app;
 
 	public ClientHandler(GameBaseApp app, String serverIp) {
@@ -31,7 +32,7 @@ public abstract class ClientHandler {
 			{
 				if (client != null && client.active()) {
 					client.write(output + endSymbol);
-					if (reportCommunication)
+					if (isReportCommunication())
 						System.out.println("c out: " + output + endSymbol);
 				} else {
 					client.stop();
@@ -44,10 +45,10 @@ public abstract class ClientHandler {
 		if (client != null) {
 			String input = "" + client.readStringUntil(endSymbol);
 			if (input != null && !input.equals("null")) {
-				if (reportCommunication)
+				if (isReportCommunication())
 					System.out.println("c  in: " + input);
 				if (input.charAt(0) == startSymbol) {
-					app.getComHandler().executeCom(input, false);
+					app.getComHandler().executeCom(input, false, null);
 				}
 			}
 		}
@@ -63,6 +64,10 @@ public abstract class ClientHandler {
 
 	public String getServerIp() {
 		return serverIp;
+	}
+
+	public boolean isReportCommunication() {
+		return ServerHandler.reportCommunication;
 	}
 
 }

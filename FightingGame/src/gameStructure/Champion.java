@@ -12,7 +12,7 @@ public abstract class Champion extends Unit {
 			player.setChampion(this);
 		} catch (Exception e) {
 		}
-		hpBarLength = 40;
+		setHpBarLength(40);
 	}
 
 	public abstract void setupSpells(GameBaseApp app, SpellHandler spellHandler);

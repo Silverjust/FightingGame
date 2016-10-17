@@ -3,174 +3,119 @@ package gameStructure;
 import shared.GameBaseApp;
 
 public class EntityStats extends Stats {
-	public EntityStats(GameBaseApp app) {
-		super(app);
-	}
 
-	protected int hp;
-	protected int hp_max;
-	protected int bonus_hp;
-	protected int armor;
-	protected int magicResist;
-	protected int ArmorPen;
-	protected int MagicPen;
-	protected int PercArmorPen;
-	protected int PercMagicPen;
-	protected int attackDamage;
-	protected int abilityPower;
-	protected int attackDamageMult;
-	protected int abilityPowerMult;
-
+	private EntityStat_Ressource hp = new EntityStat_Ressource(this, HEALTH);
+	private EntityStat_LevelScaling armor = new EntityStat_LevelScaling(this, ARMOR);
+	private EntityStat_LevelScaling magicResist = new EntityStat_LevelScaling(this, MR);
+	private EntityStat armorPen = new EntityStat(this, ARMOR_PEN);
+	private EntityStat magicPen = new EntityStat(this, MAGIC_PEN);
+	private EntityStat percentArmorPen = new EntityStat(this, PERCENT_ARMOR_PEN);
+	private EntityStat percentMagicPen = new EntityStat(this, PERCENT_MAGIC_PEN);
+	private EntityStat_BonusAmount attackDamage = new EntityStat_BonusAmount(this, ATTACK_DAMAGE);
+	private EntityStat_BonusAmount abilityPower = new EntityStat_BonusAmount(this, ABILITY_POWER);
 	protected boolean isRooted;
 	protected boolean isSilenced;
 	protected boolean isStunned;
 	protected boolean isDisplaced;
 
-	/** gives you the current-health */
-	public int getCurrentHp() {
+	public EntityStats(GameBaseApp app) {
+		super(app);
+	}
+
+	public EntityStat_Ressource getHp() {
 		return hp;
 	}
 
-	/**
-	 * sets the current-health
-	 * <p>
-	 * (better use damage or heal effects)
-	 * 
-	 * @param hp
-	 *            TODO
-	 */
-	public void setHp(int hp) {
-		this.hp = hp;
-	}
-
-	/**
-	 * sets health and base-max-health to the same value
-	 * <p>
-	 * (use at spawn)
-	 * 
-	 * @param hp
-	 *            TODO
-	 */
-	public void initHp(int hp) {
-		setHp(hp);
-		setHp_max(hp);
-	}
-
-	/** gives you the real maximum of health */
-	public int getTotalHp() {
-		return getHp_max() + getBonus_hp();
-	}
-
-	/** gives you the base-max-health */
-	public int getHp_max() {
-		return hp_max;
-	}
-
-	/**
-	 * sets the base-max-health
-	 * 
-	 * @param hp_max
-	 *            TODO
-	 */
-	public void setHp_max(int hp_max) {
-		this.hp_max = hp_max;
-	}
-
-	/**
-	 * sets the bonus-max-health
-	 * 
-	 * @param bonus_hp
-	 *            TODO
-	 */
-	public void setBonus_hp(int bonus_hp) {
-		this.bonus_hp = bonus_hp;
-	}
-
-	public int getArmor() {
+	public EntityStat_LevelScaling getArmor() {
 		return armor;
 	}
 
-	/**
-	 * gives you the bonus-max-health
-	 */
-	public int getBonus_hp() {
-		return bonus_hp;
-	}
-
-	public void setArmor(int armor) {
-		this.armor = armor;
-	}
-
-	public int getMagicResist() {
+	public EntityStat_LevelScaling getMagicResist() {
 		return magicResist;
 	}
 
+	public EntityStat getArmorPen() {
+		return armorPen;
+	}
+
+	public EntityStat getMagicPen() {
+		return magicPen;
+	}
+
+	public EntityStat getPercentArmorPen() {
+		return percentArmorPen;
+	}
+
+	public EntityStat getPercentMagicPen() {
+		return percentMagicPen;
+	}
+
+	public EntityStat_BonusAmount getAttackDamage() {
+		return attackDamage;
+	}
+
+	public EntityStat_BonusAmount getAbilityPower() {
+		return abilityPower;
+	}
+
+	@Deprecated
+	public void setArmor(int armor) {
+		getArmor().setBrutoBaseAmount(armor);
+	}
+
+	@Deprecated
 	public void setMagicResist(int magicResist) {
-		this.magicResist = magicResist;
+		getMagicResist().setBrutoBaseAmount(magicResist);
 	}
 
-	public int getArmorPen() {
-		return ArmorPen;
-	}
-
+	@Deprecated
 	public void setArmorPen(int armorPen) {
-		ArmorPen = armorPen;
+		getArmorPen().setBrutoBaseAmount(armorPen);
 	}
 
-	public int getMagicPen() {
-		return MagicPen;
-	}
-
+	@Deprecated
 	public void setMagicPen(int magicPen) {
-		MagicPen = magicPen;
+		getMagicPen().setBrutoBaseAmount(magicPen);
 	}
 
-	public int getPercArmorPen() {
-		return PercArmorPen;
-	}
-
+	@Deprecated
 	public void setPercArmorPen(int percArmorPen) {
-		PercArmorPen = percArmorPen;
+		getPercentArmorPen().setBrutoBaseAmount(percArmorPen);
 	}
 
-	public int getPercMagicPen() {
-		return PercMagicPen;
-	}
-
+	@Deprecated
 	public void setPercMagicPen(int percMagicPen) {
-		PercMagicPen = percMagicPen;
+		getPercentMagicPen().setBrutoBaseAmount(percMagicPen);
 	}
 
-	public int getAttackDamage() {
-		return (int) (attackDamage * attackDamageMult / 100.0f);
-	}
-
+	@Deprecated
 	public void setAttackDamage(int attackDamage) {
-		this.attackDamage = attackDamage;
+		getAttackDamage().setBrutoBaseAmount(attackDamage);
 	}
 
-	public int getAbilityPower() {
-		return (int) (abilityPower * abilityPowerMult / 100.0f);
-	}
-
+	@Deprecated
 	public void setAbilityPower(int abilityPower) {
-		this.abilityPower = abilityPower;
+		getAbilityPower().setBrutoBaseAmount(abilityPower);
 	}
 
+	@Deprecated
 	public int getAttackDamageMult() {
-		return attackDamageMult;
+		return getAttackDamage().getTotalAmountMult();
 	}
 
+	@Deprecated
 	public void setAttackDamageMult(int attackDamageMult) {
-		this.attackDamageMult = attackDamageMult;
+		getAttackDamage().setTotalAmountMult(attackDamageMult);
 	}
 
+	@Deprecated
 	public int getAbilityPowerMult() {
-		return abilityPowerMult;
+		return getAbilityPower().getTotalAmountMult();
 	}
 
+	@Deprecated
 	public void setAbilityPowerMult(int abilityPowerMult) {
-		this.abilityPowerMult = abilityPowerMult;
+		getAbilityPower().setTotalAmountMult(abilityPowerMult);
 	}
 
 	/**

@@ -25,7 +25,7 @@ public abstract class MultiCDActive extends Spell {
 			abilityGetter = getClazz().getMethod(name, new Class[] {});
 			GameObject e = (GameObject) getClazz().getConstructor(String[].class)
 					.newInstance(new GameObject[] { null });
-			setCooldown(((Ability) abilityGetter.invoke(e)).cooldown);
+			setCooldown(((Ability) abilityGetter.invoke(e)).getCooldown());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

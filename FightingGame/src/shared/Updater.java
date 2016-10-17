@@ -22,8 +22,8 @@ public abstract class Updater {
 
 	public HashMap<String, Player> players = new HashMap<String, Player>();
 	public Player neutral;
-	protected Player rightsideNeutral;
-	protected Player leftsideNeutral;
+	public Player rightsideNeutral;
+	public Player leftsideNeutral;
 
 	public GameState gameState = GameState.PLAY;
 	protected GameBaseApp app;
@@ -108,11 +108,19 @@ public abstract class Updater {
 	}
 
 	public Player getPlayer(String ip) {
-		return players.get(ip);
+		if (ip.equals("0"))
+			return neutral;
+		else if (ip.equals("-1"))
+			return leftsideNeutral;
+		else if (ip.equals("-2"))
+			return rightsideNeutral;
+		else
+			return players.get(ip);
 	}
 
 	public GameObject getGameObject(int n) {
-	//	System.out.println("Updater.getGameObject()" + n + " " + namedObjects.size());
+		// System.out.println("Updater.getGameObject()" + n + " " +
+		// namedObjects.size());
 		return namedObjects.get(n);
 	}
 

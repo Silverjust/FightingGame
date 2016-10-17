@@ -94,17 +94,18 @@ public class Projectile extends GameObject {
 
 	@Override
 	public void renderAir() {
-		if (isMoving())
-			getAnimation().draw(this, 0, getCurrentFrame());
+		if (isMoving()) {
+			getAnimation().draw(this, player.app.millis() / 1000.f, getCurrentFrame());
+		}
 	}
 
 	/** gives you the movement-speed */
 	public float getSpeed() {
-		return speed;
+		return speed / 100.f;
 	}
 
 	/** sets the movement-speed */
-	public void setSpeed(float speed) {
+	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
 

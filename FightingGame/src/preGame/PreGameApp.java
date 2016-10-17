@@ -120,4 +120,9 @@ public class PreGameApp extends GameBaseApp {
 	public void dispose() {
 		super.dispose();
 	}
+
+	@Override
+	public boolean isServer() {
+		return false;
+	}
 }

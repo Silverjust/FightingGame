@@ -191,7 +191,8 @@ public class Helper {
 						break;
 					case "img": {
 						PImage symbol = app.getDrawer().getSymbol(c[1]);
-						app.image(symbol, x + textWidth, y + i * lineHeight - lineHeight, lineHeight, lineHeight);
+						if (symbol != null)
+							app.image(symbol, x + textWidth, y + i * lineHeight - lineHeight, lineHeight, lineHeight);
 						textWidth += lineHeight;
 					}
 						break;

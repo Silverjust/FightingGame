@@ -15,42 +15,46 @@ public class Animation {
 	private byte frames;
 	PImage[][] imgWD;
 	PImage[] img;
-	public int duration;
+	private int duration;
 	int start;
 	public GameBaseApp app;
+	protected GameObject animated;
 
-	public Animation(GameBaseApp app, PImage[][] IMG, int duration) {
+	public Animation(GameBaseApp app, GameObject animated, PImage[][] IMG, int duration) {
 		this.app = app;
+		this.animated = animated;
 		imgWD = IMG;
 		if (IMG != null) {
 			directions = (byte) imgWD.length;
 			frames = (byte) imgWD[0].length;
 		}
-		this.duration = duration;
+		this.setDuration(duration);
 	}
 
-	public Animation(GameBaseApp app, PImage[] IMG, int duration) {
+	public Animation(GameBaseApp app, GameObject animated, PImage[] IMG, int duration) {
 		this.app = app;
+		this.animated = animated;
 		img = IMG;
 		directions = 1;
 		if (IMG != null)
 			frames = (byte) img.length;
-		this.duration = duration;
+		this.setDuration(duration);
 
 	}
 
-	public Animation(GameBaseApp app, PImage IMG, int duration) {
+	public Animation(GameBaseApp app, GameObject animated, PImage IMG, int duration) {
 		this.app = app;
+		this.animated = animated;
 		img = new PImage[1];
 		img[0] = IMG;
 		directions = 1;
 		frames = 1;
-		this.duration = duration;
+		this.setDuration(duration);
 
 	}
 
 	public int speed() {
-		return duration / frames;
+		return getDuration() / frames;
 	}
 
 	public void setup(GameObject e) {
@@ -99,6 +103,31 @@ public class Animation {
 		}
 	}
 
+	public void draw(GameObject e, float a, int i) {
+		if (Updater.Time.getMillis() - start >= speed() * e.getCurrentFrame()) {
+			e.setCurrentFrame((byte) ((Updater.Time.getMillis() - start) / speed()));
+			if (e.getCurrentFrame() > frames - 1) {
+				e.setCurrentFrame((byte) (frames - 1));
+			}
+			if (e.getCurrentFrame() < 0) {
+				e.setCurrentFrame(0);
+			}
+		}
+
+		if (imgWD != null) {
+		} else if (img != null && i < frames) {
+			app.pushMatrix();
+			app.translate(GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY() - e.getHeight()));
+			app.scale(1, 0.5f);
+			app.rotate(a);
+			app.getDrawer().getImageHandler().drawImage(app, img[i], 0, 0, e.getxSize(), e.getySize());
+			app.popMatrix();
+		}
+		if (Animation.observe.isAssignableFrom(e.getClass())) {
+			app.text(getName(e), GameObject.xToGrid(e.getX()), GameObject.yToGrid(e.getY() - e.getHeight()), 50, 50);
+		}
+	}
+
 	public void draw(GameObject e, float x, float y, byte d, byte f) {
 		if (Updater.Time.getMillis() - start >= speed() * e.getCurrentFrame()) {
 			e.setCurrentFrame((byte) ((Updater.Time.getMillis() - start) / speed()));
@@ -128,7 +157,7 @@ public class Animation {
 	}
 
 	public boolean isFinished() {
-		return Updater.Time.getMillis() - start >= duration;
+		return Updater.Time.getMillis() - start >= getDuration();
 
 	}
 
@@ -155,6 +184,18 @@ public class Animation {
 		if (this instanceof Ability)
 			return "ability";
 		return super.toString();
+	}
+
+	public void onEnd() {
+
+	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
 	}
 
 }

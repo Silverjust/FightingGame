@@ -54,14 +54,14 @@ public class Damage {
 		if (trueDmg) {
 
 		} else if (isPhysicalDmg) {
-			int armor = target.getStats().getArmor();
-			armor *= (100 - (attacker.getStats().getPercArmorPen() + spellPercArmorPen)) / 100.0;
-			armor -= attacker.getStats().getArmorPen() + spellArmorPen;
+			int armor = target.getStats().getArmor().getTotalAmount();
+			armor *= (100 - (attacker.getStats().getPercentArmorPen().getTotalAmount() + spellPercArmorPen)) / 100.0;
+			armor -= attacker.getStats().getArmorPen().getTotalAmount() + spellArmorPen;
 			dmg *= getDmgFactor(armor);
 		} else {
-			int mr = target.getStats().getMagicResist();
-			mr *= 100 - (attacker.getStats().getPercMagicPen() + spellPercMagicPen);
-			mr -= attacker.getStats().getMagicPen() + spellMagicPen;
+			int mr = target.getStats().getMagicResist().getTotalAmount();
+			mr *= 100 - (attacker.getStats().getPercentMagicPen().getTotalAmount() + spellPercMagicPen);
+			mr -= attacker.getStats().getMagicPen().getTotalAmount() + spellMagicPen;
 			dmg *= getDmgFactor(mr);
 		}
 		return dmg;

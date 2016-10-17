@@ -8,7 +8,7 @@ import processing.core.PGraphics;
 import shared.GameBaseApp;
 import shared.Helper;
 
-public abstract class Unit extends Entity {
+public abstract class Unit extends Entity implements Attacker {
 	// TODO Flocking einfügen
 	// FIXME ADD Verhalten der Einheiten
 	// TODO deglich verbessern
@@ -50,7 +50,8 @@ public abstract class Unit extends Entity {
 			for (GameObject e : player.visibleGObjects) {
 				if (e != this) {
 					if (isCollision(e)) {
-						if (e.getAnimation() == e.stand && e.isInRange(xTarget, yTarget, e.getStats().getRadius()))
+						if (e.getAnimation() == e.stand
+								&& e.isInRange(xTarget, yTarget, e.getStats().getRadius().getTotalAmount()))
 							sendAnimation("stand", this);
 						hasColided = true;
 						xDeglich += getX() - e.getX();
@@ -62,19 +63,20 @@ public abstract class Unit extends Entity {
 			// stand still
 		}
 
-		if (PApplet.dist(getX(), getY(), xTarget, yTarget) < getStats().getSpeed() && getAnimation() == walk) {
+		if (PApplet.dist(getX(), getY(), xTarget, yTarget) < (float) getStats().getMovementSpeed().getTotalAmountF()
+				&& getAnimation() == walk) {
 			// System.out.println(1000000000+" "+(animation == walk));
 			setMoving(false);
 			setAnimation(stand);
 			sendAnimation("stand", this);
 		}
 
-		if (isMoving() && !hasColided && !getStats().isRooted()
-				&& PApplet.dist(getX(), getY(), xTarget + xDeglich, yTarget + yDeglich) > getStats().getSpeed()) {
+		if (isMoving() && !hasColided && !getStats().isRooted() && PApplet.dist(getX(), getY(), xTarget + xDeglich,
+				yTarget + yDeglich) > (float) getStats().getMovementSpeed().getTotalAmountF()) {
 			setX(xNext(xTarget + xDeglich, yTarget + yDeglich));
 			setY(yNext(xTarget + xDeglich, yTarget + yDeglich));
-		} else if (!getStats().isRooted()
-				&& PApplet.dist(getX(), getY(), getX() + xDeglich, getY() + yDeglich) > getStats().getSpeed()) {
+		} else if (!getStats().isRooted() && PApplet.dist(getX(), getY(), getX() + xDeglich,
+				getY() + yDeglich) > (float) getStats().getMovementSpeed().getTotalAmountF()) {
 			setX(xNext(getX() + xDeglich, getY() + yDeglich));
 			setY(yNext(getX() + xDeglich, getY() + yDeglich));
 		}
@@ -91,17 +93,20 @@ public abstract class Unit extends Entity {
 	}
 
 	protected float xNext(float X, float Y) {
-		return getX() + (X - getX()) / PApplet.dist(getX(), getY(), X, Y) * getStats().getSpeed();
+		return getX() + (X - getX()) / PApplet.dist(getX(), getY(), X, Y)
+				* (float) getStats().getMovementSpeed().getTotalAmountF();
 	}
 
 	protected float yNext(float X, float Y) {
-		return getY() + (Y - getY()) / PApplet.dist(getX(), getY(), X, Y) * getStats().getSpeed();
+		return getY() + (Y - getY()) / PApplet.dist(getX(), getY(), X, Y)
+				* (float) getStats().getMovementSpeed().getTotalAmountF();
 	}
 
 	@Override
 	public void drawOnMinimap(PGraphics graphics) {
 		graphics.fill(player.color);
-		graphics.ellipse(getX(), getY(), getStats().getRadius() * 2, getStats().getRadius() * 2);
+		graphics.ellipse(getX(), getY(), getStats().getRadius().getTotalAmount() * 2,
+				getStats().getRadius().getTotalAmount() * 2);
 	}
 
 	@Override
@@ -115,7 +120,8 @@ public abstract class Unit extends Entity {
 		if ("walk".equals(string) && getAnimation().isInterruptable()) {
 			xTarget = Float.parseFloat(c[3]);
 			yTarget = Float.parseFloat(c[4]);
-			if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= getStats().getSpeed()) {
+			if (PApplet.dist(getX(), getY(), xTarget,
+					yTarget) >= (float) getStats().getMovementSpeed().getTotalAmountF()) {
 				setMoving(true);
 				if (c.length > 5)
 					isAggro = Boolean.valueOf(c[5]);
@@ -145,13 +151,13 @@ public abstract class Unit extends Entity {
 	}
 
 	public void info() {
-		player.app.getDrawer().getHud().chat.println(this.getClass().getSimpleName() + "_" + getNumber(),
-				"(" + getX() + "|" + getY() + ")->(" + xTarget + "|" + yTarget + ")\nhp:" + getStats().getCurrentHp());
+		player.app.write(this.getClass().getSimpleName() + "_" + getNumber(), "(" + getX() + "|" + getY() + ")->("
+				+ xTarget + "|" + yTarget + ")\nhp:" + getStats().getHp().getCurrentAmount());
 	}
 
 	@Override
 	public void sendDefaultAnimation(Animation oldAnimation) {
-		if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= getStats().getSpeed())
+		if (PApplet.dist(getX(), getY(), xTarget, yTarget) >= (float) getStats().getMovementSpeed().getTotalAmountF())
 			sendAnimation("walk " + xTarget + " " + yTarget + " " + isAggro, this);
 		else {
 			sendAnimation("stand", this);

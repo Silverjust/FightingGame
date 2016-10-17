@@ -1,6 +1,7 @@
 package shared;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import gameStructure.Champion;
 import gameStructure.GameObject;
@@ -15,7 +16,7 @@ public class Player {
 	private Champion champion;
 	public GameBaseApp app;
 
-	public static Player createNeutralPlayer(GameBaseApp app, Team team) {
+	public static Player createNeutralPlayer(GameBaseApp app, Team team, HashMap<String, Player> players) {
 		Player p = new Player(app);
 		p.setUser(new User(app, "", "neutral"));
 		p.getUser().team = team;
@@ -29,6 +30,7 @@ public class Player {
 		else if (team == Team.RIGHTSIDE)
 			p.getUser().setIp("-2");
 
+		//players.put(p.getUser().getIp(), p);
 		return p;
 	}
 

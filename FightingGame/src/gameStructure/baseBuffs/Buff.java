@@ -15,8 +15,10 @@ public class Buff {
 	protected Entity owner;
 	protected Timer timer;
 	private GameObject source;
+	protected GameBaseApp app;
 
 	public Buff(GameBaseApp app, String[] c) {
+		this.app = app;
 		if (c != null) {
 			int n_o = Integer.parseInt(c[2]);
 			owner = (Entity) app.getUpdater().getGameObject(n_o);
@@ -63,7 +65,7 @@ public class Buff {
 		}
 	}
 
-	public GameObject getOrigin() {
+	public GameObject getSource() {
 		return source;
 	}
 

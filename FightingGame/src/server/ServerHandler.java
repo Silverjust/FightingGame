@@ -16,7 +16,7 @@ public class ServerHandler {
 	char endSymbol = '>';
 
 	public boolean doProtocol = false;
-	private boolean reportCommunication = true;
+	public static boolean reportCommunication = true;
 
 	private ComHandler comHandler;
 
@@ -57,7 +57,7 @@ public class ServerHandler {
 						// Protocol.filterComs("< ", input);
 
 						if (input.charAt(0) == '<')
-							comHandler.executeCom(input, false);
+							comHandler.executeCom(input, false, client.ip());
 
 					}
 				}

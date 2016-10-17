@@ -21,7 +21,7 @@ public class PreGameComHandler extends ComHandler {
 	}
 
 	@Override
-	public void executeCom(String com, boolean isIntern) {
+	public void executeCom(String com, boolean isIntern, String senderIp) {
 		String[] c = PApplet.splitTokens(com, S + app.getClientHandler().endSymbol);
 		try {
 			switch (c[0]) {
@@ -106,6 +106,8 @@ public class PreGameComHandler extends ComHandler {
 			case SPAWN:
 				break;
 			case BUFF:
+				break;
+			case ITEM:
 				break;
 			case EXECUTE:
 				break;

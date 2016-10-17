@@ -25,8 +25,9 @@ public class PreGameInfo {
 		map = "maps/alpha_YangDesert/alpha_YangDesert";
 	}
 
+	@Deprecated
 	public static boolean isSinglePlayer() {
-		return singlePlayer;
+		return false;
 	}
 
 	public static void setSinglePlayer(boolean singlePlayer) {
@@ -64,7 +65,7 @@ public class PreGameInfo {
 		else
 			u = users.get(string);
 		if (u == null) {
-			System.err.println("PreGameInfo.getUser()" + string + " User not found" );
+			System.err.println("PreGameInfo.getUser()" + string + " User not found");
 		}
 		return u;
 	}

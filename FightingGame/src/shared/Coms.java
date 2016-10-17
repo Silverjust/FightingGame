@@ -39,6 +39,13 @@ public interface Coms {
 	 * -, buff, target, origin, time
 	 */
 	String BUFF = "<buff";
+	
+	/**
+	 * adds an Item to a entity
+	 * <p>
+	 * -, item, owner, slot
+	 */
+	String ITEM = "<item";
 
 	String TP = "<tp";
 

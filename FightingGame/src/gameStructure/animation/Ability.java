@@ -7,22 +7,22 @@ import shared.Updater;
 
 public class Ability extends Animation {
 
-	protected int eventTime;
-	public int cooldown;
+	private int eventTime;
+	private int cooldown;
 	int cooldownTimer;
 
 	public boolean doRepeat = false;
 
-	public Ability(GameBaseApp app,PImage[][] IMG, int duration) {
-		super(app, IMG, duration);
+	public Ability(GameBaseApp app, GameObject animated, PImage[][] IMG, int duration) {
+		super(app, animated, IMG, duration);
 	}
 
-	public Ability(GameBaseApp app,PImage[] IMG, int duration) {
-		super(app, IMG, duration);
+	public Ability(GameBaseApp app, GameObject animated, PImage[] IMG, int duration) {
+		super(app, animated, IMG, duration);
 	}
 
-	public Ability(GameBaseApp app,PImage IMG, int duration) {
-		super(app, IMG, duration);
+	public Ability(GameBaseApp app, GameObject animated, PImage IMG, int duration) {
+		super(app, animated, IMG, duration);
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class Ability extends Animation {
 	}
 
 	public boolean isEvent() {
-		return start + eventTime <= Updater.Time.getMillis();
+		return start + getEventTime() <= Updater.Time.getMillis();
 	}
 
 	public void updateAbility(GameObject e, boolean isServer) {
@@ -50,23 +50,21 @@ public class Ability extends Animation {
 	}
 
 	public void setCastTime(int castTime) {
-		eventTime = castTime;
+		setEventTime(castTime);
 	}
 
 	public void startCooldown() {
-		cooldownTimer = Updater.Time.getMillis() + cooldown;
+		cooldownTimer = Updater.Time.getMillis() + getCooldown();
 	}
 
 	public float getCooldownPercent() {
-		float f = 1 - (float) (cooldownTimer - Updater.Time.getMillis())
-				/ cooldown;
+		float f = 1 - (float) (cooldownTimer - Updater.Time.getMillis()) / getCooldown();
 		// System.out.println("Ability.getCooldownPercent()" + f);
 		return f > 1 || f < 0 ? 1 : f;
 	}
 
 	public float getProgressPercent() {
-		float f = 1 - (float) (start + eventTime - Updater.Time.getMillis())
-				/ eventTime;
+		float f = 1 - (float) (start + getEventTime() - Updater.Time.getMillis()) / getEventTime();
 		return f > 1 || f < 0 ? 1 : f;
 	}
 
@@ -88,5 +86,21 @@ public class Ability extends Animation {
 	@Override
 	public boolean doRepeat(GameObject e) {
 		return doRepeat;
+	}
+
+	public int getCooldown() {
+		return cooldown;
+	}
+
+	public void setCooldown(int cooldown) {
+		this.cooldown = cooldown;
+	}
+
+	public int getEventTime() {
+		return eventTime;
+	}
+
+	public void setEventTime(int eventTime) {
+		this.eventTime = eventTime;
 	}
 }

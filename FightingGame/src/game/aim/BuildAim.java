@@ -48,7 +48,7 @@ public class BuildAim extends Aim {
 		boolean placeFree = true;
 		boolean inCommanderRange = false;
 		for (GameObject e : GameApplet.GameBaseApp.gameObjects) {
-			if (e.isInRange(x, y, buildable.getStats().getRadius() + e.getStats().getRadius())
+			if (e.isInRange(x, y, buildable.getStats().getRadius().getTotalAmount() + e.getStats().getRadius().getTotalAmount())
 					&& e.groundPosition == GroundPosition.GROUND)
 				placeFree = false;
 			if (isInCommandingRange(e, x, y))

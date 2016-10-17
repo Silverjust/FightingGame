@@ -26,9 +26,9 @@ public class ServerUpdater extends Updater {
 			players.put(ip, player);
 			spellHandlers.put(ip, new ServerSpellHandler(app, player));
 		}
-		neutral = Player.createNeutralPlayer(app, null);
-		leftsideNeutral = Player.createNeutralPlayer(app, Team.LEFTSIDE);
-		rightsideNeutral = Player.createNeutralPlayer(app, Team.RIGHTSIDE);
+		neutral = Player.createNeutralPlayer(app, null, players);
+		leftsideNeutral = Player.createNeutralPlayer(app, Team.LEFTSIDE, players);
+		rightsideNeutral = Player.createNeutralPlayer(app, Team.RIGHTSIDE, players);
 
 		map = new Map(app, app.getPreGameInfo().map);
 
@@ -40,7 +40,7 @@ public class ServerUpdater extends Updater {
 			for (int i = 0; i < toAdd.size(); i++) {
 				gameObjects.add(toAdd.get(i));
 				namedObjects.put(toAdd.get(i).getNumber(), toAdd.get(i));
-				toAdd.get(i).onSpawn(PreGameInfo.isSinglePlayer());
+				toAdd.get(i).onSpawn(true);
 				map.mapCode.onEntitySpawn(toAdd.get(i));
 				toAdd.remove(i);
 			}
@@ -82,7 +82,7 @@ public class ServerUpdater extends Updater {
 
 	@Override
 	public void send(String string) {
-		app.getComHandler().executeCom(string, true);
+		app.getComHandler().executeCom(string, true, null);
 		((ServerApp) app).getServerHandler().sendDirect(string);
 	}
 

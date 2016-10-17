@@ -35,11 +35,13 @@ public class Slow extends Buff {
 							"Slow.calculateSlow()1 " + ((Slow) buff).slow + " " + ((Slow) buff).timer.getTimeLeft());
 				}
 			}
-			System.out.println(
-					"Slow.calculateSlow()2 " + maxSlow + " " + (((Unit) owner).getStats().getSpeedMult() + totalSlow.get()) + " "
-							+ (((Unit) owner).getStats().getSpeedMult() + totalSlow.get() - maxSlow));
-			((Unit) owner).getStats().setSpeedMult(((Unit) owner).getStats().getSpeedMult() + totalSlow.get() - maxSlow);
-			System.out.println("Slow.calculateSlow()3 " + maxSlow + " " + ((Unit) owner).getStats().getSpeed());
+			System.out.println("Slow.calculateSlow()2 " + maxSlow + " "
+					+ ((float) ((Unit) owner).getStats().getMovementSpeed().getTotalAmountMult() + totalSlow.get()) + " "
+					+ ((float) ((Unit) owner).getStats().getMovementSpeed().getTotalAmountMult() + totalSlow.get() - maxSlow));
+			((Unit) owner).getStats().getMovementSpeed().setTotalAmountMult(
+					((Unit) owner).getStats().getMovementSpeed().getTotalAmountMult() + totalSlow.get() - maxSlow);
+			System.out.println("Slow.calculateSlow()3 " + maxSlow + " "
+					+ (float) ((Unit) owner).getStats().getMovementSpeed().getTotalAmount());
 
 			totalSlow.set(maxSlow);
 

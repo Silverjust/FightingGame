@@ -1,6 +1,5 @@
 package gameStructure;
 
-import champs.Ticul;
 import game.GameDrawer;
 import game.ImageHandler;
 import gameStructure.animation.Animation;
@@ -87,8 +86,8 @@ public abstract class GameObject implements Coms {
 	public void renderRange() {
 		if (this instanceof Entity && ((Entity) this).getBasicAttack() != null) {
 			Attack a = ((Entity) this).getBasicAttack();
-			drawCircle(a.range);
-			drawCircle((int) (a.range * a.getCooldownPercent()));
+			drawCircle(a.getRange());
+			drawCircle((int) (a.getRange() * a.getCooldownPercent()));
 		}
 		if (this instanceof Unit) {
 			player.app.line(getX(), getY() / 2, ((Unit) this).xTarget, ((Unit) this).yTarget / 2);
@@ -110,12 +109,13 @@ public abstract class GameObject implements Coms {
 		}
 	}
 
+	/** empty */
 	public void onSpawn(boolean isServer) {
 	}
 
 	protected void drawShadow() {
 		player.app.getDrawer().getImageHandler().drawImage(player.app, shadowImg, xToGrid(getX()), yToGrid(getY()),
-				getStats().getRadius() * 2, getStats().getRadius());
+				getStats().getRadius().getTotalAmount() * 2, getStats().getRadius().getTotalAmount());
 	}
 
 	protected void drawTaged() {
@@ -123,8 +123,8 @@ public abstract class GameObject implements Coms {
 		if (isTaged) {
 			player.app.fill(0, 0);
 			player.app.stroke(player.color);
-			player.app.rect(xToGrid(getX()), yToGrid(getY()) - getStats().getRadius() * 0.3f,
-					getStats().getRadius() * 2, getStats().getRadius() * 1.5f);
+			player.app.rect(xToGrid(getX()), yToGrid(getY()) - getStats().getRadius().getTotalAmount() * 0.3f,
+					getStats().getRadius().getTotalAmount() * 2, getStats().getRadius().getTotalAmount() * 1.5f);
 			player.app.stroke(0);
 		}
 		isTaged = false;
@@ -134,11 +134,12 @@ public abstract class GameObject implements Coms {
 		int h = 1;
 		if (true) {//
 			player.app.fill(0, 150);
-			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f,
-					getStats().getRadius() * 2, h);
+			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getStats().getRadius().getTotalAmount() * 1.5f,
+					getStats().getRadius().getTotalAmount() * 2, h);
 			player.app.tint(200);
 			player.app.getDrawer().getImageHandler().drawImage(player.app, hpImg, xToGrid(getX()),
-					yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f, getStats().getRadius() * 2 * f, h);
+					yToGrid(getY() - h * 3) - getStats().getRadius().getTotalAmount() * 1.5f,
+					getStats().getRadius().getTotalAmount() * 2 * f, h);
 			player.app.tint(255);
 		}
 	}
@@ -147,11 +148,12 @@ public abstract class GameObject implements Coms {
 		int h = 1;
 		if (true) {//
 			player.app.fill(0, 150);
-			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f,
-					getStats().getRadius() * 2, h);
+			player.app.rect(xToGrid(getX()), yToGrid(getY() - h * 3) - getStats().getRadius().getTotalAmount() * 1.5f,
+					getStats().getRadius().getTotalAmount() * 2, h);
 			player.app.tint(c);
 			player.app.getDrawer().getImageHandler().drawImage(player.app, hpImg, xToGrid(getX()),
-					yToGrid(getY() - h * 3) - getStats().getRadius() * 1.5f, getStats().getRadius() * 2 * f, h);
+					yToGrid(getY() - h * 3) - getStats().getRadius().getTotalAmount() * 1.5f,
+					getStats().getRadius().getTotalAmount() * 2 * f, h);
 			player.app.tint(255);
 		}
 	}
@@ -178,8 +180,8 @@ public abstract class GameObject implements Coms {
 
 	public void drawSight(Updater updater) {
 		int scale = updater.map.fogScale;
-		updater.map.fogOfWar.ellipse(getX() / scale, getY() / scale / 2, getStats().getSight() * 2 / scale,
-				getStats().getSight() / scale);
+		updater.map.fogOfWar.ellipse(getX() / scale, getY() / scale / 2,
+				getStats().getSight().getTotalAmount() * 2 / scale, getStats().getSight().getTotalAmount() / scale);
 	}
 
 	public void sendDefaultAnimation(Animation oldAnimation) {
@@ -192,8 +194,8 @@ public abstract class GameObject implements Coms {
 
 	public void sendAnimation(String s, Object o) {
 		if (s != "") {
-			if (o instanceof Ticul) {
-				System.out.println("GameObject.sendAnimation()ticul " + ((Ticul) o).getNumber());
+			if (o instanceof gameStructure.champs.Ticul) {
+				System.out.println("GameObject.sendAnimation()ticul " + ((gameStructure.champs.Ticul) o).getNumber());
 			}
 			player.app.getUpdater().send(Coms.EXECUTE + " " + getNumber() + " " + s);
 		}
@@ -204,8 +206,10 @@ public abstract class GameObject implements Coms {
 			if (Animation.observe.isAssignableFrom(this.getClass())) {
 				System.out.println("Entity.setAnimation()" + a.getName(this));
 			}
+
 			if (animation == null)
 				animation = a;
+			animation.onEnd();
 			nextAnimation = a;
 			a.setup(this);
 		}
@@ -236,10 +240,11 @@ public abstract class GameObject implements Coms {
 	}
 
 	public boolean isCollision(GameObject e) {
-		if (getStats().getRadius() == 0 || e.getStats().getRadius() == 0)
+		if (getStats().getRadius().getTotalAmount() == 0 || e.getStats().getRadius().getTotalAmount() == 0)
 			return false;
 		float f = PApplet.dist(getX(), getY(), e.getX(), e.getY());
-		boolean b = f < getStats().getRadius() + e.getStats().getRadius() && e.isCollidable(this);
+		boolean b = f < getStats().getRadius().getTotalAmount() + e.getStats().getRadius().getTotalAmount()
+				&& e.isCollidable(this);
 		// if(b)System.out.println(number + "/" + e.number + ":" + f + b);
 		return b;
 	}
@@ -255,10 +260,13 @@ public abstract class GameObject implements Coms {
 		return b;
 	}
 
+	public boolean isInRange(GameObject target, int range) {
+		return isInRange(target.getX(), target.getY(), range);
+	}
+
 	public boolean isEnemyTo(Entity e) {
-		return (e != null) && (this.player != null) && (e.player != null) && (this.player != e.player)
-				&& (this.player != player.app.getUpdater().neutral) && (e.player != player.app.getUpdater().neutral) //
-				&& isAlive() && e.isAlive();
+		return (e != null) && (this.player != null) && (e.player != null)
+				&& this.player.getUser().team != e.player.getUser().team && isAlive() && e.isAlive();
 	}
 
 	public boolean isAlive() {
@@ -280,8 +288,8 @@ public abstract class GameObject implements Coms {
 	public boolean isVisibleTo(Player p) {
 		boolean isVisible = false;
 		for (GameObject spotter : player.app.getUpdater().getGameObjects()) {
-			if (spotter.player == p && spotter.getStats().getSight() > 0
-					&& spotter.isInRange(getX(), getY(), spotter.getStats().getSight() + getStats().getRadius()))
+			if (spotter.player == p && spotter.getStats().getSight().getTotalAmount() > 0 && spotter.isInRange(getX(),
+					getY(), spotter.getStats().getSight().getTotalAmount() + getStats().getRadius().getTotalAmount()))
 				isVisible = true;
 			if (player == player.app.getUpdater().neutral)
 				isVisible = true;
@@ -351,8 +359,8 @@ public abstract class GameObject implements Coms {
 
 	public float calcImportanceOf(Entity e) {
 		float importance = PApplet
-				.abs(10000 / (e.getStats().getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY())
-						- getStats().getRadius() - e.getStats().getRadius()));
+				.abs(10000 / (e.getStats().getHp().getCurrentAmount() * PApplet.dist(getX(), getY(), e.getX(), e.getY())
+						- getStats().getRadius().getTotalAmount() - e.getStats().getRadius().getTotalAmount()));
 		// TODO speziefische Thread werte
 
 		return importance;
@@ -389,6 +397,10 @@ public abstract class GameObject implements Coms {
 	/** empty */
 	public void onRegistration(ContentListManager contentListManager) {
 
+	}
+
+	public boolean isTargetable() {
+		return false;
 	}
 
 }

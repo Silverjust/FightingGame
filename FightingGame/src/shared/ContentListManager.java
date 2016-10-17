@@ -3,10 +3,7 @@ package shared;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 
-import champs.Mage;
-import champs.TestProjectile;
-import champs.Ticul;
-import gameStructure.BasicAttack;
+import gameStructure.BasicAttackProjectile;
 import gameStructure.Champion;
 import gameStructure.GameObject;
 import gameStructure.Spell;
@@ -14,6 +11,13 @@ import gameStructure.baseBuffs.Buff;
 import gameStructure.baseBuffs.Root;
 import gameStructure.baseBuffs.Slow;
 import gameStructure.baseBuffs.SpeedBuff;
+import gameStructure.baseBuffs.Stunn;
+import gameStructure.champs.Mage;
+import gameStructure.champs.Minion;
+import gameStructure.champs.TestProjectile;
+import gameStructure.champs.Ticul;
+import gameStructure.items.InventoryItem;
+import gameStructure.items.SwordOfTesting;
 import processing.data.JSONObject;
 
 public class ContentListManager {
@@ -27,9 +31,7 @@ public class ContentListManager {
 	 * contentList.getJSONObject("campainEntities"); for (Object o :
 	 * campainEntityList.keys()) { entityList.setString((String) o,
 	 * campainEntityList.getString((String) o)); } }
-	 */
-
-	/*
+	 *
 	 * public static JSONObject getEntityContent() { return entityList; }
 	 */
 	private GameBaseApp app;
@@ -38,6 +40,7 @@ public class ContentListManager {
 	private HashMap<String, Class<? extends GameObject>> gameObjectMap = new HashMap<String, Class<? extends GameObject>>();
 	private HashMap<String, Class<? extends Buff>> buffMap = new HashMap<String, Class<? extends Buff>>();
 	private HashMap<String, Class<? extends Spell>> spellMap = new HashMap<String, Class<? extends Spell>>();
+	private HashMap<String, Class<? extends InventoryItem>> itemMap = new HashMap<String, Class<? extends InventoryItem>>();
 
 	public ContentListManager(GameBaseApp app) {
 		this.app = app;
@@ -52,17 +55,23 @@ public class ContentListManager {
 
 		/** List of GameObjects to load/spawn */
 		addClassToGObjects(Ticul.class);
-		addClassToGObjects(BasicAttack.class);
+		addClassToGObjects(Minion.class);
+		addClassToGObjects(BasicAttackProjectile.class);
 		addClassToGObjects(TestProjectile.class);
 		/***********************************/
 
 		/** List of Buffs to buff/debuff */
 		addClassToBuffs(Root.class);
+		addClassToBuffs(Stunn.class);
 		addClassToBuffs(Slow.class);
 		addClassToBuffs(SpeedBuff.class);
 		/***********************************/
 
 		/** List of Spells to load */
+		/***********************************/
+
+		/** List of Items */
+		addClassToItems(SwordOfTesting.class);
 		/***********************************/
 
 		contentList = app.loadJSONObject(path);
@@ -104,6 +113,17 @@ public class ContentListManager {
 		spellMap.put(key, c);
 	}
 
+	public void addClassToItems(Class<SwordOfTesting> c) {
+		String key = null;
+		InventoryItem o = (InventoryItem) createItem(c);
+		if (o != null) {
+			o.onRegistration(this);
+			key = o.getInternName();
+			System.out.println("ContentListManager.addClassToItems()");
+		}
+		itemMap.put(key, c);
+	}
+
 	private Buff createBuff(Class<? extends Buff> c) {
 		Constructor<?> ctor;
 		try {
@@ -127,6 +147,18 @@ public class ContentListManager {
 		}
 		return null;
 
+	}
+
+	public InventoryItem createItem(Class<? extends InventoryItem> c) {
+		Constructor<?> ctor;
+		try {
+			ctor = c.getConstructor(GameBaseApp.class, String[].class);
+			InventoryItem i = (InventoryItem) ctor.newInstance(new Object[] { app, null });
+			return i;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/*
@@ -187,5 +219,13 @@ public class ContentListManager {
 	@SuppressWarnings("unchecked")
 	public Class<? extends Spell>[] getSpellArray() {
 		return (Class<? extends Spell>[]) spellMap.values().toArray(new Class<?>[spellMap.size()]);
+	}
+
+	public Class<? extends InventoryItem> getItemClass(String name) {
+		Class<? extends InventoryItem> c = itemMap.get(name);
+		if (c == null) {
+			System.err.println("ERROR: " + name + " is not in itemMap (ContentListManager.java:39)");
+		}
+		return c;
 	}
 }

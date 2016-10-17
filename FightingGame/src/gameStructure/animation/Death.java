@@ -6,17 +6,17 @@ import shared.GameBaseApp;
 
 public class Death extends Animation {
 
-	public Death(GameBaseApp app, PImage[][] IMG, int duration) {
-		super(app, IMG, duration);
+	public Death(GameBaseApp app, GameObject animated, PImage[][] IMG, int duration) {
+		super(app, animated, IMG, duration);
 
 	}
 
-	public Death(GameBaseApp app, PImage[] IMG, int duration) {
-		super(app, IMG, duration);
+	public Death(GameBaseApp app, GameObject animated, PImage[] IMG, int duration) {
+		super(app, animated, IMG, duration);
 	}
 
-	public Death(GameBaseApp app, PImage IMG, int duration) {
-		super(app, IMG, duration);
+	public Death(GameBaseApp app, GameObject animated, PImage IMG, int duration) {
+		super(app, animated, IMG, duration);
 	}
 
 	@Override

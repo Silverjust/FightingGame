@@ -7,38 +7,15 @@ public class UnitStats extends EntityStats {
 		super(app);
 	}
 
-	public float speed;
-	public float speedMult = 100;
+	private EntityStat_MovementSpeed movementSpeed = new EntityStat_MovementSpeed(this, MOVEMENT_SPEED);
+	private EntityStat_LevelScaling basicAttackRange = new EntityStat_LevelScaling(this, BASICATTACK_Range);
 
-	/**
-	 * gives you the movement-speed
-	 */
-	public float getSpeed() {
-		return speed * speedMult / 100.0f;
+	public EntityStat_MovementSpeed getMovementSpeed() {
+		return movementSpeed;
 	}
 
-	/**
-	 * sets the movement-speed
-	 * 
-	 * @param speed
-	 *            TODO
-	 */
-	public void setSpeed(float speed) {
-		if (speed <= 0)
-			System.out.println("Unit.setSpeed() cant root this way");
-		else
-			this.speed = speed;
-	}
-
-	public float getSpeedMult() {
-		return speedMult;
-	}
-
-	public void setSpeedMult(float speedMult) {
-		if (speed <= 0)
-			System.out.println("Unit.setSpeed() cant root this way");
-		else
-			this.speedMult = speedMult;
+	public EntityStat_LevelScaling getBasicAttackRange() {
+		return basicAttackRange;
 	}
 
 }

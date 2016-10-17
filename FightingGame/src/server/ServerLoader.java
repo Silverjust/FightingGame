@@ -1,5 +1,6 @@
 package server;
 
+import gameStructure.champs.Minion;
 import shared.Coms;
 import shared.GameBaseApp;
 import shared.Loader;
@@ -28,8 +29,10 @@ public class ServerLoader extends Loader {
 		case WAIT:
 			break;
 		case ENTITIES:// spawn entity-setup
+			app.getUpdater().sendSpawn(Minion.class, app.getUpdater().rightsideNeutral, 100 + " " + 100);
 			app.getUpdater().mapHandler.setupEntities(app.getUpdater().map.mapData);
 			app.getUpdater().update();
+			app.delay(1000);
 			state = State.END;
 			break;
 		case END:

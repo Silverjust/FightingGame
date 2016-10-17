@@ -15,7 +15,7 @@ public abstract class ComHandler implements Coms {
 		contentListHandler = app.getContentListManager();
 	}
 
-	public abstract void executeCom(String com, boolean isIntern);
+	public abstract void executeCom(String com, boolean isIntern, String ip);
 
 	public void addUpdater(Updater updater) {
 		this.updater = updater;

@@ -53,7 +53,7 @@ public class MainLoader extends Loader {
 			break;
 		case ENTITIES:// spawn entity-setup
 			app.getDrawer().getHud().playerInterface.setup();
-			if (PreGameInfo.isSandbox()||true) {
+			if (PreGameInfo.isSandbox()) {
 				GameDrawer.godeye = true;
 				GameDrawer.godhand = true;
 				GameDrawer.nocosts = true;
@@ -97,7 +97,5 @@ public class MainLoader extends Loader {
 	@Override
 	public void tryStartGame() {
 		// do nothing when multiplayer
-		if (PreGameInfo.isSinglePlayer())
-			startGame();
 	}
 }

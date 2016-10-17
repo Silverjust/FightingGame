@@ -2,11 +2,13 @@ package gameStructure;
 
 import java.util.ArrayList;
 
-import champs.TestProjectile;
+import gameStructure.BasicAttackProjectile.BaAtInfo;
 import gameStructure.animation.Animation;
 import gameStructure.animation.Attack;
+import gameStructure.animation.BasicAttackAnim;
 import gameStructure.animation.Death;
 import gameStructure.baseBuffs.Buff;
+import gameStructure.items.InventoryItem;
 import processing.core.PApplet;
 import processing.core.PImage;
 import shared.Coms;
@@ -18,13 +20,14 @@ public class Entity extends GameObject {
 
 	public PImage iconImg;
 	public Death death;
-	public Attack basicAttack;
+	public BasicAttackAnim basicAttack;
 	public Animation stand;
 
-	public int hpBarLength;
+	private int hpBarLength;
 	private ArrayList<Buff> buffs = new ArrayList<Buff>();
 	private ArrayList<Buff> buffsToRemove = new ArrayList<Buff>();
 	protected int aggroRange = 50;
+	private ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
 
 	public Entity(GameBaseApp app, String[] c) {
 		super(app, c);
@@ -55,11 +58,11 @@ public class Entity extends GameObject {
 		for (int i = buffsToRemove.size() - 1; i >= 0; i--) {
 			Buff buff = buffsToRemove.get(i);
 			if (buff != null) {
-				buffs.remove(buff);
+				getBuffs().remove(buff);
 				buffsToRemove.remove(i);
 			}
 		}
-		for (Buff buff : buffs) {
+		for (Buff buff : getBuffs()) {
 			buff.updateDecisions(isServer);
 		}
 
@@ -116,7 +119,7 @@ public class Entity extends GameObject {
 
 	public void info() {
 		player.app.getDrawer().getHud().chat.println(this.getClass().getSimpleName() + "_" + getNumber(),
-				"(" + getX() + "|" + getY() + ")" + "\nhp:" + getStats().getCurrentHp());
+				"(" + getX() + "|" + getY() + ")" + "\nhp:" + getStats().getHp().getCurrentAmount());
 	}
 
 	public void hit(int damage, Player attacker, String origin) {
@@ -126,10 +129,11 @@ public class Entity extends GameObject {
 			// SoundHandler.startIngameSound(hit, x, y);
 
 			if (damage > 0) {
-				getStats().setHp((int) (getStats().getCurrentHp() - damage));
+				getStats().getHp().setCurrentAmount((int) (getStats().getHp().getCurrentAmount() - damage));
 				/** check if it was lasthit */
-				if (getStats().getCurrentHp() <= 0 && getStats().getCurrentHp() != Integer.MAX_VALUE) {// marker
-					getStats().setHp(-32768);
+				if (getStats().getHp().getCurrentAmount() <= 0
+						&& getStats().getHp().getCurrentAmount() != Integer.MAX_VALUE) {// marker
+					getStats().getHp().setCurrentAmount(-32768);
 					onDeath();
 				}
 			}
@@ -137,10 +141,10 @@ public class Entity extends GameObject {
 	}
 
 	public void heal(int heal) {
-		getStats().setHp(getStats().getCurrentHp() + heal);
+		getStats().getHp().setCurrentAmount(getStats().getHp().getCurrentAmount() + heal);
 		/** check if it was overheal */
-		if (getStats().getCurrentHp() > getStats().getTotalHp()) {
-			getStats().setHp(getStats().getTotalHp());
+		if (getStats().getHp().getCurrentAmount() > getStats().getHp().getTotalAmount()) {
+			getStats().getHp().setCurrentAmount(getStats().getHp().getTotalAmount());
 		}
 	}
 
@@ -152,26 +156,27 @@ public class Entity extends GameObject {
 		int h = 5;
 		if (isAlive() && isMortal()) {//
 			player.app.fill(0, 150);
-			player.app.rect(xToGrid(getX()), yToGrid(getY()) - getStats().getRadius() * 1.5f, hpBarLength, h);
+			player.app.rect(xToGrid(getX()), yToGrid(getY()) - getStats().getRadius().getTotalAmount() * 1.5f,
+					getHpBarLength(), h);
 			player.app.tint(player.color);
 			player.app.getDrawer().getImageHandler().drawImage(player.app, hpImg, xToGrid(getX()),
-					yToGrid(getY()) - getStats().getRadius() * 1.5f,
-					hpBarLength * getStats().getCurrentHp() / getStats().getTotalHp(), h);
+					yToGrid(getY()) - getStats().getRadius().getTotalAmount() * 1.5f,
+					getHpBarLength() * getStats().getHp().getCurrentAmount() / getStats().getHp().getTotalAmount(), h);
 			player.app.tint(255);
 		}
 	}
 
 	public float calcImportanceOf(Entity e) {
 		float importance = PApplet
-				.abs(10000 / (e.getStats().getCurrentHp() * PApplet.dist(getX(), getY(), e.getX(), e.getY())
-						- getStats().getRadius() - e.getStats().getRadius()));
+				.abs(10000 / (e.getStats().getHp().getCurrentAmount() * PApplet.dist(getX(), getY(), e.getX(), e.getY())
+						- getStats().getRadius().getTotalAmount() - e.getStats().getRadius().getTotalAmount()));
 		// TODO speziefische Thread werte
 		return importance;
 	}
 
 	public boolean isAlive() {
 		if (isMortal())
-			return (getAnimation().getClass() != death.getClass()) && getStats().getCurrentHp() > 0;
+			return (getAnimation().getClass() != death.getClass()) && getStats().getHp().getCurrentAmount() > 0;
 		return true;
 	}
 
@@ -181,10 +186,10 @@ public class Entity extends GameObject {
 
 	public void addBuff(Buff buff) {
 		System.out.println("Entity.addBuff()");
-		if (!Helper.listContainsInstanceOf(buff.getClass(), buffs)) {
-			buff.onFirstApply(buffs);
+		if (!Helper.listContainsInstanceOf(buff.getClass(), getBuffs())) {
+			buff.onFirstApply(getBuffs());
 		} else {
-			buff.onReapply(buffs);
+			buff.onReapply(getBuffs());
 		}
 	}
 
@@ -205,13 +210,39 @@ public class Entity extends GameObject {
 
 	private void doBasicAttack(Attack a) {
 		System.out.println("Entity.doBasicAttack()");
-		player.app.getUpdater().sendSpawn(BasicAttack.class, player,
+		player.app.getUpdater().sendSpawn(BasicAttackProjectile.class, player,
 				player.getChampion().getX() + " " + player.getChampion().getY() + " " + this.getNumber() + " " + HOMING
 						+ " " + a.getTarget().getNumber() + " " + getInternName());
 	}
 
-	public PImage[] getBasicAttackAnim() {
+	@Override
+	public boolean isTargetable() {
+		return true;
+	}
+
+	public BaAtInfo getBasicAttackAnim() {
 		return null;
+	}
+
+	public int getHpBarLength() {
+		return hpBarLength;
+	}
+
+	public void setHpBarLength(int hpBarLength) {
+		this.hpBarLength = hpBarLength;
+	}
+
+	public void addItem(InventoryItem item) {
+		items.add(item);
+		item.giveStats();
+		System.out.println("Entity.addItem()");
+		for (Buff buff : getBuffs()) {
+			System.out.println("Entity.addItem()"+buff.getInternName());
+		}
+	}
+
+	public ArrayList<Buff> getBuffs() {
+		return buffs;
 	}
 
 }
