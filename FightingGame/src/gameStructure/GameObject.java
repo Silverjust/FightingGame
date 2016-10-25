@@ -264,9 +264,9 @@ public abstract class GameObject implements Coms {
 		return isInRange(target.getX(), target.getY(), range);
 	}
 
-	public boolean isEnemyTo(Entity e) {
-		return (e != null) && (this.player != null) && (e.player != null)
-				&& this.player.getUser().team != e.player.getUser().team && isAlive() && e.isAlive();
+	public boolean isEnemyTo(GameObject o) {
+		return (o != null) && (this.player != null) && (o.player != null)
+				&& this.player.getUser().team != o.player.getUser().team && isAlive() && o.isAlive();
 	}
 
 	public boolean isAlive() {

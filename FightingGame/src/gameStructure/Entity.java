@@ -2,6 +2,8 @@ package gameStructure;
 
 import java.util.ArrayList;
 
+import game.GameApp;
+import game.IngameQuickInfo;
 import gameStructure.BasicAttackProjectile.BaAtInfo;
 import gameStructure.animation.Animation;
 import gameStructure.animation.Attack;
@@ -14,7 +16,6 @@ import processing.core.PImage;
 import shared.Coms;
 import shared.GameBaseApp;
 import shared.Helper;
-import shared.Player;
 
 public class Entity extends GameObject {
 
@@ -28,9 +29,11 @@ public class Entity extends GameObject {
 	private ArrayList<Buff> buffsToRemove = new ArrayList<Buff>();
 	protected int aggroRange = 50;
 	private ArrayList<InventoryItem> items = new ArrayList<InventoryItem>();
+	private Entity basicattackTarget;
 
 	public Entity(GameBaseApp app, String[] c) {
 		super(app, c);
+		getStats().getBasicAttackRange().setBrutoBaseAmount(100);
 	}
 
 	@Override
@@ -48,9 +51,9 @@ public class Entity extends GameObject {
 		drawHpBar();
 	}
 
-	public void sendDamage(Damage damage, Player player, String origin) {
-		player.app.getUpdater().send(
-				Coms.DAMAGE + " " + getNumber() + " " + damage.get() + " " + player.getUser().getIp() + " " + origin);
+	public void sendDamage(Damage damage, GameObject attacker, String origin) {
+		player.app.getUpdater()
+				.send(Coms.DAMAGE + " " + getNumber() + " " + damage.get() + " " + attacker.getNumber() + " " + origin);
 	}
 
 	@Override
@@ -96,6 +99,16 @@ public class Entity extends GameObject {
 		 * System.out.println("Entity.updateBasicAttackBehavior() walk");
 		 * Attack.sendWalkToEnemy(this, importantEntity, basicAttack.range); } }
 		 */
+		// System.out.println("Entity.updateBasicAttackBehavior()");
+		if (basicattackTarget != null) {
+			//System.out.println("Entity.updateBasicAttackBehavior()" + basicattackTarget.getNumber());
+			if (basicattackTarget.isEnemyTo(this)
+					&& basicattackTarget.isInRange(getX(), getY(), getStats().getBasicAttackRange().getTotalAmount())
+					&& basicAttack.isNotOnCooldown()) {
+				System.out.println("Entity.updateBasicAttackBehavior()attack");
+				sendAnimation("basicAttack " + basicattackTarget.getNumber(), this);
+			}
+		}
 		basicAttack.updateAbility(this, isServer);
 	}
 
@@ -122,21 +135,33 @@ public class Entity extends GameObject {
 				"(" + getX() + "|" + getY() + ")" + "\nhp:" + getStats().getHp().getCurrentAmount());
 	}
 
-	public void hit(int damage, Player attacker, String origin) {
-		System.out.println("Entity.hit()" + getInternName() + " got hit with " + damage + " from "
-				+ attacker.getUser().name + " with " + origin);
+	public void hit(float dmg, GameObject attacker, String origin) {
+		System.out.println("Entity.hit()" + getInternName() + " got hit with " + dmg + " from "
+				+ attacker.player.getUser().name + " with " + origin);
+
 		if (isMortal()) {// only for nonimmortal objects
 			// SoundHandler.startIngameSound(hit, x, y);
 
-			if (damage > 0) {
-				getStats().getHp().setCurrentAmount((int) (getStats().getHp().getCurrentAmount() - damage));
+			if (dmg > 0) {
+
+				if (player.app instanceof GameApp) {
+					IngameQuickInfo quickInfo = new IngameQuickInfo(player.app, 1000, getX(), getY());
+					quickInfo.setValue((int) dmg);
+					player.app.getDrawer().addQuickInfo(quickInfo);
+				}
+
+				getStats().getHp().setCurrentAmount((int) (getStats().getHp().getCurrentAmount() - dmg));
 				/** check if it was lasthit */
 				if (getStats().getHp().getCurrentAmount() <= 0
-						&& getStats().getHp().getCurrentAmount() != Integer.MAX_VALUE) {// marker
-					getStats().getHp().setCurrentAmount(-32768);
+						&& getStats().getHp().getCurrentAmount() != Integer.MIN_VALUE) {// marker
+					getStats().getHp().setCurrentAmount(Integer.MIN_VALUE);
 					onDeath();
 				}
+			} else {
+				System.out.println("Entity.hit() negative damage");
 			}
+		} else {
+			System.out.println("Entity.hit() immortalis");
 		}
 	}
 
@@ -212,7 +237,7 @@ public class Entity extends GameObject {
 		System.out.println("Entity.doBasicAttack()");
 		player.app.getUpdater().sendSpawn(BasicAttackProjectile.class, player,
 				player.getChampion().getX() + " " + player.getChampion().getY() + " " + this.getNumber() + " " + HOMING
-						+ " " + a.getTarget().getNumber() + " " + getInternName());
+						+ " " + a.getTarget().getNumber() + " BasicAttack");
 	}
 
 	@Override
@@ -237,12 +262,18 @@ public class Entity extends GameObject {
 		item.giveStats();
 		System.out.println("Entity.addItem()");
 		for (Buff buff : getBuffs()) {
-			System.out.println("Entity.addItem()"+buff.getInternName());
+			System.out.println("Entity.addItem()" + buff.getInternName());
 		}
 	}
 
 	public ArrayList<Buff> getBuffs() {
 		return buffs;
+	}
+
+	public void setBasicAttackTarget(String[] c) {
+		int n = Integer.parseInt(c[3]);
+		basicattackTarget = (Entity) player.app.getUpdater().getGameObject(n);
+		System.out.println("Entity.setBasicAttackTarget()		" + basicattackTarget.getNumber());
 	}
 
 }

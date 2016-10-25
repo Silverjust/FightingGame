@@ -25,7 +25,9 @@ public class GameDrawer {
 	private AimHandler aimHandler;
 	private HUD hud;
 	private ImageHandler imageHandler;
+	private ArrayList<IngameQuickInfo> quickInfoList = new ArrayList<IngameQuickInfo>();
 
+	@SuppressWarnings("static-access")
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		app.getUpdater().map.loadImages(app, imageHandler);
 		app.getDrawer().symbolManager = new SymbolManager(app);
@@ -84,6 +86,14 @@ public class GameDrawer {
 
 		for (GameObject e : app.getPlayer().visibleGObjects) {
 			e.display();
+		}
+		for (IngameQuickInfo info : quickInfoList) {
+			info.display();
+		}
+		for (int i = 0; i < quickInfoList.size(); i++) {
+			IngameQuickInfo info = quickInfoList.get(i);
+			if (info.hasDecayed())
+				quickInfoList.remove(info);
 		}
 
 		getAimHandler().update();
@@ -145,4 +155,7 @@ public class GameDrawer {
 		return symbolManager.getSymbol(string);
 	}
 
+	public void addQuickInfo(IngameQuickInfo ingameQuickInfo) {
+		quickInfoList.add(ingameQuickInfo);
+	}
 }

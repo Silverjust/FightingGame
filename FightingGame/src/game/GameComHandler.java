@@ -35,19 +35,25 @@ public class GameComHandler extends ComHandler {
 			Entity e = null;
 			GameObject o = null;
 			switch (c[0]) {
-			case DAMAGE:
+			case DAMAGE: {
 				n = Integer.parseInt(c[1]);
-				o = updater.getGameObject(n);
-				if (o instanceof Entity)
-					e = (Entity) o;
+				GameObject o_t = updater.getGameObject(n);
+				if (o_t instanceof Entity)
+					e = (Entity) o_t;
 				else
-					throw new ClassCastException(o + " is no entity");
-				n = Integer.parseInt(c[2]);
+					throw new InstantiationError(o_t + " is no entity");
+				float dmg = Float.parseFloat(c[2]);
+
+				// get attacker
+				n = Integer.parseInt(c[3]);
+				GameObject o_a = updater.getGameObject(n);
+
 				if (e != null) {
-					e.hit(n, updater.players.get(c[3]), c[4]);
+					e.hit(dmg, o_a, c[4]);
 				} else {
-					throw new IllegalArgumentException("no entity found for " + c[1]);
+					throw new IllegalArgumentException("no entity found");
 				}
+			}
 				break;
 			case HEAL:
 				n = Integer.parseInt(c[1]);
@@ -88,7 +94,7 @@ public class GameComHandler extends ComHandler {
 				o = (GameObject) ctor.newInstance(new Object[] { app, c });
 				n = Integer.parseInt(c[2]);
 				o.setNumber(n);
-				System.out.println("GameComHandler.executeCom()spawn " + n);
+				System.out.println("GameComHandler.executeCom()spawn " + n + "-------------------------------");
 				updater.addGameObject(o);
 				break;
 			case BUFF:
@@ -109,12 +115,10 @@ public class GameComHandler extends ComHandler {
 				InventoryItem item = (InventoryItem) iCtor.newInstance(new Object[] { app, c });
 				n = Integer.parseInt(c[2]);
 				o = updater.getGameObject(n);
-				System.out.println("GameComHandler.executeCom() i 2");
+				System.out.println("GameComHandler.executeCom() i " + o);
 				if (o instanceof Entity) {
-					System.out.println("GameComHandler.executeCom() i 3");
 					((Entity) o).addItem(item);
 				}
-				System.out.println("GameComHandler.executeCom() i 4");
 				break;
 			case EXECUTE:// who what info
 				n = Integer.parseInt(c[1]);

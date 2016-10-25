@@ -20,7 +20,7 @@ public abstract class MapCode {
 	public void onGameStart() {// gamestart
 	}
 
-	public void onEntitySpawn(GameObject e) {// gamestart
+	public void onEntitySpawn(GameObject e, boolean isServer) {// gamestart
 	}
 
 	public void update() {

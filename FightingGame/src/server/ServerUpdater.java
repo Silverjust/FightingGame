@@ -8,7 +8,6 @@ import gameStructure.GameObject;
 import gameStructure.Unit;
 import shared.GameBaseApp;
 import shared.Player;
-import shared.PreGameInfo;
 import shared.SpellHandler;
 import shared.Team;
 import shared.Updater;
@@ -37,23 +36,8 @@ public class ServerUpdater extends Updater {
 	@Override
 	public void update() {
 		if (gameState == GameState.PLAY) {
-			for (int i = 0; i < toAdd.size(); i++) {
-				gameObjects.add(toAdd.get(i));
-				namedObjects.put(toAdd.get(i).getNumber(), toAdd.get(i));
-				toAdd.get(i).onSpawn(true);
-				map.mapCode.onEntitySpawn(toAdd.get(i));
-				toAdd.remove(i);
-			}
-			for (int i = 0; i < toRemove.size(); i++) {
-				GameObject entity = toRemove.get(i);
-				if (entity != null) {
-					int n = entity.getNumber();
-					namedObjects.remove(n);
-					gameObjects.remove(entity);
-					toRemove.remove(i);
-					// System.out.println("removed " + n);
-				}
-			}
+			updateLists(true);
+
 			if (app.frameCount % 1000 == 0) {
 				send("<say SERVER " + "sync");
 				for (GameObject e : gameObjects) {

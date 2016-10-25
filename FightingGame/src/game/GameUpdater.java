@@ -7,7 +7,6 @@ import gameStructure.EntityHeightComparator;
 import gameStructure.GameObject;
 import shared.GameBaseApp;
 import shared.Player;
-import shared.PreGameInfo;
 import shared.Team;
 import shared.Updater;
 import shared.User;
@@ -41,24 +40,9 @@ public class GameUpdater extends Updater {
 
 	public void update() {
 		input.update();
+		
 		if (gameState == GameState.PLAY) {
-			for (int i = 0; i < toAdd.size(); i++) {
-				gameObjects.add(toAdd.get(i));
-				namedObjects.put(toAdd.get(i).getNumber(), toAdd.get(i));
-				toAdd.get(i).onSpawn(false);
-				map.mapCode.onEntitySpawn(toAdd.get(i));
-				toAdd.remove(i);
-			}
-			for (int i = 0; i < toRemove.size(); i++) {
-				GameObject entity = toRemove.get(i);
-				if (entity != null) {
-					int n = entity.getNumber();
-					namedObjects.remove(n);
-					gameObjects.remove(entity);
-					toRemove.remove(i);
-					// System.out.println("removed " + n);
-				}
-			}
+			updateLists(false);
 			for (String key : players.keySet()) {
 				players.get(key).visibleGObjects.clear();
 				for (GameObject e : gameObjects) {

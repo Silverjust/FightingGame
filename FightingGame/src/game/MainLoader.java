@@ -55,10 +55,11 @@ public class MainLoader extends Loader {
 			app.getDrawer().getHud().playerInterface.setup();
 			if (PreGameInfo.isSandbox()) {
 				GameDrawer.godeye = true;
-				GameDrawer.godhand = true;
-				GameDrawer.nocosts = true;
+				// GameDrawer.godhand = true;
+				// GameDrawer.nocosts = true;
 				GameDrawer.showRanges = true;
 			}
+			GameDrawer.showRanges = true;
 			if (isReconnectLoad)
 				app.getUpdater().send(Coms.RECONNECT + "");
 			state = State.WAIT;
@@ -71,7 +72,9 @@ public class MainLoader extends Loader {
 			app.getUpdater().onGameStart();
 			app.setMode(Mode.GAME);
 			// System.out.println(ref.updater);
-			System.out.println("Game Start");
+			System.out.println("Game Start\n");
+			app.getUpdater().finishLoadingUpdate(false);
+
 			break;
 		case ERROR:
 			System.out.println("error");

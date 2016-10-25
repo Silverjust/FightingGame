@@ -43,14 +43,19 @@ public class ServerComHandler extends ComHandler {
 			case DAMAGE:
 				if (isIntern) {
 					n = Integer.parseInt(c[1]);
-					o = updater.getGameObject(n);
-					if (o instanceof Entity)
-						e = (Entity) o;
+					GameObject o_t = updater.getGameObject(n);
+					if (o_t instanceof Entity)
+						e = (Entity) o_t;
 					else
-						throw new InstantiationError(o + " is no entity");
-					n = Integer.parseInt(c[2]);
+						throw new InstantiationError(o_t + " is no entity");
+					float dmg = Float.parseFloat(c[2]);
+
+					// get attacker
+					n = Integer.parseInt(c[3]);
+					GameObject o_a = updater.getGameObject(n);
+
 					if (e != null) {
-						e.hit(n, updater.players.get(c[3]), c[4]);
+						e.hit(dmg, o_a, c[4]);
 					} else {
 						throw new IllegalArgumentException("no entity found");
 					}

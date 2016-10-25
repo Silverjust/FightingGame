@@ -17,6 +17,7 @@ public class EntityStats extends Stats {
 	protected boolean isSilenced;
 	protected boolean isStunned;
 	protected boolean isDisplaced;
+	private EntityStat_LevelScaling basicAttackRange = new EntityStat_LevelScaling(this, BASICATTACK_Range);
 
 	public EntityStats(GameBaseApp app) {
 		super(app);
@@ -156,6 +157,10 @@ public class EntityStats extends Stats {
 
 	public void setDisplaced(boolean isDisplaced) {
 		this.isDisplaced = isDisplaced;
+	}
+
+	public EntityStat_LevelScaling getBasicAttackRange() {
+		return basicAttackRange;
 	}
 
 }

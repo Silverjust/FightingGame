@@ -1,6 +1,7 @@
 package gameStructure;
 
 import game.ImageHandler;
+import gameStructure.Damage.DmgType;
 import gameStructure.animation.Animation;
 import processing.core.PImage;
 import shared.GameBaseApp;
@@ -32,8 +33,10 @@ public class BasicAttackProjectile extends Projectile {
 
 	@Override
 	protected void onHit(GameObject o) {
-		if (o.isEnemyTo(player) && o instanceof Entity && o == getTargetObject()) {
-			((Entity) o).sendDamage(new Damage((Entity) o, player.getChampion(), 50, true), player, originInfo);
+		if (o.isEnemyTo(origin) && o instanceof Entity && o == getTargetObject()) {
+			((Entity) o).sendDamage(new Damage((Entity) o, origin,
+					((Entity) origin).getStats().getAttackDamage().getTotalAmount()+0.6f*((Entity) origin).getStats().getAbilityPower().getTotalAmount(), DmgType.PHYSICAL_DMG), origin,
+					originInfo);
 		}
 	}
 

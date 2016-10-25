@@ -10,6 +10,7 @@ public abstract class ClientHandler {
 	public char startSymbol = '<';
 	public char endSymbol = '>';
 	protected GameBaseApp app;
+	protected String clientConsoleName = "c";
 
 	public ClientHandler(GameBaseApp app, String serverIp) {
 		this.app = app;
@@ -46,7 +47,7 @@ public abstract class ClientHandler {
 			String input = "" + client.readStringUntil(endSymbol);
 			if (input != null && !input.equals("null")) {
 				if (isReportCommunication())
-					System.out.println("c  in: " + input);
+					System.out.println(clientConsoleName + "  in: " + input);
 				if (input.charAt(0) == startSymbol) {
 					app.getComHandler().executeCom(input, false, null);
 				}

@@ -31,8 +31,7 @@ public class ServerLoader extends Loader {
 		case ENTITIES:// spawn entity-setup
 			app.getUpdater().sendSpawn(Minion.class, app.getUpdater().rightsideNeutral, 100 + " " + 100);
 			app.getUpdater().mapHandler.setupEntities(app.getUpdater().map.mapData);
-			app.getUpdater().update();
-			app.delay(1000);
+			// app.getUpdater().update();
 			state = State.END;
 			break;
 		case END:
@@ -40,6 +39,7 @@ public class ServerLoader extends Loader {
 			state = State.NEWGAME;
 			app.setMode(Mode.GAME);
 			app.getServerHandler().sendDirect(Coms.START_GAME + "");
+			app.getUpdater().finishLoadingUpdate(true);
 			System.out.println("Game Start");
 			break;
 		case ERROR:

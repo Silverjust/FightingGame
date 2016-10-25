@@ -29,6 +29,7 @@ public abstract class Champion extends Unit {
 	}
 
 	public void handleAttackInput(GameObject e) {
+		System.out.println("Champion.handleAttackInput() 			"+e.getNumber());
 		player.app.getUpdater().sendInput(player, "basicAttack", e.getNumber() + "");
 	}
 

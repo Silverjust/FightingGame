@@ -9,6 +9,7 @@ public class PreGameClientHandler extends ClientHandler {
 
 		app.setClientHandler(this);
 		app.setComHandler(new PreGameComHandler(app));
+		clientConsoleName="p";
 		try {
 			client = new Client(app, serverIp, 5204);
 			identification = client.myIp();

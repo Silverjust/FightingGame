@@ -14,6 +14,8 @@ public class SymbolManager {
 		images.put("armor", imageHandler.load(path, "armor"));
 		images.put("mr", imageHandler.load(path, "magic-resist"));
 		images.put("ms", imageHandler.load(path, "movement-speed"));
+		images.put("ad", imageHandler.load(path, "attackdamage"));
+		images.put("ap", imageHandler.load(path, "abilitypower"));
 	}
 
 	public SymbolManager(GameBaseApp app) {

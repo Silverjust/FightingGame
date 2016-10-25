@@ -47,7 +47,7 @@ public class PlayerInterface extends SpellHandler {
 				+ "\n§img mr§" + player.getChampion().getStats().getMagicResist().getTotalAmount()//
 				+ "\n§img ms§" + (float) player.getChampion().getStats().getMovementSpeed().getTotalAmount()//
 				+ "\n§img ad§" + player.getChampion().getStats().getAttackDamage().getTotalAmount()//
-				+ "\n§img ad§" + player.getChampion().getStats().get(Stats.ATTACK_DAMAGE).getTotalAmount()
+				+ "\n§img ap§" + player.getChampion().getStats().getAbilityPower().getTotalAmount()
 				;
 		Helper.text(app, string, statsDisplayX, y + app.textAscent());
 	}

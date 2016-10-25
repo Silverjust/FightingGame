@@ -119,8 +119,7 @@ public abstract class Updater {
 	}
 
 	public GameObject getGameObject(int n) {
-		// System.out.println("Updater.getGameObject()" + n + " " +
-		// namedObjects.size());
+		//System.out.println("Updater.getGameObject()" + n + " " + namedObjects.size());
 		return namedObjects.get(n);
 	}
 
@@ -155,4 +154,48 @@ public abstract class Updater {
 	public void sendInput(Player player, String inputType, String content) {
 		send(Coms.INPUT + " " + player.getUser().getIp() + " " + inputType + " " + content);
 	}
+
+	public void updateLists(boolean isServer) {
+		for (int i = 0; i < toAdd.size(); i++) {
+			gameObjects.add(toAdd.get(i));
+			namedObjects.put(toAdd.get(i).getNumber(), toAdd.get(i));
+			toAdd.get(i).onSpawn(isServer);
+			map.mapCode.onEntitySpawn(toAdd.get(i), isServer);
+			toAdd.remove(i);
+		}
+		for (int i = 0; i < toRemove.size(); i++) {
+			GameObject entity = toRemove.get(i);
+			if (entity != null) {
+				int n = entity.getNumber();
+				namedObjects.remove(n);
+				gameObjects.remove(entity);
+				toRemove.remove(i);
+				// System.out.println("removed " + n);
+			}
+		}
+	}
+
+	public void finishLoadingUpdate(boolean isServer) {
+		for (int i = 0; i < toAdd.size(); i++) {
+			gameObjects.add(toAdd.get(i));
+			namedObjects.put(toAdd.get(i).getNumber(), toAdd.get(i));
+			toAdd.remove(i);
+		}
+		for (int i = 0; i < toRemove.size(); i++) {
+			GameObject entity = toRemove.get(i);
+			if (entity != null) {
+				int n = entity.getNumber();
+				namedObjects.remove(n);
+				gameObjects.remove(entity);
+				toRemove.remove(i);
+				// System.out.println("removed " + n);
+			}
+		}
+		for (int i = 0; i < gameObjects.size(); i++) {
+			gameObjects.get(i).onSpawn(isServer);
+			map.mapCode.onEntitySpawn(gameObjects.get(i), isServer);
+		}
+	}
+
+	
 }

@@ -2,11 +2,13 @@ package gameStructure.champs;
 
 import game.ImageHandler;
 import gameStructure.Damage;
+import gameStructure.Damage.DmgType;
 import gameStructure.Entity;
 import gameStructure.GameObject;
 import gameStructure.Projectile;
 import gameStructure.animation.Animation;
 import gameStructure.baseBuffs.Stunn;
+import gameStructure.champs.Ticul.ArmorShred;
 import processing.core.PImage;
 import shared.GameBaseApp;
 
@@ -29,18 +31,18 @@ public class TestProjectile extends Projectile {
 		setxSize(20);
 		setySize(20);
 
-		System.out.println("Stats.setSight()" + 20);
 		getStats().getSight().setBrutoBaseAmount(20);
 		setSpeed(100);
 		getStats().getRadius().setBrutoBaseAmount(10);
+		System.out.println("TestProjectile.TestProjectile()");
 	}
 
 	@Override
 	protected void onHit(GameObject o) {
 		System.out.println("TestProjectile.onHit()" + o + " " + o.isEnemyTo(player));
-		if (o.isEnemyTo(player) && o instanceof Entity) {
-			((Entity) o).sendDamage(new Damage((Entity) o, player.getChampion(), 50, true), player, originInfo);
-			player.app.getUpdater().sendBuff(Stunn.class, (Entity) o, player.getChampion(), 1000, "");
+		if (o.isEnemyTo(origin) && o instanceof Entity) {
+			((Entity) o).sendDamage(new Damage((Entity) o, origin, 40, DmgType.MAGIC_DMG), origin, originInfo);
+			player.app.getUpdater().sendBuff(ArmorShred.class, (Entity) o, player.getChampion(), 1000, "");
 			// player.app.getUpdater().sendBuff(Slow.class,
 			// player.getChampion(), player.getChampion(),
 			// (int) player.app.random(1000, 3000), (int) player.app.random(100)

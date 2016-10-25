@@ -50,7 +50,11 @@ public interface Coms {
 	String TP = "<tp";
 
 	String HEAL = "<heal";
-
+	/**
+	 * sends dmg
+	 * <p>
+	 * -, target, amount, origin object, origin ability
+	 */
 	String DAMAGE = "<dmg";
 	/**
 	 * when client ends game

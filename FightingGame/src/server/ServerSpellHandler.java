@@ -49,7 +49,7 @@ public class ServerSpellHandler extends SpellHandler {
 			if (c[2].equals("walk")) {
 				player.getChampion().sendAnimation(c[2] + " " + c[3] + " " + c[4], this);
 			} else if (c[2].equals("basicAttack")) {
-				player.getChampion().sendAnimation(c[2] + " " + c[3], this);
+				player.getChampion().setBasicAttackTarget(c);
 			}
 		}
 	}

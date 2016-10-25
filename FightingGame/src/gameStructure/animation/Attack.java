@@ -82,7 +82,7 @@ public class Attack extends Ability {
 					((Unit) attacker).setMoving(false);
 				}
 			}
-		} else if (c[2].equals("setTarget") && attacker instanceof Entity) {
+		} /*else if (c[2].equals("setTarget") && attacker instanceof Entity) {
 			// Attack a = ((Attacker) attacker).getBasicAttack();
 			int n = Integer.parseInt(c[3]);
 			GameObject e = app.getUpdater().getGameObject(n);
@@ -90,7 +90,7 @@ public class Attack extends Ability {
 			// a.setTargetFrom(attacker, e);
 
 			// walk to target and attack
-		}
+		}*/
 	}
 
 	public static void sendWalkToEnemy(GameObject e, GameObject target, byte range) {
