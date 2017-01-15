@@ -46,6 +46,13 @@ public interface Coms {
 	 * -, item, owner, slot
 	 */
 	String ITEM = "<item";
+	
+	/**
+	 * tells the server about a purchase
+	 * <p>
+	 * -, item, owner, slot
+	 */
+	String BUY = "<buy";
 
 	String TP = "<tp";
 
@@ -53,7 +60,7 @@ public interface Coms {
 	/**
 	 * sends dmg
 	 * <p>
-	 * -, target, amount, origin object, origin ability
+	 * -, target, amount, origin object, origin ability, dmg-type
 	 */
 	String DAMAGE = "<dmg";
 	/**

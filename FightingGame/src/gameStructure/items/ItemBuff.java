@@ -11,7 +11,6 @@ public class ItemBuff extends Buff {
 
 	protected ArrayList<ItemNormalStat> itemStats = new ArrayList<ItemNormalStat>();
 
-
 	public ItemBuff(GameBaseApp app, String[] c) {
 		super(app, c);
 
@@ -48,7 +47,14 @@ public class ItemBuff extends Buff {
 
 		@Override
 		public boolean doesStack() {
-			return true;
+			return false;
+		}
+
+		@Override
+		public void onReapply(ArrayList<Buff> buffs, Buff newBuff) {
+			System.out.println("ItemBuff.StackingStatsBuff.onReapply()");
+			buffs.add(this);
+			newBuff.onStart();
 		}
 	}
 

@@ -3,6 +3,8 @@ package gameStructure;
 import game.ImageHandler;
 import gameStructure.Damage.DmgType;
 import gameStructure.animation.Animation;
+import gameStructure.baseBuffs.events.Event;
+import gameStructure.baseBuffs.events.Event.HitTypes;
 import processing.core.PImage;
 import shared.GameBaseApp;
 
@@ -32,11 +34,13 @@ public class BasicAttackProjectile extends Projectile {
 	}
 
 	@Override
-	protected void onHit(GameObject o) {
+	protected void onHit(GameObject o, boolean isServer) {
 		if (o.isEnemyTo(origin) && o instanceof Entity && o == getTargetObject()) {
-			((Entity) o).sendDamage(new Damage((Entity) o, origin,
-					((Entity) origin).getStats().getAttackDamage().getTotalAmount()+0.6f*((Entity) origin).getStats().getAbilityPower().getTotalAmount(), DmgType.PHYSICAL_DMG), origin,
-					originInfo);
+			Damage damage = new Damage((Entity) o, origin,
+					((Entity) origin).getStats().getAttackDamage().getTotalAmount() + //
+							0.6f * ((Entity) origin).getStats().getAbilityPower().getTotalAmount(),
+					DmgType.PHYSICAL_DMG).setKrit(true);
+			damage.doDamage(o, origin, this, originInfo, HitTypes.BASIC_ATTACK, isServer);
 		}
 	}
 

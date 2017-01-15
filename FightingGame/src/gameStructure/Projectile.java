@@ -46,35 +46,36 @@ public class Projectile extends GameObject {
 
 	@Override
 	public void updateDecisions(boolean isServer) {
-		if (isServer) {
-			if (isMoving()) {// ****************************************************
-				for (GameObject o : player.app.getUpdater().getGameObjects()) {
-					if (o != this && o instanceof Entity) {
-						if (isCollision(o)) {
-							if (!collidedEntities.contains(o)) {
-								collidedEntities.add((Entity) o);
-								onHit(o);
-							}
+
+		if (isMoving()) {// ****************************************************
+			for (GameObject o : player.app.getUpdater().getGameObjects()) {
+				if (o != this && o instanceof Entity) {
+					if (isCollision(o)) {
+						if (!collidedEntities.contains(o)) {
+							collidedEntities.add((Entity) o);
+							onHit(o, isServer);
 						}
 					}
 				}
-			} // ****************************************************
-
-			if (PApplet.dist(getX(), getY(), getxTarget(), getyTarget()) < getSpeed()) {
-				// System.out.println(1000000000+" "+(animation == walk));
-				setMoving(false);
-				onEnd();
 			}
+		} // ****************************************************
+
+		if (PApplet.dist(getX(), getY(), getxTarget(), getyTarget()) < getSpeed()) {
+			// System.out.println(1000000000+" "+(animation == walk));
+			setMoving(false);
+			onEnd(isServer);
 		}
+
 		super.updateDecisions(isServer);
 	}
 
-	protected void onEnd() {
+	protected void onEnd(boolean isServer) {
 		// setSight(0);
-		player.app.getUpdater().send(Coms.REMOVE + " " + getNumber());
+		if (isServer)
+			player.app.getUpdater().send(Coms.REMOVE + " " + getNumber());
 	}
 
-	protected void onHit(GameObject o) {
+	protected void onHit(GameObject o, boolean isServer) {
 
 	}
 

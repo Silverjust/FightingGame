@@ -49,7 +49,7 @@ public class GameComHandler extends ComHandler {
 				GameObject o_a = updater.getGameObject(n);
 
 				if (e != null) {
-					e.hit(dmg, o_a, c[4]);
+					e.hit(dmg, o_a, c);
 				} else {
 					throw new IllegalArgumentException("no entity found");
 				}

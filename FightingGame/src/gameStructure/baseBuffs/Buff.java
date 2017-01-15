@@ -1,17 +1,17 @@
 package gameStructure.baseBuffs;
 
-import shared.GameBaseApp;
-import shared.Helper.Timer;
-
 import java.util.ArrayList;
 
 import gameStructure.Entity;
 import gameStructure.GameObject;
+import gameStructure.baseBuffs.events.Event;
+import shared.GameBaseApp;
+import shared.Helper.Timer;
 
 public class Buff {
 
 	protected int maxStacks;
-	protected int stacks = 1;
+	private int stacks = 1;
 	protected Entity owner;
 	protected Timer timer;
 	private GameObject source;
@@ -31,6 +31,7 @@ public class Buff {
 
 	public void updateDecisions(boolean isServer) {
 		// System.out.println("Buff.updateDecisions()" + timer.getTimeLeft());
+		//System.out.println("Buff.updateDecisions() " + getStacks());
 		if (timer != null && timer.isNotOnCooldown()) {
 			owner.removeBuff(this);
 		}
@@ -56,10 +57,12 @@ public class Buff {
 		onStart();
 	}
 
-	public void onReapply(ArrayList<Buff> buffs) {
+	public void onReapply(ArrayList<Buff> buffs, Buff newBuff) {
+		//System.out.println("Buff.onReapply()1 " + getStacks());
 		if (doesStack()) {
 			addStacks(1);
 		}
+		//System.out.println("Buff.onReapply()2 " + getStacks());
 		if (doesRefresh()) {
 			refreshTime();
 		}
@@ -78,8 +81,23 @@ public class Buff {
 	}
 
 	public void addStacks(int i) {
+		System.out.println("Buff.addStacks()1 " + app.isServer() + getStacks());
 		stacks += i;
+		System.out.println("Buff.addStacks()2 " + app.isServer() + getStacks());
 		onStackApply(i);
+		System.out.println("Buff.addStacks()3 " + app.isServer() + getStacks());
+
+	}
+
+	public int getStacks() {
+		//System.out.println("Buff.getStacks()" + app.isServer() + getStacks());
+		return stacks;
+
+	}
+
+	public void setStacks(int stacks) {
+		System.out.println("Buff.setStacks()" + app.isServer() + stacks);
+		this.stacks = stacks;
 	}
 
 	public void refreshTime() {
@@ -98,5 +116,34 @@ public class Buff {
 
 	/** interrupts dashes */
 	public void onDisplace() {
+	}
+
+	public boolean isNotOnCooldown() {
+		return timer.isNotOnCooldown();
+	}
+
+	public float getCooldownPercent() {
+		if (timer == null)
+			return 0;
+		return timer.getCooldownPercent();
+	}
+
+	public float getTimeLeft() {
+		return timer.getTimeLeft();
+	}
+
+	public void onEvent(Event event) {
+
+	}
+
+	public void draw(int x, int y, int s) {
+		app.rect(x, y, s, s);
+		app.fill(100);
+		app.rect(x, y, (1 - getCooldownPercent()) * s, s);
+		app.fill(0);
+		app.textSize(20);
+		app.text(getStacks(), x, y + app.textAscent());
+		// System.out.println("Buff.draw()" + stacks);
+
 	}
 }

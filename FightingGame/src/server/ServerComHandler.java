@@ -55,7 +55,7 @@ public class ServerComHandler extends ComHandler {
 					GameObject o_a = updater.getGameObject(n);
 
 					if (e != null) {
-						e.hit(dmg, o_a, c[4]);
+						e.hit(dmg, o_a, c);
 					} else {
 						throw new IllegalArgumentException("no entity found");
 					}
@@ -159,6 +159,11 @@ public class ServerComHandler extends ComHandler {
 				} else {
 					throw new IllegalArgumentException("no entity found");
 				}
+				break;
+			case BUY:
+				//TODO
+				updater.send(com.replace(app.getServerHandler().endSymbol + "", "").replaceFirst(BUY, ITEM));
+
 				break;
 			case INPUT:
 				((ServerSpellHandler) ((ServerUpdater) app.getUpdater()).getSpellHandler(c[1])).input(c);

@@ -16,6 +16,7 @@ public class SymbolManager {
 		images.put("ms", imageHandler.load(path, "movement-speed"));
 		images.put("ad", imageHandler.load(path, "attackdamage"));
 		images.put("ap", imageHandler.load(path, "abilitypower"));
+		images.put("krit", imageHandler.load(path, "krit"));
 	}
 
 	public SymbolManager(GameBaseApp app) {

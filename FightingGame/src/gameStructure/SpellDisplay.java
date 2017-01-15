@@ -18,6 +18,7 @@ public class SpellDisplay {
 	private PImage symbol;
 
 	public SpellDisplay(GameBaseApp app, Spell spell, PlayerInterface inter, int pos, PImage symbol) {
+		//System.out.println("SpellDisplay.SpellDisplay()");
 		this.app = app;
 		this.spell = spell;
 		this.symbol = symbol;
@@ -31,7 +32,7 @@ public class SpellDisplay {
 
 	public void update() {
 		if (Helper.isMouseOver(app, x, y, x + w, y + h)) {
-			System.out.println("SpellDisplay.update()");
+			//System.out.println("SpellDisplay.update()");
 			app.pushStyle();
 			app.fill(30);
 			app.rect(x, y - 200, 500, 200);

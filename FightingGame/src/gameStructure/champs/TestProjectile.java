@@ -8,6 +8,10 @@ import gameStructure.GameObject;
 import gameStructure.Projectile;
 import gameStructure.animation.Animation;
 import gameStructure.baseBuffs.Stunn;
+import gameStructure.baseBuffs.events.Event;
+import gameStructure.baseBuffs.events.Event.HitTypes;
+import gameStructure.baseBuffs.events.GettingHitEvent;
+import gameStructure.baseBuffs.events.HitEvent;
 import gameStructure.champs.Ticul.ArmorShred;
 import processing.core.PImage;
 import shared.GameBaseApp;
@@ -38,15 +42,17 @@ public class TestProjectile extends Projectile {
 	}
 
 	@Override
-	protected void onHit(GameObject o) {
+	protected void onHit(GameObject o, boolean isServer) {
 		System.out.println("TestProjectile.onHit()" + o + " " + o.isEnemyTo(player));
 		if (o.isEnemyTo(origin) && o instanceof Entity) {
-			((Entity) o).sendDamage(new Damage((Entity) o, origin, 40, DmgType.MAGIC_DMG), origin, originInfo);
-			player.app.getUpdater().sendBuff(ArmorShred.class, (Entity) o, player.getChampion(), 1000, "");
+			Damage damage = new Damage((Entity) o, origin, 40, DmgType.MAGIC_DMG);
+			damage.doDamage(o, origin, this, originInfo, HitTypes.SPELL, isServer);
+			player.app.getUpdater().sendBuff(ArmorShred.class, (Entity) o, player.getChampion(), 3000, "");
 			// player.app.getUpdater().sendBuff(Slow.class,
 			// player.getChampion(), player.getChampion(),
 			// (int) player.app.random(1000, 3000), (int) player.app.random(100)
 			// + "");
+
 		}
 	}
 }

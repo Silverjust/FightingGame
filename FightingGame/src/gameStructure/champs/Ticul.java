@@ -14,9 +14,10 @@ import gameStructure.animation.BasicAttackAnim;
 import gameStructure.animation.Death;
 import gameStructure.baseBuffs.Buff;
 import gameStructure.baseBuffs.SpeedBuff;
-import gameStructure.items.SwordOfTesting;
+import gameStructure.baseBuffs.events.Event;
+import gameStructure.baseBuffs.events.Event.HitTypes;
+import gameStructure.baseBuffs.events.GettingHitEvent;
 import processing.core.PImage;
-import shared.Coms;
 import shared.ContentListManager;
 import shared.GameBaseApp;
 import shared.Helper;
@@ -71,16 +72,18 @@ public class Ticul extends Champion {
 		stats.getMovementSpeed().setBrutoBaseAmount(120);
 		stats.getRadius().setBrutoBaseAmount(15);
 		stats.getSight().setBrutoBaseAmount(200);
+		stats.getAttackDamage().setBrutoBaseAmount(100);
 
 	}
 
 	@Override
 	public void onSpawn(boolean isServer) {
-		if (isServer) {
-			System.out.println("Ticul.onSpawn() send item");
-			player.app.getUpdater().send(Coms.ITEM + " " + SwordOfTesting.class.getSimpleName() + " " + getNumber());
-		} else
-			System.out.println("Ticul.onSpawn() not server");
+		/*
+		 * if (isServer) { System.out.println("Ticul.onSpawn() send item");
+		 * player.app.getUpdater().send(Coms.ITEM + " " +
+		 * SwordOfTesting.class.getSimpleName() + " " + getNumber()); } else
+		 * System.out.println("Ticul.onSpawn() not server");
+		 */
 		super.onSpawn(isServer);
 	}
 
@@ -286,7 +289,7 @@ public class Ticul extends Champion {
 	static public class ArmorShred extends Buff {
 		private int amount = 30;
 		private int totalAmount = 0;
-
+		
 		public ArmorShred(GameBaseApp app, String[] c) {
 			super(app, c);
 			maxStacks = 3;
@@ -304,12 +307,13 @@ public class Ticul extends Champion {
 		public void onEnd() {
 			super.onEnd();
 			EntityStats stats = owner.getStats();
-			stats.getArmor().setBrutoBonusAmount(stats.getArmor().getBrutoBonusAmount() - totalAmount);
+			stats.getArmor().setBrutoBonusAmount(stats.getArmor().getBrutoBonusAmount() + totalAmount);
 		}
+
 
 		@Override
 		public boolean doesStack() {
-			return stacks < maxStacks;
+			return getStacks() < maxStacks;
 		}
 
 		/** only apply 1 at a time */
@@ -319,6 +323,23 @@ public class Ticul extends Champion {
 			EntityStats stats = owner.getStats();
 			stats.getArmor().setBrutoBonusAmount(stats.getArmor().getBrutoBonusAmount() - amount);
 			totalAmount += amount;
+			refreshTime();
+
+			// debugCounter++;
+			// if (debugCounter >= 3) {
+			// //app.exit();
+			// app.thread("exitLater");
+			// }
+		}
+
+		@Override
+		public void onEvent(Event event) {
+			if (event instanceof GettingHitEvent && ((GettingHitEvent) event).getHitType() == HitTypes.BASIC_ATTACK) {
+				refreshTime();
+				
+
+			}
+
 		}
 	}
 }

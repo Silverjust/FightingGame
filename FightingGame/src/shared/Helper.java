@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import game.GameDrawer;
 import gameStructure.GameObject;
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PImage;
 
 public class Helper {
@@ -159,10 +160,14 @@ public class Helper {
 	}
 
 	public static void text(GameBaseApp app, String input, float x, float y) {
-		int startFillColor = app.g.fillColor;
+		Helper.text(app, app.g, input, x, y);
+	}
+
+	public static void text(GameBaseApp app, PGraphics pg, String input, float x, float y) {
+		int startFillColor = pg.fillColor;
 		String[] line = PApplet.split(input, '\n');
 		for (int i = 0; i < line.length; i++) {
-			float lineHeight = app.textAscent() + app.textDescent();
+			float lineHeight = pg.textAscent() + pg.textDescent();
 			float textWidth = 0;
 			String[] text = PApplet.split(line[i], '§');
 			for (int j = 0; j < text.length; j++) {
@@ -171,28 +176,37 @@ public class Helper {
 					switch (c[0]) {
 					case "color":
 						if (c[1].equals("reset")) {
-							app.fill(startFillColor);
+							pg.fill(startFillColor);
 						} else {
 							float r = Float.parseFloat(c[1]);
 							float g = Float.parseFloat(c[2]);
 							float b = Float.parseFloat(c[3]);
-							app.fill(r, g, b);
+							pg.fill(r, g, b);
 						}
 						break;
 					case "size": {
 						float s = Float.parseFloat(c[1]);
-						app.textSize(s);
+						pg.textSize(s);
 					}
 						break;
 					case "rect": {
-						app.rect(x + textWidth, y + i * lineHeight - lineHeight, lineHeight, lineHeight);
+						pg.rect(x + textWidth, y + i * lineHeight - lineHeight, lineHeight, lineHeight);
 						textWidth += lineHeight;
 					}
 						break;
 					case "img": {
 						PImage symbol = app.getDrawer().getSymbol(c[1]);
-						if (symbol != null)
-							app.image(symbol, x + textWidth, y + i * lineHeight - lineHeight, lineHeight, lineHeight);
+						if (symbol != null) {
+							int color = pg.tintColor;
+							if (c[1].equals("krit")) {
+								pg.tint(pg.fillColor);
+							} else {
+								pg.tint(255);
+							}
+							pg.image(symbol, x + textWidth, y + i * lineHeight - lineHeight * 0.8f, lineHeight,
+									lineHeight);
+							pg.tint(color);
+						}
 						textWidth += lineHeight;
 					}
 						break;
@@ -209,8 +223,8 @@ public class Helper {
 						break;
 					}
 				} else {
-					app.text(text[j], x + textWidth, y + i * lineHeight);
-					textWidth += app.textWidth(text[j]);
+					pg.text(text[j], x + textWidth, y + i * lineHeight);
+					textWidth += pg.textWidth(text[j]);
 				}
 			}
 		}

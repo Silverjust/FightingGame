@@ -16,6 +16,7 @@ import gameStructure.champs.Mage;
 import gameStructure.champs.Minion;
 import gameStructure.champs.TestProjectile;
 import gameStructure.champs.Ticul;
+import gameStructure.items.ArmorOfWar;
 import gameStructure.items.InventoryItem;
 import gameStructure.items.SwordOfTesting;
 import processing.data.JSONObject;
@@ -72,6 +73,7 @@ public class ContentListManager {
 
 		/** List of Items */
 		addClassToItems(SwordOfTesting.class);
+		addClassToItems(ArmorOfWar.class);
 		/***********************************/
 
 		contentList = app.loadJSONObject(path);
@@ -113,7 +115,7 @@ public class ContentListManager {
 		spellMap.put(key, c);
 	}
 
-	public void addClassToItems(Class<SwordOfTesting> c) {
+	public void addClassToItems(Class<? extends InventoryItem> c) {
 		String key = null;
 		InventoryItem o = (InventoryItem) createItem(c);
 		if (o != null) {
@@ -227,5 +229,10 @@ public class ContentListManager {
 			System.err.println("ERROR: " + name + " is not in itemMap (ContentListManager.java:39)");
 		}
 		return c;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Class<? extends InventoryItem>[] getItemArray() {
+		return (Class<? extends InventoryItem>[]) itemMap.values().toArray(new Class<?>[itemMap.size()]);
 	}
 }

@@ -221,4 +221,10 @@ public class GameBaseApp extends PApplet {
 		return false;
 	}
 
+	public void exitLater() {
+	delay(500);
+	exit();
+		
+	}
+
 }

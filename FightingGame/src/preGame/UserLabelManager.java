@@ -93,4 +93,15 @@ public class UserLabelManager {
 
 	}
 
+	public void dispose() {
+		update();
+		for (UserLabel userLabel : leftUserLabels) {
+			userLabel.dispose();
+		}
+		for (UserLabel userLabel : rightUserLabels) {
+			userLabel.dispose();
+		}
+
+	}
+
 }

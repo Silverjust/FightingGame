@@ -62,11 +62,11 @@ public class Slow extends Buff {
 	}
 
 	@Override
-	public void onReapply(ArrayList<Buff> buffs) {
+	public void onReapply(ArrayList<Buff> buffs, Buff newBuff) {
 		this.buffs = buffs;
 
 		buffs.add(this);
-		onStart();
+		newBuff.onStart();
 	}
 
 	class Num {

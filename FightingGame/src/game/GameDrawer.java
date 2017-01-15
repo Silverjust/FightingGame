@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Container;
 import java.util.ArrayList;
 
 import gameStructure.GameObject;
@@ -26,6 +27,7 @@ public class GameDrawer {
 	private HUD hud;
 	private ImageHandler imageHandler;
 	private ArrayList<IngameQuickInfo> quickInfoList = new ArrayList<IngameQuickInfo>();
+	private ArrayList<IngameQuickInfo> toAddQuickInfoList = new ArrayList<IngameQuickInfo>();
 
 	@SuppressWarnings("static-access")
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
@@ -87,15 +89,21 @@ public class GameDrawer {
 		for (GameObject e : app.getPlayer().visibleGObjects) {
 			e.display();
 		}
-		for (IngameQuickInfo info : quickInfoList) {
-			info.display();
+		{
+			for (int i = 0; i < toAddQuickInfoList.size(); i++) {
+				IngameQuickInfo info = toAddQuickInfoList.get(i);
+				quickInfoList.add(info);
+				toAddQuickInfoList.remove(info);
+			}
+			for (IngameQuickInfo info : getQuickInfoList()) {
+				info.display();
+			}
+			for (int i = 0; i < getQuickInfoList().size(); i++) {
+				IngameQuickInfo info = getQuickInfoList().get(i);
+				if (info.hasDecayed())
+					getQuickInfoList().remove(info);
+			}
 		}
-		for (int i = 0; i < quickInfoList.size(); i++) {
-			IngameQuickInfo info = quickInfoList.get(i);
-			if (info.hasDecayed())
-				quickInfoList.remove(info);
-		}
-
 		getAimHandler().update();
 		app.rectMode(PConstants.CORNER);
 		app.popMatrix();
@@ -156,6 +164,11 @@ public class GameDrawer {
 	}
 
 	public void addQuickInfo(IngameQuickInfo ingameQuickInfo) {
-		quickInfoList.add(ingameQuickInfo);
+		toAddQuickInfoList.add(ingameQuickInfo);
 	}
+
+	public ArrayList<IngameQuickInfo> getQuickInfoList() {
+		return quickInfoList;
+	}
+
 }

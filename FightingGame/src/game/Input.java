@@ -3,6 +3,8 @@ package game;
 import java.awt.Toolkit;
 import java.awt.event.MouseWheelEvent;
 
+import game.shop.ShopManager;
+import gameStructure.Champion;
 import gameStructure.GameObject;
 import processing.core.PApplet;
 import processing.core.PConstants;
@@ -65,10 +67,14 @@ public class Input {
 		app.getDrawer().getHud().chat.update();
 		if (isKeyFocusInGame()) {
 			if (app.key == app.settingHandler.getSetting().togglePause) {
-				if (app.getUpdater().gameState == GameState.PAUSE) {
-					app.getUpdater().send(Coms.PAUSE + " false");
-				} else if (app.getUpdater().gameState == GameState.PLAY) {
-					app.getUpdater().send(Coms.PAUSE + " true");
+				if (app.getDrawer().getHud().getShop() != null) {
+					app.getDrawer().getHud().disposeShop();
+				} else {
+					if (app.getUpdater().gameState == GameState.PAUSE) {
+						app.getUpdater().send(Coms.PAUSE + " false");
+					} else if (app.getUpdater().gameState == GameState.PLAY) {
+						app.getUpdater().send(Coms.PAUSE + " true");
+					}
 				}
 			}
 			/*
@@ -98,6 +104,13 @@ public class Input {
 			}
 			if (app.key == app.settingHandler.getSetting().centerView) {
 				System.out.println("Input.keyPressed()");
+			}
+			if (app.key == app.settingHandler.getSetting().openShop) {
+				if (app.getDrawer().getHud().getShop() == null)
+					app.getDrawer().getHud().setShop(new ShopManager(app));
+				else
+					app.getDrawer().getHud().disposeShop();
+
 			}
 			// System.out.println(app.key);
 			for (int i = 0; i < app.settingHandler.getSetting().hotKeys.length; i++) {
@@ -201,24 +214,34 @@ public class Input {
 	}
 
 	void mouseCommands(float x, float y) {
-		System.out.println("Input.mouseCommands()+++++++++++++++++++++++++++---------------------");
+		System.out.println("Input.mouseCommands()click+++++++++++++++++++++++++++---------------------");
 		if (app.mouseButton == app.settingHandler.getSetting().mouseMove) {
 			boolean isAttack = false;
 			for (GameObject e : app.getUpdater().getGameObjects())
 				if (e.isTargetable() && e.isEnemyTo(app.getPlayer())) {
-					if (GameDrawer.godhand || e.isEnemyTo(app.getPlayer())) {
-						if (PApplet.dist(x, y, e.getX(), e.getY() - e.getHeight()) <= e.getStats().getRadius()
-								.getTotalAmount()) {
-							app.getPlayer().getChampion().handleAttackInput(e);
-							System.out.println("Input.mouseCommands()++++++++++++++++++++++++++++++++++++++++++");
-							isAttack = true;
-						}
+					System.out.println("Input.mouseCommands()target++++++");
+					if (PApplet.dist(x, y, e.getX(), e.getY() - e.getHeight()) <= e.getStats().getRadius()
+							.getTotalAmount()) {
+						app.getPlayer().getChampion().handleAttackInput(e);
+						System.out.println("Input.mouseCommands()inrange++++++++++++++++++++++++++++++++++++++++++");
+						isAttack = true;
 					}
 				}
 			app.getDrawer().getAimHandler().cancel(x, y);
 			if (!isAttack)
 				app.getPlayer().getChampion().handleWalkInput(x, y);
 		} else if (app.mouseButton == app.settingHandler.getSetting().mouseCommand) {
+			GameObject target = null;
+			for (GameObject e : app.getUpdater().getGameObjects())
+				if (PApplet.dist(x, y, e.getX(), e.getY() - e.getHeight()) <= e.getStats().getRadius()
+						.getTotalAmount()) {
+					if (target != null && target instanceof Champion)
+						;
+					else
+						target = e;
+				}
+			if (target != null)
+				app.getDrawer().getHud().playerInterface.setTarget(target);
 			app.getDrawer().getAimHandler().execute(x, y);
 		}
 	}

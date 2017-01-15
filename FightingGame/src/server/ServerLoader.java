@@ -30,6 +30,8 @@ public class ServerLoader extends Loader {
 			break;
 		case ENTITIES:// spawn entity-setup
 			app.getUpdater().sendSpawn(Minion.class, app.getUpdater().rightsideNeutral, 100 + " " + 100);
+			app.getUpdater().sendSpawn(Minion.class, app.getUpdater().rightsideNeutral, 100 + " " + 200);
+			app.getUpdater().sendSpawn(Minion.class, app.getUpdater().rightsideNeutral, 200 + " " + 100);
 			app.getUpdater().mapHandler.setupEntities(app.getUpdater().map.mapData);
 			// app.getUpdater().update();
 			state = State.END;

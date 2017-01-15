@@ -119,8 +119,13 @@ public abstract class Updater {
 	}
 
 	public GameObject getGameObject(int n) {
-		//System.out.println("Updater.getGameObject()" + n + " " + namedObjects.size());
+		// System.out.println("Updater.getGameObject()" + n + " " +
+		// namedObjects.size());
 		return namedObjects.get(n);
+	}
+
+	public GameObject getGameObject(String number) {
+		return getGameObject(Integer.parseInt(number));
 	}
 
 	public void addGameObject(GameObject o) {
@@ -197,5 +202,4 @@ public abstract class Updater {
 		}
 	}
 
-	
 }

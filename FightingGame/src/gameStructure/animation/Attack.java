@@ -9,6 +9,7 @@ import shared.GameBaseApp;
 
 public class Attack extends Ability {
 	private int range;
+	@Deprecated
 	private int damage;
 	protected GameObject target;
 	private boolean isSetup;
@@ -17,11 +18,11 @@ public class Attack extends Ability {
 		super(app, animated, IMG, duration);
 	}
 
-	public Attack(GameBaseApp app, GameObject animated,PImage[] IMG, int duration) {
+	public Attack(GameBaseApp app, GameObject animated, PImage[] IMG, int duration) {
 		super(app, animated, IMG, duration);
 	}
 
-	public Attack(GameBaseApp app,GameObject animated, PImage IMG, int duration) {
+	public Attack(GameBaseApp app, GameObject animated, PImage IMG, int duration) {
 		super(app, animated, IMG, duration);
 	}
 
@@ -82,15 +83,16 @@ public class Attack extends Ability {
 					((Unit) attacker).setMoving(false);
 				}
 			}
-		} /*else if (c[2].equals("setTarget") && attacker instanceof Entity) {
-			// Attack a = ((Attacker) attacker).getBasicAttack();
-			int n = Integer.parseInt(c[3]);
-			GameObject e = app.getUpdater().getGameObject(n);
-			attacker.sendAnimation("walk " + e.getX() + " " + e.getY() + " true", "Attack.updateExecAttack()");
-			// a.setTargetFrom(attacker, e);
-
-			// walk to target and attack
-		}*/
+		} /*
+			 * else if (c[2].equals("setTarget") && attacker instanceof Entity)
+			 * { // Attack a = ((Attacker) attacker).getBasicAttack(); int n =
+			 * Integer.parseInt(c[3]); GameObject e =
+			 * app.getUpdater().getGameObject(n); attacker.sendAnimation("walk "
+			 * + e.getX() + " " + e.getY() + " true",
+			 * "Attack.updateExecAttack()"); // a.setTargetFrom(attacker, e);
+			 * 
+			 * // walk to target and attack }
+			 */
 	}
 
 	public static void sendWalkToEnemy(GameObject e, GameObject target, byte range) {
@@ -133,10 +135,12 @@ public class Attack extends Ability {
 		this.range = range;
 	}
 
+	@Deprecated
 	public int getDamage() {
 		return damage;
 	}
 
+	@Deprecated
 	public void setDamage(int i) {
 		this.damage = i;
 	}

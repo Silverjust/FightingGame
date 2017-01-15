@@ -31,12 +31,14 @@ public class Chat {
 		chatLine.setPromptText("chat");
 		chatLine.setFont(new Font("PLAIN", Font.BOLD, 15));
 		chatLine.addEventHandler(this, "chatEvents");
+		chatLine.setLocalColorScheme(8);
 
 		chatHistory = new GTextArea(app, 10, app.height - hud.height - 220, 500, 200,
 				G4P.SCROLLBARS_VERTICAL_ONLY | G4P.SCROLLBARS_AUTOHIDE);
 		chatHistory.setTextEditEnabled(false);
 		chatHistory.setOpaque(false);
 		chatHistory.setFont(new Font("PLAIN", Font.BOLD, 17));
+		chatHistory.setLocalColorScheme(8);
 		chatHistory.addEventHandler(this, "handleTextEvents");
 
 		hide();

@@ -30,7 +30,7 @@ public class Player {
 		else if (team == Team.RIGHTSIDE)
 			p.getUser().setIp("-2");
 
-		//players.put(p.getUser().getIp(), p);
+		// players.put(p.getUser().getIp(), p);
 		return p;
 	}
 
@@ -71,6 +71,10 @@ public class Player {
 		this.champion = champion;
 		app.getUpdater().handleChampionInit(champion);
 
+	}
+
+	public boolean shuoldCreateQI(GameObject attacker, String[] c) {
+		return attacker.player == this;
 	}
 
 }

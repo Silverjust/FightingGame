@@ -10,6 +10,8 @@ import gameStructure.animation.Attack;
 import gameStructure.animation.BasicAttackAnim;
 import gameStructure.animation.Death;
 import gameStructure.baseBuffs.Buff;
+import gameStructure.baseBuffs.events.Event;
+import gameStructure.champs.Ticul.ArmorShred;
 import gameStructure.items.InventoryItem;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -52,12 +54,16 @@ public class Entity extends GameObject {
 	}
 
 	public void sendDamage(Damage damage, GameObject attacker, String origin) {
-		player.app.getUpdater()
-				.send(Coms.DAMAGE + " " + getNumber() + " " + damage.get() + " " + attacker.getNumber() + " " + origin);
+		player.app.getUpdater().send(Coms.DAMAGE + " " + getNumber() + " " + damage.get() + " " + attacker.getNumber()
+				+ " " + origin + " " + damage.getDamageType());
 	}
 
 	@Override
 	public void updateDecisions(boolean isServer) {
+		Buff b = ((Entity) this).getBuff(ArmorShred.class);
+		if (b != null)
+			System.out.println(
+					"Entity.updateDecisions() AS stacks" + b.getStacks() + " " + b + " " + player.app.isServer());
 		for (int i = buffsToRemove.size() - 1; i >= 0; i--) {
 			Buff buff = buffsToRemove.get(i);
 			if (buff != null) {
@@ -101,7 +107,8 @@ public class Entity extends GameObject {
 		 */
 		// System.out.println("Entity.updateBasicAttackBehavior()");
 		if (basicattackTarget != null) {
-			//System.out.println("Entity.updateBasicAttackBehavior()" + basicattackTarget.getNumber());
+			// System.out.println("Entity.updateBasicAttackBehavior()" +
+			// basicattackTarget.getNumber());
 			if (basicattackTarget.isEnemyTo(this)
 					&& basicattackTarget.isInRange(getX(), getY(), getStats().getBasicAttackRange().getTotalAmount())
 					&& basicAttack.isNotOnCooldown()) {
@@ -135,18 +142,22 @@ public class Entity extends GameObject {
 				"(" + getX() + "|" + getY() + ")" + "\nhp:" + getStats().getHp().getCurrentAmount());
 	}
 
-	public void hit(float dmg, GameObject attacker, String origin) {
+	public void hit(float dmg, GameObject attacker, String[] c) {
 		System.out.println("Entity.hit()" + getInternName() + " got hit with " + dmg + " from "
-				+ attacker.player.getUser().name + " with " + origin);
+				+ attacker.player.getUser().name + " with " + c[4]);
 
 		if (isMortal()) {// only for nonimmortal objects
 			// SoundHandler.startIngameSound(hit, x, y);
 
 			if (dmg > 0) {
 
-				if (player.app instanceof GameApp) {
+				if (player.app instanceof GameApp && player.app.getPlayer().shuoldCreateQI(attacker, c)) {
 					IngameQuickInfo quickInfo = new IngameQuickInfo(player.app, 1000, getX(), getY());
-					quickInfo.setValue((int) dmg);
+					if (c[5].charAt(0) == 's' && attacker == this)
+						quickInfo.setValue((int) -dmg);
+					else
+						quickInfo.setValue((int) dmg);
+					quickInfo.setDmgType(c[5]);
 					player.app.getDrawer().addQuickInfo(quickInfo);
 				}
 
@@ -210,11 +221,18 @@ public class Entity extends GameObject {
 	}
 
 	public void addBuff(Buff buff) {
-		System.out.println("Entity.addBuff()");
+
 		if (!Helper.listContainsInstanceOf(buff.getClass(), getBuffs())) {
 			buff.onFirstApply(getBuffs());
 		} else {
-			buff.onReapply(getBuffs());
+			Buff oldBuff = null;
+			for (Buff b : buffs) {
+				if (buff.getClass().isAssignableFrom(b.getClass())) {
+					oldBuff = b;
+				}
+			}
+			if (oldBuff != null)
+				oldBuff.onReapply(getBuffs(), buff);
 		}
 	}
 
@@ -222,6 +240,32 @@ public class Entity extends GameObject {
 		buff.onEnd();
 		buffsToRemove.add(buff);
 
+	}
+
+	public Buff getBuff(Class<ArmorShred> class1) {
+		Buff searchedBuff = null;
+		int searchedBuffNumber = 0;
+		for (Buff buff : buffs) {
+			if (class1.isAssignableFrom(buff.getClass())) {
+				searchedBuffNumber++;
+				searchedBuff = buff;
+			}
+		}
+
+		if (searchedBuffNumber == 1)
+			return searchedBuff;
+		return null;
+	}
+
+	public ArrayList<Buff> getBuffs(Class<ArmorShred> class1) {
+		ArrayList<Buff> searchedBuffs = new ArrayList<Buff>();
+		for (Buff buff : buffs) {
+			if (class1.isAssignableFrom(buff.getClass())) {
+				searchedBuffs.add(buff);
+			}
+		}
+
+		return searchedBuffs;
 	}
 
 	public Attack getBasicAttack() {
@@ -234,7 +278,6 @@ public class Entity extends GameObject {
 	}
 
 	private void doBasicAttack(Attack a) {
-		System.out.println("Entity.doBasicAttack()");
 		player.app.getUpdater().sendSpawn(BasicAttackProjectile.class, player,
 				player.getChampion().getX() + " " + player.getChampion().getY() + " " + this.getNumber() + " " + HOMING
 						+ " " + a.getTarget().getNumber() + " BasicAttack");
@@ -260,9 +303,9 @@ public class Entity extends GameObject {
 	public void addItem(InventoryItem item) {
 		items.add(item);
 		item.giveStats();
-		System.out.println("Entity.addItem()");
+		System.out.println("Entity.addItem()1"+item);
 		for (Buff buff : getBuffs()) {
-			System.out.println("Entity.addItem()" + buff.getInternName());
+			System.out.println("Entity.addItem()2" + buff.getInternName());
 		}
 	}
 
@@ -276,4 +319,22 @@ public class Entity extends GameObject {
 		System.out.println("Entity.setBasicAttackTarget()		" + basicattackTarget.getNumber());
 	}
 
+	@Override
+	public void onEvent(Event event, boolean isServer) {
+		for (Buff b : buffs) {
+			b.onEvent(event);
+		}
+		super.onEvent(event, isServer);
+	}
+
+	@Override
+	public void drawTargetInfo() {
+		int i = 0;
+		int x = 0;
+		int y = 100;
+		for (Buff buff : buffs) {
+			buff.draw(x + i * 60, y, 50);
+			i++;
+		}
+	}
 }

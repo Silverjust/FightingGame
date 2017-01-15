@@ -7,6 +7,7 @@ import g4p_controls.GEvent;
 import g4p_controls.GTextField;
 import gameStructure.GameObject;
 import processing.core.PApplet;
+import processing.core.PImage;
 import shared.Helper;
 import shared.Helper.Timer;
 import shared.Mode;
@@ -26,6 +27,8 @@ public class StartScreenInterface {
 
 	private Timer dummyInitTimer;
 
+	private PImage krit;
+
 	public StartScreenInterface(PreGameApp app) {
 		this.app = app;
 		G4P.setGlobalColorScheme(GCScheme.BLUE_SCHEME);
@@ -43,6 +46,8 @@ public class StartScreenInterface {
 		connectButton.addEventHandler(this, "handleButtonEvents");
 
 		System.out.println("StartScreenInterface.StartScreenInterface()");
+
+		krit = app.loadImage("data/hud/symbols/krit.png");
 	}
 
 	void update() {
@@ -54,8 +59,14 @@ public class StartScreenInterface {
 			float angle = app.millis() / 100.0f;
 			app.arc(200, 150, 100, 100, angle, angle + 5);
 		}
-		Helper.text(app, "bla§color 100 100 255§colorbla§rect§bladibla1\n" //
-				+ "bla§color 255 255 0§colorbla§rect§bladibla2\nbla§color reset§blä", 200, 200);
+
+		// Helper.text(app, "§img krit§§color 255 0 0§§img krit§", 200, 200);
+
+		app.image(krit, 200, 200);
+		app.tint(255, 50, 0);
+		app.image(krit, 270, 200);
+		app.tint(255);
+
 		{
 			app.pushMatrix();
 			// app.shearX(app.millis() / 12000.f);

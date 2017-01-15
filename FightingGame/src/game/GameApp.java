@@ -44,11 +44,13 @@ public class GameApp extends GameBaseApp {
 		// frame.setVisible(true);
 		Global.addApp(this);
 
-		font = createFont("Aharoni Fett", 40);
+		// font = createFont("BrowalliaNew-Bold", 40);
+		font = createFont("DejaVuSans-Bold", 40);
 		setTextScale(0.5F);// so ungefär
-		//setFont(font);
-		// System.out.println(font.ascent());
-		//textFont(font);
+		setFont(font);
+		System.out.println(font.ascent());
+		textFont(font);
+
 		noSmooth();
 		G4P.messagesEnabled(false);
 
@@ -139,4 +141,9 @@ public class GameApp extends GameBaseApp {
 		super.dispose();
 	}
 
+	@Override
+	public boolean isServer() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

@@ -4,6 +4,7 @@ import game.GameDrawer;
 import game.ImageHandler;
 import gameStructure.animation.Animation;
 import gameStructure.animation.Attack;
+import gameStructure.baseBuffs.events.Event;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
@@ -91,6 +92,13 @@ public abstract class GameObject implements Coms {
 		}
 		if (this instanceof Unit) {
 			player.app.line(getX(), getY() / 2, ((Unit) this).xTarget, ((Unit) this).yTarget / 2);
+		}
+		if (this instanceof Entity) {
+			/*
+			 * Buff buff = ((Entity)this).getBuff(Ticul.ArmorShred.class); if
+			 * (buff != null) player.app.rect(getX(), getY()/2, 20,
+			 * 20*buff.getCooldownPercent());
+			 */
 		}
 	}
 
@@ -402,5 +410,16 @@ public abstract class GameObject implements Coms {
 	public boolean isTargetable() {
 		return false;
 	}
+
+	public void onEvent(Event event, boolean isServer) {
+
+	}
+
+	public void drawTargetInfo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }

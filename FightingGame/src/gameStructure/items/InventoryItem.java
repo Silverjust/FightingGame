@@ -11,6 +11,7 @@ public class InventoryItem {
 	protected Entity owner;
 	protected StackingStatsBuff stackingStatsBuff;
 	protected StackingStatsBuff uniqueStatsBuff;
+	protected String descrText = "stub";
 
 	public InventoryItem(GameBaseApp app, String[] c) {
 		this.app = app;
@@ -49,5 +50,13 @@ public class InventoryItem {
 
 	public String getInternName() {
 		return getClass().getSimpleName();
+	}
+
+	public String getIngameName() {
+		return getInternName();
+	}
+
+	public String getDescription() {
+		return descrText;
 	}
 }

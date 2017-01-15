@@ -47,6 +47,9 @@ public class PreGameApp extends GameBaseApp {
 		case PREGAME:
 			preGameInterface.update();
 			break;
+		case GAME:
+			background(240);
+			break;
 		default:
 			break;
 		}
@@ -71,6 +74,10 @@ public class PreGameApp extends GameBaseApp {
 			break;
 		case PREGAME:
 			setPreGameIntaerface(new PreGameInterface(this));
+			break;
+		case GAME:
+			getPreGameInterface().dispose();
+			frameRate(3);
 			break;
 
 		default:

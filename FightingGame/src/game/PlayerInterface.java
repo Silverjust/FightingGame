@@ -1,8 +1,9 @@
 package game;
 
 import gameStructure.Champion;
+import gameStructure.GameObject;
 import gameStructure.Spell;
-import gameStructure.Stats;
+import gameStructure.baseBuffs.Buff;
 import main.appdata.SettingHandler;
 import shared.ContentListManager;
 import shared.GameBaseApp;
@@ -15,6 +16,7 @@ public class PlayerInterface extends SpellHandler {
 	private SettingHandler settingHandler;
 	private float statsDisplayX = 10;
 	private String championName;
+	private GameObject target;
 
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 
@@ -40,6 +42,13 @@ public class PlayerInterface extends SpellHandler {
 	}
 
 	public void update() {
+		if (getTarget() != null)
+			getTarget().drawTargetInfo();
+		int i = 0;
+		for (Buff buff : player.getChampion().getBuffs()) {
+			buff.draw(x + i * 60 -60, y-60, 50);
+			i++;
+		}
 		for (Spell spell : spells) {
 			spell.updateButton();
 		}
@@ -47,8 +56,7 @@ public class PlayerInterface extends SpellHandler {
 				+ "\n§img mr§" + player.getChampion().getStats().getMagicResist().getTotalAmount()//
 				+ "\n§img ms§" + (float) player.getChampion().getStats().getMovementSpeed().getTotalAmount()//
 				+ "\n§img ad§" + player.getChampion().getStats().getAttackDamage().getTotalAmount()//
-				+ "\n§img ap§" + player.getChampion().getStats().getAbilityPower().getTotalAmount()
-				;
+				+ "\n§img ap§" + player.getChampion().getStats().getAbilityPower().getTotalAmount();
 		Helper.text(app, string, statsDisplayX, y + app.textAscent());
 	}
 
@@ -97,6 +105,14 @@ public class PlayerInterface extends SpellHandler {
 		} else {
 			return "error";
 		}
+	}
+
+	public GameObject getTarget() {
+		return target;
+	}
+
+	public void setTarget(GameObject target) {
+		this.target = target;
 	}
 
 }

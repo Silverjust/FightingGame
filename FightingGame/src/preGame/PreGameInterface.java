@@ -118,4 +118,13 @@ public class PreGameInterface {
 		if (canStart)
 			clientHandler.send(Coms.START_GAMEAPPS + " " + clientHandler.getIdentification());
 	}
+
+	public void dispose() {
+		startButton.dispose();
+		switchSideButton.dispose();
+		userLabelManager.dispose();
+		for (String s : champsOptionsMap.keySet()) {
+			champsOptionsMap.get(s).dispose();
+		}
+	}
 }

@@ -1,10 +1,15 @@
 package gameStructure;
 
+import gameStructure.baseBuffs.events.Event.HitTypes;
+import gameStructure.baseBuffs.events.GettingHitEvent;
+import gameStructure.baseBuffs.events.HitEvent;
+
 public class Damage {
 
 	private Entity target;
 	private GameObject attacker;
 	private DmgType dmg_type;
+	private boolean isKrit;
 
 	private float baseDmg;
 	private int spellArmorPen;
@@ -39,6 +44,11 @@ public class Damage {
 		return this;
 	}
 
+	public Damage setKrit(boolean isKrit) {
+		this.isKrit = isKrit;
+		return this;
+	}
+
 	private float getDmgFactor(int def) {
 		return 100.0f / (100.0f + def);
 	}
@@ -69,6 +79,36 @@ public class Damage {
 	}
 
 	public enum DmgType {
-		PHYSICAL_DMG, MAGIC_DMG, TRUE_DMG
+		PHYSICAL_DMG('p'), MAGIC_DMG('m'), TRUE_DMG('t'), HEAL('h'), BLOCK('b');
+
+		private char name;
+
+		private DmgType(char name) {
+			this.name = name;
+		}
+
+		public char getName() {
+			return name;
+		}
+	}
+
+	public String getDamageType() {
+		String s = "";
+		s += dmg_type.getName() + "";
+
+		if (isKrit)
+			s += "k";
+		return s;
+	}
+
+	/**
+	 * does onhit, on-getting-hit, sends damage
+	 */
+	public void doDamage(GameObject target, GameObject origin, GameObject source, String originInfo, HitTypes hitType,
+			boolean isServer) {
+		origin.onEvent(new HitEvent(this, target, source, hitType), isServer);
+		target.onEvent(new GettingHitEvent(this, origin, source, hitType), isServer);
+		if (isServer)
+			((Entity) target).sendDamage(this, origin, originInfo);
 	}
 }

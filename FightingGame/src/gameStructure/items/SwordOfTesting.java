@@ -10,6 +10,8 @@ public class SwordOfTesting extends InventoryItem {
 		super(app, c);
 		stackingStatsBuff = new StackingStatsBuff(app, getBuffInitInfo());
 		stackingStatsBuff.itemStats.add(new ItemNormalStat(Stats.ATTACK_DAMAGE, 100));
+		
+		descrText="+100 §img ad§";
 	}
 
 }

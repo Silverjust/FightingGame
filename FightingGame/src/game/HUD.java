@@ -4,6 +4,7 @@ import ddf.minim.AudioPlayer;
 import g4p_controls.G4P;
 import g4p_controls.GButton;
 import g4p_controls.GCScheme;
+import game.shop.ShopManager;
 import processing.core.PImage;
 import shared.GameBaseApp;
 import shared.Menu;
@@ -23,6 +24,7 @@ public class HUD {
 	private GameBaseApp app;
 	private GameDrawer gameDrawer;
 	private SoundHandler soundHandler;
+	private ShopManager shopManager;
 
 	public static void loadImages(GameBaseApp app, ImageHandler imageHandler) {
 		if (app.getPlayer() != null) {
@@ -52,8 +54,8 @@ public class HUD {
 	}
 
 	private void setupG4P() {
-		new GButton(app, 0, 0, 1, 1).dispose();//init g4p
-		G4P.setGlobalColorScheme(8);
+		new GButton(app, 0, 0, 1, 1).dispose();// init g4p
+		// G4P.setGlobalColorScheme(8);
 		G4P.changeCursor(false);
 		GCScheme.setScheme(8, 0, app.color(0));
 		GCScheme.setScheme(8, 6, app.color(0, 100));
@@ -82,6 +84,20 @@ public class HUD {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void setShop(ShopManager shopManager) {
+		this.shopManager = shopManager;
+	}
+
+	public ShopManager getShop() {
+		return shopManager;
+	}
+
+	public void disposeShop() {
+		if (shopManager != null)
+			shopManager.dispose();
+		shopManager = null;
 	}
 
 }

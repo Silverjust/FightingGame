@@ -18,6 +18,7 @@ public class Setting {
 	public int changeAbilityMode;
 	public int togglePause;
 	public char centerView;
+	public char openShop;
 	public char[] baseShortcuts = new char[7];
 	public char[] hotKeys = new char[10];
 	private JSONObject shortcutsJson;
@@ -44,6 +45,7 @@ public class Setting {
 		changeAbilityMode = o.getInt("changeAbilityMode");
 		togglePause = o.getInt("togglePause");
 		centerView = o.getString("centerView").charAt(0);
+		openShop = o.getString("openShop").charAt(0);
 		{
 			JSONArray jarr = o.getJSONArray("baseShortcuts");
 			for (int i = 0; i < jarr.size(); i++) {
@@ -81,6 +83,8 @@ public class Setting {
 
 		if (!o.hasKey("centerView"))
 			o.setString("centerView", " ");
+		if (!o.hasKey("openShop"))
+			o.setString("openShop", "p");
 
 		String standardGrid = "[ \"q\", \"w\", \"e\", \"r\", \"t\", \"y\", \"u\" ]";
 		InputContext context = InputContext.getInstance();
